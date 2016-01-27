@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.dspace:dspace-swordv2:war:5.4">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/dspace/dspace-swordv2/5.4/dspace-swordv2-5.4.war!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/dspace/dspace-swordv2/5.4/dspace-swordv2-5.4-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/dspace/dspace-swordv2/5.4/dspace-swordv2-5.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

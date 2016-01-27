@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/additions.iml" filepath="$PROJECT_DIR$/additions.iml" group="dspace and modules/modules and modules" />
+      <module fileurl="file://$PROJECT_DIR$/dspace.iml" filepath="$PROJECT_DIR$/dspace.iml" group="dspace and modules" />
+      <module fileurl="file://$PROJECT_DIR$/dspace-api.iml" filepath="$PROJECT_DIR$/dspace-api.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dspace-jspui.iml" filepath="$PROJECT_DIR$/dspace-jspui.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dspace-oai.iml" filepath="$PROJECT_DIR$/dspace-oai.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dspace-parent.iml" filepath="$PROJECT_DIR$/dspace-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dspace-rdf.iml" filepath="$PROJECT_DIR$/dspace-rdf.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dspace-rest.iml" filepath="$PROJECT_DIR$/dspace-rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dspace-services.iml" filepath="$PROJECT_DIR$/dspace-services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dspace-solr.iml" filepath="$PROJECT_DIR$/dspace-solr.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dspace-sword.iml" filepath="$PROJECT_DIR$/dspace-sword.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dspace-swordv2.iml" filepath="$PROJECT_DIR$/dspace-swordv2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dspace-xmlui-mirage2.iml" filepath="$PROJECT_DIR$/dspace-xmlui-mirage2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/jspui.iml" filepath="$PROJECT_DIR$/jspui.iml" group="dspace and modules/modules and modules" />
+      <module fileurl="file://$PROJECT_DIR$/modules.iml" filepath="$PROJECT_DIR$/modules.iml" group="dspace and modules/modules and modules" />
+      <module fileurl="file://$PROJECT_DIR$/oai.iml" filepath="$PROJECT_DIR$/oai.iml" group="dspace and modules/modules and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rdf.iml" filepath="$PROJECT_DIR$/rdf.iml" group="dspace and modules/modules and modules" />
+      <module fileurl="file://$PROJECT_DIR$/rest.iml" filepath="$PROJECT_DIR$/rest.iml" group="dspace and modules/modules and modules" />
+      <module fileurl="file://$PROJECT_DIR$/solr.iml" filepath="$PROJECT_DIR$/solr.iml" group="dspace and modules/modules and modules" />
+      <module fileurl="file://$PROJECT_DIR$/sword.iml" filepath="$PROJECT_DIR$/sword.iml" group="dspace and modules/modules and modules" />
+      <module fileurl="file://$PROJECT_DIR$/swordv2.iml" filepath="$PROJECT_DIR$/swordv2.iml" group="dspace and modules/modules and modules" />
+    </modules>
+  </component>
+</project>

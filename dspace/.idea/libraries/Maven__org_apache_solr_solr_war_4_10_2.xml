@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.solr:solr:war:4.10.2">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/solr/solr/4.10.2/solr-4.10.2.war!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/solr/solr/4.10.2/solr-4.10.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/solr/solr/4.10.2/solr-4.10.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

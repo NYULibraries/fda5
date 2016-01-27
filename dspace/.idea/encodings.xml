@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/additions" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/jspui" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/lni" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/oai" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/rdf" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/rest" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/solr" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/sword" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/swordv2" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/xmlui" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/modules/xmlui-mirage2" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

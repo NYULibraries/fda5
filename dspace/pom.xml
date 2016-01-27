@@ -1,0 +1,175 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.dspace</groupId>
+    <artifactId>dspace</artifactId>
+    <name>DSpace Assembly and Configuration</name>
+    <packaging>pom</packaging>
+    <description>
+        The DSpace Project provides all the functionality required to
+        build, install and upgrade and dspace instance.
+    </description>
+    <!--
+       A Parent POM that Maven inherits DSpace Default
+       POM attributes from.
+    -->
+    <parent>
+        <groupId>org.dspace</groupId>
+        <artifactId>dspace-parent</artifactId>
+        <version>5.4</version>
+        <relativePath>..</relativePath>
+    </parent>
+
+    <properties>
+        <!-- This is the path to the root [dspace-src] directory. -->
+        <root.basedir>${basedir}/..</root.basedir>
+    </properties>
+
+    <build>
+        <filters>
+            <!-- Filter using the properties file defined by dspace-parent POM -->
+            <filter>${filters.file}</filter>
+        </filters>
+    </build>
+
+    <profiles>
+
+        <!-- Build Profile. This builds all Overlay modules for DSpace -->   
+        <profile>
+            <id>build</id>
+            <activation>
+                <!-- Enabled as long as we are NOT creating a zip/tarball distribution -->
+                <property>
+                    <name>!distributions</name>
+                </property>
+            </activation>
+            <!-- Build all Overlay submodules -->
+            <modules>
+                <module>modules</module>
+            </modules> 
+        </profile>
+
+        <!--
+            DSpace Assembly profile. By default this is enabled.
+            This profile actually builds all submodules and then assembles
+            the 'dspace-installer' from the resulting JARs/WARs.
+            See 'assembly.xml' for more info.
+            This profile can be optionally deactivated by passing '-P!assembly'.
+        -->
+        <profile>
+            <id>assembly</id>
+            <activation>
+                <!-- Enabled as long as we are NOT creating a zip/tarball distribution -->
+                <property>
+                    <name>!distributions</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                   <!-- Assemble 'target/dspace-installer' using 'assembly.xml' -->
+                   <plugin>
+                        <artifactId>maven-assembly-plugin</artifactId>
+                        <inherited>false</inherited>
+                        <configuration>
+                            <!-- Don't "attach" the assembly results to this project. As
+                                 this assembly builds a directory, setting this to "true"
+                                (default value) will just result in a WARNING message.-->
+                            <attach>false</attach>
+                            <finalName>${project.artifactId}</finalName>
+                            <descriptors>
+                                <descriptor>src/main/assembly/assembly.xml</descriptor>
+                            </descriptors>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>single</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <!-- This profile simply determines whether we are creating 
+             zip / tarball distributions to upload to SourceFore or similar. 
+             By running "mvn package -Ddistributions=true" you'll
+             SKIP normal build & assembly (see above profiles) and
+             INSTEAD just run the "distributions" profile below. -->
+        <profile>
+            <id>build-and-assembly</id>
+            <activation>
+                <!-- This profile should be active at all times, unless the user
+                     specifies a different value for "distributions" -->
+                <property>
+                    <name>!distributions</name>
+                </property>
+            </activation>
+            <properties>
+                <distributions>false</distributions>
+            </properties>
+        </profile> 
+
+
+        <!--
+            Run this profile (e.g. 'mvn package -Ddistributions=true') to create
+            zip / tarball distributions to upload to SourceForge or similar.
+            When this profile is run, DSpace is NOT compiled as normal.
+            Instead, a zip/tarball is generated from the parent [dspace-src] directory.
+        -->
+        <profile>
+           <id>distributions</id>
+           <activation>
+              <!-- Only enabled if "distributions=true" was passed on commandline -->
+              <property>
+                  <name>distributions</name>
+                  <value>true</value>
+              </property>
+           </activation>
+           <build>
+              <plugins>
+                 <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <inherited>false</inherited>
+                    <executions>
+                       <execution>
+                          <inherited>false</inherited>
+                          <configuration>
+                             <descriptors>
+                                <descriptor>src/main/assembly/release.xml</descriptor>
+                                <descriptor>src/main/assembly/src-release.xml</descriptor>
+                             </descriptors>
+                             <tarLongFileMode>gnu</tarLongFileMode>
+                             <finalName>dspace-${project.version}</finalName>
+                          </configuration>
+                          <phase>package</phase>
+                          <goals>
+                             <goal>single</goal>
+                          </goals>
+                       </execution>
+                    </executions>
+                 </plugin>
+              </plugins>
+           </build>
+        </profile>
+
+    </profiles>
+
+    <dependencies>
+    	<!-- This dependency ensures DSpace OAI JAR is added to [dspace]/lib/,
+             so that the 'dspace oai' launcher.xml command works.  -->
+    	<dependency>
+            <groupId>org.dspace</groupId>
+            <artifactId>dspace-oai</artifactId>
+            <type>jar</type>
+            <classifier>classes</classifier>
+    	</dependency>
+        <!-- The Servlet API is also needed by the 'dspace oai' launcher.xml
+             command. -->
+    	<dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+    	</dependency>
+    </dependencies>
+</project>

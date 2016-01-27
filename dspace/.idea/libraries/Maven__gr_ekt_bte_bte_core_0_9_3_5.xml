@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: gr.ekt.bte:bte-core:0.9.3.5">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/gr/ekt/bte/bte-core/0.9.3.5/bte-core-0.9.3.5.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/gr/ekt/bte/bte-core/0.9.3.5/bte-core-0.9.3.5-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/gr/ekt/bte/bte-core/0.9.3.5/bte-core-0.9.3.5-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

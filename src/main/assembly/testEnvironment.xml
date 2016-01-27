@@ -1,0 +1,96 @@
+<?xml version='1.0'?>
+<!--
+
+    The contents of this file are subject to the license and copyright
+    detailed in the LICENSE and NOTICE files at the root of the source
+    tree and available online at
+
+    http://www.dspace.org/license/
+
+-->
+<assembly
+    xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <!--
+        Package DSpace's common testing environment (configuration, etc.)
+        into a "testEnvironment.zip". This essentially creates a zipped up, test
+        version of a DSpace installation directory, complete with bin, configs,
+        even a dummy assetstore, etc.
+	-->
+    <id>testEnvironment</id>
+    <formats>
+        <format>zip</format>
+    </formats>
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <!-- First, copy the following from our 'dspace' subfolder assembly project into the
+         same subdirectory in the final ZIP file. NOTE: We do this in a <fileSet> INSTEAD
+         of a <moduleSet> so that we don't have to first build the "dspace" module. -->
+    <fileSets>
+        <fileSet>
+            <!-- Copy necessary DSpace subdirectories into Test environment -->
+            <includes>
+                <include>dspace/bin/**</include>
+                <include>dspace/config/**</include>
+                <include>dspace/etc/**</include>
+                <include>dspace/solr/**</include>
+            </includes>
+            <!-- But, exclude specific configs (which require filtering) -->
+            <excludes>
+                <exclude>dspace/config/dspace.cfg</exclude>
+                <exclude>dspace/config/log4j.properties</exclude>
+                <exclude>dspace/config/modules/**</exclude>
+            </excludes>
+        </fileSet>
+        <fileSet> 
+            <!-- Copy specific configs (filtering their content) also into Test environment -->
+            <includes>
+                <include>dspace/config/modules/**</include>
+                <include>dspace/config/dspace.cfg</include>
+                <include>dspace/config/log4j.properties</include>
+            </includes>
+            <filtered>true</filtered>
+        </fileSet>        
+    </fileSets>
+
+    <moduleSets>
+        <!-- Next, search for a 'src/test/data/dspaceFolder' data directory in
+             ANY of our modules. If found, copy its contents into the same "dspace"
+             subdirectory in the final ZIP file, as this is data to be used in testing.
+             NOTE: This *might* overwrite/overlay default files copied from above. -->
+        <moduleSet>
+            <includes>
+                <include>org.dspace:*</include>
+            </includes>
+            <sources>
+                <outputDirectoryMapping>dspace</outputDirectoryMapping>
+                <fileSets>
+                    <fileSet>
+                        <directory>src/test/data/dspaceFolder</directory>
+                    </fileSet>
+                </fileSets>
+            </sources>
+        </moduleSet>
+        <!-- Finally, copy the 'dspace.cfg.more' from the 'dspace-api' into
+             the root directory of the ZIP. This config will be merged/weaved
+             into the default dspace.cfg (see fileweaver maven plugin) -->
+        <moduleSet>
+            <includes>
+                <include>org.dspace:dspace-api</include>
+            </includes>
+            <sources>
+                <outputDirectoryMapping>/</outputDirectoryMapping>
+                <fileSets>
+                    <fileSet>
+                        <directory>src/test/data</directory>
+                        <includes>
+                            <include>dspace.cfg.more</include>
+                        </includes>
+                    </fileSet>
+                </fileSets>
+            </sources>
+        </moduleSet>
+    </moduleSets>
+
+</assembly>

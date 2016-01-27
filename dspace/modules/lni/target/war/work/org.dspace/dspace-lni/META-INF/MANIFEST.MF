@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Implementation-Vendor: DuraSpace
+Implementation-Title: DSpace LNI
+Implementation-Version: 5.4
+Implementation-Vendor-Id: org.dspace
+Built-By: Tim
+Build-Jdk: 1.7.0_79
+Specification-Vendor: DuraSpace
+Specification-Title: DSpace LNI
+Created-By: Apache Maven 3.2.5
+Specification-Version: 5.4
+Archiver-Version: Plexus Archiver
+

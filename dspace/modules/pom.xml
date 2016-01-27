@@ -1,0 +1,155 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.dspace</groupId>
+	<artifactId>modules</artifactId>
+	<packaging>pom</packaging>
+	<name>DSpace Addon Modules</name>
+	<description>DSpace Addon Modules</description>
+
+	<parent>
+		<groupId>org.dspace</groupId>
+		<artifactId>dspace-parent</artifactId>
+		<version>5.4</version>
+		<relativePath>../../pom.xml</relativePath>
+	</parent>
+
+    <properties>
+        <!-- This is the path to the root [dspace-src] directory. -->
+        <root.basedir>${basedir}/../..</root.basedir>
+        <license.skip>true</license.skip>
+    </properties>
+
+    <!-- The 'additions' module must *always* be built, as it is included
+         as a dependency in most other modules in [src]/dspace/modules -->
+    <modules>
+        <module>additions</module>
+    </modules>
+
+    <!-- 
+         List of enabled DSpace "addon" / local customization Modules to build/install.
+         To disable building of modules, you can use the Maven '-P' commandline 
+         option along with the profile's id.  For example, the following tells
+         Maven to *disable* building of 'dspace-oai' and 'dspace-lni' modules:
+         'mvn package -P !dspace-oai,!dspace-lni'
+         
+         Also note that the profile IDs below match the profile IDs of the source
+         modules in [dspace-src]/pom.xml, so the above command will also disable the
+         compiling of the corresponding source module.
+    -->
+    <profiles>
+        <profile>
+            <id>dspace-xmlui</id>
+            <activation>
+                <file>
+                    <exists>xmlui/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>xmlui</module>
+            </modules>
+        </profile>
+        <!-- Note:- The LNI module is not built by default and is considered deprecated.
+            To build it activate the profile with '-Pdspace-lni'. -->
+        <profile>
+            <id>dspace-lni</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <modules>
+                <module>lni</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>dspace-jspui</id>
+            <activation>
+                <file>
+                    <exists>jspui/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>jspui</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>dspace-rdf</id>
+            <activation>
+                <file>
+                    <exists>rdf/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>rdf</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>dspace-rest</id>
+            <activation>
+                <file>
+                    <exists>rest/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>rest</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>dspace-sword</id>
+            <activation>
+                <file>
+                    <exists>sword/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>sword</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>dspace-swordv2</id>
+            <activation>
+                <file>
+                    <exists>swordv2/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>swordv2</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>dspace-solr</id>
+            <activation>
+                <file>
+                    <exists>solr/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>solr</module>
+            </modules>
+        </profile>
+        <profile>
+            <id>dspace-oai</id>
+            <activation>
+                <file>
+                    <exists>oai/pom.xml</exists>
+                </file>
+            </activation>
+            <modules>
+                <module>oai</module>
+            </modules>
+        </profile>
+
+        <profile>
+            <!--Activates mirage2 on the presence of the property mirage2.on with any value e.g. mvn clean package -Dmirage2.on=on
+                Note the absence of activeByDefault. This module is optional. Also activeByDefault only works when no other profiles are active.
+            -->
+            <id>mirage2</id>
+            <activation>
+                <property>
+                    <name>mirage2.on</name>
+                </property>
+            </activation>
+            <modules>
+                <module>xmlui-mirage2</module>
+            </modules>
+        </profile>
+    </profiles>
+</project>

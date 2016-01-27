@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="maven-antrun-" default="Encode any UTF-8 chars in properties"  >
+<target name="Encode any UTF-8 chars in properties">
+  <native2ascii src="/Users/katepechekhonova/dspace5/dspace-5.4-src-release/dspace/modules/lni/../../.." includes="*.properties" encoding="UTF8" dest="/Users/katepechekhonova/dspace5/dspace-5.4-src-release/dspace/modules/lni/../../../target"/>
+</target>
+</project>

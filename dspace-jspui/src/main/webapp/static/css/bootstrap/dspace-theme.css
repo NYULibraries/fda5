@@ -1,0 +1,629 @@
+/* NYU theme LMH */
+/* Red #C50FC3  197 15 60
+Violet #57068C
+Taupe dark #A49483
+Taupe light B5ADA6   181, 173, 166
+link red #D11255   */
+/* line 1, ../../../sass/partials/_panels.scss */
+.panel {
+  background-color: #F6F5F4;
+}
+
+/* line 5, ../../../sass/partials/_panels.scss */
+.panel h2 {
+  font-size: 1.3rem;
+  margin: 0.5em 0 0 0;
+  color: #7e6e5c;
+}
+
+/* line 11, ../../../sass/partials/_panels.scss */
+.panel-primary {
+  border-color: rgba(181, 173, 166, 0.4);
+}
+
+/* line 15, ../../../sass/partials/_panels.scss */
+.panel-footer {
+  background-color: rgba(181, 173, 166, 0.3);
+}
+
+/* line 19, ../../../sass/partials/_panels.scss */
+.panel-primary > .panel-heading {
+  color: #333;
+  background-image: none;
+  background-color: rgba(181, 173, 166, 0.4);
+  border-color: rgba(181, 173, 166, 0.5);
+}
+
+/* line 27, ../../../sass/partials/_panels.scss */
+.well {
+  background-image: none;
+  background-color: rgba(181, 173, 166, 0.1);
+  border-radius: 0;
+}
+
+/*******************/
+/****  Search Box ******/
+@media (max-width: 991px) {
+  /* line 36, ../../../sass/partials/_panels.scss */
+  .panel {
+    border: none;
+    padding: 0;
+  }
+
+  /* line 40, ../../../sass/partials/_panels.scss */
+  .panel-body {
+    padding: 0px;
+  }
+}
+/* line 1, ../../../sass/partials/_search.scss */
+.form-group-flex {
+  display: flex;
+  -webkit-flex-flow: row nowrap;
+  flex-flow: row nowrap;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+/* line 9, ../../../sass/partials/_search.scss */
+.panel-heading-simplesearch {
+  padding-left: 15px;
+}
+
+/* line 14, ../../../sass/partials/_search.scss */
+.panel.simplesearchpanel {
+  max-width: 40em;
+  margin: 40px 0;
+  background-color: #F6F5F4;
+  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 0;
+}
+/* line 20, ../../../sass/partials/_search.scss */
+.panel.simplesearchpanel h2 {
+  font-size: 1.1rem;
+  margin: 0.5em 0 0 0;
+  color: #7e6e5c;
+}
+
+/* line 28, ../../../sass/partials/_search.scss */
+.simplest-search .form-group-flex .input-hold {
+  display: block;
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+/* line 33, ../../../sass/partials/_search.scss */
+.simplest-search .form-group-flex .input-hold input {
+  width: 100%;
+  padding: 6px 12px;
+  font-size: 17px;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  border-right: none;
+  height: 40px;
+}
+/* line 42, ../../../sass/partials/_search.scss */
+.simplest-search .form-group-flex .button-hold {
+  min-width: 15%;
+  display: block;
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+  background-image: -webkit-gradient(linear, left 0, left 100%, from(#A49483), to(#8A7D6E));
+  background-image: -webkit-linear-gradient(top, #A49483, 0%, #8A7D6E, 100%);
+  background-image: -moz-linear-gradient(top, #A49483 0, #8A7D6E 100%);
+  background-image: linear-gradient(to bottom, #A49483 0, #8A7D6E 100%);
+  background-repeat: repeat-x;
+  /* border-radius: 4px;*/
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  /* border-bottom: 1px solid red;
+   border-right: 1px solid red;*/
+}
+/* line 58, ../../../sass/partials/_search.scss */
+.simplest-search .form-group-flex .button-hold button {
+  width: 100%;
+  background: transparent;
+  border: transparent;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  height: 40px;
+}
+
+/* line 68, ../../../sass/partials/_search.scss */
+.discovery-search-form {
+  background-color: #e3e0de;
+  box-shadow: inset 3px 3px 10px rgba(0, 0, 0, 0.1);
+}
+/* line 71, ../../../sass/partials/_search.scss */
+.discovery-search-form .discovery-query {
+  transition: all .1s ease-in;
+}
+/* line 75, ../../../sass/partials/_search.scss */
+.discovery-search-form .discovery-query .interface-link {
+  color: #6f6152;
+  text-decoration: underline;
+  display: inline-block;
+}
+/* line 81, ../../../sass/partials/_search.scss */
+.discovery-search-form .discovery-query.open {
+  padding: 15px 15px 0;
+}
+/* line 84, ../../../sass/partials/_search.scss */
+.discovery-search-form .form-group-flex {
+  margin: 10px 0;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-justify-content: flex-start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+/* line 96, ../../../sass/partials/_search.scss */
+.discovery-search-form select {
+  font-size: 2rem;
+}
+/* line 99, ../../../sass/partials/_search.scss */
+.discovery-search-form .form-flex-item {
+  display: block;
+  -webkit-flex: 0 1 auto;
+  flex: 0 1 auto;
+  -webkit-align-content: space-around;
+  -ms-flex-line-pack: distribute;
+  align-content: space-around;
+  /*  background-color: red;*/
+  margin-right: 10px;
+}
+/* line 109, ../../../sass/partials/_search.scss */
+.discovery-search-form .form-flex-item:last-child {
+  margin-right: 0px;
+}
+/* line 112, ../../../sass/partials/_search.scss */
+.discovery-search-form .form-flex-item.item-label {
+  -webkit-flex: 0 0 auto;
+  flex: 0 0 auto;
+}
+/* line 116, ../../../sass/partials/_search.scss */
+.discovery-search-form .discovery-search-filters {
+  display: none;
+  width: 100% !important;
+  background-color: #ccc7c2;
+}
+
+/* line 124, ../../../sass/partials/_search.scss */
+.discovery-pagination-controls .form-group-flex {
+  /*background-color: pink;*/
+  margin-bottom: 15px;
+}
+/* line 128, ../../../sass/partials/_search.scss */
+.discovery-pagination-controls .form-flex-item {
+  /*  background-color: red;*/
+  -webkit-flex: 1 1 auto;
+  flex: 1 1 auto;
+  -webkit-align-content: space-around;
+  -ms-flex-line-pack: distribute;
+  align-content: space-around;
+  /*border-right: 1px solid brown;*/
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+/* line 142, ../../../sass/partials/_search.scss */
+.remove-filter .btn {
+  padding: 2px 0 0 0;
+  height: 25px;
+  width: 25px;
+}
+
+/* line 148, ../../../sass/partials/_search.scss */
+.small-button .btn {
+  padding: 2px 5px 0 5px;
+  height: 25px;
+}
+
+/* line 2, ../../../sass/partials/_tree.scss */
+.fda-tree a {
+  display: block;
+  height: auto;
+}
+/* line 6, ../../../sass/partials/_tree.scss */
+.fda-tree h2 {
+  color: #7e6e5c;
+  font-size: 1.3rem;
+}
+/* line 10, ../../../sass/partials/_tree.scss */
+.fda-tree h4 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+/* line 13, ../../../sass/partials/_tree.scss */
+.fda-tree h4 a:link, .fda-tree h4 a:visited {
+  color: #4f453a;
+  padding: 7px 0;
+}
+/* line 18, ../../../sass/partials/_tree.scss */
+.fda-tree ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+/* line 27, ../../../sass/partials/_tree.scss */
+.fda-tree li {
+  clear: left;
+}
+/* line 30, ../../../sass/partials/_tree.scss */
+.fda-tree ul > li > ul {
+  margin-left: 50px;
+  background-color: #f8f7f7;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+/* line 42, ../../../sass/partials/_tree.scss */
+.fda-tree ul > li > ul li {
+  margin-left: 20px;
+  clear: left;
+}
+/* line 46, ../../../sass/partials/_tree.scss */
+.fda-tree ul > li > ul > li > ul {
+  background-color: #efedec;
+}
+/* line 49, ../../../sass/partials/_tree.scss */
+.fda-tree ul > li > ul h4 {
+  font-size: 1rem;
+  font-weight: 400;
+}
+/* line 59, ../../../sass/partials/_tree.scss */
+.fda-tree a.arrow {
+  float: left;
+  font-size: 1.3rem;
+  font-weight: bold;
+  padding-left: 0;
+  text-align: left;
+  margin-right: 0;
+  width: 30px;
+  color: #ba104b;
+}
+/* line 70, ../../../sass/partials/_tree.scss */
+.fda-tree a.arrow:hover, .fda-tree a.arrow:active, .fda-tree a.arrow:focus {
+  text-decoration: none;
+}
+/* line 73, ../../../sass/partials/_tree.scss */
+.fda-tree a.arrow:hover {
+  color: #ef417e;
+}
+
+/* line 1, ../../../sass/partials/_collectionpage.scss */
+.page-title-area {
+  padding-bottom: 30px;
+}
+
+/* line 6, ../../../sass/partials/_collectionpage.scss */
+.facet a:link {
+  color: black;
+}
+
+/* line 1, ../../../sass/partials/_topnavbar.scss */
+.navbar-form {
+  padding: 0;
+}
+
+/* line 5, ../../../sass/partials/_topnavbar.scss */
+.navbar {
+  border-radius: 0;
+  margin-bottom: 0;
+}
+
+/*******************/
+/* line 11, ../../../sass/partials/_topnavbar.scss */
+.navbar-inverse {
+  background-image: none;
+  background-color: #57068C;
+}
+/* line 14, ../../../sass/partials/_topnavbar.scss */
+.navbar-inverse .navbar-nav > li > a,
+.navbar-inverse .navbar-bottom a {
+  color: #ddd;
+}
+@media (max-width: 767px) {
+  /* line 19, ../../../sass/partials/_topnavbar.scss */
+  .navbar-inverse .navbar-nav .open .dropdown-menu {
+    margin-left: 4em;
+  }
+  /* line 21, ../../../sass/partials/_topnavbar.scss */
+  .navbar-inverse .navbar-nav .open .dropdown-menu > li > a, .navbar-inverse .navbar-nav .open .dropdown-menu .dropdown-header {
+    padding: 5px;
+    color: #ddd;
+  }
+  /* line 25, ../../../sass/partials/_topnavbar.scss */
+  .navbar-inverse .navbar-nav .open .dropdown-menu .divider {
+    border-top: 1px solid #2D0054;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+}
+
+/* line 33, ../../../sass/partials/_topnavbar.scss */
+header div.navbar-right {
+  margin-top: 10px;
+}
+
+@media (min-width: 0em) and (max-width: 991px) {
+  /* line 38, ../../../sass/partials/_topnavbar.scss */
+  .container > .navbar-header, .container > .navbar-collapse {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+
+  /* line 42, ../../../sass/partials/_topnavbar.scss */
+  .navbar-collapse {
+    max-height: none;
+  }
+
+  /* line 45, ../../../sass/partials/_topnavbar.scss */
+  .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    background-color: #2D0054;
+  }
+
+  /* line 48, ../../../sass/partials/_topnavbar.scss */
+  .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: #fff;
+    background-color: #2D0054;
+  }
+
+  /* line 52, ../../../sass/partials/_topnavbar.scss */
+  .navbar-header {
+    background: transparent url("../../../image/nyu_fda_logo_concise.svg") no-repeat 0px center;
+  }
+
+  /* line 55, ../../../sass/partials/_topnavbar.scss */
+  .navbar-header img {
+    opacity: 0.0;
+    width: 200px;
+  }
+
+  /* line 59, ../../../sass/partials/_topnavbar.scss */
+  .navbar-toggle {
+    margin-top: 15px;
+  }
+
+  /* line 62, ../../../sass/partials/_topnavbar.scss */
+  header div.navbar-right {
+    margin-left: 0;
+  }
+}
+/* line 1, ../../../sass/partials/_breadcrumbs.scss */
+.breadcrumb.btn-success {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+  background-image: none;
+  padding: 0 15px 15px 0;
+  margin: 0px 0 10px;
+}
+
+/* line 10, ../../../sass/partials/_breadcrumbs.scss */
+ol.breadcrumb li,
+ol.breadcrumb li a {
+  color: #A49483;
+  background-color: inherit;
+  font-style: normal;
+  font-weight: normal;
+  text-shadow: none;
+}
+
+/* line 19, ../../../sass/partials/_breadcrumbs.scss */
+.breadcrumb > li + li:before {
+  padding: 0 5px;
+  color: #ccc;
+  content: ">";
+}
+
+/* line 25, ../../../sass/partials/_breadcrumbs.scss */
+.homepage ol.breadcrumb {
+  display: none;
+}
+
+/* line 1, ../../../sass/partials/_mostdownloaded.scss */
+.badge {
+  background-color: rgba(181, 173, 166, 0.9);
+}
+
+/* line 5, ../../../sass/partials/_mostdownloaded.scss */
+.recently-added .row {
+  /*border: 1px solid blue;*/
+}
+
+/* line 9, ../../../sass/partials/_mostdownloaded.scss */
+.recently-added.container .col-md-4 {
+  padding-right: 0;
+}
+
+/* line 13, ../../../sass/partials/_mostdownloaded.scss */
+.recently-added a {
+  color: #666;
+}
+
+/* line 17, ../../../sass/partials/_mostdownloaded.scss */
+.recently-added article {
+  /*border: 1px solid yellow;*/
+  padding-top: 0;
+}
+
+/* line 22, ../../../sass/partials/_mostdownloaded.scss */
+.recently-added h1 {
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1.2;
+  margin-top: .5em;
+  margin-bottom: .1em;
+}
+
+/* line 32, ../../../sass/partials/_mostdownloaded.scss */
+.homepage-sidebar .panel-heading h1 {
+  text-transform: uppercase;
+  font-size: .9rem;
+}
+/* line 36, ../../../sass/partials/_mostdownloaded.scss */
+.homepage-sidebar .authors {
+  line-height: 1.25;
+}
+/* line 39, ../../../sass/partials/_mostdownloaded.scss */
+.homepage-sidebar .communityflag {
+  display: inline-block;
+  margin-top: -15px;
+  margin-left: -15px;
+  font-size: .8rem;
+}
+/* line 46, ../../../sass/partials/_mostdownloaded.scss */
+.homepage-sidebar .communityflag a:link, .homepage-sidebar .communityflag a:visited {
+  display: inline-block;
+  padding: 0 15px;
+}
+/* line 51, ../../../sass/partials/_mostdownloaded.scss */
+.homepage-sidebar .communityflag span {
+  display: none;
+}
+/* line 55, ../../../sass/partials/_mostdownloaded.scss */
+.homepage-sidebar h1 {
+  color: #8A7D6E;
+  color: #7e6e5c;
+  margin: 0;
+  font-size: 1.1rem;
+}
+/* line 61, ../../../sass/partials/_mostdownloaded.scss */
+.homepage-sidebar article {
+  padding: 10px 0;
+  border-bottom: 1px solid #d8d3d0;
+  box-shadow: 0px 1px 1px 0px white;
+}
+/* line 66, ../../../sass/partials/_mostdownloaded.scss */
+.homepage-sidebar article h1 {
+  margin-bottom: .25rem;
+}
+/* line 69, ../../../sass/partials/_mostdownloaded.scss */
+.homepage-sidebar article:last-child {
+  border-bottom: none;
+  box-shadow: none;
+}
+/* line 74, ../../../sass/partials/_mostdownloaded.scss */
+.homepage-sidebar a:link, .homepage-sidebar a:visited {
+  color: #4f453a;
+}
+
+/* line 1, ../../../sass/partials/_footer.scss */
+footer.navbar {
+  margin-bottom: 0;
+  border-radius: 0;
+  border-top: 1px solid #3f0465;
+  border-bottom: 1px solid #3f0465;
+  border-left: none;
+  border-right: none;
+  padding-right: 15px;
+  padding-left: 15px;
+  color: #B5ADA6;
+}
+/* line 11, ../../../sass/partials/_footer.scss */
+footer.navbar .footer-holder {
+  min-height: 50px;
+  padding-top: 0px;
+  display: flex;
+  -webkit-flex-flow: row wrap;
+  flex-flow: row wrap;
+  -webkit-align-items: center;
+  align-items: center;
+  -webkit-justify-content: flex-start;
+  justify-content: flex-start;
+  /*   */
+  color: #B5ADA6;
+}
+/* line 22, ../../../sass/partials/_footer.scss */
+footer.navbar .footer-holder .f-1 {
+  flex: 1 0 auto;
+}
+/* line 25, ../../../sass/partials/_footer.scss */
+footer.navbar .footer-holder .f-2 {
+  flex: 0 0 auto;
+}
+@media (max-width: 767px) {
+  /* line 11, ../../../sass/partials/_footer.scss */
+  footer.navbar .footer-holder {
+    -webkit-flex-flow: column nowrap;
+    flex-flow: column wrap;
+    padding: 10px 0 15px 0;
+  }
+}
+/* line 37, ../../../sass/partials/_footer.scss */
+footer.navbar a {
+  display: inline-block;
+}
+/* line 39, ../../../sass/partials/_footer.scss */
+footer.navbar a:link, footer.navbar a:visited {
+  color: #ddd;
+}
+/* line 42, ../../../sass/partials/_footer.scss */
+footer.navbar a:hover {
+  color: #fff;
+}
+
+/* line 32, ../../../sass/nyu-fda.scss */
+#content {
+  padding-bottom: 60px;
+  margin-top: 20px;
+}
+
+/* line 37, ../../../sass/nyu-fda.scss */
+html {
+  font-size: 100%;
+}
+
+/* line 41, ../../../sass/nyu-fda.scss */
+a:link,
+a:visited {
+  color: #D11255;
+}
+
+/* line 46, ../../../sass/nyu-fda.scss */
+.btn-primary {
+  color: #fff;
+  background-color: #A49483;
+  background-image: -webkit-gradient(linear, left 0, left 100%, from(#A49483), to(#8A7D6E));
+  background-image: -webkit-linear-gradient(top, #A49483, 0%, #8A7D6E, 100%);
+  background-image: -moz-linear-gradient(top, #A49483 0, #8A7D6E 100%);
+  background-image: linear-gradient(to bottom, #A49483 0, #8A7D6E 100%);
+  background-repeat: repeat-x;
+  border-color: #8A7D6E;
+}
+
+/* line 57, ../../../sass/nyu-fda.scss */
+.btn-primary:hover {
+  background-image: -webkit-gradient(linear, left 0, left 100%, from(#8A7D6E), to(#A49483));
+  background-image: -webkit-linear-gradient(top, #8A7D6E, 0%, #A49483, 100%);
+  background-image: -moz-linear-gradient(top, #8A7D6E 0, #A49483 100%);
+  background-image: linear-gradient(to bottom, #8A7D6E 0, #A49483 100%);
+  background-repeat: repeat-x;
+  border-color: #8A7D6E;
+}
+
+/* line 66, ../../../sass/nyu-fda.scss */
+.brand {
+  font-size: 1rem;
+  max-width: 44em;
+}
+/* line 69, ../../../sass/nyu-fda.scss */
+.brand h4 {
+  color: #A49483;
+}
+
+/* line 74, ../../../sass/nyu-fda.scss */
+.listofcommunities h3 a {
+  color: #333;
+  background-color: yellow;
+}
+
+/* line 80, ../../../sass/nyu-fda.scss */
+.collections-list h3 {
+  color: #4f453a;
+  margin: 10px 0;
+}
+Status API Training Shop Blog About Pricing
+
