@@ -425,7 +425,7 @@ else if( qResults != null)
         <fmt:param><%=qResults.getStart()+1%></fmt:param>
         <fmt:param><%=lastHint%></fmt:param>
         <fmt:param><%=qResults.getTotalSearchResults()%></fmt:param>
-      <fmt:param><%=(float) qResults.getSearchTime() / 1000%></fmt:param>
+      <!--<fmt:param><%=(float) qResults.getSearchTime() / 1000%></fmt:param>-->
     </fmt:message></h3>
 
 

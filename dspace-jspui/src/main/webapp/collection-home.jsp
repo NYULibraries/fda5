@@ -145,58 +145,7 @@
   </section>
   </div>
 </div>
-<div class="col-md-4">
-                    <div class="panel panel-primary homepagesearch">
-                      <div class="panel-heading">
-                        <h1>Most Popular Items</h1></div>
-                      <div class="panel-body">
-                      <div class="row">
-      <%
-      if (mostdownloaded != null && mostdownloaded.count() > 0)
-      {
-      %>
-              <div class="col-md-8">
-              <div class="panel panel-primary">
 
-                          <%
-
-                          for (Item item : mostdownloaded.getMostDownloaded())
-                          {
-                            if(item!=null) {
-                              Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
-                              String displayTitle = "Untitled";
-                              if (dcv != null & dcv.length > 0)
-                              {
-                                  displayTitle = dcv[0].value;
-                              }
-                              dcv = item.getMetadata("dc", "description", "abstract", Item.ANY);
-                              String displayAbstract = "";
-                              if (dcv != null & dcv.length > 0)
-                              {
-                                  displayAbstract = dcv[0].value;
-                              }
-                      %>
-                          <div style="padding-bottom: 10px; min-height: 200px;" class="item">
-                              <a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>" class="btn"><%= displayTitle  %></a>
-                              <p><%= displayAbstract %></p>
-                            </div>
-                          </div>
-                        <%
-
-                           }
-                           }
-                      %>
-
-
-           </div></div>
-      <%
-      }
-      %>
-
-                      </div>
-                    </div>
-                  </div> <!-- end col 4 -->
-                </div> <!-- end col row  -->
 <% if (show_items)
    {
         BrowseInfo bi = (BrowseInfo) request.getAttribute("browse.info");

@@ -293,54 +293,8 @@ public class BrowseListTag extends TagSupport
         	// Get the interlinking configuration too
             CrossLinks cl = new CrossLinks();
 
-            // Get a width for the table
-            String tablewidth = ConfigurationManager.getProperty("webui.itemlist.tablewidth");
-
-            // If we have column widths, try to use a fixed layout table - faster for browsers to render
-            // but not if we have to add an 'edit item' button - we can't know how big it will be
-            if (widthArr.length > 0 && widthArr.length == fieldArr.length && !linkToEdit)
-            {
-                // If the table width has been specified, we can make this a fixed layout
-                if (!StringUtils.isEmpty(tablewidth))
-                {
-                    out.println("<table style=\"width: " + tablewidth + "; table-layout: fixed;\" align=\"center\" class=\"table\" summary=\"This table browses all dspace content\">");
-                }
-                else
-                {
                     // Otherwise, don't constrain the width
-                    out.println("<table align=\"center\" class=\"table\" summary=\"This table browses all dspace content\">");
-                }
-
-                // Output the known column widths
-                out.print("<colgroup>");
-
-                for (int w = 0; w < widthArr.length; w++)
-                {
-                    out.print("<col width=\"");
-
-                    // For a thumbnail column of width '*', use the configured max width for thumbnails
-                    if (fieldArr[w].equals("thumbnail") && widthArr[w].equals("*"))
-                    {
-                        out.print(thumbItemListMaxWidth);
-                    }
-                    else
-                    {
-                        out.print(StringUtils.isEmpty(widthArr[w]) ? "*" : widthArr[w]);
-                    }
-
-                    out.print("\" />");
-                }
-
-                out.println("</colgroup>");
-            }
-            else if (!StringUtils.isEmpty(tablewidth))
-            {
-                out.println("<table width=\"" + tablewidth + "\" align=\"center\" class=\"table\" summary=\"This table browses all dspace content\">");
-            }
-            else
-            {
-                out.println("<table align=\"center\" class=\"table\" summary=\"This table browses all dspace content\">");
-            }
+                    out.println("<table class=\"table\" >");
 
             // Output the table headers
             out.println("<tr>");
@@ -605,7 +559,7 @@ public class BrowseListTag extends TagSupport
                     String extras = "";
                     if (isDate[colIdx])
                     {
-                        extras = "nowrap=\"nowrap\" align=\"right\"";
+                        extras = "";
                     }
                     
                     String markClass = "";
