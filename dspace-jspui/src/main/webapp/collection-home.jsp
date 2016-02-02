@@ -29,6 +29,7 @@
 <%@ taglib uri="http://www.dspace.org/dspace-tags.tld" prefix="dspace" %>
 
 <%@ page import="org.dspace.app.webui.components.RecentSubmissions" %>
+<%@ page import="org.dspace.app.webui.components.MostDownloaded" %>
 
 <%@ page import="org.dspace.app.webui.servlet.admin.EditCommunitiesServlet" %>
 <%@ page import="org.dspace.app.webui.util.UIUtil" %>
@@ -49,6 +50,7 @@
     Group      submitters = (Group) request.getAttribute("submitters");
 
     RecentSubmissions rs = (RecentSubmissions) request.getAttribute("recently.submitted");
+    MostDownloaded mostdownloaded = (MostDownloaded) request.getAttribute("most.downloaded");
     
     boolean loggedIn =
         ((Boolean) request.getAttribute("logged.in")).booleanValue();
@@ -104,10 +106,8 @@
 
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
 <dspace:layout locbar="commLink" title="<%= name %>" feedData="<%= feedData %>">
-    <div class="container">
-    <div class="row"><div class="col-md-8"><h2><%= name %>
-		<small><fmt:message key="jsp.collection-home.heading1"/></small>
-      </h2></div>
+
+    <div class="row"><div class="col-md-8"><h2><%= name %></h2></div>
 <%  if (logo != null) { %>
         <div class="col-md-4">
         	<img class="img-responsive pull-right" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
@@ -116,55 +116,87 @@
 	</div>
 <%
 	if (StringUtils.isNotBlank(intro)) { %>
+  <div class="description">
 	<%= intro %>
+</div>
 <% 	} %>
-  </div>
-  <p class="copyrightText"><%= copyright %></p>
+
+  <p class="copyrightText"> <%= copyright %></p>
   
   <%-- Browse --%>
-<%  if (submit_button)
-    { %>
-          <form class="form-group" action="<%= request.getContextPath() %>/submit" method="post">
-            <input type="hidden" name="collection" value="<%= collection.getID() %>" />
-			<input class="btn btn-success col-md-12" type="submit" name="submit" value="<fmt:message key="jsp.collection-home.submit.button"/>" />
-          </form>
-<%  } %>
-        <form class="well" method="get" action="">
-<%  if (loggedIn && subscribed)
-    { %>
-                <small><fmt:message key="jsp.collection-home.subscribed"/> <a href="<%= request.getContextPath() %>/subscribe"><fmt:message key="jsp.collection-home.info"/></a></small>
-           		<input class="btn btn-sm btn-warning" type="submit" name="submit_unsubscribe" value="<fmt:message key="jsp.collection-home.unsub"/>" />
-<%  } else { %>
-                <small>
-            		  <fmt:message key="jsp.collection-home.subscribe.msg"/>
-                </small>
-				<input class="btn btn-sm btn-info" type="submit" name="submit_subscribe" value="<fmt:message key="jsp.collection-home.subscribe"/>" />
-<%  }
-%>
-        </form>
+
 
 <div class="row">
 	<%@ include file="discovery/static-tagcloud-facet.jsp" %>
 </div>
 <div class="row">
-          <div class="col-md-8">
-            <div class="panel panel-primary">
-<div class="panel-heading">Search within this collection:</div>
-  <div class="panel-body">
+  <div class="col-md-8">
+    <section class="search-area">
     <form method="get" action="/jspui/simple-search" class="simplest-search">
       <div class="form-group-flex">
         <div class="input-hold">
-          <input type="text" class="form-control" placeholder="Titles, authors, keywords..." name="query" id="tequery">
+          <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
         </div>
         <div class="button-hold">
           <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
         </div>
       </div>
     </form>
+  </section>
   </div>
- </div>
- </div>
- </div>
+</div>
+<div class="col-md-4">
+                    <div class="panel panel-primary homepagesearch">
+                      <div class="panel-heading">
+                        <h1>Most Popular Items</h1></div>
+                      <div class="panel-body">
+                      <div class="row">
+      <%
+      if (mostdownloaded != null && mostdownloaded.count() > 0)
+      {
+      %>
+              <div class="col-md-8">
+              <div class="panel panel-primary">
+
+                          <%
+
+                          for (Item item : mostdownloaded.getMostDownloaded())
+                          {
+                            if(item!=null) {
+                              Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
+                              String displayTitle = "Untitled";
+                              if (dcv != null & dcv.length > 0)
+                              {
+                                  displayTitle = dcv[0].value;
+                              }
+                              dcv = item.getMetadata("dc", "description", "abstract", Item.ANY);
+                              String displayAbstract = "";
+                              if (dcv != null & dcv.length > 0)
+                              {
+                                  displayAbstract = dcv[0].value;
+                              }
+                      %>
+                          <div style="padding-bottom: 10px; min-height: 200px;" class="item">
+                              <a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>" class="btn"><%= displayTitle  %></a>
+                              <p><%= displayAbstract %></p>
+                            </div>
+                          </div>
+                        <%
+
+                           }
+                           }
+                      %>
+
+
+           </div></div>
+      <%
+      }
+      %>
+
+                      </div>
+                    </div>
+                  </div> <!-- end col 4 -->
+                </div> <!-- end col row  -->
 <% if (show_items)
    {
         BrowseInfo bi = (BrowseInfo) request.getAttribute("browse.info");
@@ -202,24 +234,7 @@
         </fmt:message>
     </div>
 
-    <%--  do the top previous and next page links --%>
-    <div class="prev-next-links">
-<% 
-      if (bi.hasPrevPage())
-      {
-%>
-      <a href="<%= prev %>"><fmt:message key="browse.full.prev"/></a>&nbsp;
-<%
-      }
 
-      if (bi.hasNextPage())
-      {
-%>
-      &nbsp;<a href="<%= next %>"><fmt:message key="browse.full.next"/></a>
-<%
-      }
-%>
-    </div>
 
 <%-- output the results using the browselist tag --%>
      <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" />
@@ -258,6 +273,8 @@
 %>
 
   <dspace:sidebar>
+
+
 <% if(admin_button || editor_button ) { %>
                  <div class="panel panel-warning">
                  <div class="panel-heading"><fmt:message key="jsp.admintools"/>
@@ -337,6 +354,36 @@
     	int discovery_facet_cols = 12;
     %>
     <%@ include file="discovery/static-sidebar-facet.jsp" %>
+
+
+<div class = "panel panel-default ">
+    <div class = "panel-heading">Email subscription</div>
+  <div class = "panel-body">
+    <%  if (submit_button)
+    { %>
+          <form class="form-group" action="<%= request.getContextPath() %>/submit" method="post">
+            <input type="hidden" name="collection" value="<%= collection.getID() %>" />
+      <input class="btn btn-success col-md-12" type="submit" name="submit" value="<fmt:message key="jsp.collection-home.submit.button"/>" />
+          </form>
+          <p>Subscribe to this collection to receive daily e-mail notification of new additions</p>
+<%  } %>
+        <form  method="get" action="">
+<%  if (loggedIn && subscribed)
+    { %>
+                <small><fmt:message key="jsp.collection-home.subscribed"/> <a href="<%= request.getContextPath() %>/subscribe"><fmt:message key="jsp.collection-home.info"/></a></small>
+              <input class="btn btn-sm btn-warning" type="submit" name="submit_unsubscribe" value="<fmt:message key="jsp.collection-home.unsub"/>" />
+<%  } else { %>
+             
+                  <!--<fmt:message key="jsp.collection-home.subscribe.msg"/>-->
+              
+             <p>Daily email updates from this collection:</p>
+        <input class="btn btn-sm btn-info" type="submit" name="submit_subscribe" value="<fmt:message key="jsp.collection-home.subscribe"/>" />
+         
+<%  }
+%>
+        </form></div>
+</div>
+
   </dspace:sidebar>
 
 </dspace:layout>

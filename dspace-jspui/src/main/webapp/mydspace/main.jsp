@@ -101,7 +101,7 @@
         <fmt:message key="jsp.mydspace.main.text1"/>
     </p>
 
-    <table class="table" align="center" summary="Table listing owned tasks">
+    <table class="table"  summary="Table listing owned tasks">
         <tr>
             <th id="t1" class="oddRowOddCol"><fmt:message key="jsp.mydspace.main.task"/></th>
             <th id="t2" class="oddRowOddCol"><fmt:message key="jsp.mydspace.main.item"/></th>
@@ -231,7 +231,7 @@
 
     <p><fmt:message key="jsp.mydspace.main.text4" /></p>
 
-    <table class="table" align="center" summary="Table listing unfinished submissions">
+    <table class="table"  summary="Table listing unfinished submissions">
         <tr>
             <th class="oddRowOddCol">&nbsp;</th>
             <th id="t10" class="oddRowEvenCol"><fmt:message key="jsp.mydspace.main.subby"/></th>

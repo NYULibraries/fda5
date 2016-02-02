@@ -62,7 +62,7 @@
 %>
 <div class="col-md-<%= discovery_panel_cols %>">
 <h3 class="facets"><fmt:message key="jsp.search.facet.refine" /></h3>
-<div id="facets" class="facetsBox row panel">
+<div id="facets" class="facets row panel">
 <%
 	for (DiscoverySearchFilterFacet facetConf : facetsConf)
 	{
@@ -93,12 +93,13 @@
 		    { 
 		        if (idx != limit)
 		        {
-		        %><li class="list-group-item"><span class="badge"><%= fvalue.getCount() %></span> <a href="<%= request.getContextPath()
+		        %><li class="list-group-item"><a href="<%= request.getContextPath()
 		            + searchScope
 	                + "/simple-search?filterquery="+URLEncoder.encode(fvalue.getAsFilterQuery(),"UTF-8")
 	                + "&amp;filtername="+URLEncoder.encode(f,"UTF-8")
 	                + "&amp;filtertype="+URLEncoder.encode(fvalue.getFilterType(),"UTF-8") %>"
 	                title="<fmt:message key="jsp.search.facet.narrow"><fmt:param><%=fvalue.getDisplayedValue() %></fmt:param></fmt:message>">
+	                <span class="badge"><%= fvalue.getCount() %></span> 
 	                <%= StringUtils.abbreviate(fvalue.getDisplayedValue(),36) %></a></li><%
 		        }
 		        idx++;

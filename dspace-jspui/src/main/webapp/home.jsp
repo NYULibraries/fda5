@@ -63,7 +63,7 @@
     ItemCounter ic = new ItemCounter(UIUtil.obtainContext(request));
 
     RecentSubmissions submissions = (RecentSubmissions) request.getAttribute("recent.submissions");
-    MostDownloaded mostdownloaded = (MostDownloaded) request.getAttribute("most.downloaded");
+    MostDownloaded mostdownloaded = ( MostDownloaded) request.getAttribute("most.downloaded");
 %>
 <%!
     void showCommunity(Community c, JspWriter out, HttpServletRequest request, ItemCounter ic, Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
@@ -99,28 +99,27 @@
     }
 %>
 <dspace:layout locbar="noLink" titlekey="jsp.home.title" feedData="<%= feedData %>">
- <div class="container banner">
+
           <div class="row">
             <div class="col-md-8 ">
               <div class="brand">
-                <!-- <h3>Faculty Digital Archive</h3> -->
-                <!--   <p><strong>What is the Faculty Digital Archive (FDA)?</strong><br />-->
+             
                 The Faculty Digital Archive (FDA) is a highly visible repository of NYU scholarship, allowing digital works—text, audio, video, data, and more—to be reliably shared and securely stored. Collections may be made freely available worldwide, offered to NYU only, or restricted to a specific group.</p>
                 Full-time faculty may contribute their research—unpublished and, in many cases, published—in the FDA. Departments, centers, or institutes may use the FDA to distribute their working papers, technical reports, or other research material. <a href="http://www.nyu.edu/its/faculty/fda" class="readmore">Read more...</a></p>
               </div>
-              <div class="panel panel-primary simplesearchpanel">
-  <div class="panel-heading">Search:</div>
-  <div class="panel-body">
+
+<section class="search-area">
   <form method="get" action="simple-search" class="simplest-search">
- <div class="form-group-flex">
-   <div class="input-hold">
-      <input type="text" class="form-control" placeholder="Titles, authors, keywords..." name="query" id="tequery" ></div>
-   <div class="button-hold">   <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>
-   </div>
+    <div class="form-group-flex">
+      <div class="input-hold">
+      <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
+      <div class="button-hold">   <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>
+    </div>
   </form>
-</div>
-</div>  
-              <div class="fda-tree">
+ </section>
+
+
+<div class="fda-tree">
 <%
 for (int i = 0; i < communities.length; i++)
         {%>
@@ -138,102 +137,50 @@ for (int i = 0; i < communities.length; i++)
                 <div class="panel-body">
                 <div class="row">
 <%
-  if (submissions != null && submissions.count() > 0)
-  {
-  %>
-          <div class="col-md-8">
-          <div class="panel panel-primary">
-          <div id="recent-submissions-carousel" class="panel-heading carousel slide">
+if (mostdownloaded != null && mostdownloaded.count() > 0)
+{
+%>
+        <div class="col-md-8">
+        <div class="panel panel-primary">        
 
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner">
-                      <%
-                      boolean first = true;
-                      for (Item item : submissions.getRecentSubmissions())
-                      {
-                          Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
-                          String displayTitle = "Untitled";
-                          if (dcv != null & dcv.length > 0)
-                          {
-                              displayTitle = dcv[0].value;
-                          }
-                          dcv = item.getMetadata("dc", "description", "abstract", Item.ANY);
-                          String displayAbstract = "";
-                          if (dcv != null & dcv.length > 0)
-                          {
-                              displayAbstract = dcv[0].value;
-                          }
-                  %>
-                      <div style="padding-bottom: 10px; min-height: 200px;" class="item <%= first?"active":""%>">
-                        <div style="padding-left: 10px; padding-right: 10px; display: inline-block;"><%= displayTitle  %>
-                          <a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>" class="btn btn-success">See</a>
-                          <p><%= displayAbstract %></p>
-                        </div>
-                      </div>
                     <%
-                                  first = false;
-                       }
-                  %>
-                    </div>
-                    <!-- Controls -->
-                    <a class="left carousel-control" href="#recent-submissions-carousel" data-slide="prev">
-                      <span class="icon-prev"></span>
-                    </a>
-                    <a class="right carousel-control" href="#recent-submissions-carousel" data-slide="next">
-                      <span class="icon-next"></span>
-                    </a>
 
-            <ol class="carousel-indicators">
-                      <li data-target="#recent-submissions-carousel" data-slide-to="0" class="active"></li>
-                      <% for (int i = 1; i < submissions.count(); i++){ %>
-                      <li data-target="#recent-submissions-carousel" data-slide-to="<%= i %>"></li>
-                      <% } %>
-                </ol>
-       </div></div></div>
-  <%
-  }
-  %>
-  <%
-  if (mostdownloaded != null && mostdownloaded.count() > 0)
-  {
-  %>
-          <div class="col-md-8">
-          <div class="panel panel-primary">
-          <div id="recent-submissions-carousel" class="panel-heading carousel slide">
-
-                    <!-- Wrapper for slides -->
-                    <div class="carousel-inner">
-                      <%
-                      Item item=mostdownloaded.getMostDownloaded(0);
-
-                          Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
-                          String displayTitle = "Untitled";
-                          if (dcv != null & dcv.length > 0)
-                          {
-                              displayTitle = dcv[0].value;
-                          }
-                          dcv = item.getMetadata("dc", "description", "abstract", Item.ANY);
-                          String displayAbstract = "";
-                          if (dcv != null & dcv.length > 0)
-                          {
-                              displayAbstract = dcv[0].value;
-                          }
-                  %>
-
-                        <div style="padding-left: 10px; padding-right: 10px; display: inline-block;"><%= displayTitle  %>
-                          <a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>" class="btn btn-success">See</a>
-                        </div>
+                    for (Item item : mostdownloaded.getMostDownloaded())
+                    {
+                      if(item!=null) {
+                        Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
+                        String displayTitle = "Untitled";
+                        if (dcv != null & dcv.length > 0)
+                        {
+                            displayTitle = dcv[0].value;
+                        }
+                        dcv = item.getMetadata("dc", "description", "abstract", Item.ANY);
+                        String displayAbstract = "";
+                        if (dcv != null & dcv.length > 0)
+                        {
+                            displayAbstract = dcv[0].value;
+                        }
+                %>
+                    <div style="padding-bottom: 10px; min-height: 200px;" class="item">
+                        <a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>" class="btn"><%= displayTitle  %></a>
+                        <p><%= displayAbstract %></p>
                       </div>
-
                     </div>
-       </div></div></div>
-  <%
-  }
-  %>
+                  <%
+
+                     }
+                     }
+                %>
+
+
+     </div></div>
+<%
+}
+%>
 
                 </div>
               </div>
             </div> <!-- end col 4 -->
           </div> <!-- end col row  -->
-        </div>
+     
 </dspace:layout>

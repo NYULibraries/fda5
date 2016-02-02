@@ -28,9 +28,7 @@
     {
 %>
 	</div>
-	<div class="col-md-3">
-                    <%= sidebar %>
-    </div>
+	<div class="col-md-3"><%= sidebar %></div>
     </div>       
 <%
     }
@@ -38,17 +36,12 @@
 </div>
 </main>
             <%-- Page footer --%>
-             <footer class="navbar navbar-inverse navbar-bottom">
-             <div id="designedby" class="container text-muted">
-             <fmt:message key="jsp.layout.footer-default.theme-by"/> <a href="http://www.cineca.it"><img
-                                    src="<%= request.getContextPath() %>/image/logo-cineca-small.png"
-                                    alt="Logo CINECA" /></a>
-			<div id="footer_feedback" class="pull-right">                                    
-                                <p class="text-muted"><fmt:message key="jsp.layout.footer-default.text"/>&nbsp;-
-                                <a target="_blank" href="<%= request.getContextPath() %>/feedback"><fmt:message key="jsp.layout.footer-default.feedback"/></a>
-                                <a href="<%= request.getContextPath() %>/htmlmap"></a></p>
-                                </div>
-			</div>
-    </footer>
+<footer class="navbar navbar-inverse">
+    <div class="footer-holder container">
+    <div class="f-1"><a href="#">About the Archive</a> | <a href="#">Help</a> | <a href="#">Contact</a></div>
+    <div class="f-2">Powered by <a target="_blank" href="http://dlib.nyu.edu/dlts">NYU DLTS</a> and <a target="_blank" href="http://www.dspace.org">DSpace</a> </div>
+    </div>
+</footer>
+
     </body>
 </html>

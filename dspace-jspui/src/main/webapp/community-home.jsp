@@ -25,6 +25,7 @@
 <%@ taglib uri="http://www.dspace.org/dspace-tags.tld" prefix="dspace" %>
 
 <%@ page import="org.dspace.app.webui.components.RecentSubmissions" %>
+<%@ page import="org.dspace.app.webui.components.MostDownloaded" %>
 
 <%@ page import="org.dspace.app.webui.servlet.admin.EditCommunitiesServlet" %>
 <%@ page import="org.dspace.app.webui.util.UIUtil" %>
@@ -59,6 +60,7 @@
             }
 
     RecentSubmissions rs = (RecentSubmissions) request.getAttribute("recently.submitted");
+    MostDownloaded mostdownloaded = (MostDownloaded) request.getAttribute("most.downloaded");
     
     Boolean editor_b = (Boolean)request.getAttribute("editor_button");
     boolean editor_button = (editor_b == null ? false : editor_b.booleanValue());
@@ -126,26 +128,23 @@
 <div class="container">
 <div class="row">
 	<div class="col-md-8">
-        <div class="page-title-area">
-        <h2><%= name %> <small>Community home page</small></h2>
-         </div>
+        <div class="page-title-area"><h2><%= name %></h2></div>
 <%  if (logo != null) { %>
-     <div class="col-md-4">
+     <div class="img-hold">
      	<img class="img-responsive" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
      </div> 
 <% } %>
-<div class="panel panel-primary">
-  <div class="panel-heading">Search within this community:</div>
-  <div class="panel-body">
+
+
+<section class="search-area">
   <form method="get" action="simple-search" class="simplest-search">
- <div class="form-group-flex">
-   <div class="input-hold">
-      <input type="text" class="form-control" placeholder="Titles, authors, keywords..." name="query" id="tequery" ></div>
-   <div class="button-hold">   <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>
-   </div>
+    <div class="form-group-flex">
+      <div class="input-hold"><input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
+      <div class="button-hold">   <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>
+    </div>
   </form>
-</div>
-</div>
+</section>
+
 <div class="row">
         <%@ include file="discovery/static-tagcloud-facet.jsp" %>
 </div>
@@ -195,8 +194,8 @@
 <%
         }
 %>
-  </div>
 </section>
+
     <% if(editor_button || add_button)  // edit button(s)
     { %>
     <dspace:sidebar>
@@ -250,6 +249,58 @@
 		</div>
   </dspace:sidebar>
     <% } %>
+     <div class="col-md-4">
+                    <div class="panel panel-primary homepagesearch">
+                      <div class="panel-heading">
+                        <h1>Most Popular Items</h1></div>
+                      <div class="panel-body">
+                      <div class="row">
+      <%
+      if (mostdownloaded != null && mostdownloaded.count() > 0)
+      {
+      %>
+              <div class="col-md-8">
+              <div class="panel panel-primary">
+
+                          <%
+
+                          for (Item item : mostdownloaded.getMostDownloaded())
+                          {
+                            if(item!=null) {
+                              Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
+                              String displayTitle = "Untitled";
+                              if (dcv != null & dcv.length > 0)
+                              {
+                                  displayTitle = dcv[0].value;
+                              }
+                              dcv = item.getMetadata("dc", "description", "abstract", Item.ANY);
+                              String displayAbstract = "";
+                              if (dcv != null & dcv.length > 0)
+                              {
+                                  displayAbstract = dcv[0].value;
+                              }
+                      %>
+                          <div style="padding-bottom: 10px; min-height: 200px;" class="item">
+                              <a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>" class="btn"><%= displayTitle  %></a>
+                              <p><%= displayAbstract %></p>
+                            </div>
+                          </div>
+                        <%
+
+                           }
+                           }
+                      %>
+
+
+           </div></div>
+      <%
+      }
+      %>
+
+                      </div>
+                    </div>
+                  </div> <!-- end col 4 -->
+                </div> <!-- end col row  -->
 </dspace:layout>
 <%! private void build(Community c) throws SQLException {
 
