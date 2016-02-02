@@ -30,6 +30,7 @@
 <%@ page import="org.dspace.core.I18nUtil" %>
 <%@ page import="org.dspace.app.webui.util.UIUtil" %>
 <%@ page import="org.dspace.app.webui.components.RecentSubmissions" %>
+<%@ page import="org.dspace.app.webui.components.MostDownloaded" %>
 <%@ page import="org.dspace.content.Community" %>
 <%@ page import="org.dspace.content.Collection" %>
 <%@ page import="org.dspace.core.ConfigurationManager" %>
@@ -62,6 +63,7 @@
     ItemCounter ic = new ItemCounter(UIUtil.obtainContext(request));
 
     RecentSubmissions submissions = (RecentSubmissions) request.getAttribute("recent.submissions");
+    MostDownloaded mostdownloaded = (MostDownloaded) request.getAttribute("most.downloaded");
 %>
 <%!
     void showCommunity(Community c, JspWriter out, HttpServletRequest request, ItemCounter ic, Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
@@ -136,61 +138,98 @@ for (int i = 0; i < communities.length; i++)
                 <div class="panel-body">
                 <div class="row">
 <%
-if (submissions != null && submissions.count() > 0)
-{
-%>
-        <div class="col-md-8">
-        <div class="panel panel-primary">        
-        <div id="recent-submissions-carousel" class="panel-heading carousel slide">
-          
-                  <!-- Wrapper for slides -->
-                  <div class="carousel-inner">
-                    <%
-                    boolean first = true;
-                    for (Item item : submissions.getRecentSubmissions())
-                    {
-                        Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
-                        String displayTitle = "Untitled";
-                        if (dcv != null & dcv.length > 0)
-                        {
-                            displayTitle = dcv[0].value;
-                        }
-                        dcv = item.getMetadata("dc", "description", "abstract", Item.ANY);
-                        String displayAbstract = "";
-                        if (dcv != null & dcv.length > 0)
-                        {
-                            displayAbstract = dcv[0].value;
-                        }
-                %>
-                    <div style="padding-bottom: 10px; min-height: 200px;" class="item <%= first?"active":""%>">
-                      <div style="padding-left: 10px; padding-right: 10px; display: inline-block;"><%= displayTitle  %> 
-                        <a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>" class="btn btn-success">See</a>
-                        <p><%= displayAbstract %></p>
-                      </div>
-                    </div>
-                  <%
-                                first = false;
-                     }
-                %>
-                  </div>
-                  <!-- Controls -->
-                  <a class="left carousel-control" href="#recent-submissions-carousel" data-slide="prev">
-                    <span class="icon-prev"></span>
-                  </a>
-                  <a class="right carousel-control" href="#recent-submissions-carousel" data-slide="next">
-                    <span class="icon-next"></span>
-                  </a>
+  if (submissions != null && submissions.count() > 0)
+  {
+  %>
+          <div class="col-md-8">
+          <div class="panel panel-primary">
+          <div id="recent-submissions-carousel" class="panel-heading carousel slide">
 
-          <ol class="carousel-indicators">
-                    <li data-target="#recent-submissions-carousel" data-slide-to="0" class="active"></li>
-                    <% for (int i = 1; i < submissions.count(); i++){ %>
-                    <li data-target="#recent-submissions-carousel" data-slide-to="<%= i %>"></li>
-                    <% } %>
-              </ol>
-     </div></div></div>
-<%
-}
-%>
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                      <%
+                      boolean first = true;
+                      for (Item item : submissions.getRecentSubmissions())
+                      {
+                          Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
+                          String displayTitle = "Untitled";
+                          if (dcv != null & dcv.length > 0)
+                          {
+                              displayTitle = dcv[0].value;
+                          }
+                          dcv = item.getMetadata("dc", "description", "abstract", Item.ANY);
+                          String displayAbstract = "";
+                          if (dcv != null & dcv.length > 0)
+                          {
+                              displayAbstract = dcv[0].value;
+                          }
+                  %>
+                      <div style="padding-bottom: 10px; min-height: 200px;" class="item <%= first?"active":""%>">
+                        <div style="padding-left: 10px; padding-right: 10px; display: inline-block;"><%= displayTitle  %>
+                          <a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>" class="btn btn-success">See</a>
+                          <p><%= displayAbstract %></p>
+                        </div>
+                      </div>
+                    <%
+                                  first = false;
+                       }
+                  %>
+                    </div>
+                    <!-- Controls -->
+                    <a class="left carousel-control" href="#recent-submissions-carousel" data-slide="prev">
+                      <span class="icon-prev"></span>
+                    </a>
+                    <a class="right carousel-control" href="#recent-submissions-carousel" data-slide="next">
+                      <span class="icon-next"></span>
+                    </a>
+
+            <ol class="carousel-indicators">
+                      <li data-target="#recent-submissions-carousel" data-slide-to="0" class="active"></li>
+                      <% for (int i = 1; i < submissions.count(); i++){ %>
+                      <li data-target="#recent-submissions-carousel" data-slide-to="<%= i %>"></li>
+                      <% } %>
+                </ol>
+       </div></div></div>
+  <%
+  }
+  %>
+  <%
+  if (mostdownloaded != null && mostdownloaded.count() > 0)
+  {
+  %>
+          <div class="col-md-8">
+          <div class="panel panel-primary">
+          <div id="recent-submissions-carousel" class="panel-heading carousel slide">
+
+                    <!-- Wrapper for slides -->
+                    <div class="carousel-inner">
+                      <%
+                      Item item=mostdownloaded.getMostDownloaded(0);
+
+                          Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
+                          String displayTitle = "Untitled";
+                          if (dcv != null & dcv.length > 0)
+                          {
+                              displayTitle = dcv[0].value;
+                          }
+                          dcv = item.getMetadata("dc", "description", "abstract", Item.ANY);
+                          String displayAbstract = "";
+                          if (dcv != null & dcv.length > 0)
+                          {
+                              displayAbstract = dcv[0].value;
+                          }
+                  %>
+
+                        <div style="padding-left: 10px; padding-right: 10px; display: inline-block;"><%= displayTitle  %>
+                          <a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>" class="btn btn-success">See</a>
+                        </div>
+                      </div>
+
+                    </div>
+       </div></div></div>
+  <%
+  }
+  %>
 
                 </div>
               </div>

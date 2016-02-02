@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @author Kevin Van de Velde (kevin at atmire dot com)
  */
-public class SidebarFacetConfiguration {
+public class  SidebarFacetConfiguration {
 
     //Let the configuration manager retrieve this !
     private static final int DEFAULT_FACET_LIMIT = 10;

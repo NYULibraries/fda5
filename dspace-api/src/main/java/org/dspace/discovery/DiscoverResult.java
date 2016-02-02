@@ -193,7 +193,6 @@ public class DiscoverResult {
 
     /**
      * Returns all the sought after search document values 
-     * @param dso the dspace object we want our search documents for
      * @return the search documents list
      */
     public List<SearchDocument> getSearchDocument(DSpaceObject dso){
