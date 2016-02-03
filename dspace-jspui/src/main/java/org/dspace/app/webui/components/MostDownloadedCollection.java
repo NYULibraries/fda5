@@ -33,7 +33,7 @@ import javax.servlet.http.HttpServletResponse;
             {
                 MostDownloadedManager md = new MostDownloadedManager(context);
                 MostDownloaded recent = md.getMostDownloaded(collection);
-                request.setAttribute("most.downloadable", recent);
+                request.setAttribute("most.downloaded", recent);
             }
             catch ( MostDownloadedException e)
             {

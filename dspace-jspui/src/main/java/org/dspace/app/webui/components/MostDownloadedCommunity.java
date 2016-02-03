@@ -33,7 +33,8 @@ public class MostDownloadedCommunity implements CommunityHomeProcessor
         {
             MostDownloadedManager md = new MostDownloadedManager(context);
             MostDownloaded recent = md.getMostDownloaded(community);
-            request.setAttribute("most.downloadable", recent);
+            request.setAttribute("most.downloaded", recent);
+
         }
         catch (MostDownloadedException e)
         {
