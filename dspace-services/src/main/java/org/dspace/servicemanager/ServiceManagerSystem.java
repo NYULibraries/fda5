@@ -22,18 +22,18 @@ public interface ServiceManagerSystem extends ServiceManager {
     /**
      * Startup the service manager and initialize all services.
      */
-    public void startup();
+    void startup();
 
     /**
      * Shuts down the service manager and all services that it is managing.
      */
-    public void shutdown();
+    void shutdown();
 
     /**
      * Map service names to their beans.
      *
      * @return a map of name -> bean for all services that are currently known
      */
-    public Map<String, Object> getServices();
+    Map<String, Object> getServices();
 
 }

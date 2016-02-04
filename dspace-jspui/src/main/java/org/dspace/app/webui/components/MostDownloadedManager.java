@@ -21,6 +21,7 @@ import java.util.List;
 import org.apache.commons.io.*;
 import org.dspace.discovery.*;
 import org.dspace.discovery.configuration.DiscoveryConfigurationParameters;
+import org.dspace.utils.DSpace;
 
 
 /**
@@ -60,9 +61,11 @@ public class MostDownloadedManager {
      */
     public MostDownloaded getMostDownloaded(DSpaceObject dso)
             throws MostDownloadedException {
-        int count = 10;
+        int count = new Integer(new DSpace().getConfigurationService().
+                getProperty("most.downloaded.count"));
 
-        Item[] items = new Item[count];
+
+        List<DiscoverResult.FacetResult> facetFields=null;
 
         try {
 
@@ -82,21 +85,17 @@ public class MostDownloadedManager {
             }
 
             dq.setQuery(queryString);
+            dq.setFacetMinCount(1);
             dq.addFacetField(new DiscoverFacetField("owningItem",
-                    DiscoveryConfigurationParameters.TYPE_STANDARD, 10, DiscoveryConfigurationParameters.SORT.VALUE));
+                    DiscoveryConfigurationParameters.TYPE_STANDARD, count, DiscoveryConfigurationParameters.SORT.VALUE));
 
             DiscoverResult dr = solr.search(context, dq);
 
+            facetFields = dr.getFacetResult("owningItem");
 
-            log.error("query: " + dr.getDspaceObjects().get(0).getParentObject());
-            log.error("facet: " + dr.getFacetResult("owningItem").get(0).getSortValue());
-
-            List<DiscoverResult.FacetResult> facetFields = dr.getFacetResult("owningItem");
-
-
-            if (0 < facetFields.size()) {
-                //Only add facet information if there are any facets
+            if (facetFields!=null&&facetFields.size()>0) {
                 int i=0;
+                Item[] items = new Item[facetFields.size()];
                 for (DiscoverResult.FacetResult facetField : facetFields) {
                     int itemID=new Integer(facetField.getSortValue());
                     Item item=Item.find(context, itemID);
@@ -104,7 +103,11 @@ public class MostDownloadedManager {
                     i++;
                 }
 
-
+                return new MostDownloaded(items);
+            }
+            else
+            {
+                return null;
             }
 
         } catch (SQLException e) {
@@ -113,6 +116,6 @@ public class MostDownloadedManager {
             e.printStackTrace();
         }
 
-    return new MostDownloaded(items);
+    return null;
 }
 }

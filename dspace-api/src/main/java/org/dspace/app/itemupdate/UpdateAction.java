@@ -24,7 +24,7 @@ public interface UpdateAction
 	 * @param suppressUndo
 	 * @throws Exception
 	 */
-	public void execute(Context context, ItemArchive itarch, boolean isTest, boolean suppressUndo) 
+	void execute(Context context, ItemArchive itarch, boolean isTest, boolean suppressUndo)
 	throws Exception;
 	
 }

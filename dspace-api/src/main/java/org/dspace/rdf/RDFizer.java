@@ -470,7 +470,7 @@ public class RDFizer {
         String[] remainingArgs = line.getArgs();
         if (remainingArgs.length > 0)
         {
-            this.usage(options);
+            usage(options);
             System.err.println();
             StringBuilder builder = new StringBuilder(100);
             for (String argument : remainingArgs)
@@ -653,7 +653,7 @@ public class RDFizer {
             System.exit(0);
         }
         
-        this.usage(options);
+        usage(options);
         System.exit(0);
     }
 

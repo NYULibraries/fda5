@@ -64,15 +64,8 @@ public class SelectEPersonTag extends TagSupport
      */
     public void setMultiple(String s)
     {
-        if ((s != null)
-                && (s.equalsIgnoreCase("yes") || s.equalsIgnoreCase("true")))
-        {
-            multiple = true;
-        }
-        else
-        {
-            multiple = false;
-        }
+        multiple = (s != null)
+                && (s.equalsIgnoreCase("yes") || s.equalsIgnoreCase("true"));
     }
 
     /**

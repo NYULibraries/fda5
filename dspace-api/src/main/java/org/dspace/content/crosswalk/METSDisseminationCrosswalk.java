@@ -147,15 +147,10 @@ public class METSDisseminationCrosswalk
     public boolean canDisseminate(DSpaceObject dso)
     {
         //can disseminate most types of DSpaceObjects (Site, Community, Collection, Item)
-        if(dso.getType()==Constants.SITE || 
-           dso.getType()==Constants.COMMUNITY ||
-           dso.getType()==Constants.COLLECTION ||
-           dso.getType()==Constants.ITEM)
-        {    
-            return true;
-        }
-        else
-            return false;
+        return dso.getType() == Constants.SITE ||
+                dso.getType() == Constants.COMMUNITY ||
+                dso.getType() == Constants.COLLECTION ||
+                dso.getType() == Constants.ITEM;
     }
 
     @Override

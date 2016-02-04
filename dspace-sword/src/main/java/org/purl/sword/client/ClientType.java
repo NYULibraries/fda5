@@ -20,5 +20,5 @@ public interface ClientType
     *  
     * @param options The options extracted from the command line. 
     */
-   public void run( ClientOptions options ); 
+   void run(ClientOptions options);
 }

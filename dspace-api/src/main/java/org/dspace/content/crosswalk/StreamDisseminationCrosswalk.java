@@ -38,7 +38,7 @@ public interface StreamDisseminationCrosswalk
      * @param dso  dspace object, e.g. an <code>Item</code>.
      * @return true when disseminator is capable of producing metadata.
      */
-    public boolean canDisseminate(Context context, DSpaceObject dso);
+    boolean canDisseminate(Context context, DSpaceObject dso);
 
     /**
      * Execute crosswalk on the given object, sending output to the stream.
@@ -53,8 +53,8 @@ public interface StreamDisseminationCrosswalk
      * @throws SQLException  Database failure in services this calls
      * @throws AuthorizeException current user not authorized for this operation.
      */
-    public void disseminate(Context context, DSpaceObject dso, OutputStream out)
+    void disseminate(Context context, DSpaceObject dso, OutputStream out)
         throws CrosswalkException, IOException, SQLException, AuthorizeException;
 
-    public String getMIMEType();
+    String getMIMEType();
 }

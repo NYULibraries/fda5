@@ -202,7 +202,7 @@ public class ItemArchive {
      *   
      */
     private Item itemFromHandleInput(Context context)
-    throws SQLException, Exception
+    throws Exception
     {
     	DtoMetadata dtom = getMetadataField("dc.identifier.uri");
     	if (dtom == null)
@@ -246,7 +246,7 @@ public class ItemArchive {
      * @throws Exception
      */
     private Item itemFromMetadataField(Context context, String itemField)
-    throws SQLException, AuthorizeException, Exception
+    throws Exception
     {
     	DtoMetadata dtom = getMetadataField(itemField);
     	
@@ -299,9 +299,8 @@ public class ItemArchive {
      * @param undoDir - the root directory of the undo archive
      */
 	public void writeUndo(File undoDir)
-	throws IOException, ParserConfigurationException, TransformerConfigurationException, 
-	       TransformerException, FileNotFoundException
-	{
+	throws IOException, ParserConfigurationException,
+			TransformerException {
 		// create directory for item
 		File dir = new File(undoDir, dirname);
 		if (!dir.exists() && !dir.mkdir())

@@ -1404,7 +1404,7 @@ public class ItemTest  extends AbstractDSpaceObjectTest
         Iterator<ResourcePolicy> iter = newpolicies.iterator();
         while (iter.hasNext())
         {
-            ResourcePolicy rp = (ResourcePolicy) iter.next();
+            ResourcePolicy rp = iter.next();
             rp.setAction(Constants.READ);
         }
 

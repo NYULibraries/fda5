@@ -17,29 +17,29 @@ import org.dspace.services.ConfigurationService;
  */
 public interface DSpaceKernel {
 
-    public static final String KERNEL_NAME = "Kernel";
-    public static final String MBEAN_PREFIX = "org.dspace:name=";
-    public static final String MBEAN_SUFFIX = ",type=DSpaceKernel";
-    public static final String MBEAN_NAME = MBEAN_PREFIX+KERNEL_NAME+MBEAN_SUFFIX;
+    String KERNEL_NAME = "Kernel";
+    String MBEAN_PREFIX = "org.dspace:name=";
+    String MBEAN_SUFFIX = ",type=DSpaceKernel";
+    String MBEAN_NAME = MBEAN_PREFIX+KERNEL_NAME+MBEAN_SUFFIX;
 
     /**
      * @return the unique MBean name of this DSpace Kernel
      */
-    public String getMBeanName();
+    String getMBeanName();
 
     /**
      * @return true if this Kernel is started and running
      */
-    public boolean isRunning();
+    boolean isRunning();
 
     /**
      * @return the DSpace service manager instance for this Kernel
      */
-    public ServiceManager getServiceManager();
+    ServiceManager getServiceManager();
 
     /**
      * @return the DSpace configuration service for this Kernel
      */
-    public ConfigurationService getConfigurationService();
+    ConfigurationService getConfigurationService();
 
 }

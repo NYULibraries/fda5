@@ -301,7 +301,7 @@ public class MediaFilterManager
         }
               
         //store our filter list into an internal array
-        filterClasses = (FormatFilter[]) filterList.toArray(new FormatFilter[filterList.size()]);
+        filterClasses = filterList.toArray(new FormatFilter[filterList.size()]);
         
         
         //Retrieve list of identifiers to skip (if any)

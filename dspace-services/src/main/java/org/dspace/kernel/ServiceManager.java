@@ -27,7 +27,7 @@ public interface ServiceManager {
      * @param type the type for the requested service (this will typically be the interface class but can be concrete as well)
      * @return the list of service singletons OR empty list if none is found
      */
-    public <T> List<T> getServicesByType(Class<T> type);
+    <T> List<T> getServicesByType(Class<T> type);
 
     /**
      * Allows developers to get the desired service singleton by the provided name and type.
@@ -55,7 +55,7 @@ public interface ServiceManager {
      * @param type the type for the requested service (this will typically be the interface class but can be concrete as well)
      * @return the service singleton OR null if none is found
      */
-    public <T> T getServiceByName(String name, Class<T> type);
+    <T> T getServiceByName(String name, Class<T> type);
 
     /**
      * Lookup to see if a service exists with the given name.
@@ -63,7 +63,7 @@ public interface ServiceManager {
      * @param name the unique name for this service
      * @return true if it exists, false otherwise
      */
-    public boolean isServiceExists(String name);
+    boolean isServiceExists(String name);
 
     /**
      * Get the names of all registered service singletons.  By
@@ -72,7 +72,7 @@ public interface ServiceManager {
      * 
      * @return the list of all current registered services
      */
-    public List<String> getServicesNames();
+    List<String> getServicesNames();
 
     /**
      * Allows adding singleton services and providers in at runtime or 
@@ -96,7 +96,7 @@ public interface ServiceManager {
      * @param service the object to register as a singleton service
      * @throws IllegalArgumentException if the service cannot be registered
      */
-    public void registerService(String name, Object service);
+    void registerService(String name, Object service);
 
     /**
      * Allows adding singleton services and providers in at runtime or 
@@ -115,7 +115,7 @@ public interface ServiceManager {
      * @param type the class type of the service (must be in the current classloader)
      * @throws IllegalArgumentException if the service cannot be registered because the name is taken or type is invalid or other
      */
-    public <T> T registerServiceClass(String name, Class<T> type);
+    <T> T registerServiceClass(String name, Class<T> type);
 
     /**
      * Allows a service to be unregistered (which will only work if
@@ -130,7 +130,7 @@ public interface ServiceManager {
      * @param name the name of the service (must be unique)
      * @throws IllegalArgumentException if the bean cannot be unregistered
      */
-    public void unregisterService(String name);
+    void unregisterService(String name);
 
     /**
      * Allows new configuration settings to be pushed into the core 
@@ -141,6 +141,6 @@ public interface ServiceManager {
      * 
      * @param settings a map of keys (names) and values
      */
-    public void pushConfig(Map<String, String> settings);
+    void pushConfig(Map<String, String> settings);
 
 }

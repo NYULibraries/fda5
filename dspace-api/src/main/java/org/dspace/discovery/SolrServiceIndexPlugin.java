@@ -20,5 +20,5 @@ import org.dspace.core.Context;
  */
 public interface SolrServiceIndexPlugin {
 
-    public void additionalIndex(Context context, DSpaceObject dso, SolrInputDocument document);
+    void additionalIndex(Context context, DSpaceObject dso, SolrInputDocument document);
 }

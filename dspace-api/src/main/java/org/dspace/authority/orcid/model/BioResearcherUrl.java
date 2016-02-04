@@ -62,11 +62,8 @@ public class BioResearcherUrl {
         if (name != null ? !name.equals(that.name) : that.name != null) {
             return false;
         }
-        if (url != null ? !url.equals(that.url) : that.url != null) {
-            return false;
-        }
+        return url != null ? url.equals(that.url) : that.url == null;
 
-        return true;
     }
 
     @Override

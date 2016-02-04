@@ -43,7 +43,7 @@ public interface BrowseDAO
      * @return      the integer value of the number of results found
      * @throws BrowseException
      */
-    public int doCountQuery() throws BrowseException;
+    int doCountQuery() throws BrowseException;
 
     /**
      * This executes a query which returns a List object containing String
@@ -54,7 +54,7 @@ public interface BrowseDAO
      * @return  List of Strings representing the single value query results
      * @throws BrowseException
      */
-    public List<String[]> doValueQuery() throws BrowseException;
+    List<String[]> doValueQuery() throws BrowseException;
 
     /**
      * This executes a query which returns a List object containing BrowseItem objects
@@ -63,7 +63,7 @@ public interface BrowseDAO
      * @return  List of BrowseItem objects
      * @throws BrowseException
      */
-    public List<BrowseItem> doQuery() throws BrowseException;
+    List<BrowseItem> doQuery() throws BrowseException;
 
     /**
      * This executes a query which returns the value of the "highest" (max) value
@@ -75,7 +75,7 @@ public interface BrowseDAO
      * @return          String representing the max value in the given column
      * @throws BrowseException
      */
-    public String doMaxQuery(String column, String table, int itemID) throws BrowseException;
+    String doMaxQuery(String column, String table, int itemID) throws BrowseException;
 
     /**
      * This executes a query which returns the offset where the value (or nearest greater
@@ -87,7 +87,7 @@ public interface BrowseDAO
      * @return          the offset into the table
      * @throws BrowseException
      */
-    public int doOffsetQuery(String column, String value, boolean isAscending) throws BrowseException;
+    int doOffsetQuery(String column, String value, boolean isAscending) throws BrowseException;
 
     /**
      * This executes a query which returns the offset where the value (or nearest greater
@@ -99,7 +99,7 @@ public interface BrowseDAO
      * @return          the offset into the table
      * @throws BrowseException
      */
-    public int doDistinctOffsetQuery(String column, String value, boolean isAscending) throws BrowseException;
+    int doDistinctOffsetQuery(String column, String value, boolean isAscending) throws BrowseException;
 
     /**
      * Does the query use the equals comparator when doing less than or greater than
@@ -109,7 +109,7 @@ public interface BrowseDAO
      *
      * @return  true if using it, false if not
      */
-    public boolean useEqualsComparator();
+    boolean useEqualsComparator();
 
     /**
      * Set whether the query should use an equals comparator when doing less than or
@@ -119,7 +119,7 @@ public interface BrowseDAO
      *
      * @param equalsComparator  true to use, false to not.
      */
-    public void setEqualsComparator(boolean equalsComparator);
+    void setEqualsComparator(boolean equalsComparator);
 
     /**
      * Is the sort order ascending or descending?
@@ -128,7 +128,7 @@ public interface BrowseDAO
      *
      * @return  true for ascending, false for descending
      */
-    public boolean isAscending();
+    boolean isAscending();
 
     /**
      * Set whether the results should be sorted in ascending order (on the given sort column)
@@ -136,7 +136,7 @@ public interface BrowseDAO
      *
      * @param ascending     true to ascend, false to descend
      */
-    public void setAscending(boolean ascending);
+    void setAscending(boolean ascending);
 
     /**
      * Get the database ID of the container object.  The container object will be a
@@ -144,7 +144,7 @@ public interface BrowseDAO
      *
      * @return  the database id of the container, or -1 if none is set
      */
-    public int getContainerID();
+    int getContainerID();
 
     /**
      * Set the database id of the container object.  This should be the id of a
@@ -153,7 +153,7 @@ public interface BrowseDAO
      *
      * @param containerID
      */
-    public void setContainerID(int containerID);
+    void setContainerID(int containerID);
 
     /**
      * get the name of the field in which to look for the container id.  This is
@@ -162,7 +162,7 @@ public interface BrowseDAO
      * @return  the name of the container id field.  For example "collection_id" or
      *          "community_id"
      */
-    public String getContainerIDField();
+    String getContainerIDField();
 
     /**
      * set the name of the field in which to look for the container id.
@@ -170,7 +170,7 @@ public interface BrowseDAO
      * @param containerIDField  the name of the container id field.
      *          For example "collection_id" or "community_id"
      */
-    public void setContainerIDField(String containerIDField);
+    void setContainerIDField(String containerIDField);
 
     /**
      * Get the field in which we will match a focus value from which to start
@@ -179,7 +179,7 @@ public interface BrowseDAO
      *
      * @return  the name of the focus field
      */
-    public String getJumpToField();
+    String getJumpToField();
 
     /**
      * Set the focus field upon which we will match a value from which to start
@@ -188,7 +188,7 @@ public interface BrowseDAO
      *
      * param focusField     the name of the focus field
      */
-    public void setJumpToField(String focusField);
+    void setJumpToField(String focusField);
 
     /**
      * Get the value at which the browse will start.  The value supplied here will
@@ -196,7 +196,7 @@ public interface BrowseDAO
      *
      * @return      the value to start browsing on
      */
-    public String getJumpToValue();
+    String getJumpToValue();
 
     /**
      * Set the value upon which to start the browse from.  The value supplied here
@@ -204,7 +204,7 @@ public interface BrowseDAO
      *
      * @param focusValue    the value in the focus field on which to start browsing
      */
-    public void setJumpToValue(String focusValue);
+    void setJumpToValue(String focusValue);
 
     /**
      * get the integer number which is the limit of the results that will be returned
@@ -212,7 +212,7 @@ public interface BrowseDAO
      *
      * @return  the maximum possible number of results allowed to be returned
      */
-    public int getLimit();
+    int getLimit();
 
     /**
      * Set the limit for how many results should be returned.  This is generally
@@ -223,7 +223,7 @@ public interface BrowseDAO
      *
      * @param limit     the maximum number of results to return.
      */
-    public void setLimit(int limit);
+    void setLimit(int limit);
 
     /**
      * Get the offset from the first result from which to return results.  This
@@ -233,7 +233,7 @@ public interface BrowseDAO
      *
      * @return      the offset
      */
-    public int getOffset();
+    int getOffset();
 
     /**
      * Get the offset from the first result from which to return results.  This
@@ -243,21 +243,21 @@ public interface BrowseDAO
      *
      * @param offset
      */
-    public void setOffset(int offset);
+    void setOffset(int offset);
 
     /**
      * Get the database field which will be used to do the sorting of result sets on.
      *
      * @return      the field by which results will be sorted
      */
-    public String getOrderField();
+    String getOrderField();
 
     /**
      * Set the database field which will be used to sort result sets on
      *
      * @param orderField    the field by which results will be sorted
      */
-    public void setOrderField(String orderField);
+    void setOrderField(String orderField);
 
     /**
      * Get the array of values that we will be selecting on.  The default is
@@ -265,7 +265,7 @@ public interface BrowseDAO
      *
      * @return  an array of values to select on
      */
-    public String[] getSelectValues();
+    String[] getSelectValues();
 
     /**
      * Set the array of values to select on.  This should be a list of the columns
@@ -274,14 +274,14 @@ public interface BrowseDAO
      *
      * @param selectValues  the values to select on
      */
-    public void setSelectValues(String[] selectValues);
+    void setSelectValues(String[] selectValues);
 
     /**
      * Get the array of fields that we will be counting on.
      *
      * @return  an array of fields to be counted over
      */
-    public String[] getCountValues();
+    String[] getCountValues();
 
     /**
      * Set the array of columns that we will be counting over.  In general, the
@@ -289,35 +289,35 @@ public interface BrowseDAO
      *
      * @param fields    an array of fields to be counted over
      */
-    public void setCountValues(String[] fields);
+    void setCountValues(String[] fields);
 
     /**
      * get the name of the table that we are querying
      *
      * @return  the name of the table
      */
-    public String getTable();
+    String getTable();
 
     /**
      * Set the name of the table to query
      *
      * @param table     the name of the table
      */
-    public void setTable(String table);
+    void setTable(String table);
 
     /**
      * Set the name of the mapping tables to use for filtering
      * @param tableDis    the name of the table holding the distinct values
      * @param tableMap    the name of the table holding the mappings
      */
-    public void setFilterMappingTables(String tableDis, String tableMap);
+    void setFilterMappingTables(String tableDis, String tableMap);
 
     /**
      * Get the value which we are constraining all our browse results to contain.
      *
      * @return  the value to which to constrain results
      */
-    public String getFilterValue();
+    String getFilterValue();
 
     /**
      * Set the value to which all our browse results should be constrained.  For
@@ -326,14 +326,14 @@ public interface BrowseDAO
      *
      * @param value the value to which to constrain results
      */
-    public void setFilterValue(String value);
+    void setFilterValue(String value);
 
     /**
      * Sets whether we will treat the filter value as partial (like match), or exact
      *
      * @param part true if partial, false if exact
      */
-    public void setFilterValuePartial(boolean part);
+    void setFilterValuePartial(boolean part);
 
     /**
      * Get the name of the field in which the value to constrain results is
@@ -341,7 +341,7 @@ public interface BrowseDAO
      *
      * @return  the name of the field
      */
-    public String getFilterValueField();
+    String getFilterValueField();
 
     /**
      * Set he name of the field in which the value to constrain results is
@@ -349,21 +349,21 @@ public interface BrowseDAO
      *
      * @param valueField    the name of the field
      */
-    public void setFilterValueField(String valueField);
+    void setFilterValueField(String valueField);
 
     /**
      * Set whether this is a distinct value browse or not
      *
      * @param bool  true if distinct value, false if not
      */
-    public void setDistinct(boolean bool);
+    void setDistinct(boolean bool);
 
     /**
      * Is this a distinct value browse?
      *
      * @return  true if distinct, false if not
      */
-    public boolean isDistinct();
+    boolean isDistinct();
 
     /**
      * If we have specified a container id and container field, we must also specify
@@ -373,7 +373,7 @@ public interface BrowseDAO
      *
      * @param containerTable    the name of the container table mapping
      */
-    public void setContainerTable(String containerTable);
+    void setContainerTable(String containerTable);
 
     /**
      * Get the name of the container table that is being used to map items to distinct
@@ -381,13 +381,13 @@ public interface BrowseDAO
      *
      * @return  the name of the table
      */
-    public String getContainerTable();
+    String getContainerTable();
 
-    public void setAuthorityValue(String value);
+    void setAuthorityValue(String value);
 
-    public String getAuthorityValue();
+    String getAuthorityValue();
     
-    public boolean isEnableBrowseFrequencies();
+    boolean isEnableBrowseFrequencies();
 
-	public void setEnableBrowseFrequencies(boolean enableBrowseFrequencies);
+	void setEnableBrowseFrequencies(boolean enableBrowseFrequencies);
 }

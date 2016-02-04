@@ -92,7 +92,7 @@ public class DSpaceServiceManagerTest {
         assertEquals("AZ", service);
 
         try {
-            dsm.registerService("fakey", (Object)null);
+            dsm.registerService("fakey", null);
             fail("should have thrown exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e.getMessage());
@@ -118,7 +118,7 @@ public class DSpaceServiceManagerTest {
         l = null;
 
         try {
-            dsm.registerService("fakey", (Class<?>)null);
+            dsm.registerService("fakey", null);
             fail("should have thrown exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e.getMessage());

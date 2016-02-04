@@ -35,7 +35,7 @@ public interface RequestService {
      * @return the unique generated id for the new request
      * @throws IllegalArgumentException if the session is null, invalid, or there is no current session
      */
-    public String startRequest();
+    String startRequest();
 
     /**
      * Initiates a request in the system,
@@ -47,7 +47,7 @@ public interface RequestService {
      * @return the unique generated id for the new request
      * @throws IllegalArgumentException if the session is null, invalid, or there is no current session
      */
-    public String startRequest(ServletRequest request, ServletResponse response);
+    String startRequest(ServletRequest request, ServletResponse response);
 
     /**
      * Ends the current running request, this can indicate success or failure of the request,
@@ -61,7 +61,7 @@ public interface RequestService {
      * @return the request ID if the request closes successfully and is 
      * not already closed OR null if there is no current request.
      */
-    public String endRequest(Exception failure);
+    String endRequest(Exception failure);
 
     /**
      * Finds out of there is a request running in this thread and if so 
@@ -69,14 +69,14 @@ public interface RequestService {
      * 
      * @return the id of the current request for this thread OR null if there is not one
      */
-    public String getCurrentRequestId();
+    String getCurrentRequestId();
 
     /**
      * Finds out of there is a request running in this thread and if so returns it
      *
      * @return the current request for this thread OR null if there is not one
      */
-    public Request getCurrentRequest();
+    Request getCurrentRequest();
 
     /**
      * Allows developers to perform actions on the start and end of the request cycle,
@@ -90,6 +90,6 @@ public interface RequestService {
      * @param interceptor an implementation of {@link RequestInterceptor}
      * @throws IllegalArgumentException if this priority is invalid or the input is null
      */
-    public void registerRequestInterceptor(RequestInterceptor interceptor);
+    void registerRequestInterceptor(RequestInterceptor interceptor);
 
 }

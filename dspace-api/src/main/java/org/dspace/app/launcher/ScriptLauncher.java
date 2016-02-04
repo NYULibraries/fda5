@@ -40,7 +40,7 @@ public class ScriptLauncher
      * @param args Any parameters required to be passed to the scripts it executes
      */
     public static void main(String[] args)
-            throws FileNotFoundException, IOException
+            throws IOException
     {
         // Check that there is at least one argument
         if (args.length < 1)

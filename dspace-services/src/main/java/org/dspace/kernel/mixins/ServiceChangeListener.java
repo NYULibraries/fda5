@@ -28,7 +28,7 @@ public interface ServiceChangeListener {
      * 
      * @return an array of classes OR null to be notified of all service registrations
      */
-    public Class<?>[] notifyForTypes();
+    Class<?>[] notifyForTypes();
 
     /**
      * This will be called when services are newly registered with the 
@@ -42,7 +42,7 @@ public interface ServiceChangeListener {
      * @param service the service bean
      * @param implementedTypes a list of all the class types which this service implements
      */
-    public void serviceRegistered(String serviceName, Object service, List<Class<?>> implementedTypes);
+    void serviceRegistered(String serviceName, Object service, List<Class<?>> implementedTypes);
 
     /**
      * This will be called when services are removed from the service 
@@ -57,6 +57,6 @@ public interface ServiceChangeListener {
      * @param serviceName the name of the service
      * @param service the service bean
      */
-    public void serviceUnregistered(String serviceName, Object service);
+    void serviceUnregistered(String serviceName, Object service);
 
 }

@@ -97,7 +97,7 @@ public class LicenseCleanup
                     i = 0;
                 }
 
-                Item item = (Item) iter.next();
+                Item item = iter.next();
                 log.info("checking: " + item.getID());
                 if (!props.containsKey("I" + item.getID()))
                 {

@@ -310,7 +310,7 @@ public class Bundle extends DSpaceObject
     public Bitstream[] getBitstreams()
     {
         Bitstream[] bitstreamArray = new Bitstream[bitstreams.size()];
-        bitstreamArray = (Bitstream[]) bitstreams.toArray(bitstreamArray);
+        bitstreamArray = bitstreams.toArray(bitstreamArray);
 
         return bitstreamArray;
     }
@@ -336,7 +336,7 @@ public class Bundle extends DSpaceObject
         {
             while (tri.hasNext())
             {
-                TableRow r = (TableRow) tri.next();
+                TableRow r = tri.next();
 
                 // Used cached copy if there is one
                 Item fromCache = (Item) ourContext.fromCache(Item.class, r
@@ -362,7 +362,7 @@ public class Bundle extends DSpaceObject
         }
 
         Item[] itemArray = new Item[items.size()];
-        itemArray = (Item[]) items.toArray(itemArray);
+        itemArray = items.toArray(itemArray);
 
         return itemArray;
     }
@@ -431,7 +431,7 @@ public class Bundle extends DSpaceObject
         // First check that the bitstream isn't already in the list
         for (int i = 0; i < bitstreams.size(); i++)
         {
-            Bitstream existing = (Bitstream) bitstreams.get(i);
+            Bitstream existing = bitstreams.get(i);
 
             if (b.getID() == existing.getID())
             {
@@ -693,7 +693,7 @@ public class Bundle extends DSpaceObject
 
         while (i.hasNext())
         {
-            ResourcePolicy rp = (ResourcePolicy) i.next();
+            ResourcePolicy rp = i.next();
             rp.setAction(Constants.READ);
         }
 

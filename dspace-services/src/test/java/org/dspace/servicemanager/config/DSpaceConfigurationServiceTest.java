@@ -159,7 +159,7 @@ public class DSpaceConfigurationServiceTest {
         assertNotNull(bool);
         assertEquals(Boolean.TRUE, bool);
         assertEquals(123, (int) configurationService.getPropertyAsType("sample.number", int.class) );
-        assertEquals(true, (boolean) configurationService.getPropertyAsType("sample.boolean", boolean.class) );
+        assertEquals(true, configurationService.getPropertyAsType("sample.boolean", boolean.class));
 
         prop = configurationService.getPropertyAsType("XXXXX", String.class);
         assertNull(prop);

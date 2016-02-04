@@ -93,11 +93,8 @@ public class Contributor {
         if (email != null ? !email.equals(that.email) : that.email != null) {
             return false;
         }
-        if (orcid != null ? !orcid.equals(that.orcid) : that.orcid != null) {
-            return false;
-        }
+        return orcid != null ? orcid.equals(that.orcid) : that.orcid == null;
 
-        return true;
     }
 
     @Override

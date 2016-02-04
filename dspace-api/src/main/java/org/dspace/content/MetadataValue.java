@@ -455,11 +455,7 @@ public class MetadataValue
         {
             return false;
         }
-        if (this.resourceTypeId != other.resourceTypeId)
-        {
-            return false;
-        }
-        return true;
+        return this.resourceTypeId == other.resourceTypeId;
     }
 
     @Override

@@ -526,7 +526,7 @@ public class DOIOrganiser {
             {
                 sendAlertMail("Register", dso,
                               DOI.SCHEME + doiRow.getStringColumn("doi"),
-                              doiIdentifierException.codeToString(doiIdentifierException
+                              DOIIdentifierException.codeToString(doiIdentifierException
                                                                     .getCode())); 
             }
             catch (IOException ioe) 
@@ -537,7 +537,7 @@ public class DOIOrganiser {
             LOG.error("It wasn't possible to register this identifier : " 
                     + DOI.SCHEME + doiRow.getStringColumn("doi")
                     + " online. Exceptions code: "
-                    + doiIdentifierException
+                    + DOIIdentifierException
                         .codeToString(doiIdentifierException.getCode()), ex);
             
             if(!quiet)
@@ -688,7 +688,7 @@ public class DOIOrganiser {
             {
                 sendAlertMail("Update", dso,
                               DOI.SCHEME + doiRow.getStringColumn("doi"),
-                              doiIdentifierException.codeToString(doiIdentifierException
+                              DOIIdentifierException.codeToString(doiIdentifierException
                                                                     .getCode()));
             } 
             catch (IOException ioe) 
@@ -699,7 +699,7 @@ public class DOIOrganiser {
             LOG.error("It wasn't possible to update this identifier:  "
                     + DOI.SCHEME + doiRow.getStringColumn("doi")
                     + " Exceptions code:  " 
-                    + doiIdentifierException
+                    + DOIIdentifierException
                         .codeToString(doiIdentifierException.getCode()), ex);
            
             if(!quiet)
@@ -764,7 +764,7 @@ public class DOIOrganiser {
             LOG.error("It wasn't possible to detect this identifier:  "
                     + identifier
                     + " Exceptions code:  "
-                    + ex.codeToString(ex.getCode()), ex);
+                    + DOIIdentifierException.codeToString(ex.getCode()), ex);
 
             if (!quiet) 
             {
@@ -881,7 +881,7 @@ public class DOIOrganiser {
             LOG.error("It wasn't possible to detect this identifier:  " 
                     + identifier
                     + " Exceptions code:  " 
-                    + ex.codeToString(ex.getCode()), ex);
+                    + DOIIdentifierException.codeToString(ex.getCode()), ex);
             
             if(!quiet)
             {

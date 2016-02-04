@@ -113,7 +113,7 @@ public class METSManifest
          * @throws SQLException if it is returned by services called by this method.
          * @throws AuthorizeException if it is returned by services called by this method.
          */
-        public InputStream getInputStream(Element mdRef)
+        InputStream getInputStream(Element mdRef)
             throws MetadataValidationException, PackageValidationException,
                    IOException, SQLException, AuthorizeException;
     }
@@ -656,7 +656,7 @@ public class METSManifest
                 StringBuffer sb = new StringBuffer();
                 for (Iterator mi = mdc.iterator(); mi.hasNext();)
                 {
-                    sb.append(", ").append(((Content)mi.next()).toString());
+                    sb.append(", ").append(mi.next().toString());
                 }
                 throw new MetadataValidationException("Cannot parse METS with "+mdSec.getQualifiedName()+" element that contains more than one child, size="+String.valueOf(mdc.size())+", ID="+id+"Kids="+sb.toString());
             }
@@ -812,7 +812,7 @@ public class METSManifest
             log.debug("Got getObjStructDiv result=" + result.toString());
         }
         
-        return (Element)result;
+        return result;
     }
 
     /**
@@ -880,7 +880,7 @@ public class METSManifest
         }//end if child <div>s exist
 
         String[] childPaths = new String[childPathList.size()];
-        childPaths = (String[]) childPathList.toArray(childPaths);
+        childPaths = childPathList.toArray(childPaths);
         return childPaths;
     }
 
@@ -1082,7 +1082,7 @@ public class METSManifest
     public void crosswalkItemDmd(Context context, PackageParameters params,
                                 DSpaceObject dso,
                                 Element dmdSec, Mdref callback)
-        throws MetadataValidationException, PackageValidationException,
+        throws PackageValidationException,
                CrosswalkException, IOException, SQLException, AuthorizeException
     {
         crosswalkXmd(context, params, dso, dmdSec, callback);
@@ -1095,7 +1095,7 @@ public class METSManifest
      */
     public void crosswalkObjectOtherAdminMD(Context context, PackageParameters params,
                                       DSpaceObject dso, Mdref callback)
-        throws MetadataValidationException, PackageValidationException,
+        throws PackageValidationException,
                CrosswalkException, IOException, SQLException, AuthorizeException
     {
         for (String amdID : getAmdIDs())
@@ -1122,7 +1122,7 @@ public class METSManifest
      */
     public boolean crosswalkObjectSourceMD(Context context, PackageParameters params,
                                         DSpaceObject dso, Mdref callback)
-        throws MetadataValidationException, PackageValidationException,
+        throws PackageValidationException,
                CrosswalkException, IOException, SQLException, AuthorizeException
     {
         boolean result = false;
@@ -1166,7 +1166,7 @@ public class METSManifest
     private void crosswalkXmd(Context context, PackageParameters params,
                               DSpaceObject dso,
                               Element xmd, Mdref callback)
-        throws MetadataValidationException, PackageValidationException,
+        throws PackageValidationException,
                CrosswalkException, IOException, SQLException, AuthorizeException
     {
         String type = getMdType(xmd);
@@ -1284,7 +1284,7 @@ public class METSManifest
     public void crosswalkBitstream(Context context, PackageParameters params,
                                    Bitstream bitstream,
                                    String fileId, Mdref callback)
-        throws MetadataValidationException, PackageValidationException,
+        throws PackageValidationException,
                CrosswalkException, IOException, SQLException, AuthorizeException
     {
         Element file = getElementByXPath("descendant::mets:file[@ID=\""+fileId+"\"]", false);
@@ -1324,7 +1324,7 @@ public class METSManifest
     public void crosswalkBundle(Context context, PackageParameters params,
                                 Bundle bundle,
                                 String fileId, Mdref callback)
-        throws MetadataValidationException, PackageValidationException,
+        throws PackageValidationException,
                CrosswalkException, IOException, SQLException, AuthorizeException
     {
         Element file = getElementByXPath("descendant::mets:fileGrp[@ADMID=\""+fileId+"\"]", false);

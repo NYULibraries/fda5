@@ -370,7 +370,7 @@ public class Collection extends DSpaceObject
         }
 
         Collection[] collectionArray = new Collection[collections.size()];
-        collectionArray = (Collection[]) collections.toArray(collectionArray);
+        collectionArray = collections.toArray(collectionArray);
 
         return collectionArray;
     }
@@ -460,7 +460,7 @@ public class Collection extends DSpaceObject
         }
 
         Collection[] collectionArray = new Collection[collections.size()];
-        collectionArray = (Collection[]) collections.toArray(collectionArray);
+        collectionArray = collections.toArray(collectionArray);
 
         return collectionArray;
     }
@@ -1443,7 +1443,7 @@ public class Collection extends DSpaceObject
         }
 
         Community[] communityArray = new Community[communities.size()];
-        communityArray = (Community[]) communities.toArray(communityArray);
+        communityArray = communities.toArray(communityArray);
 
         return communityArray;
     }
@@ -1470,12 +1470,8 @@ public class Collection extends DSpaceObject
              return false;
          }
          final Collection otherCollection = (Collection) other;
-         if (this.getID() != otherCollection.getID())
-         {
-             return false;
-         }
+         return this.getID() == otherCollection.getID();
 
-         return true;
      }
 
      @Override
@@ -1557,7 +1553,7 @@ public class Collection extends DSpaceObject
         }
 
         myCollections = new Collection[myResults.size()];
-        myCollections = (Collection[]) myResults.toArray(myCollections);
+        myCollections = myResults.toArray(myCollections);
 
         return myCollections;
     }
@@ -1631,7 +1627,7 @@ public class Collection extends DSpaceObject
         Collections.sort(myResults, new CollectionComparator());
 
         Collection[] myCollections = new Collection[myResults.size()];
-        myCollections = (Collection[]) myResults.toArray(myCollections);
+        myCollections = myResults.toArray(myCollections);
 
         return myCollections;
 

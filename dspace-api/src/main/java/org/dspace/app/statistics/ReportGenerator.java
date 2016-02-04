@@ -147,8 +147,7 @@ public class ReportGenerator
      * details as to how to use the command line flags
      */
     public static void main(String [] argv)
-        throws Exception, SQLException
-    {
+        throws Exception {
         // create context as super user
         Context context = new Context();
         context.setIgnoreAuthorization(true);
@@ -207,8 +206,7 @@ public class ReportGenerator
     public static void processReport(Context context, String myFormat, 
                                      String myInput, String myOutput,
                                      String myMap)
-        throws Exception, SQLException
-    {
+        throws Exception {
         if (myMap != null)
         {
             map = myMap;
@@ -238,8 +236,7 @@ public class ReportGenerator
      */
     public static void processReport(Context context, Report report,
                                      String myInput)
-        throws Exception, SQLException
-    {
+        throws Exception {
         startTime = new GregorianCalendar();
              
         /** instantiate aggregators */

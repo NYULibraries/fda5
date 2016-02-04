@@ -348,9 +348,7 @@ public class XOAI {
     public static void main(String[] argv) throws IOException, ConfigurationException {
 
 
-        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(new Class[]{
-                BasicConfiguration.class
-        });
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext(BasicConfiguration.class);
 
         ConfigurationService configurationService = applicationContext.getBean(ConfigurationService.class);
         XOAICacheService cacheService = applicationContext.getBean(XOAICacheService.class);

@@ -117,7 +117,7 @@ public class Group extends DSpaceObject
                 {
                     while (tri.hasNext())
                     {
-                        TableRow r = (TableRow) tri.next();
+                        TableRow r = tri.next();
 
                         // First check the cache
                         EPerson fromCache = (EPerson) ourContext.fromCache(
@@ -153,7 +153,7 @@ public class Group extends DSpaceObject
                 {
                     while (tri.hasNext())
                     {
-                        TableRow r = (TableRow) tri.next();
+                        TableRow r = tri.next();
 
                         // First check the cache
                         Group fromCache = (Group) ourContext.fromCache(Group.class,
@@ -1007,13 +1007,10 @@ public class Group extends DSpaceObject
 		TableRow row = DatabaseManager.querySingle(
                 context,
                 dbquery,
-                new Object[] {
-                        Constants.GROUP,
-                        MetadataField.findByElement(context, MetadataSchema.find(context, MetadataSchema.DC_SCHEMA).getSchemaID(), "title", null).getFieldID(),
-                        params,
-                        int_param
-                }
-        );
+                Constants.GROUP,
+                MetadataField.findByElement(context, MetadataSchema.find(context, MetadataSchema.DC_SCHEMA).getSchemaID(), "title", null).getFieldID(),
+                params,
+                int_param);
 		
 		// use getIntColumn for Oracle count data
 		Long count;
@@ -1095,7 +1092,7 @@ public class Group extends DSpaceObject
         loadData(); // make sure all data is loaded
 
         EPerson[] myArray = new EPerson[epeople.size()];
-        myArray = (EPerson[]) epeople.toArray(myArray);
+        myArray = epeople.toArray(myArray);
 
         return myArray;
     }
@@ -1108,7 +1105,7 @@ public class Group extends DSpaceObject
         loadData(); // make sure all data is loaded
 
         Group[] myArray = new Group[groups.size()];
-        myArray = (Group[]) groups.toArray(myArray);
+        myArray = groups.toArray(myArray);
 
         return myArray;
     }
@@ -1231,11 +1228,7 @@ public class Group extends DSpaceObject
              return false;
          }
          final Group other = (Group) obj;
-         if(this.getID() != other.getID())
-         {
-             return false;
-         }
-         return true;
+         return this.getID() == other.getID();
      }
 
      @Override
@@ -1275,7 +1268,7 @@ public class Group extends DSpaceObject
         {
             while (tri.hasNext())
             {
-                TableRow row = (TableRow) tri.next();
+                TableRow row = tri.next();
 
                 Integer parentID = Integer.valueOf(row.getIntColumn("parent_id"));
                 Integer childID = Integer.valueOf(row.getIntColumn("child_id"));

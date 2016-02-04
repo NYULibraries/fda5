@@ -335,7 +335,7 @@ public class MARC21InitialArticleWord extends InitialArticleWord
         public int compare(Object arg0, Object arg1)
         {
             return ((String)arg1).length() - ((String)arg0).length(); 
-        };
-        
-    };
+        }
+
+    }
 }

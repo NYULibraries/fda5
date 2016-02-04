@@ -25,5 +25,5 @@ public interface AtomCollectionGenerator
 	 * @param dso
 	 * @throws DSpaceSwordException
 	 */
-	public SwordCollection buildCollection(Context context, DSpaceObject dso, SwordConfigurationDSpace config) throws DSpaceSwordException;
+	SwordCollection buildCollection(Context context, DSpaceObject dso, SwordConfigurationDSpace config) throws DSpaceSwordException;
 }

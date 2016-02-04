@@ -511,11 +511,11 @@ public class DiscoverySearchRequestProcessor implements SearchRequestProcessor
     public void doItemMapSearch(Context context, HttpServletRequest request,
             HttpServletResponse response) throws SearchProcessorException, ServletException, IOException
     {
-        String queryString = (String) request.getParameter("query");
+        String queryString = request.getParameter("query");
         Collection collection = (Collection) request.getAttribute("collection");
         int page = UIUtil.getIntParameter(request, "page")-1;
         int offset = page > 0? page * ITEMMAP_RESULT_PAGE_SIZE:0;
-        String idx = (String) request.getParameter("index");
+        String idx = request.getParameter("index");
         if (StringUtils.isNotBlank(idx) && !idx.equalsIgnoreCase("any"))
         {
             queryString = idx + ":(" + queryString + ")";

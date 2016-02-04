@@ -78,9 +78,9 @@ public class BrandedPreviewJPEGFilter extends MediaFilter
                 .getIntProperty("webui.preview.maxwidth");
         float ymax = (float) ConfigurationManager
                 .getIntProperty("webui.preview.maxheight");
-        boolean blurring = (boolean) ConfigurationManager
+        boolean blurring = ConfigurationManager
                 .getBooleanProperty("webui.preview.blurring");
-        boolean hqscaling = (boolean) ConfigurationManager
+        boolean hqscaling = ConfigurationManager
                 .getBooleanProperty("webui.preview.hqscaling");
         int brandHeight = ConfigurationManager.getIntProperty("webui.preview.brand.height");
         String brandFont = ConfigurationManager.getProperty("webui.preview.brand.font");
@@ -151,7 +151,7 @@ public class BrandedPreviewJPEGFilter extends MediaFilter
         if (blurring)
         {
                 // send the buffered image off to get blurred.
-                buf = getBlurredInstance((BufferedImage) buf);
+                buf = getBlurredInstance(buf);
         }
 
         // Use high quality scaling method if selected in config.
@@ -159,8 +159,8 @@ public class BrandedPreviewJPEGFilter extends MediaFilter
         if (hqscaling)
         {
                 // send the buffered image off to get an HQ downscale.
-                buf = getScaledInstance((BufferedImage) buf, (int) xsize, (int) ysize,
-                        (Object) RenderingHints.VALUE_INTERPOLATION_BICUBIC, (boolean) true);
+                buf = getScaledInstance(buf, (int) xsize, (int) ysize,
+                        RenderingHints.VALUE_INTERPOLATION_BICUBIC, true);
         }
 
         // now render the image into the preview buffer
@@ -172,7 +172,7 @@ public class BrandedPreviewJPEGFilter extends MediaFilter
 												ConfigurationManager.getProperty("webui.preview.brand.abbrev"),
 												MediaFilterManager.getCurrentItem() == null ? "" : "hdl:" + MediaFilterManager.getCurrentItem().getHandle());
 		
-		g2d.drawImage(brandImage, (int)0, (int)ysize, (int) xsize, (int) 20, null);
+		g2d.drawImage(brandImage, 0, (int)ysize, (int) xsize, 20, null);
 
         // now create an input stream for the thumbnail buffer and return it
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -252,7 +252,7 @@ public class BrandedPreviewJPEGFilter extends MediaFilter
     {
         int type = (buf.getTransparency() == Transparency.OPAQUE) ?
             BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
-        BufferedImage scalebuf = (BufferedImage)buf;
+        BufferedImage scalebuf = buf;
         int w, h;
         if (higherQuality) {
             // Use multi-step technique: start with original size, then

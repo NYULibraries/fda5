@@ -21,7 +21,7 @@ import org.apache.lucene.index.Term;
 @Deprecated
 class IndexingTask
 {
-    enum Action { ADD, UPDATE, DELETE };
+    enum Action { ADD, UPDATE, DELETE }
 
     private Action   action;
     private Term     term;

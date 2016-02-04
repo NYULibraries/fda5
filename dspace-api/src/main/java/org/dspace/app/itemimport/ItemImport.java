@@ -2247,7 +2247,7 @@ public class ItemImport
 					}
 					
 					ItemImport myloader = new ItemImport();
-					myloader.isResume = isResume;
+					ItemImport.isResume = isResume;
 					
 					if (theInputType.equals("saf") || theInputType.equals("safupload")){ //In case of Simple Archive Format import
 						myloader.addItems(context, finalCollections, dataDir, mapFilePath, template);

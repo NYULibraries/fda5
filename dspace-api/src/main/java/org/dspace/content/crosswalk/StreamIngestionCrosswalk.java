@@ -46,6 +46,6 @@ public interface StreamIngestionCrosswalk
      * @throws SQLException  Database failure in services this calls
      * @throws AuthorizeException current user not authorized for this operation.
      */
-    public void ingest(Context context, DSpaceObject dso, InputStream in, String MIMEType)
+    void ingest(Context context, DSpaceObject dso, InputStream in, String MIMEType)
         throws CrosswalkException, IOException, SQLException, AuthorizeException;
 }

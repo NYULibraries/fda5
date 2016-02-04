@@ -155,11 +155,7 @@ public class BrowserScope
      */
     public boolean isTopLevel()
     {
-        if (this.level == 0)
-        {
-            return true;
-        }
-        return false;
+        return this.level == 0;
     }
 
     /**
@@ -167,11 +163,7 @@ public class BrowserScope
      */
     public boolean isSecondLevel()
     {
-        if (this.level == 1)
-        {
-            return true;
-        }
-        return false;
+        return this.level == 1;
     }
 
     /**
@@ -530,11 +522,7 @@ public class BrowserScope
      */
     public boolean inCommunity()
     {
-        if (this.community != null)
-        {
-            return true;
-        }
-        return false;
+        return this.community != null;
     }
 
     /**
@@ -542,11 +530,7 @@ public class BrowserScope
      */
     public boolean inCollection()
     {
-        if (this.collection != null)
-        {
-            return true;
-        }
-        return false;
+        return this.collection != null;
     }
 
     /**
@@ -566,12 +550,8 @@ public class BrowserScope
 
         BrowseIndex bi = getBrowseIndex();
 
-        if (bi != null && SortOption.DESCENDING.equalsIgnoreCase(bi.getDefaultOrder()))
-        {
-            return false;
-        }
+        return !(bi != null && SortOption.DESCENDING.equalsIgnoreCase(bi.getDefaultOrder()));
 
-        return true;
     }
 
     /**
@@ -579,11 +559,7 @@ public class BrowserScope
      */
     public boolean hasFilterValue()
     {
-        if (filterValue == null || "".equals(filterValue))
-        {
-            return false;
-        }
-        return true;
+        return !(filterValue == null || "".equals(filterValue));
     }
 
     /**
@@ -591,11 +567,7 @@ public class BrowserScope
      */
     public boolean hasJumpToItem()
     {
-        if (jumpItemId == -1)
-        {
-            return false;
-        }
-        return true;
+        return jumpItemId != -1;
     }
 
     /**
@@ -603,11 +575,7 @@ public class BrowserScope
      */
     public boolean hasJumpToValue()
     {
-        if (this.jumpValue != null)
-        {
-            return true;
-        }
-        return false;
+        return this.jumpValue != null;
     }
 
     /**
@@ -615,11 +583,7 @@ public class BrowserScope
      */
     public boolean hasStartsWith()
     {
-        if (this.startsWith != null)
-        {
-            return true;
-        }
-        return false;
+        return this.startsWith != null;
     }
 
     public String getAuthorityValue() {

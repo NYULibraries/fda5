@@ -50,9 +50,10 @@ public class Curator
     public static final int CURATE_SKIP = 2;
     
     // invocation modes - used by Suspendable tasks
-    public static enum Invoked { INTERACTIVE, BATCH, ANY };
+    public enum Invoked { INTERACTIVE, BATCH, ANY }
+
     // transaction scopes
-    public static enum TxScope { OBJECT, CURATION, OPEN };
+    public enum TxScope { OBJECT, CURATION, OPEN }
 
     private static Logger log = Logger.getLogger(Curator.class);
     

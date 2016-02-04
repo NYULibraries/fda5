@@ -16,6 +16,6 @@ import org.dspace.core.Context;
 
 public interface RDFConverter {
 
-    public Model convert(Context context, DSpaceObject dso)
+    Model convert(Context context, DSpaceObject dso)
             throws SQLException, AuthorizeException;
 }

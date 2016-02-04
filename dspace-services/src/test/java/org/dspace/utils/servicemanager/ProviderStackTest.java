@@ -28,7 +28,7 @@ public class ProviderStackTest {
 
     // some stuff for testing
     public interface Provider {
-        public String getPrefix();
+        String getPrefix();
     }
     public class UnorderedProvider implements Provider {
         protected String prefix;

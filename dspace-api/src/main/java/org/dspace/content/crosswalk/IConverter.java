@@ -17,5 +17,5 @@ public interface IConverter
      *            the input string to convert
      * @return the converted string returned by the "conversion algorithm" 
      */
-    public String makeConversion(String value);
+    String makeConversion(String value);
 }

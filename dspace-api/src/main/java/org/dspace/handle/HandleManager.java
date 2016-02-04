@@ -456,7 +456,7 @@ public class HandleManager
         {
             while (iterator.hasNext())
             {
-                TableRow row = (TableRow) iterator.next();
+                TableRow row = iterator.next();
                 results.add(row.getStringColumn("handle"));
             }
         }

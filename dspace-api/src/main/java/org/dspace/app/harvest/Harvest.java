@@ -151,7 +151,7 @@ public class Harvest
 
         // Instantiate our class
         Harvest harvester = new Harvest();
-        harvester.context = new Context();
+        context = new Context();
         
         
         // Check our options

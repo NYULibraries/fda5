@@ -106,11 +106,11 @@ public class ItemCountDAOSolr implements ItemCountDAO
     	Integer val = null;
     	if (dso instanceof Collection)
         {
-            val = collectionsCount.get(String.valueOf(((Collection) dso).getID()));
+            val = collectionsCount.get(String.valueOf(dso.getID()));
         }
         else if (dso instanceof Community)
         {
-            val = communitiesCount.get(String.valueOf(((Community) dso).getID()));
+            val = communitiesCount.get(String.valueOf(dso.getID()));
         }
         else
         {

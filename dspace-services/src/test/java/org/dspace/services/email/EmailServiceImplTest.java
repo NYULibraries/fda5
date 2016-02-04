@@ -88,7 +88,7 @@ public class EmailServiceImplTest
         cfg.setProperty(CFG_USERNAME, USERNAME);
         cfg.setProperty(CFG_PASSWORD, PASSWORD);
 
-        EmailServiceImpl instance = (EmailServiceImpl) getService(EmailServiceImpl.class);
+        EmailServiceImpl instance = getService(EmailServiceImpl.class);
 
         PasswordAuthentication result = instance.getPasswordAuthentication();
         assertNotNull(" null returned", result);

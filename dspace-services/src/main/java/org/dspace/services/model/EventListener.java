@@ -27,7 +27,7 @@ public interface EventListener {
      * 
      * @return an arrays of event name prefixes
      */
-    public String[] getEventNamePrefixes();
+    String[] getEventNamePrefixes();
 
     /**
      * This defines the events that you want to know about by event 
@@ -41,7 +41,7 @@ public interface EventListener {
      * 
      * @return a string with a resource (reference) prefix
      */
-    public String getResourcePrefix();
+    String getResourcePrefix();
 
     /**
      * Called when an event occurs which passes through the filters
@@ -50,6 +50,6 @@ public interface EventListener {
      * 
      * @param event includes all the information related to the event that occurred
      */
-    public void receiveEvent(Event event);
+    void receiveEvent(Event event);
 
 }

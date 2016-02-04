@@ -16,14 +16,14 @@ package org.dspace.app.util;
 public interface DSpaceWebappMXBean
 {
     /** Is this webapp a user interface?  False if machine interface such as SWORD. */
-    public boolean isUI();
+    boolean isUI();
 
     /** What kind of webapp?  XMLUI, OAI, etc. */
-    public String getKind();
+    String getKind();
 
     /** What is the base URL of this application? */
-    public String getURL();
+    String getURL();
 
     /** When did this application start? */
-    public String getStarted();
+    String getStarted();
 }

@@ -73,10 +73,7 @@ public class Metadatum
         if (dcValue.qualifier != null ? !dcValue.qualifier.equals(this.qualifier) : this.qualifier != null) {
             return false;
         }
-        if (dcValue.schema != null ? !dcValue.schema.equals(this.schema) : this.schema != null) {
-            return false;
-        }
-        return true;
+        return dcValue.schema != null ? dcValue.schema.equals(this.schema) : this.schema == null;
     }
 
     @Override
@@ -108,11 +105,8 @@ public class Metadatum
         if (schema != null ? !schema.equals(dcValue.schema) : dcValue.schema != null) {
             return false;
         }
-        if (value != null ? !value.equals(dcValue.value) : dcValue.value != null) {
-            return false;
-        }
+        return value != null ? value.equals(dcValue.value) : dcValue.value == null;
 
-        return true;
     }
 
     @Override

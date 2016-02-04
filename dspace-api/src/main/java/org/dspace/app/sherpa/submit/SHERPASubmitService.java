@@ -82,14 +82,7 @@ public class SHERPASubmitService
     public boolean hasISSNs(Context context, Item item)
     {
         Set<String> issns = getISSNs(context, item);
-        if (issns == null || issns.size() == 0)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return !(issns == null || issns.size() == 0);
     }
 
 }

@@ -24,16 +24,16 @@ import org.dspace.core.Context;
  * @author Pascal-Nicolas Becker
  */
 public interface DOIConnector {
-    public boolean isDOIReserved(Context context, String doi)
+    boolean isDOIReserved(Context context, String doi)
             throws DOIIdentifierException;
     
-    public boolean isDOIReserved(Context context, DSpaceObject dso, String doi)
+    boolean isDOIReserved(Context context, DSpaceObject dso, String doi)
             throws DOIIdentifierException;
     
-    public boolean isDOIRegistered(Context context, String doi)
+    boolean isDOIRegistered(Context context, String doi)
             throws DOIIdentifierException;
     
-    public boolean isDOIRegistered(Context context, DSpaceObject dso, String doi)
+    boolean isDOIRegistered(Context context, DSpaceObject dso, String doi)
             throws DOIIdentifierException;
 
     /**
@@ -49,7 +49,7 @@ public interface DOIConnector {
      * @return
      * @throws DOIIdentifierException 
      */
-    public void deleteDOI(Context context, String doi)
+    void deleteDOI(Context context, String doi)
             throws DOIIdentifierException;
     
     /**
@@ -66,7 +66,7 @@ public interface DOIConnector {
      * @return
      * @throws DOIIdentifierException 
      */
-    public void reserveDOI(Context context, DSpaceObject dso, String doi)
+    void reserveDOI(Context context, DSpaceObject dso, String doi)
             throws DOIIdentifierException;
     /**
      * Sends a request to the DOI registry to register a DOI.
@@ -83,7 +83,7 @@ public interface DOIConnector {
      * @return
      * @throws DOIIdentifierException 
      */
-    public void registerDOI(Context context, DSpaceObject dso, String doi)
+    void registerDOI(Context context, DSpaceObject dso, String doi)
             throws DOIIdentifierException;
     
     /**
@@ -98,6 +98,6 @@ public interface DOIConnector {
      * @return
      * @throws IdentifierException 
      */
-    public void updateMetadata(Context context, DSpaceObject dso, String doi)
+    void updateMetadata(Context context, DSpaceObject dso, String doi)
             throws DOIIdentifierException;
 }

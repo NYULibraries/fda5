@@ -123,14 +123,7 @@ public class DailyFileAppender extends FileAppender
     public void setDatePattern(String pstrPattern)
     {
         this.mstrDatePattern = checkPattern(pstrPattern);
-        if (mstrDatePattern.contains("dd") || mstrDatePattern.contains("DD"))
-        {
-            mMonthOnly = false;
-        }
-        else
-        {
-            mMonthOnly = true;
-        }
+        mMonthOnly = !(mstrDatePattern.contains("dd") || mstrDatePattern.contains("DD"));
     }
 
     public void setFile(String file)

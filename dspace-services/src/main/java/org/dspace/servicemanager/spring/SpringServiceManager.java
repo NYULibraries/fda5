@@ -96,7 +96,7 @@ public final class SpringServiceManager implements ServiceManagerSystem {
             if (name != null) {
                 // get by name and type
                 try {
-                    bean = (T) applicationContext.getBean(name, type);
+                    bean = applicationContext.getBean(name, type);
                 } catch (BeansException e) {
                     // no luck, try the fall back option
                     bean = null;
@@ -104,7 +104,7 @@ public final class SpringServiceManager implements ServiceManagerSystem {
             } else {
                 // try making up the name based on the type
                 try {
-                    bean = (T) applicationContext.getBean(type.getName(), type);
+                    bean = applicationContext.getBean(type.getName(), type);
                 } catch (BeansException e) {
                     // no luck, try the fall back option
                     bean = null;
@@ -117,7 +117,7 @@ public final class SpringServiceManager implements ServiceManagerSystem {
                     Map<String, T> map = applicationContext.getBeansOfType(type);
                     if (map.size() == 1) {
                         // only return the bean if there is exactly one
-                        bean = (T) map.values().iterator().next();
+                        bean = map.values().iterator().next();
                     }
                 } catch (BeansException e) {
                     // I guess there are no beans of this type
@@ -134,7 +134,7 @@ public final class SpringServiceManager implements ServiceManagerSystem {
         Map<String, T> beans;
         try {
             beans = applicationContext.getBeansOfType(type, true, true);
-            l.addAll( (Collection<? extends T>) beans.values() );
+            l.addAll(beans.values());
         } catch (BeansException e) {
             throw new RuntimeException("Failed to get beans of type ("+type+"): " + e.getMessage(), e);
         }

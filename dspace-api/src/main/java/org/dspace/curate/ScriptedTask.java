@@ -32,7 +32,7 @@ public interface ScriptedTask
      * @param taskId identifier task should use in invoking services
      * @throws IOException
      */
-    public void init(Curator curator, String taskId) throws IOException;
+    void init(Curator curator, String taskId) throws IOException;
 
     /**
      * Perform the curation task upon passed DSO
@@ -41,7 +41,7 @@ public interface ScriptedTask
      * @return status code
      * @throws IOException
      */
-    public int performDso(DSpaceObject dso) throws IOException;
+    int performDso(DSpaceObject dso) throws IOException;
 
     /**
      * Perform the curation task for passed id
@@ -51,5 +51,5 @@ public interface ScriptedTask
      * @return status code
      * @throws IOException
      */
-    public int performId(Context ctx, String id) throws IOException;
+    int performId(Context ctx, String id) throws IOException;
 }

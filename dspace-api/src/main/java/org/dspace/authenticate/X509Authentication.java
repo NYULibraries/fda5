@@ -264,7 +264,7 @@ public class X509Authentication implements AuthenticationMethod
         {
             int len = "emailaddress=".length();
 
-            token = (String) tokenizer.nextToken();
+            token = tokenizer.nextToken();
 
             if (token.toLowerCase().startsWith("emailaddress="))
             {

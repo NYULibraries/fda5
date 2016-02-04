@@ -21,6 +21,6 @@ public interface ShutdownService {
     /**
      * Called as the service manager is stopping or shutting down.
      */
-    public void shutdown();
+    void shutdown();
 
 }

@@ -16,13 +16,13 @@ import org.dspace.services.ConfigurationService;
  */
 public interface SpringLoader {
 
-    public final String XML_SUFFIX = "*.xml";
+    String XML_SUFFIX = "*.xml";
 
     /**
      * Returns all the locations that contain spring files
      * @param configurationService the dspace configuration service
      * @return an array containing spring file locations
      */
-    public String[] getResourcePaths(ConfigurationService configurationService);
+    String[] getResourcePaths(ConfigurationService configurationService);
 
 }

@@ -23,7 +23,7 @@ import java.util.List;
 public class CommandRunner
 {
     public static void main(String[] args)
-            throws FileNotFoundException, IOException
+            throws IOException
     {
         if (args.length > 0)
         {
@@ -52,7 +52,7 @@ public class CommandRunner
      * @throws IOException 
      */
     static int runManyCommands(String script)
-            throws FileNotFoundException, IOException
+            throws IOException
     {
         Reader input;
         if ("-".equals(script))

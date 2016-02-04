@@ -39,7 +39,7 @@ public class ArXivOnlineDataLoader extends NetworkSubmissionLookupDataLoader
     @Override
     public List<String> getSupportedIdentifiers()
     {
-        return Arrays.asList(new String[] { ARXIV, DOI });
+        return Arrays.asList(ARXIV, DOI);
     }
 
     public void setSearchProvider(boolean searchProvider)

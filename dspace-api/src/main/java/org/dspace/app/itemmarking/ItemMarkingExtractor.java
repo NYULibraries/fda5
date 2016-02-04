@@ -19,6 +19,6 @@ import org.dspace.core.Context;
  * 
  */
 public interface ItemMarkingExtractor {
-	public ItemMarkingInfo getItemMarkingInfo(Context context, Item item)
+	ItemMarkingInfo getItemMarkingInfo(Context context, Item item)
 			throws SQLException;
 }

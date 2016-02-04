@@ -81,7 +81,7 @@ public class SolrLogger
 
     private static List<String> statisticYearCores = new ArrayList<String>();
 
-    public static enum StatisticsType {
+    public enum StatisticsType {
    		VIEW ("view"),
    		SEARCH ("search"),
    		SEARCH_RESULT ("search_result"),
@@ -168,14 +168,7 @@ public class SolrLogger
         }
         locationService = service;
 
-        if ("true".equals(ConfigurationManager.getProperty("useProxies")))
-        {
-            useProxies = true;
-        }
-        else
-        {
-            useProxies = false;
-        }
+        useProxies = "true".equals(ConfigurationManager.getProperty("useProxies"));
 
         log.info("useProxies=" + useProxies);
     }

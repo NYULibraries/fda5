@@ -1140,9 +1140,7 @@ public class AuthorizeManager
             tr = DatabaseManager.querySingleTable(c, "resourcepolicy", select, dsoType, dsoID, groupID, action);
         }
 
-        if (tr != null) return true;
-
-        return false;
+        return tr != null;
 
     }
 

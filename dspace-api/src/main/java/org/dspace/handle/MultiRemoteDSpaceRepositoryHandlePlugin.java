@@ -106,7 +106,7 @@ public class MultiRemoteDSpaceRepositoryHandlePlugin implements HandleStorage
         for (Enumeration e = properties.propertyNames(); e.hasMoreElements();)
         {
             String propertyName = (String) e.nextElement();
-            if (propertyName.startsWith(this.PROPERTY_KEY))
+            if (propertyName.startsWith(PROPERTY_KEY))
             {
                 // load the prefixes of this instance
                 loadPrefixes(properties.getProperty(propertyName));

@@ -30,6 +30,6 @@ public interface ServiceManagerReadyAware {
      * 
      * @param serviceManager the completely started service manager
      */
-    public void serviceManagerReady(ServiceManager serviceManager);
+    void serviceManagerReady(ServiceManager serviceManager);
 
 }

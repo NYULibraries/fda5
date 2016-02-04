@@ -131,7 +131,7 @@ public class EventManager
 
     protected static int getConsumerIndex(String consumerClass)
     {
-        Integer index = (Integer) consumerIndicies.get(consumerClass);
+        Integer index = consumerIndicies.get(consumerClass);
         return index != null ? index.intValue() : -1;
 
     }
@@ -155,7 +155,7 @@ public class EventManager
                 String consumerName = ckey.substring(CONSUMER_PFX.length(),
                         ckey.length() - 6);
 
-                consumerIndicies.put(consumerName, (Integer) bitSetIndex);
+                consumerIndicies.put(consumerName, bitSetIndex);
                 bitSetIndex++;
             }
         }

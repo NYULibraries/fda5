@@ -27,7 +27,7 @@ public interface Cache {
      *
      * @return string
      */
-    public String getName();
+    String getName();
 
     /**
      * Puts an object in the cache which is identified by this key.
@@ -37,7 +37,7 @@ public interface Cache {
      * @param value an object (this can be a null, e.g. to cache a miss)
      * @throws IllegalArgumentException if the cache name is invalid or cacheName or key is null
      */
-    public void put(String key, Object value);
+    void put(String key, Object value);
 
     /**
      * Gets an object from the cache if it can be found (maybe be a null).
@@ -48,7 +48,7 @@ public interface Cache {
      * @return the cached object (may be null) OR null if the cache object cannot be found
      * @throws IllegalArgumentException if any arguments are null
      */
-    public Object get(String key);
+    Object get(String key);
 
     /**
      * Provides a method for finding out what keys are currently in the cache
@@ -61,7 +61,7 @@ public interface Cache {
      * 
      * @return the list of all keys currently in this cache
      */
-    public List<String> getKeys();
+    List<String> getKeys();
 
     /**
      * Gets an object from the cache without causing it to be refreshed 
@@ -73,7 +73,7 @@ public interface Cache {
      * @throws IllegalArgumentException if any arguments are null
      * @see Cache#get(String)
      */
-    public Object look(String key);
+    Object look(String key);
 
     /**
      * Removes an object from the cache if it exists or does nothing if 
@@ -83,7 +83,7 @@ public interface Cache {
      * @return true if the object was removed or false if it could not be found in the cache
      * @throws IllegalArgumentException if any arguments are null
      */
-    public boolean remove(String key);
+    boolean remove(String key);
 
     /**
      * Check if a key exists in the cache.
@@ -92,7 +92,7 @@ public interface Cache {
      * @return true if the object was removed or false if it could not be found in the cache
      * @throws IllegalArgumentException if any arguments are null
      */
-    public boolean exists(String key);
+    boolean exists(String key);
 
     /**
      * How many items does this cache hold?
@@ -100,12 +100,12 @@ public interface Cache {
      * @return the count of the number of active items in the cache.
      * Does not include expired items.
      */
-    public int size();
+    int size();
 
     /**
      * Clear out all cached items from this cache.
      */
-    public void clear();
+    void clear();
 
     /**
      * Returns a readable object which has the configuration used by 
@@ -113,6 +113,6 @@ public interface Cache {
      *
      * @return the object indicating the configuration of this cache
      */
-    public CacheConfig getConfig();
+    CacheConfig getConfig();
 
 }

@@ -407,7 +407,7 @@ public class EZIDIdentifierProviderTest
         Map<String, String> metadata = instance.crosswalkMetadata(dso);
 
         // Evaluate
-        String target = (String) metadata.get("_target");
+        String target = metadata.get("_target");
         assertEquals("Generates correct _target metadatum",
                 config.getProperty("dspace.url") + "/handle/" + handle,
                 target);

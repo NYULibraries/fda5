@@ -21,17 +21,17 @@ import org.dspace.core.Context;
  */
 public interface AuthorityIndexerInterface {
 
-    public void init(Context context, Item item);
+    void init(Context context, Item item);
 
-    public void init(Context context, boolean useCache);
+    void init(Context context, boolean useCache);
 
-    public void init(Context context);
+    void init(Context context);
 
-    public AuthorityValue nextValue();
+    AuthorityValue nextValue();
 
-    public boolean hasMore();
+    boolean hasMore();
 
-    public void close();
+    void close();
 
-    public boolean isConfiguredProperly();
+    boolean isConfiguredProperly();
 }

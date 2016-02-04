@@ -93,7 +93,7 @@ public class CCLicenseStep extends AbstractProcessingStep
      */
     public int doProcessing(Context context, HttpServletRequest request,
             HttpServletResponse response, SubmissionInfo subInfo)
-            throws ServletException, IOException, SQLException,
+            throws ServletException, SQLException,
             AuthorizeException,java.io.IOException
     {
 	    HttpSession session = request.getSession();		

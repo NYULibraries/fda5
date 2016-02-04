@@ -146,11 +146,7 @@ public class LogLine
      */
     public boolean isLevel(String level)
     {
-        if (this.getLevel().equals(level))
-        {
-            return true;
-        }
-        return false;
+        return this.getLevel().equals(level);
     }
     
     
@@ -165,11 +161,7 @@ public class LogLine
      */
     public boolean isAction(String action)
     {
-        if (this.getAction().equals(action))
-        {
-            return true;
-        }
-        return false;
+        return this.getAction().equals(action);
     }
  
 }

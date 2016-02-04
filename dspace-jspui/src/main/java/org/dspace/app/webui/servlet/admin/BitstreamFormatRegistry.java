@@ -99,7 +99,7 @@ public class BitstreamFormatRegistry extends DSpaceServlet
             }
 
             // Set extensions in the format - convert to array
-            String[] extArray = (String[]) extensions
+            String[] extArray = extensions
                     .toArray(new String[extensions.size()]);
             bf.setExtensions(extArray);
 

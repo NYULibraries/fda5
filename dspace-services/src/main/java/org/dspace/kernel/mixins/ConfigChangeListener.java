@@ -41,7 +41,7 @@ public interface ConfigChangeListener {
      * @return an array of configuration string names (e.g. {"system.name","upload.enabled"})
      * OR null/empty to be notified for every configuration setting that changes
      */
-    public String[] notifyForConfigNames();
+    String[] notifyForConfigNames();
 
     /**
      * Called whenever the configuration settings change (depending on 
@@ -56,6 +56,6 @@ public interface ConfigChangeListener {
      * @param changedSettingNames includes the names of all settings that changed
      * @param changedSettings includes the map of all settings that changed
      */
-    public void configurationChanged(List<String> changedSettingNames, Map<String, String> changedSettings);
+    void configurationChanged(List<String> changedSettingNames, Map<String, String> changedSettings);
 
 }

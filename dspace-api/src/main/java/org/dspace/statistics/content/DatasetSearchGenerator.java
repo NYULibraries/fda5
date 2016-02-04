@@ -14,7 +14,7 @@ package org.dspace.statistics.content;
  */
 public class DatasetSearchGenerator extends DatasetTypeGenerator {
 
-    public static enum Mode {
+    public enum Mode {
    		SEARCH_OVERVIEW ("search_overview"),
    		SEARCH_OVERVIEW_TOTAL ("search_overview_total");
 

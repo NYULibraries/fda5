@@ -50,7 +50,7 @@ public class TestAuthority implements ChoiceAuthority, AuthorityVariantsSupport
                         + "_value#" + i, text + "_label#" + i));
             }
             choices = new Choices(
-                    (Choice[]) choiceValues.toArray(new Choice[choiceValues
+                    choiceValues.toArray(new Choice[choiceValues
                             .size()]), 0, 3, Choices.CF_AMBIGUOUS, false);
         }
         
@@ -71,7 +71,7 @@ public class TestAuthority implements ChoiceAuthority, AuthorityVariantsSupport
                         + "_valuebest", text + "_labelbest"));
             
             choices = new Choices(
-                    (Choice[]) choiceValues.toArray(new Choice[choiceValues
+                    choiceValues.toArray(new Choice[choiceValues
                             .size()]), 0, 3, Choices.CF_UNCERTAIN, false);
         }
         return choices;

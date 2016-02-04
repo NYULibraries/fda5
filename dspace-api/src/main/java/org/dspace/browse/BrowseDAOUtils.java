@@ -39,12 +39,12 @@ public interface BrowseDAOUtils
     /**
      * Get the size to use for the 'value' columns in characters
      */
-    public int getValueColumnMaxChars();
+    int getValueColumnMaxChars();
 
     /**
      * Get the size to use for the sort columns in characters
      */
-    public int getSortColumnMaxChars();
+    int getSortColumnMaxChars();
 
     /**
      * Truncate strings that are to be used for the 'value' columns
@@ -52,7 +52,7 @@ public interface BrowseDAOUtils
      * @param value
      * @return the truncated value.
      */
-    public String truncateValue(String value);
+    String truncateValue(String value);
     
     /**
      * Truncate strings that are to be used for sorting
@@ -60,7 +60,7 @@ public interface BrowseDAOUtils
      * @param value
      * @return the truncated value.
      */
-    public String truncateSortValue(String value);
+    String truncateSortValue(String value);
     
     /**
      * Truncate strings that are to be used for the 'value' columns.
@@ -73,7 +73,7 @@ public interface BrowseDAOUtils
      * @return the truncated value.
      * @deprecated
      */
-    public String truncateValue(String value, int chars);
+    String truncateValue(String value, int chars);
     
     /**
      * Truncate strings that are to be used for the sorting
@@ -86,5 +86,5 @@ public interface BrowseDAOUtils
      * @return the truncated value.
      * @deprecated
      */
-    public String truncateSortValue(String value, int chars);
+    String truncateSortValue(String value, int chars);
 }

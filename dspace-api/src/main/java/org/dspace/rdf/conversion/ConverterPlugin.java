@@ -20,7 +20,7 @@ import org.dspace.services.ConfigurationService;
  * @author Pascal-Nicolas Becker (dspace -at- pascal -hyphen- becker -dot- de)
  */
 public interface ConverterPlugin {
-    public void setConfigurationService(ConfigurationService configurationService);
+    void setConfigurationService(ConfigurationService configurationService);
     
     /**
      * Convert the specified DSpaceObject or a part of it into RDF.
@@ -29,7 +29,7 @@ public interface ConverterPlugin {
      * @param dso The DSpaceObject that should be converted.
      * @return A Jena Model containing the generated RDF.
      */
-    public Model convert(Context context, DSpaceObject dso)
+    Model convert(Context context, DSpaceObject dso)
             throws SQLException, AuthorizeException;
     
     /**
@@ -38,5 +38,5 @@ public interface ConverterPlugin {
      * @return A boolean whether the requested type is supported by this plugin.
      * @see org.dspace.core.Constants
      */
-    public boolean supports(int type);
+    boolean supports(int type);
 }

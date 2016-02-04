@@ -139,7 +139,7 @@ public class QDCCrosswalk extends SelfNamedPlugin
                 aliasList.add(key.substring(propname.length()));
             }
         }
-        aliases = (String[])aliasList.toArray(new String[aliasList.size()]);
+        aliases = aliasList.toArray(new String[aliasList.size()]);
     }
 
     public static String[] getPluginNames()
@@ -235,7 +235,7 @@ public class QDCCrosswalk extends SelfNamedPlugin
             }
         }
         nsList.add(Namespace.XML_NAMESPACE);
-        namespaces = (Namespace[])nsList.toArray(new Namespace[nsList.size()]);
+        namespaces = nsList.toArray(new Namespace[nsList.size()]);
 
         // get XML schemaLocation fragment from config
         schemaLocation = ConfigurationManager.getProperty(CONFIG_PREFIX + ".schemaLocation."+ myName);

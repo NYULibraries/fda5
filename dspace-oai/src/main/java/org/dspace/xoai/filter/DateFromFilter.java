@@ -41,9 +41,7 @@ public class DateFromFilter extends DSpaceFilter {
     @Override
     public boolean isShown(DSpaceItem item)
     {
-        if (item.getDatestamp().compareTo(date) >= 0)
-            return true;
-        return false;
+        return item.getDatestamp().compareTo(date) >= 0;
     }
 
     @Override

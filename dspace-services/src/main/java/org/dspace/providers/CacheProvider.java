@@ -30,7 +30,7 @@ public interface CacheProvider {
      * 
      * @return a list of all the caches which the caching service knows about
      */
-    public List<Cache> getCaches();
+    List<Cache> getCaches();
 
     /**
      * Construct a {@link Cache} with the given name (must be unique) OR 
@@ -46,7 +46,7 @@ public interface CacheProvider {
      * @return a cache which can be used to store serializable objects
      * @throws IllegalArgumentException if the cache name is already in use or the config is invalid
      */
-    public Cache getCache(String cacheName, CacheConfig config);
+    Cache getCache(String cacheName, CacheConfig config);
 
     /**
      * Flush and destroy the cache with this name.
@@ -55,11 +55,11 @@ public interface CacheProvider {
      *
      * @param cacheName the unique name for this cache (e.g. org.dspace.user.UserCache)
      */
-    public void destroyCache(String cacheName);
+    void destroyCache(String cacheName);
 
     /**
      * Clears the contents of all caches managed by this provider
      */
-    public void resetCaches();
+    void resetCaches();
 
 }

@@ -16,20 +16,20 @@ import java.io.InputStream;
 
 public interface SwordContentDisseminator
 {
-    public InputStream disseminate(Context context, Item item)
+    InputStream disseminate(Context context, Item item)
         throws DSpaceSwordException, SwordError, SwordServerException;
 
-    public boolean disseminatesContentType(String contentType)
+    boolean disseminatesContentType(String contentType)
         throws DSpaceSwordException, SwordError, SwordServerException;
 
-    public boolean disseminatesPackage(String contentType)
+    boolean disseminatesPackage(String contentType)
         throws DSpaceSwordException, SwordError, SwordServerException;
 
-    public void setContentType(String contentType);
+    void setContentType(String contentType);
 
-    public void setPackaging(String packaging);
+    void setPackaging(String packaging);
 
-    public String getContentType();
+    String getContentType();
 
-    public String getPackaging();
+    String getPackaging();
 }

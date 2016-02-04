@@ -43,7 +43,7 @@ public class PubmedOnlineDataLoader extends NetworkSubmissionLookupDataLoader
     @Override
     public List<String> getSupportedIdentifiers()
     {
-        return Arrays.asList(new String[] { PUBMED, DOI });
+        return Arrays.asList(PUBMED, DOI);
     }
 
     public void setSearchProvider(boolean searchProvider)

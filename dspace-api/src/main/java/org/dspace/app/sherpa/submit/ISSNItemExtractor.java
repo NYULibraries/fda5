@@ -14,5 +14,5 @@ import org.dspace.core.Context;
 
 public interface ISSNItemExtractor
 {
-    public List<String> getISSNs(Context context, Item item);
+    List<String> getISSNs(Context context, Item item);
 }

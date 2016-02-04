@@ -13,9 +13,9 @@ package org.dspace.app.mediafilter;
  */
 public interface SelfRegisterInputFormats
 {
-    public String[] getInputMIMETypes();
+    String[] getInputMIMETypes();
 
-    public String[] getInputDescriptions();
+    String[] getInputDescriptions();
 
-    public String[] getInputExtensions();
+    String[] getInputExtensions();
 }

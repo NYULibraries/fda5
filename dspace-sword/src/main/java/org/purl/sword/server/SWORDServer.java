@@ -40,7 +40,7 @@ public interface SWORDServer {
 	 *
 	 * @return The ServiceDocument representing the service document
 	 */
-	public ServiceDocument doServiceDocument(ServiceDocumentRequest sdr)
+	ServiceDocument doServiceDocument(ServiceDocumentRequest sdr)
 		throws SWORDAuthenticationException, SWORDErrorException, SWORDException;
 	
 	/**
@@ -56,7 +56,7 @@ public interface SWORDServer {
 	 * 
 	 * @return The response to the deposit
 	 */
-	public DepositResponse doDeposit(Deposit deposit)
+	DepositResponse doDeposit(Deposit deposit)
 		throws SWORDAuthenticationException, SWORDErrorException, SWORDException;
 	
 	/**
@@ -72,6 +72,6 @@ public interface SWORDServer {
 	 * 
 	 * @return The response to the atom document request
 	 */
-	public AtomDocumentResponse doAtomDocument(AtomDocumentRequest adr)
+	AtomDocumentResponse doAtomDocument(AtomDocumentRequest adr)
 		throws SWORDAuthenticationException, SWORDErrorException, SWORDException;
 }

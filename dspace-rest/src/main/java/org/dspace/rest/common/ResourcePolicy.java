@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class ResourcePolicy{
 	
 	public enum Action {
-		READ, WRITE, DELETE;
+		READ, WRITE, DELETE
 	}
 	
 	private Integer id;

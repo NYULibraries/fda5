@@ -22,7 +22,7 @@ public class Event implements Serializable {
     /**
      * The event scopes to send events to.
      */
-    public static enum Scope {LOCAL, CLUSTER, EXTERNAL};
+    public enum Scope {LOCAL, CLUSTER, EXTERNAL}
 
     private String id;
     private String name;

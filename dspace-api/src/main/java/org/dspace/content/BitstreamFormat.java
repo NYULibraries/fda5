@@ -315,7 +315,7 @@ public class BitstreamFormat
 
         // Return the formats as an array
         BitstreamFormat[] formatArray = new BitstreamFormat[formats.size()];
-        formatArray = (BitstreamFormat[]) formats.toArray(formatArray);
+        formatArray = formats.toArray(formatArray);
 
         return formatArray;
     }
@@ -375,7 +375,7 @@ public class BitstreamFormat
 
         // Return the formats as an array
         BitstreamFormat[] formatArray = new BitstreamFormat[formats.size()];
-        formatArray = (BitstreamFormat[]) formats.toArray(formatArray);
+        formatArray = formats.toArray(formatArray);
 
         return formatArray;
     }
@@ -655,7 +655,7 @@ public class BitstreamFormat
     public String[] getExtensions()
     {
         String[] exts = new String[extensions.size()];
-        exts = (String[]) extensions.toArray(exts);
+        exts = extensions.toArray(exts);
 
         return exts;
     }

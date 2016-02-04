@@ -26,7 +26,7 @@ public interface RDFStorage {
      * @param model The model to store.
      * @see org.dspace.rdf.RDFizer;
      */
-    public void store(String uri, Model model);
+    void store(String uri, Model model);
     
     /**
      * Don't use this method directly, use
@@ -34,11 +34,11 @@ public interface RDFStorage {
      * @param uri
      * @return 
      */
-    public Model load(String uri);
+    Model load(String uri);
     
-    public void delete(String uri);
+    void delete(String uri);
     
-    public void deleteAll();
+    void deleteAll();
     
-    public List<String> getAllStoredGraphs();
+    List<String> getAllStoredGraphs();
 }

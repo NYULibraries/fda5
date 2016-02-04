@@ -868,7 +868,7 @@ public class ConfigurationManager
                     }
                     else
                     {
-                        result.append(((String)properties.getProperty(var)).trim());
+                        result.append(properties.getProperty(var).trim());
                     }
                 }
                 else

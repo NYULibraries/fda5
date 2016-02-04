@@ -21,6 +21,6 @@ public interface InitializedService {
      * Executed after the service is created and all dependencies and 
      * configurations injected.
      */
-    public void init();
+    void init();
 
 }

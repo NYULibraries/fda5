@@ -97,11 +97,8 @@ public class BioName {
         if (givenNames != null ? !givenNames.equals(bioName.givenNames) : bioName.givenNames != null) {
             return false;
         }
-        if (otherNames != null ? !otherNames.equals(bioName.otherNames) : bioName.otherNames != null) {
-            return false;
-        }
+        return otherNames != null ? otherNames.equals(bioName.otherNames) : bioName.otherNames == null;
 
-        return true;
     }
 
     @Override

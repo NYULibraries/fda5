@@ -200,9 +200,7 @@ public class DSpaceSetRepository implements SetRepository
             {
                 DSpaceObject dso = HandleManager.resolveToObject(_context,
                         setSpec.replace("col_", "").replace("_", "/"));
-                if (dso == null || !(dso instanceof Collection))
-                    return false;
-                return true;
+                return !(dso == null || !(dso instanceof Collection));
             }
             catch (Exception ex)
             {
@@ -215,9 +213,7 @@ public class DSpaceSetRepository implements SetRepository
             {
                 DSpaceObject dso = HandleManager.resolveToObject(_context,
                         setSpec.replace("com_", "").replace("_", "/"));
-                if (dso == null || !(dso instanceof Community))
-                    return false;
-                return true;
+                return !(dso == null || !(dso instanceof Community));
             }
             catch (Exception ex)
             {

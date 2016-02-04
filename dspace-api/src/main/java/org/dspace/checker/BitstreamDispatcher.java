@@ -38,7 +38,7 @@ public interface BitstreamDispatcher
      * This value should be returned by <code>next()</code> to indicate that
      * there are no more values.
      */
-    public static int SENTINEL = -1;
+    int SENTINEL = -1;
 
     /**
      * Returns the next id for checking, or a sentinel value if there are no
@@ -48,5 +48,5 @@ public interface BitstreamDispatcher
      *         isn't another value
      * 
      */
-    public int next();
+    int next();
 }

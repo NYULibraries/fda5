@@ -170,11 +170,7 @@ public class BrowseInfo
 	 */
 	public boolean hasItemFocus()
 	{
-		if (focusItem == -1)
-		{
-			return false;
-		}
-		return true;
+		return focusItem != -1;
 	}
 
 	/**
@@ -200,12 +196,8 @@ public class BrowseInfo
 	 */
 	public boolean hasValue()
     {
-    	if (this.value != null)
-    	{
-    		return true;
-    	}
-    	return false;
-    }
+		return this.value != null;
+	}
 
 	/**
 	 * Is there an authority key associated with this browse
@@ -214,12 +206,8 @@ public class BrowseInfo
 	 */
 	public boolean hasAuthority()
     {
-    	if (this.authority != null)
-    	{
-    		return true;
-    	}
-    	return false;
-    }
+		return this.authority != null;
+	}
 
 	/**
 	 * Are there results for this browse, or was the result set empty?
@@ -228,12 +216,8 @@ public class BrowseInfo
 	 */
     public boolean hasResults()
     {
-    	if (results.size() > 0)
-    	{
-    		return true;
-    	}
-    	return false;
-    }
+		return results.size() > 0;
+	}
 
     /**
      * @param focus		the value to focus the browse around
@@ -448,11 +432,7 @@ public class BrowseInfo
 	 */
 	public boolean isTopLevel()
 	{
-		if (this.level == 0)
-		{
-			return true;
-		}
-		return false;
+		return this.level == 0;
 	}
 
 	/**
@@ -463,11 +443,7 @@ public class BrowseInfo
 	 */
 	public boolean isSecondLevel()
 	{
-		if (this.level == 1)
-		{
-			return true;
-		}
-		return false;
+		return this.level == 1;
 	}
 
     /**
@@ -621,11 +597,7 @@ public class BrowseInfo
      */
     public boolean inCommunity()
 	{
-		if (this.community != null)
-		{
-			return true;
-		}
-		return false;
+		return this.community != null;
 	}
 
     /**
@@ -635,11 +607,7 @@ public class BrowseInfo
      */
 	public boolean inCollection()
 	{
-		if (this.collection != null)
-		{
-			return true;
-		}
-		return false;
+		return this.collection != null;
 	}
 
 	/**
@@ -649,11 +617,7 @@ public class BrowseInfo
 	 */
 	public boolean hasNextPage()
 	{
-		if (nextOffset > -1)
-		{
-			return true;
-		}
-		return false;
+		return nextOffset > -1;
 	}
 
 	/**
@@ -663,11 +627,7 @@ public class BrowseInfo
 	 */
 	public boolean hasPrevPage()
 	{
-		if (offset > 0)
-		{
-			return true;
-		}
-		return false;
+		return offset > 0;
 	}
 
 	/**
@@ -677,11 +637,7 @@ public class BrowseInfo
 	 */
 	public boolean hasFocus()
 	{
-		if ("".equals(focus) || focus == null)
-		{
-			return false;
-		}
-		return true;
+		return !("".equals(focus) || focus == null);
 	}
 
 	/**

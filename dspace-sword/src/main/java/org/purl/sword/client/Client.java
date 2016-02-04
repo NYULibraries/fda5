@@ -438,7 +438,7 @@ public class Client implements SWORDClient {
 	 * @throws IOException
 	 */
 	private String readResponse(InputStream stream)
-			throws UnsupportedEncodingException, IOException {
+			throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(
 				stream, "UTF-8"));
 		String line = null;

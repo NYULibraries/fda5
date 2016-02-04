@@ -20,6 +20,6 @@ import org.dspace.core.Context;
  * 
  */
 public interface RequestItemAuthorExtractor {
-	public RequestItemAuthor getRequestItemAuthor(Context context, Item item)
+	RequestItemAuthor getRequestItemAuthor(Context context, Item item)
 			throws SQLException;
 }

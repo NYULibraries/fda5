@@ -537,12 +537,8 @@ public class WorkspaceItem implements InProgressSubmission
         }
 
         final WorkspaceItem that = (WorkspaceItem)o;
-        if (this.getID() != that.getID())
-        {
-            return false;
-        }
+        return this.getID() == that.getID();
 
-        return true;
     }
 
     public int hashCode()

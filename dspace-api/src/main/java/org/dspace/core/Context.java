@@ -247,7 +247,7 @@ public class Context
             StackTraceElement[] stackTrace = currThread.getStackTrace();
             String caller = stackTrace[stackTrace.length - 1].getClassName();
 
-            String previousCaller = (String) authStateClassCallHistory.pop();
+            String previousCaller = authStateClassCallHistory.pop();
 
             // if previousCaller is not the current caller *only* log a warning
             if (!previousCaller.equals(caller))
@@ -640,13 +640,8 @@ public class Context
      */
     public boolean inSpecialGroup(int groupID)
     {
-        if (specialGroups.contains(Integer.valueOf(groupID)))
-        {
-            // System.out.println("Contains " + groupID);
-            return true;
-        }
+        return specialGroups.contains(Integer.valueOf(groupID));
 
-        return false;
     }
 
     /**

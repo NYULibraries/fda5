@@ -55,7 +55,7 @@ public class UpdateHandlePrefix
             String sql = "SELECT count(*) as count " +
                          "FROM handle " +
                          "WHERE handle LIKE '" + oldH + "%'";
-            TableRow row = DatabaseManager.querySingle(context, sql, new Object[] {});
+            TableRow row = DatabaseManager.querySingle(context, sql);
             long count = row.getLongColumn("count");
 
             if (count > 0)
@@ -86,7 +86,7 @@ public class UpdateHandlePrefix
                         sql = "UPDATE handle " +
                               "SET handle = '" + newH + "' || '/' || handle_id " +
                               "WHERE handle like '" + oldH + "/%'";
-                        int updHdl = DatabaseManager.updateQuery(context, sql, new Object[] {});
+                        int updHdl = DatabaseManager.updateQuery(context, sql);
                         System.out.println(
                           updHdl + " item" + ((updHdl > 1) ? "s" : "") + " updated"
                         );
@@ -108,7 +108,7 @@ public class UpdateHandlePrefix
                                     "WHERE handle.resource_id = metadatavalue.resource_id " +
                                       "AND handle.resource_type_id = 2" +
                                   ")";
-                        int updMeta = DatabaseManager.updateQuery(context, sql, new Object[] {});
+                        int updMeta = DatabaseManager.updateQuery(context, sql);
                         System.out.println(
                           updMeta + " metadata value" + ((updMeta > 1) ? "s" : "") + " updated"
                         );

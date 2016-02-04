@@ -152,11 +152,7 @@ public class DCInputSet
     	{
     		return false;
     	}
-    	if (rowName.equals("identifier.citation") && ! addPublishedBefore )
-    	{
-    		return false;
-    	}
+		return !(rowName.equals("identifier.citation") && !addPublishedBefore);
 
-    	return true;
-    }
+	}
 }

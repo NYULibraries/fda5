@@ -15,6 +15,6 @@ public enum SwordValidationInfoType {
    VALID,
    INFO,
    WARNING,
-   ERROR;
+   ERROR
 
 }

@@ -21,7 +21,7 @@ public interface SWORDClient
      * @param server The name of the server, e.g. www.aber.ac.uk
      * @param port   The port number, e.g. 80. 
      */
-    public void setServer( String server, int port );
+    void setServer(String server, int port);
     
     /**
      * Set the user credentials that are to be used for subsequent accesses. 
@@ -29,12 +29,12 @@ public interface SWORDClient
      * @param username The username. 
      * @param password The password. 
      */
-    public void setCredentials( String username, String password );
+    void setCredentials(String username, String password);
 
     /**
     * Clear the credentials settings on the client.
     */
-    public void clearCredentials();
+    void clearCredentials();
 
     /**
      * Set the proxy that is to be used for subsequent accesses. 
@@ -42,14 +42,14 @@ public interface SWORDClient
      * @param host The host name, e.g. cache.host.com. 
      * @param port The port, e.g. 8080. 
      */
-    public void setProxy( String host, int port );
+    void setProxy(String host, int port);
         
     /**
      * Get the status result returned from the most recent network test. 
      * 
      * @return The status code and message.  
      */
-    public Status getStatus( );
+    Status getStatus();
     
     /**
      * Get a service document, specified in the URL. 
@@ -61,7 +61,7 @@ public interface SWORDClient
      * @throws SWORDClientException If there is an error accessing the 
      *                              URL. 
      */
-    public ServiceDocument getServiceDocument( String url ) throws SWORDClientException;
+    ServiceDocument getServiceDocument(String url) throws SWORDClientException;
     
     /**
      * Get a service document, specified in the URL. The document is accessed on
@@ -74,7 +74,7 @@ public interface SWORDClient
      *         
      * @throws SWORDClientException If there is an error accessing the URL.
      */
-    public ServiceDocument getServiceDocument(String url, String onBehalfOf ) throws SWORDClientException;
+    ServiceDocument getServiceDocument(String url, String onBehalfOf) throws SWORDClientException;
     
     /**
      * Post a file to the specified destination URL. 
@@ -86,5 +86,5 @@ public interface SWORDClient
      *         
      * @throws SWORDClientException If there is an error accessing the URL. 
      */
-    public DepositResponse postFile( PostMessage message ) throws SWORDClientException;
+    DepositResponse postFile(PostMessage message) throws SWORDClientException;
 }

@@ -92,8 +92,8 @@ public class CCLookup {
 	 */
 	public String getLicenseId (String class_label) {
 		for (int i = 0; i < this.licenses.size(); i++) {
-			if ( ((CCLicense)this.licenses.get(i)).getLicenseName().equals(class_label)) {
-				return ( (CCLicense)this.licenses.get(i) ).getLicenseId();
+			if ( this.licenses.get(i).getLicenseName().equals(class_label)) {
+				return this.licenses.get(i).getLicenseId();
 			}
 		}
 
@@ -116,7 +116,7 @@ public class CCLookup {
 		try {
 			JDOMXPath xp_Licenses = new JDOMXPath("//licenses/license");
 			JDOMXPath xp_LicenseID = new JDOMXPath("@id");
-			URL classUrl = new URL(this.cc_root + "/?locale=" + language);
+			URL classUrl = new URL(cc_root + "/?locale=" + language);
 			Document classDoc = this.parser.build(classUrl);
 			// extract the identifiers and labels using XPath
 			List<Element> results = xp_Licenses.selectNodes(classDoc);
@@ -185,7 +185,7 @@ public class CCLookup {
 
 		// retrieve and parse the license class document
 		try {
-			classUrl = new URL(this.cc_root + "/license/" + license + "?locale=" + language);
+			classUrl = new URL(cc_root + "/license/" + license + "?locale=" + language);
 		} catch (Exception err) {
 			// do nothing... but we should
 			return null;
@@ -259,7 +259,7 @@ public class CCLookup {
 		throws IOException{
 
 		// Determine the issue URL
-		String issueUrl = this.cc_root + "/license/" + licenseId + "/issue";
+		String issueUrl = cc_root + "/license/" + licenseId + "/issue";
 		// Assemble the "answers" document
 		String answer_doc = "<answers>\n<locale>" + lang + "</locale>\n" + "<license-" + licenseId + ">\n";
 		Iterator keys = answers.keySet().iterator();
@@ -268,7 +268,7 @@ public class CCLookup {
 			String current = (String)keys.next();
 
 			while (true) {
-				answer_doc += "<" + current + ">" + (String)answers.get(current) + "</" + current + ">\n";
+				answer_doc += "<" + current + ">" + answers.get(current) + "</" + current + ">\n";
 				current = (String)keys.next();
 			}
 

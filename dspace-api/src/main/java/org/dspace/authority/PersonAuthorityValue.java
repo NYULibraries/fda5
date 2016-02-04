@@ -250,10 +250,7 @@ public class PersonAuthorityValue extends AuthorityValue {
         if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) {
             return false;
         }
-        if (nameVariants != null ? !nameVariants.equals(that.nameVariants) : that.nameVariants != null) {
-            return false;
-        }
+        return nameVariants != null ? nameVariants.equals(that.nameVariants) : that.nameVariants == null;
 
-        return true;
     }
 }

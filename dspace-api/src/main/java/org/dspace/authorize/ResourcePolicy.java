@@ -95,11 +95,7 @@ public class ResourcePolicy
             {
                 return false;
             }
-            if (this.getEndDate() != other.getEndDate() && (this.getEndDate() == null || !this.getEndDate().equals(other.getEndDate())))
-            {
-                return false;
-            }    
-            return true;
+            return !(this.getEndDate() != other.getEndDate() && (this.getEndDate() == null || !this.getEndDate().equals(other.getEndDate())));
         }
         catch (SQLException ex)
         {

@@ -95,7 +95,7 @@ public class CollectionStyleSelection extends AKeyBasedStyleSelection
             readKeyStyleConfig();
         }
 
-        String styleName = (String) styles.get(handle);
+        String styleName = styles.get(handle);
 
         if (styleName == null)
         {

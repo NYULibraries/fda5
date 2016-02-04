@@ -40,8 +40,8 @@ public interface SimpleReporter
      * @throws IOException
      *             if io error occurs
      */
-    public int getDeletedBitstreamReport(Date startDate, Date endDate,
-            OutputStreamWriter osw) throws IOException;
+    int getDeletedBitstreamReport(Date startDate, Date endDate,
+                                  OutputStreamWriter osw) throws IOException;
 
     /**
      * The a report of bitstreams found where the checksum has been changed
@@ -59,8 +59,8 @@ public interface SimpleReporter
      * @throws IOException
      *             if io error occurs
      */
-    public int getChangedChecksumReport(Date startDate, Date endDate,
-            OutputStreamWriter osw) throws IOException;
+    int getChangedChecksumReport(Date startDate, Date endDate,
+                                 OutputStreamWriter osw) throws IOException;
 
     /**
      * The report of bitstreams for the specified date range where it was
@@ -78,8 +78,8 @@ public interface SimpleReporter
      * @throws IOException
      *             if io error occurs
      */
-    public int getBitstreamNotFoundReport(Date startDate, Date endDate,
-            OutputStreamWriter osw) throws IOException;
+    int getBitstreamNotFoundReport(Date startDate, Date endDate,
+                                   OutputStreamWriter osw) throws IOException;
 
     /**
      * The bitstreams that were set to not be processed report for the specified
@@ -96,8 +96,8 @@ public interface SimpleReporter
      *             if io error occurs
      * 
      */
-    public int getNotToBeProcessedReport(Date startDate, Date endDate,
-            OutputStreamWriter osw) throws IOException;
+    int getNotToBeProcessedReport(Date startDate, Date endDate,
+                                  OutputStreamWriter osw) throws IOException;
 
     /**
      * The bitstreams that are not known to the checksum checker. This means
@@ -112,6 +112,6 @@ public interface SimpleReporter
      *             if io error occurs
      * 
      */
-    public int getUncheckedBitstreamsReport(Context context, OutputStreamWriter osw)
+    int getUncheckedBitstreamsReport(Context context, OutputStreamWriter osw)
             throws IOException;
 }

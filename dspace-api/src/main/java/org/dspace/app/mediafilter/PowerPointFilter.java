@@ -93,7 +93,7 @@ public class PowerPointFilter extends MediaFilter
             else if (pptExtractor instanceof PowerPointExtractor)
             {
 
-                extractedText = ((PowerPointExtractor) pptExtractor).getText()
+                extractedText = pptExtractor.getText()
                         + " " + ((PowerPointExtractor) pptExtractor).getNotes();
 
             }

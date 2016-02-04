@@ -718,11 +718,11 @@ public class LuceneSearchRequestProcessor implements SearchRequestProcessor
     public void doItemMapSearch(Context context, HttpServletRequest request,
             HttpServletResponse response) throws SearchProcessorException, ServletException, IOException
     {
-        String query = (String) request.getParameter("query");
+        String query = request.getParameter("query");
         int page = UIUtil.getIntParameter(request, "page")-1;
         int offset = page > 0? page * ITEMMAP_RESULT_PAGE_SIZE:0;
         Collection collection = (Collection) request.getAttribute("collection");
-        String idx = (String) request.getParameter("index");
+        String idx = request.getParameter("index");
         if (StringUtils.isNotBlank(idx) && !idx.equalsIgnoreCase("any"))
         {
             query = idx + ":(" + query + ")";

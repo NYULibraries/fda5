@@ -28,6 +28,6 @@ public interface OrderedService {
      *
      * @return an int which represents the loading order
      */
-    public int getOrder();
+    int getOrder();
 
 }

@@ -283,7 +283,7 @@ public class StatisticsImporterElasticSearch {
 
                 elasticSearchLoggerInstance.storeParents(postBuilder, elasticSearchLoggerInstance.getParents(dso));
 
-                bulkRequest.add(client.prepareIndex(elasticSearchLoggerInstance.getIndexName(), elasticSearchLoggerInstance.getIndexType())
+                bulkRequest.add(client.prepareIndex(ElasticSearchLogger.getIndexName(), ElasticSearchLogger.getIndexType())
                         .setSource(postBuilder.endObject()));
 
 

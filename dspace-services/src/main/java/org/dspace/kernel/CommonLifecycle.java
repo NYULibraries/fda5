@@ -19,24 +19,24 @@ public interface CommonLifecycle<T> {
      * Starts the bean. This initializes and causes the object to begin functioning.
      * Should not happen automatically when the object is created.
      */
-    public void start();
+    void start();
 
     /**
      * Stops the bean. This turns the object off and causes related things to be shutdown.
      * Object should be able to be started again.
      */
-    public void stop();
+    void stop();
 
     /**
      * Gets a reference to the bean that is being managed inside this lifecycle.
      * @return the managed object
      */
-    public T getManagedBean();
+    T getManagedBean();
 
     /**
      * Destroy the managed bean entirely. It will be stopped first if not stopped and cannot be
      * started again afterwards.
      */
-    public void destroy();
+    void destroy();
 
 }

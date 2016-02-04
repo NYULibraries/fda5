@@ -21,13 +21,13 @@ import java.util.Date;
  */
 public interface Version
 {
-    public EPerson getEperson();
-    public int getItemID();
-    public Date getVersionDate();
-    public int getVersionNumber();
-    public String getSummary();
-    public int getVersionHistoryID();
-    public int getVersionId();
-    public Item getItem();
+    EPerson getEperson();
+    int getItemID();
+    Date getVersionDate();
+    int getVersionNumber();
+    String getSummary();
+    int getVersionHistoryID();
+    int getVersionId();
+    Item getItem();
 }
 

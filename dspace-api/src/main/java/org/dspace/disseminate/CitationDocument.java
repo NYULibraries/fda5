@@ -311,7 +311,7 @@ public class CitationDocument {
         PDDocument sourceDocument = new PDDocument();
         try {
             Item item = (Item) bitstream.getParentObject();
-            sourceDocument = sourceDocument.load(bitstream.retrieve());
+            sourceDocument = PDDocument.load(bitstream.retrieve());
             PDPage coverPage = new PDPage(PDPage.PAGE_SIZE_LETTER);
             generateCoverPage(document, coverPage, item);
             addCoverPageToDocument(document, sourceDocument, coverPage);

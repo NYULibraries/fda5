@@ -21,41 +21,41 @@ public interface Namespaces {
 	/**
 	 * Atom Publishing Protocol (APP) Namespace. 
 	 */
-	public static final String NS_APP = "http://www.w3.org/2007/app";
+	String NS_APP = "http://www.w3.org/2007/app";
 	
 	/**
     * APP Prefix. 
     */
-   public static final String PREFIX_APP = "app";
+	String PREFIX_APP = "app";
 	
 	/**
 	 * ATOM Namespace.
 	 */
-	public static final String NS_ATOM = "http://www.w3.org/2005/Atom";
+	String NS_ATOM = "http://www.w3.org/2005/Atom";
 	
 	/**
 	 * ATOM Prefix. 
 	 */
-	public static final String PREFIX_ATOM = "atom";
+	String PREFIX_ATOM = "atom";
 	
 	/**
 	 * Sword Namespace. 
 	 */
-	public static final String NS_SWORD = "http://purl.org/net/sword/";
+	String NS_SWORD = "http://purl.org/net/sword/";
 	
 	/**
     * SWORD Prefix. 
     */
-   public static final String PREFIX_SWORD = "sword";
+	String PREFIX_SWORD = "sword";
    
    /**
     * DC Terms Namespace.
     */
-	public static final String NS_DC_TERMS = "http://purl.org/dc/terms/";
+   String NS_DC_TERMS = "http://purl.org/dc/terms/";
 	
 	/**
     * DC Terms Prefix. 
     */
-   public static final String PREFIX_DC_TERMS = "dcterms";
+	String PREFIX_DC_TERMS = "dcterms";
    
 }

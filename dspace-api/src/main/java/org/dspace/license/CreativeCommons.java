@@ -547,7 +547,7 @@ public class CreativeCommons
                          arrayList.add(dcvalue.value);
                      }
                   }
-                  String[] values = (String[])arrayList.toArray(new String[arrayList.size()]);
+                  String[] values = arrayList.toArray(new String[arrayList.size()]);
                   item.clearMetadata(params[0], params[1], params[2], params[3]);
                   item.addMetadata(params[0], params[1], params[2], params[3], values);
     		}

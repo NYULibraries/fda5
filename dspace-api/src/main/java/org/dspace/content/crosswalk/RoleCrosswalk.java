@@ -256,7 +256,7 @@ public class RoleCrosswalk
     {
         if(!metadata.isEmpty())
         {
-            ingest(context, dso, ((Element) metadata.get(0)).getParentElement());
+            ingest(context, dso, metadata.get(0).getParentElement());
         }
     }
 

@@ -21,5 +21,5 @@ public interface ServiceSelectedListener
     * 
     * @param collection The location of the collection. <code>null</code>, otherwise. 
     */
-   public void selected(String collection); 
+   void selected(String collection);
 }

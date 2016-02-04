@@ -43,6 +43,10 @@
 <%@page import="org.apache.commons.lang.StringUtils"%>
 <%@ page import="java.io.IOException" %>
 <%@ page import="java.sql.SQLException" %>
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="org.dspace.authorize.AuthorizeManager" %>
+<%@ page import="org.dspace.authorize.ResourcePolicy" %>
+<%@ page import="org.dspace.core.Constants" %>
 <%
     Community[] communities = (Community[]) request.getAttribute("communities");
 
@@ -130,56 +134,59 @@ for (int i = 0; i < communities.length; i++)
 %>
                 </div>
             </div>
-            <div class="col-md-4">
-              <div class="panel panel-primary homepagesearch">
-                <div class="panel-heading">
-                  <h1>Most Popular Items</h1></div>
-                <div class="panel-body">
-                <div class="row">
+
 <%
 if (mostdownloaded != null && mostdownloaded.count() > 0)
 {
 %>
-        <div class="col-md-8">
-        <div class="panel panel-primary">        
+       <div class="col-md-4">
+                     <div class="panel panel-primary homepage-sidebar">
+                       <div class="panel-heading"><h1>Most downloaded</h1></div>
+                       <div class="panel-body">
 
                     <%
 
                     for (Item item : mostdownloaded.getMostDownloaded())
                     {
-                      if(item!=null) {
+
+                      if(item.isPublic()||item.isDiscoverable()) {
+                        Collection col=item.getCollections()[0];
                         Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
                         String displayTitle = "Untitled";
                         if (dcv != null & dcv.length > 0)
                         {
                             displayTitle = dcv[0].value;
                         }
-                        dcv = item.getMetadata("dc", "description", "abstract", Item.ANY);
-                        String displayAbstract = "";
-                        if (dcv != null & dcv.length > 0)
-                        {
-                            displayAbstract = dcv[0].value;
-                        }
+                        dcv = item.getMetadata("dc", "contributor", "author", Item.ANY);
+                        Metadatum[] authors =dcv;
+
                 %>
-                    <div style="padding-bottom: 10px; min-height: 200px;" class="item">
-                        <a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>" class="btn"><%= displayTitle  %></a>
-                        <p><%= displayAbstract %></p>
-                      </div>
-                    </div>
+                    <article >
+                    <div class="communityflag"><span>Collection:</span>
+                        <a href="<%= request.getContextPath() %>/handle/<%=col.getHandle() %>" ><%= col.getName()  %></a></div>
+                        <h1><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h1>
+                        <% if (dcv!=null&&dcv.length>0)
+                            {
+                             for(int i=0;i<authors.length;i++)
+                             {
+                               String authorQuery=""+request.getContextPath()+"/simple-search?filterquery="
+                                             +URLEncoder.encode(authors[i].value,"UTF-8")
+                                             + "&amp;filtername="+URLEncoder.encode("author","UTF-8")+"&amp;filtertype="
+                                             +URLEncoder.encode("equals","UTF-8");
+                        %>
+                        	   <div class="authors">
+                        		 <a class="authors" href="<%=authorQuery %>"> <%= StringUtils.abbreviate(authors[i].value,36) %></a>
+                        	   </div>
+                           <% }
+                           } %>
+                   </article>
                   <%
+                   }
+                  }
 
-                     }
-                     }
-                %>
-
-
-     </div></div>
-<%
 }
-%>
-
-                </div>
-              </div>
+%>     </div>
+        </div>
             </div> <!-- end col 4 -->
           </div> <!-- end col row  -->
      

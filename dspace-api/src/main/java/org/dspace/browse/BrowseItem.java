@@ -132,7 +132,7 @@ public class BrowseItem extends DSpaceObject
 
                 // else, Create an array of matching values
                 Metadatum[] valueArray = new Metadatum[values.size()];
-                valueArray = (Metadatum[]) values.toArray(valueArray);
+                valueArray = values.toArray(valueArray);
 
                 return valueArray;
             }

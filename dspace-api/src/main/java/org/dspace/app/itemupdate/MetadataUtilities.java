@@ -276,7 +276,7 @@ public class MetadataUtilities {
      * @throws TransformerException
      */
 	public static Document writeDublinCore(DocumentBuilder docBuilder, List<DtoMetadata> dtomList)
-	throws ParserConfigurationException, TransformerConfigurationException, TransformerException
+	throws ParserConfigurationException, TransformerException
 	{		
         Document doc = docBuilder.newDocument();
         Element root = doc.createElement("dublin_core");
@@ -381,7 +381,7 @@ public class MetadataUtilities {
      * @validate  flag to verify matching files in tree
      */
     public static List<ContentsEntry> readContentsFile(File f)
-    throws FileNotFoundException, IOException, ParseException
+    throws IOException, ParseException
     {
     	List<ContentsEntry> list = new ArrayList<ContentsEntry>();
     	
@@ -425,7 +425,7 @@ public class MetadataUtilities {
      * @throws IOException
      */
     public static List<Integer> readDeleteContentsFile(File f)
-    throws FileNotFoundException, IOException
+    throws IOException
     {
     	List<Integer> list = new ArrayList<Integer>();
     	

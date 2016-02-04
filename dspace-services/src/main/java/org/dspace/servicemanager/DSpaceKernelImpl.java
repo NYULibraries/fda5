@@ -269,12 +269,12 @@ public final class DSpaceKernelImpl implements DSpaceKernel, DynamicMBean, Commo
     }
 
     public MBeanInfo getMBeanInfo() {
-        Descriptor lastLoadDateDesc = new DescriptorSupport(new String[] {"name=LastLoadDate",
+        Descriptor lastLoadDateDesc = new DescriptorSupport("name=LastLoadDate",
                 "descriptorType=attribute", "default=0", "displayName=Last Load Date",
-        "getMethod=getLastLoadDate"});
-        Descriptor lastLoadTimeDesc = new DescriptorSupport(new String[] {"name=LastLoadTime",
+                "getMethod=getLastLoadDate");
+        Descriptor lastLoadTimeDesc = new DescriptorSupport("name=LastLoadTime",
                 "descriptorType=attribute", "default=0", "displayName=Last Load Time",
-        "getMethod=getLoadTime" });
+                "getMethod=getLoadTime");
 
         ModelMBeanAttributeInfo[] mmbai = new ModelMBeanAttributeInfo[2];
         mmbai[0] = new ModelMBeanAttributeInfo("LastLoadDate", "java.util.Date", "Last Load Date",

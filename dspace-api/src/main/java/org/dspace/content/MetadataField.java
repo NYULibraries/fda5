@@ -323,7 +323,7 @@ public class MetadataField
 
         // Convert list into an array
         MetadataField[] typeArray = new MetadataField[fields.size()];
-        return (MetadataField[]) fields.toArray(typeArray);
+        return fields.toArray(typeArray);
     }
 
     /**
@@ -363,7 +363,7 @@ public class MetadataField
 
         // Convert list into an array
         MetadataField[] typeArray = new MetadataField[fields.size()];
-        return (MetadataField[]) fields.toArray(typeArray);
+        return fields.toArray(typeArray);
     }
 
     /**
@@ -659,11 +659,7 @@ public class MetadataField
         {
             return false;
         }
-        if (this.schemaID != other.schemaID)
-        {
-            return false;
-        }
-        return true;
+        return this.schemaID == other.schemaID;
     }
 
     @Override

@@ -293,14 +293,7 @@ public class SpiderDetector {
 
     private static boolean isUseProxies() {
         if(useProxies == null) {
-            if ("true".equals(ConfigurationManager.getProperty("useProxies")))
-            {
-                useProxies = true;
-            }
-            else
-            {
-                useProxies = false;
-            }
+            useProxies = "true".equals(ConfigurationManager.getProperty("useProxies"));
         }
 
         return useProxies;

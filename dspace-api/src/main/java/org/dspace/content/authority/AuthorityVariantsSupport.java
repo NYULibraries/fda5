@@ -19,5 +19,5 @@ import java.util.List;
  * @author bollini
  */
 public interface AuthorityVariantsSupport {
-    public List<String> getVariants(String key, String locale);
+    List<String> getVariants(String key, String locale);
 }

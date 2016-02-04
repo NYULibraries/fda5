@@ -802,8 +802,7 @@ public class OAIHarvester {
      * @param MDNamespace the namespace that we are trying to resolve to the metadataPrefix
      * @return metadataPrefix the OAI-PMH provider has assigned to the supplied namespace
      */
-    public static String oaiResolveNamespaceToPrefix(String oaiSource, String MDNamespace) throws IOException, ParserConfigurationException, SAXException, TransformerException, ConnectException
-    {
+    public static String oaiResolveNamespaceToPrefix(String oaiSource, String MDNamespace) throws IOException, ParserConfigurationException, SAXException, TransformerException {
     	String metaPrefix = null;
 
     	// Query the OAI server for the metadata

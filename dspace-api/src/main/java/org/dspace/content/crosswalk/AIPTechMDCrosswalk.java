@@ -295,7 +295,7 @@ public class AIPTechMDCrosswalk
             dc.add(makeDC("identifier", "uri", site.getURL()));
         }
 
-        Metadatum result[] = (Metadatum[])dc.toArray(new Metadatum[dc.size()]);
+        Metadatum result[] = dc.toArray(new Metadatum[dc.size()]);
         return XSLTDisseminationCrosswalk.createDIM(dso, result);
     }
 

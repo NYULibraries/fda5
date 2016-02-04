@@ -116,11 +116,7 @@ public class EPerson extends DSpaceObject
         {
             return false;
         }
-        if (!this.getFullName().equals(other.getFullName()))
-        {
-            return false;
-        }
-        return true;
+        return this.getFullName().equals(other.getFullName());
     }
 
     /**
@@ -381,7 +377,7 @@ public class EPerson extends DSpaceObject
 
             for (int i = 0; i < epeopleRows.size(); i++)
             {
-                TableRow row = (TableRow) epeopleRows.get(i);
+                TableRow row = epeopleRows.get(i);
 
                 // First check the cache
                 EPerson fromCache = (EPerson) context.fromCache(EPerson.class, row
@@ -441,21 +437,19 @@ public class EPerson extends DSpaceObject
 		        "LOWER((select text_value from metadatavalue where resource_id=? and resource_type_id=? and metadata_field_id=?)) LIKE LOWER(?) " +
                 "OR LOWER((select text_value from metadatavalue where resource_id=? and resource_type_id=? and metadata_field_id=?)) LIKE LOWER(?) " +
                 "OR LOWER(eperson.email) LIKE LOWER(?)",
-		        new Object[] {
-                        int_param,
+                int_param,
 
-                        int_param,
-                        Constants.EPERSON,
-                        MetadataField.findByElement(context, MetadataSchema.find(context, "eperson").getSchemaID(), "firstname", null).getFieldID(),
-                        dbquery,
+                int_param,
+                Constants.EPERSON,
+                MetadataField.findByElement(context, MetadataSchema.find(context, "eperson").getSchemaID(), "firstname", null).getFieldID(),
+                dbquery,
 
-                        int_param,
-                        Constants.EPERSON,
-                        MetadataField.findByElement(context, MetadataSchema.find(context, "eperson").getSchemaID(), "lastname", null).getFieldID(),
-                        dbquery,
+                int_param,
+                Constants.EPERSON,
+                MetadataField.findByElement(context, MetadataSchema.find(context, "eperson").getSchemaID(), "lastname", null).getFieldID(),
+                dbquery,
 
-                        dbquery
-                });
+                dbquery);
 				
 		// use getIntColumn for Oracle count data
         if (DatabaseManager.isOracle())
@@ -535,7 +529,7 @@ public class EPerson extends DSpaceObject
 
             for (int i = 0; i < epeopleRows.size(); i++)
             {
-                TableRow row = (TableRow) epeopleRows.get(i);
+                TableRow row = epeopleRows.get(i);
 
                 // First check the cache
                 EPerson fromCache = (EPerson) context.fromCache(EPerson.class, row

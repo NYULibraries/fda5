@@ -1479,7 +1479,7 @@ public class SubmissionController extends DSpaceServlet
                 // Wrap multipart request
                 wrappedRequest = new FileUploadRequest(request);
 
-                return (HttpServletRequest) wrappedRequest;
+                return wrappedRequest;
             }
             else
             { // already wrapped

@@ -31,6 +31,6 @@ public interface EmbargoLifter
      * @param context the DSpace context
      * @param item the Item on which to lift the embargo
      */
-    public void liftEmbargo(Context context, Item item)
+    void liftEmbargo(Context context, Item item)
         throws SQLException, AuthorizeException, IOException;
 }

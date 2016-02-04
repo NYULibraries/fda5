@@ -84,7 +84,7 @@ public final class EhcacheCache implements Cache {
             throw new IllegalArgumentException("key cannot be null");
         }
 
-        return (Serializable) getCachePayload(key, false);
+        return getCachePayload(key, false);
     }
 
     /* (non-Javadoc)
@@ -109,7 +109,7 @@ public final class EhcacheCache implements Cache {
             throw new IllegalArgumentException("key cannot be null");
         }
 
-        return (Serializable) getCachePayload(key, true);
+        return getCachePayload(key, true);
     }
 
     /* (non-Javadoc)

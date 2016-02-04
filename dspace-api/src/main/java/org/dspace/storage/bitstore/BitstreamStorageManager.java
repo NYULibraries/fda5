@@ -492,12 +492,8 @@ public class BitstreamStorageManager
 	 * @return true if the bitstream is a registered file
 	 */
 	public static boolean isRegisteredBitstream(String internalId) {
-	    if (internalId.substring(0, REGISTERED_FLAG.length())
-	            .equals(REGISTERED_FLAG)) 
-	    {
-	        return true;
-	    }
-	    return false;
+		return internalId.substring(0, REGISTERED_FLAG.length())
+				.equals(REGISTERED_FLAG);
 	}
 
     /**
@@ -859,7 +855,7 @@ public class BitstreamStorageManager
 			bufFilename.append(sInternalId);
 			if (log.isDebugEnabled()) {
 				log.debug("SRB filename for " + sInternalId + " is "
-						+ ((SRBFile) assetstore).toString()
+						+ assetstore.toString()
 						+ bufFilename.toString());
 			}
 			return new SRBFile((SRBFile) assetstore, bufFilename.toString());

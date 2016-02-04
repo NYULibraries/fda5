@@ -636,7 +636,7 @@ public class Bitstream extends DSpaceObject
         }
 
         Bundle[] bundleArray = new Bundle[bundles.size()];
-        bundleArray = (Bundle[]) bundles.toArray(bundleArray);
+        bundleArray = bundles.toArray(bundleArray);
 
         return bundleArray;
     }

@@ -30,7 +30,7 @@ public interface SessionService {
      * 
      * @return the Session object associated with the current request or processing thread OR null if there is not one
      */
-    public Session getCurrentSession();
+    Session getCurrentSession();
 
     /**
      * Access the current session id for the current thread
@@ -38,7 +38,7 @@ public interface SessionService {
      * 
      * @return the id of the session associated with the current thread OR null if there is no session
      */
-    public String getCurrentSessionId();
+    String getCurrentSessionId();
 
     /**
      * Access the current user id for the current session.
@@ -46,6 +46,6 @@ public interface SessionService {
      * 
      * @return the id of the user associated with the current thread OR null if there is no user
      */
-    public String getCurrentUserId();
+    String getCurrentUserId();
 
 }

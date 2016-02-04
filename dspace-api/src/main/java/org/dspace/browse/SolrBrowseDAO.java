@@ -324,7 +324,7 @@ public class SolrBrowseDAO implements BrowseDAO
         {
             SearchDocument doc = resp.getSearchDocument(
                     resp.getDspaceObjects().get(0)).get(0);
-            return (String) doc.getSearchFieldValues(column).get(0);
+            return doc.getSearchFieldValues(column).get(0);
         }
         return null;
     }

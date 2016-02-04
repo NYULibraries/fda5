@@ -25,7 +25,7 @@ public interface EventService {
      * 
      * @param event contains the data related to this event
      */
-    public void fireEvent(Event event);
+    void fireEvent(Event event);
 
     /**
      * Queues up an event to be fired at the end of a successful 
@@ -33,13 +33,13 @@ public interface EventService {
      * 
      * @param event contains the data related to this event
      */
-    public void queueEvent(Event event);
+    void queueEvent(Event event);
 
     /**
      * Register an event listener which will be notified when events occur.
      * 
      * @param listener an implementation of the event listener
      */
-    public void registerEventListener(EventListener listener);
+    void registerEventListener(EventListener listener);
 
 }

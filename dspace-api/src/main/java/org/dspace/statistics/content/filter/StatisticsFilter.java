@@ -16,5 +16,5 @@ package org.dspace.statistics.content.filter;
 public interface StatisticsFilter {
 
     /** Convert this filter's configuration to a query string fragment. */
-    public String toQuery();
+    String toQuery();
 }

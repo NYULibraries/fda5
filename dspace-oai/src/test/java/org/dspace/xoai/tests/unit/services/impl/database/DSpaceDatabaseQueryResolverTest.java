@@ -45,7 +45,7 @@ public class DSpaceDatabaseQueryResolverTest extends AbstractQueryResolverTest {
     private static final int LENGTH = 100;
 
 
-    private DSpaceDatabaseQueryResolver underTest = new DSpaceDatabaseQueryResolver();;
+    private DSpaceDatabaseQueryResolver underTest = new DSpaceDatabaseQueryResolver();
 
     @Before
     public void autowire () {

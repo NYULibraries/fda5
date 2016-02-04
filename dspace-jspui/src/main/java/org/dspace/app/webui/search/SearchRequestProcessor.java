@@ -18,24 +18,24 @@ import org.dspace.core.Context;
 
 public interface SearchRequestProcessor
 {
-    public void doSimpleSearch(Context context, HttpServletRequest request,
-            HttpServletResponse response) throws SearchProcessorException,
+    void doSimpleSearch(Context context, HttpServletRequest request,
+                        HttpServletResponse response) throws SearchProcessorException,
             IOException, ServletException;
 
-    public void doAdvancedSearch(Context context, HttpServletRequest request,
-            HttpServletResponse response) throws SearchProcessorException,
+    void doAdvancedSearch(Context context, HttpServletRequest request,
+                          HttpServletResponse response) throws SearchProcessorException,
             IOException, ServletException;
 
-    public void doOpenSearch(Context context, HttpServletRequest request,
-            HttpServletResponse response) throws SearchProcessorException,
+    void doOpenSearch(Context context, HttpServletRequest request,
+                      HttpServletResponse response) throws SearchProcessorException,
             IOException, ServletException;
 
-    public void doItemMapSearch(Context context, HttpServletRequest request,
-            HttpServletResponse response) throws SearchProcessorException,
+    void doItemMapSearch(Context context, HttpServletRequest request,
+                         HttpServletResponse response) throws SearchProcessorException,
             IOException, ServletException;
     
-    public List<String> getSearchIndices();
+    List<String> getSearchIndices();
     
-    public String getI18NKeyPrefix();
+    String getI18NKeyPrefix();
 
 }

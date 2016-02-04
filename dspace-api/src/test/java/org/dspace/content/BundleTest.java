@@ -193,7 +193,7 @@ public class BundleTest extends AbstractDSpaceObjectTest
      * Test of getBitstreamByName method, of class Bundle.
      */
     @Test
-    public void testGetBitstreamByName() throws FileNotFoundException, SQLException, IOException, AuthorizeException
+    public void testGetBitstreamByName() throws SQLException, IOException, AuthorizeException
     {
         new NonStrictExpectations(AuthorizeManager.class)
         {{
@@ -222,7 +222,7 @@ public class BundleTest extends AbstractDSpaceObjectTest
      * Test of getBitstreams method, of class Bundle.
      */
     @Test
-    public void testGetBitstreams() throws FileNotFoundException, SQLException, IOException, AuthorizeException
+    public void testGetBitstreams() throws SQLException, IOException, AuthorizeException
     {
         new NonStrictExpectations(AuthorizeManager.class)
         {{
@@ -263,7 +263,7 @@ public class BundleTest extends AbstractDSpaceObjectTest
      * Test of createBitstream method, of class Bundle.
      */
     @Test(expected=AuthorizeException.class)
-    public void testCreateBitstreamNoAuth() throws FileNotFoundException, AuthorizeException, SQLException, IOException
+    public void testCreateBitstreamNoAuth() throws AuthorizeException, SQLException, IOException
     {
         new NonStrictExpectations(AuthorizeManager.class)
         {{
@@ -282,7 +282,7 @@ public class BundleTest extends AbstractDSpaceObjectTest
      * Test of createBitstream method, of class Bundle.
      */
     @Test
-    public void testCreateBitstreamAuth() throws FileNotFoundException, AuthorizeException, SQLException, IOException
+    public void testCreateBitstreamAuth() throws AuthorizeException, SQLException, IOException
     {
         new NonStrictExpectations(AuthorizeManager.class)
         {{
@@ -371,7 +371,7 @@ public class BundleTest extends AbstractDSpaceObjectTest
      * Test of addBitstream method, of class Bundle.
      */
     @Test
-    public void testAddBitstreamAuth() throws SQLException, AuthorizeException, FileNotFoundException, IOException
+    public void testAddBitstreamAuth() throws SQLException, AuthorizeException, IOException
     {
         new NonStrictExpectations(AuthorizeManager.class)
         {{
@@ -503,7 +503,7 @@ public class BundleTest extends AbstractDSpaceObjectTest
         Iterator<ResourcePolicy> it = newpolicies.iterator();
         while (it.hasNext())
         {
-            ResourcePolicy rp = (ResourcePolicy) it.next();
+            ResourcePolicy rp = it.next();
             rp.setAction(Constants.READ);
         }
 

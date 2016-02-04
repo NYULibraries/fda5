@@ -18,6 +18,6 @@ public interface Transform
     /**
      * Convert the input form to the desired output form.
      */
-    public String transform(String from)
+    String transform(String from)
             throws Exception;
 }

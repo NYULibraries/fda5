@@ -51,7 +51,7 @@ public class CrossRefOnlineDataLoader extends NetworkSubmissionLookupDataLoader
     @Override
     public List<String> getSupportedIdentifiers()
     {
-        return Arrays.asList(new String[] { DOI });
+        return Arrays.asList(DOI);
     }
 
     @Override

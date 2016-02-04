@@ -306,7 +306,7 @@ public class Community extends DSpaceObject
         }
 
         Community[] communityArray = new Community[communities.size()];
-        communityArray = (Community[]) communities.toArray(communityArray);
+        communityArray = communities.toArray(communityArray);
 
         return communityArray;
     }
@@ -376,7 +376,7 @@ public class Community extends DSpaceObject
         }
 
         Community[] communityArray = new Community[topCommunities.size()];
-        communityArray = (Community[]) topCommunities.toArray(communityArray);
+        communityArray = topCommunities.toArray(communityArray);
 
         return communityArray;
     }
@@ -710,7 +710,7 @@ public class Community extends DSpaceObject
 
         // Put them in an array
         Collection[] collectionArray = new Collection[collections.size()];
-        collectionArray = (Collection[]) collections.toArray(collectionArray);
+        collectionArray = collections.toArray(collectionArray);
 
         return collectionArray;
     }
@@ -784,7 +784,7 @@ public class Community extends DSpaceObject
 
         // Put them in an array
         Community[] communityArray = new Community[subcommunities.size()];
-        communityArray = (Community[]) subcommunities.toArray(communityArray);
+        communityArray = subcommunities.toArray(communityArray);
 
         return communityArray;
     }
@@ -859,7 +859,7 @@ public class Community extends DSpaceObject
 
         // Put them in an array
         Community[] communityArray = new Community[parentList.size()];
-        communityArray = (Community[]) parentList.toArray(communityArray);
+        communityArray = parentList.toArray(communityArray);
 
         return communityArray;
     }
@@ -885,7 +885,7 @@ public class Community extends DSpaceObject
 
         // Put them in an array
         Collection[] collectionArray = new Collection[collectionList.size()];
-        collectionArray = (Collection[]) collectionList.toArray(collectionArray);
+        collectionArray = collectionList.toArray(collectionArray);
 
         return collectionArray;
 

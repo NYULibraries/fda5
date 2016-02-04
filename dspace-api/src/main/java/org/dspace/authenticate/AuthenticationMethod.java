@@ -43,19 +43,19 @@ public interface AuthenticationMethod {
      */
 
     /** Authenticated OK, EPerson has been set. */
-    public static final int SUCCESS = 1;
+    int SUCCESS = 1;
 
     /** User exists, but credentials (<em>e.g.</em> passwd) don't match. */
-    public static final int BAD_CREDENTIALS = 2;
+    int BAD_CREDENTIALS = 2;
 
     /** Not allowed to login this way without X.509 certificate. */
-    public static final int CERT_REQUIRED = 3;
+    int CERT_REQUIRED = 3;
 
     /** User not found using this method. */
-    public static final int NO_SUCH_USER = 4;
+    int NO_SUCH_USER = 4;
 
     /** User or password is not appropriate for this method. */
-    public static final int BAD_ARGS = 5;
+    int BAD_ARGS = 5;
 
 
     /**
@@ -73,9 +73,9 @@ public interface AuthenticationMethod {
      *            Username, if available.  May be null.
      * @return true if new ePerson should be created.
      */
-    public boolean canSelfRegister(Context context,
-                                   HttpServletRequest request,
-                                   String username)
+    boolean canSelfRegister(Context context,
+                            HttpServletRequest request,
+                            String username)
         throws SQLException;
 
     /**
@@ -91,9 +91,9 @@ public interface AuthenticationMethod {
      *            newly created EPerson record - email + information from the
      *            registration form will have been filled out.
      */
-    public void initEPerson(Context context,
-                            HttpServletRequest request,
-                            EPerson eperson)
+    void initEPerson(Context context,
+                     HttpServletRequest request,
+                     EPerson eperson)
         throws SQLException;
 
     /**
@@ -110,9 +110,9 @@ public interface AuthenticationMethod {
      *            Username, if available.  May be null.
      * @return true if this method allows user to change ePerson password.
      */
-    public boolean allowSetPassword(Context context,
-                                    HttpServletRequest request,
-                                    String username)
+    boolean allowSetPassword(Context context,
+                             HttpServletRequest request,
+                             String username)
         throws SQLException;
 
     /**
@@ -124,7 +124,7 @@ public interface AuthenticationMethod {
      *
      * @return true if this method uses implicit authentication.
      */
-    public boolean isImplicit();
+    boolean isImplicit();
 
     /**
      * Get list of extra groups that user implicitly belongs to. Note that this
@@ -148,7 +148,7 @@ public interface AuthenticationMethod {
      * @return array of EPerson-group IDs, possibly 0-length, but never
      *         <code>null</code>.
      */
-    public int[] getSpecialGroups(Context context, HttpServletRequest request)
+    int[] getSpecialGroups(Context context, HttpServletRequest request)
         throws SQLException;
 
     /**
@@ -185,11 +185,11 @@ public interface AuthenticationMethod {
      * <br>BAD_ARGS        - user/pw not appropriate for this method
      */
 
-    public int authenticate(Context context,
-                            String username,
-                            String password,
-                            String realm,
-                            HttpServletRequest request)
+    int authenticate(Context context,
+                     String username,
+                     String password,
+                     String realm,
+                     HttpServletRequest request)
         throws SQLException;
 
     /**
@@ -209,9 +209,9 @@ public interface AuthenticationMethod {
      *
      * @return fully-qualified URL or null
      */
-    public String loginPageURL(Context context,
-                            HttpServletRequest request,
-                            HttpServletResponse response);
+    String loginPageURL(Context context,
+                        HttpServletRequest request,
+                        HttpServletResponse response);
 
     /**
      * Get title of login page to which to redirect.
@@ -225,5 +225,5 @@ public interface AuthenticationMethod {
      *
      * @return title text.
      */
-    public String loginPageTitle(Context context);
+    String loginPageTitle(Context context);
 }

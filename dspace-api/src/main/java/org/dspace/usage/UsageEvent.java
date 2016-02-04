@@ -21,7 +21,7 @@ import org.dspace.services.model.Event;
  */
 public class UsageEvent extends Event {
 	
-	public static enum Action {
+	public enum Action {
 		VIEW ("view"),
 		CREATE ("create"),
 		UPDATE ("update"),

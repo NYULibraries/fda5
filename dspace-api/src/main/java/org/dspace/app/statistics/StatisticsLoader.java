@@ -368,13 +368,9 @@ public class StatisticsLoader
             {
                 return true;
             }
-            
-            if (reportGeneralPattern.matcher(name).matches())
-            {
-                return true;
-            }
 
-            return false;
+            return reportGeneralPattern.matcher(name).matches();
+
         }
     }
 }

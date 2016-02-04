@@ -208,8 +208,7 @@ public class LogAnalyser
      * details as to how to use the command line flags (-help)
      */
     public static void main(String [] argv)
-        throws Exception, SQLException
-    {
+        throws Exception {
         // first, start the processing clock
         startTime = new GregorianCalendar();
         

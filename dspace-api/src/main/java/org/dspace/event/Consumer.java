@@ -27,7 +27,7 @@ public interface Consumer
      * dispatcher pool. This should be used to set up expensive resources that
      * will remain for the lifetime of the consumer.
      */
-    public void initialize() throws Exception;
+    void initialize() throws Exception;
 
     /**
      * Consume an event; events may get filtered at the dispatcher level, hiding
@@ -41,18 +41,18 @@ public interface Consumer
      * @param event
      *            the content event
      */
-    public void consume(Context ctx, Event event) throws Exception;
+    void consume(Context ctx, Event event) throws Exception;
 
     /**
      * Signal that there are no more events queued in this event stream and
      * event processing for the preceding consume calls should be finished up.
      */
-    public void end(Context ctx) throws Exception;
+    void end(Context ctx) throws Exception;
 
     /**
      * Finish - free any allocated resources. Called when consumer (via it's
      * parent dispatcher) is going to be destroyed by the dispatcher pool.
      */
-    public void finish(Context ctx) throws Exception;
+    void finish(Context ctx) throws Exception;
 
 }

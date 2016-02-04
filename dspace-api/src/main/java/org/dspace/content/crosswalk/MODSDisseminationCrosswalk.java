@@ -103,7 +103,7 @@ public class MODSDisseminationCrosswalk extends SelfNamedPlugin
                 aliasList.add(key.substring(CONFIG_PREFIX.length()));
             }
         }
-        aliases = (String[])aliasList.toArray(new String[aliasList.size()]);
+        aliases = aliasList.toArray(new String[aliasList.size()]);
     }
 
     public static String[] getPluginNames()
@@ -471,7 +471,7 @@ public class MODSDisseminationCrosswalk extends SelfNamedPlugin
             metadata.add(createDCValue("title", null, title));
         }
 
-        return (Metadatum[]) metadata.toArray(new Metadatum[metadata.size()]);
+        return metadata.toArray(new Metadatum[metadata.size()]);
     }
     /**
      * Generate a list of metadata elements for the given DSpace
@@ -523,7 +523,7 @@ public class MODSDisseminationCrosswalk extends SelfNamedPlugin
             metadata.add(createDCValue("title", null, title));
         }
 
-        return (Metadatum[]) metadata.toArray(new Metadatum[metadata.size()]);
+        return metadata.toArray(new Metadatum[metadata.size()]);
     }
 
     /**
@@ -588,7 +588,7 @@ public class MODSDisseminationCrosswalk extends SelfNamedPlugin
             metadata.add(createDCValue("title", null, title));
         }
 
-        return (Metadatum[]) metadata.toArray(new Metadatum[metadata.size()]);
+        return metadata.toArray(new Metadatum[metadata.size()]);
     }
 
     /**

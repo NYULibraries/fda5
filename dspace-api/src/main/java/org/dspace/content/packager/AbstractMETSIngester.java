@@ -365,7 +365,7 @@ public abstract class AbstractMETSIngester extends AbstractPackageIngester
             METSManifest manifest, File pkgFile, PackageParameters params,
             String license) throws IOException, SQLException,
             AuthorizeException, CrosswalkException,
-            MetadataValidationException, PackageValidationException
+            PackageValidationException
     {
         // type of DSpace Object (one of the type constants)
         int type;
@@ -581,7 +581,7 @@ public abstract class AbstractMETSIngester extends AbstractPackageIngester
             METSManifest manifest, File pkgFile, PackageParameters params,
             String license) throws IOException, SQLException,
             AuthorizeException, CrosswalkException,
-            MetadataValidationException, PackageValidationException
+            PackageValidationException
     {
         // -- Step 1 --
         // Before going forward with the replace, let's verify these objects are
@@ -740,7 +740,7 @@ public abstract class AbstractMETSIngester extends AbstractPackageIngester
     protected void addBitstreams(Context context, Item item,
             METSManifest manifest, File pkgFile, PackageParameters params,
             MdrefManager mdRefCallback) throws SQLException, IOException,
-            AuthorizeException, MetadataValidationException,
+            AuthorizeException,
             CrosswalkException, PackageValidationException
     {
         // Step 1 -- find the ID of the primary or Logo bitstream in manifest

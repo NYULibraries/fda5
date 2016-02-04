@@ -20,11 +20,11 @@ import org.dspace.authority.AuthorityValue;
 public interface AuthorityIndexingService {
 
 
-    public void indexContent(AuthorityValue value, boolean force);
+    void indexContent(AuthorityValue value, boolean force);
 
-    public void cleanIndex() throws Exception;
+    void cleanIndex() throws Exception;
 
-    public void commit();
+    void commit();
 
-    public boolean isConfiguredProperly();
+    boolean isConfiguredProperly();
 }

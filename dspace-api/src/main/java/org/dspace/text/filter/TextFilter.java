@@ -13,7 +13,7 @@ package org.dspace.text.filter;
  */
 public interface TextFilter
 {
-	public String filter(String str);
+	String filter(String str);
     
-    public String filter(String str, String lang);
+    String filter(String str, String lang);
 }

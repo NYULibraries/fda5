@@ -91,11 +91,8 @@ public class BioExternalIdentifier {
         if (id_reference != null ? !id_reference.equals(that.id_reference) : that.id_reference != null) {
             return false;
         }
-        if (id_url != null ? !id_url.equals(that.id_url) : that.id_url != null) {
-            return false;
-        }
+        return id_url != null ? id_url.equals(that.id_url) : that.id_url == null;
 
-        return true;
     }
 
     @Override

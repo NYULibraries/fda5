@@ -242,7 +242,8 @@ public class ClamScan extends AbstractCurationTask
      * @return a ScanResult representing the server response
      * @throws IOException
      */
-    final static byte[] buffer = new byte[DEFAULT_CHUNK_SIZE];;
+    final static byte[] buffer = new byte[DEFAULT_CHUNK_SIZE];
+
     private int scan(Bitstream bitstream, InputStream inputstream, String itemHandle)
     {
         try

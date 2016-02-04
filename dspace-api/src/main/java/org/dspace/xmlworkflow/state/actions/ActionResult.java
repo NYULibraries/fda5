@@ -25,7 +25,7 @@ package org.dspace.xmlworkflow.state.actions;
  */
 public class ActionResult {
 
-    public static enum TYPE{
+    public enum TYPE{
         TYPE_OUTCOME,
         TYPE_PAGE,
         TYPE_ERROR,

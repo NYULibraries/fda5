@@ -128,11 +128,7 @@ public class MetadataSchema
         {
             return false;
         }
-        if ((this.namespace == null) ? (other.namespace != null) : !this.namespace.equals(other.namespace))
-        {
-            return false;
-        }
-        return true;
+        return (this.namespace == null) ? other.namespace == null : this.namespace.equals(other.namespace);
     }
 
     @Override
@@ -391,7 +387,7 @@ public class MetadataSchema
 
         // Convert list into an array
         MetadataSchema[] typeArray = new MetadataSchema[schemas.size()];
-        return (MetadataSchema[]) schemas.toArray(typeArray);
+        return schemas.toArray(typeArray);
     }
 
     /**

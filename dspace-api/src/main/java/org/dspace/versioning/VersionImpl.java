@@ -162,7 +162,7 @@ public class VersionImpl implements Version {
     @Override
     public int hashCode() {
          int hash=7;
-        hash=79*hash+(int) (this.getVersionId() ^ (this.getVersionId() >>> 32));
+        hash=79*hash+ (this.getVersionId() ^ (this.getVersionId() >>> 32));
         return hash;
     }
 }

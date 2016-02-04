@@ -43,7 +43,7 @@ public interface EmbargoSetter
      * @param terms value of the metadata field configured as embargo terms, if any.
      * @return absolute date on which the embargo is to be lifted, or null if none
      */
-    public DCDate parseTerms(Context context, Item item, String terms)
+    DCDate parseTerms(Context context, Item item, String terms)
         throws SQLException, AuthorizeException, IOException;
 
     /**
@@ -53,7 +53,7 @@ public interface EmbargoSetter
      * @param context the DSpace context
      * @param item the item to embargo
      */
-    public void setEmbargo(Context context, Item item)
+    void setEmbargo(Context context, Item item)
         throws SQLException, AuthorizeException, IOException;
 
     /**
@@ -69,6 +69,6 @@ public interface EmbargoSetter
      * @param context the DSpace context
      * @param item the item to embargo
      */
-    public void checkEmbargo(Context context, Item item)
+    void checkEmbargo(Context context, Item item)
         throws SQLException, AuthorizeException, IOException;
 }

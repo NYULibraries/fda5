@@ -193,7 +193,7 @@ public class Statistics
     public Stat[] getStats()
     {
         Stat[] myStats = new Stat[stats.size()];
-        myStats = (Stat[]) stats.toArray(myStats);
+        myStats = stats.toArray(myStats);
         return myStats;
     }
     

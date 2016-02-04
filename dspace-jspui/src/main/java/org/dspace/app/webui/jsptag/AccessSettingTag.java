@@ -178,7 +178,7 @@ public class AccessSettingTag extends TagSupport
             // Embargo Date
             if (hidden)
             {
-                sb.append("<input name=\"embargo_until_date\" id=\"embargo_until_date_hidden\" type=\"hidden\" value=\"").append(startDate).append("\" />\n");;
+                sb.append("<input name=\"embargo_until_date\" id=\"embargo_until_date_hidden\" type=\"hidden\" value=\"").append(startDate).append("\" />\n");
                 sb.append("<input name=\"reason\" id=\"reason_hidden\" type=\"hidden\" value=\"").append(reason).append("\" />\n");
             }
             else

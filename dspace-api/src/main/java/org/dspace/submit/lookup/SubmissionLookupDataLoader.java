@@ -27,19 +27,19 @@ import org.apache.http.HttpException;
 public interface SubmissionLookupDataLoader extends DataLoader
 {
 
-    public final static String DOI = "doi";
+    String DOI = "doi";
 
-    public final static String PUBMED = "pubmed";
+    String PUBMED = "pubmed";
 
-    public final static String ARXIV = "arxiv";
+    String ARXIV = "arxiv";
 
-    public final static String REPEC = "repec";
+    String REPEC = "repec";
 
-    public final static String SCOPUSEID = "scopuseid";
+    String SCOPUSEID = "scopuseid";
 
-    public final static String CINII = "cinii";
+    String CINII = "cinii";
 
-    public final static String TYPE = "type";
+    String TYPE = "type";
 
     List<String> getSupportedIdentifiers();
 

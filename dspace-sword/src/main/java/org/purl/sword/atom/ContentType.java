@@ -29,7 +29,7 @@ public enum ContentType
     * 
     * @param type The type, expressed as a string. 
     */
-   private ContentType(String type)
+   ContentType(String type)
    {
       this.type = type;   
    }

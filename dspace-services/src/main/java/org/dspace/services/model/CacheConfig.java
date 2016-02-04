@@ -38,8 +38,8 @@ public class CacheConfig {
          * The cache will copy an entry over to other caches when it
          * changes or is created.
          */
-        CLUSTERREPLICATED;
-    };
+        CLUSTERREPLICATED
+    }
 
     /**
      * Defines the lifecycle of the cache.

@@ -18,7 +18,7 @@ import org.dspace.core.Context;
  * @author Ben Bosman (ben at atmire dot com)
  */
 public interface ItemVersionProvider {
-    public Item createNewItemAndAddItInWorkspace(Context c, Item item);
-    public void deleteVersionedItem(Context c, Version versionToDelete, VersionHistory history);
-    public Item updateItemState(Context c, Item itemNew, Item previousItem);
+    Item createNewItemAndAddItInWorkspace(Context c, Item item);
+    void deleteVersionedItem(Context c, Version versionToDelete, VersionHistory history);
+    Item updateItemState(Context c, Item itemNew, Item previousItem);
 }

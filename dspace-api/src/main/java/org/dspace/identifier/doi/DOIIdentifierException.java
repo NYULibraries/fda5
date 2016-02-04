@@ -120,7 +120,7 @@ public class DOIIdentifierException extends IdentifierException {
 
     public DOIIdentifierException() {
         super();
-        this.code = this.CODE_NOT_SET;
+        this.code = CODE_NOT_SET;
     }
 
     public DOIIdentifierException(int code) {
@@ -130,7 +130,7 @@ public class DOIIdentifierException extends IdentifierException {
 
     public DOIIdentifierException(String message) {
         super(message);
-        this.code = this.CODE_NOT_SET;
+        this.code = CODE_NOT_SET;
     }
 
     public DOIIdentifierException(String message, int code) {
@@ -140,7 +140,7 @@ public class DOIIdentifierException extends IdentifierException {
 
     public DOIIdentifierException(String message, Throwable cause) {
         super(message, cause);
-        this.code = this.CODE_NOT_SET;
+        this.code = CODE_NOT_SET;
     }
 
     public DOIIdentifierException(String message, Throwable cause, int code) {
@@ -150,7 +150,7 @@ public class DOIIdentifierException extends IdentifierException {
 
     public DOIIdentifierException(Throwable cause) {
         super(cause);
-        this.code = this.CODE_NOT_SET;
+        this.code = CODE_NOT_SET;
     }
 
     public DOIIdentifierException(Throwable cause, int code) {

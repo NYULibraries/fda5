@@ -63,11 +63,8 @@ public class ContributorAttribute {
         if (role != that.role) {
             return false;
         }
-        if (sequence != that.sequence) {
-            return false;
-        }
+        return sequence == that.sequence;
 
-        return true;
     }
 
     @Override

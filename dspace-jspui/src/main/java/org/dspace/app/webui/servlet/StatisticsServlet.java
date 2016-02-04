@@ -85,7 +85,7 @@ public class StatisticsServlet extends org.dspace.app.webui.servlet.DSpaceServle
         throws ServletException, IOException, SQLException, AuthorizeException
     {
         StringBuffer report = new StringBuffer();
-        String date = (String) request.getParameter("date");
+        String date = request.getParameter("date");
         request.setAttribute("date", date);
         
         request.setAttribute("general", Boolean.FALSE);
@@ -192,7 +192,7 @@ public class StatisticsServlet extends org.dspace.app.webui.servlet.DSpaceServle
             }
 
             Date[] months = new Date[monthsList.size()];
-            months = (Date[]) monthsList.toArray(months);
+            months = monthsList.toArray(months);
 
             Arrays.sort(months);
 

@@ -378,7 +378,7 @@ public class StructBuilder
      * 			created communities (e.g. the handles they have been assigned)
      */
     private static Element[] handleCommunities(Context context, NodeList communities, Community parent)
-    	throws TransformerException, SQLException, Exception
+    	throws Exception
     {
         Element[] elements = new Element[communities.getLength()];
         
@@ -499,7 +499,7 @@ public class StructBuilder
      * 			created collections (e.g. the handle)
      */
     private static Element[] handleCollections(Context context, NodeList collections, Community parent)
-    	throws TransformerException, SQLException, AuthorizeException, IOException, Exception
+    	throws Exception
     {
         Element[] elements = new Element[collections.getLength()];
         

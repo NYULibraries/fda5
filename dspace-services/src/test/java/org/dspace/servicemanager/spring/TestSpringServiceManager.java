@@ -163,7 +163,7 @@ public class TestSpringServiceManager {
         l = null;
 
         try {
-            ssm.registerService("fakey", (Class<?>)null);
+            ssm.registerService("fakey", null);
             fail("should have thrown exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e.getMessage());
@@ -184,7 +184,7 @@ public class TestSpringServiceManager {
         assertEquals("AZ", service);
 
         try {
-            ssm.registerService("fakey", (Object)null);
+            ssm.registerService("fakey", null);
             fail("should have thrown exception");
         } catch (IllegalArgumentException e) {
             assertNotNull(e.getMessage());

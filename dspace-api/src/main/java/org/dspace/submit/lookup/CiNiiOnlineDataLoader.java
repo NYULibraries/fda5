@@ -43,7 +43,7 @@ public class CiNiiOnlineDataLoader extends NetworkSubmissionLookupDataLoader
     @Override
     public List<String> getSupportedIdentifiers()
     {
-        return Arrays.asList(new String[] { CINII });
+        return Arrays.asList(CINII);
     }
 
     public void setSearchProvider(boolean searchProvider)

@@ -39,7 +39,7 @@ public class DSpaceSolrQueryResolverTest extends AbstractQueryResolverTest {
     private static final String FIELD_1 = "dc.title";
     private static final String FIELD_2 = "dc.type";
 
-    private DSpaceSolrQueryResolver underTest = new DSpaceSolrQueryResolver();;
+    private DSpaceSolrQueryResolver underTest = new DSpaceSolrQueryResolver();
 
     @Before
     public void autowire () {

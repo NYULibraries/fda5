@@ -557,16 +557,16 @@ public class PackageUtils
             switch (dso.getType())
             {
                 case Constants.BITSTREAM:
-                    ((Bitstream)dso).update();
+                    dso.update();
                     break;
                 case Constants.ITEM:
-                    ((Item)dso).update();
+                    dso.update();
                     break;
                 case Constants.COLLECTION:
-                    ((Collection)dso).update();
+                    dso.update();
                     break;
                 case Constants.COMMUNITY:
-                    ((Community)dso).update();
+                    dso.update();
                     break;
             }
         }

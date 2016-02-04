@@ -22,5 +22,5 @@ public interface OrderFormatDelegate
 	 * @param	value	the string value
 	 * @param	language	the language to interpret in
 	 */
-    public String makeSortString(String value, String language);
+	String makeSortString(String value, String language);
 }

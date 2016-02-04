@@ -262,11 +262,8 @@ public class OrcidAuthorityValue extends PersonAuthorityValue {
 
         OrcidAuthorityValue that = (OrcidAuthorityValue) o;
 
-        if (orcid_id != null ? !orcid_id.equals(that.orcid_id) : that.orcid_id != null) {
-            return false;
-        }
+        return orcid_id != null ? orcid_id.equals(that.orcid_id) : that.orcid_id == null;
 
-        return true;
     }
 
     @Override

@@ -67,7 +67,7 @@ public class NewsEditServlet extends DSpaceServlet
         else if (button.equals("submit_save"))
         {
             //get text string from form
-            news = (String) request.getParameter("news");
+            news = request.getParameter("news");
 
             //write the string out to file
             NewsManager.writeNewsFile(position, news);

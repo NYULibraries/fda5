@@ -123,14 +123,7 @@ public class SortOption
 
         // If the option is configured to be hidden, then set the visible flag to false
         // otherwise, flag it as visible (true)
-        if (matcher.groupCount() > 3 && "hide".equalsIgnoreCase(matcher.group(4)))
-        {
-            visible = false;
-        }
-        else
-        {
-            visible = true;
-        }
+		visible = !(matcher.groupCount() > 3 && "hide".equalsIgnoreCase(matcher.group(4)));
 
         generateMdBits();
 	}
@@ -271,25 +264,17 @@ public class SortOption
      */
     public boolean isDate()
     {
-    	if ("date".equals(type))
-        {
-            return true;
-        }
+		return "date".equals(type);
 
-    	return false;
-    }
+	}
     
     /**
      * Is the default sort option?
      */
     public boolean isDefault()
     {
-    	if (number == 0)
-    	{
-    		return true;
-    	}
-    	return false;
-    }
+		return number == 0;
+	}
 
     /**
      * Return all the configured sort options.

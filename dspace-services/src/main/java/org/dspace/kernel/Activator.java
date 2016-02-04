@@ -56,7 +56,7 @@ public interface Activator {
      * 
      * @param serviceManager the current system service manager
      */
-    public void start(ServiceManager serviceManager);
+    void start(ServiceManager serviceManager);
 
     /**
      * This is called when the service manager is shutting down this 
@@ -75,6 +75,6 @@ public interface Activator {
      * 
      * @param serviceManager the current system service manager
      */
-    public void stop(ServiceManager serviceManager);
+    void stop(ServiceManager serviceManager);
 
 }

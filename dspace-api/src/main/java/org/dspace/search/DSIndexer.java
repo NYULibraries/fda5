@@ -517,7 +517,7 @@ public class DSIndexer
                 {
                     for(items = Item.findAll(context);items.hasNext();)
                     {
-                        Item item = (Item) items.next();
+                        Item item = items.next();
                         indexContent(context, item);
                         item.decache();
                     }
@@ -1089,7 +1089,7 @@ public class DSIndexer
                         for (int m=0;m<newValues.size();m++){
                             if (!"".equals(newValues.get(m))){
 
-                                String toAdd=(String) newValues.get(m);
+                                String toAdd= newValues.get(m);
                                 doc.add( new Field(indexConfigArr[i].indexName,
                                         toAdd,
                                         Field.Store.NO,

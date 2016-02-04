@@ -1030,12 +1030,8 @@ public class BrowseCreateDAOOracle implements BrowseCreateDAO
      */
     private boolean isValueColumnClob()
     {
-        if (getValueColumnMaxBytes() < 1)
-        {
-            return true;
-        }
-        
-        return false;
+        return getValueColumnMaxBytes() < 1;
+
     }
 
     /**

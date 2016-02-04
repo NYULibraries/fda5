@@ -18,19 +18,19 @@ import java.util.List;
  */
 public interface VersionHistory {
 
-    public Version getLatestVersion();
-    public Version getFirstVersion();
-    public List<Version> getVersions();
-    public int getVersionHistoryId();
-    public Version getPrevious(Version version);
-    public Version getNext(Version version);
-    public boolean hasNext(Version version);
-    public void add(Version version);
-    public Version getVersion(org.dspace.content.Item item);
-    public boolean hasNext(org.dspace.content.Item item);
-    public boolean isFirstVersion(Version version);
-    public boolean isLastVersion(Version version);
-    public void remove(Version version);
-    public boolean isEmpty();
-    public int size();
+    Version getLatestVersion();
+    Version getFirstVersion();
+    List<Version> getVersions();
+    int getVersionHistoryId();
+    Version getPrevious(Version version);
+    Version getNext(Version version);
+    boolean hasNext(Version version);
+    void add(Version version);
+    Version getVersion(org.dspace.content.Item item);
+    boolean hasNext(org.dspace.content.Item item);
+    boolean isFirstVersion(Version version);
+    boolean isLastVersion(Version version);
+    void remove(Version version);
+    boolean isEmpty();
+    int size();
 }

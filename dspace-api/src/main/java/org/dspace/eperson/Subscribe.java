@@ -200,7 +200,7 @@ public class Subscribe
 
         Collection[] collArray = new Collection[collections.size()];
 
-        return (Collection[]) collections.toArray(collArray);
+        return collections.toArray(collArray);
     }
 
     /**
@@ -461,7 +461,7 @@ public class Subscribe
 
                     for (int j = 0; j < itemInfos.size(); j++)
                     {
-                        HarvestedItemInfo hii = (HarvestedItemInfo) itemInfos
+                        HarvestedItemInfo hii = itemInfos
                                 .get(j);
 
                         Metadatum[] titles = hii.item.getDC("title", null, Item.ANY);

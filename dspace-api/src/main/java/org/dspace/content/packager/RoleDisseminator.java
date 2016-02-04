@@ -571,7 +571,7 @@ public class RoleDisseminator implements PackageDisseminator
             if(list.size()>0)
             {
                 Group[] groupArray = new Group[list.size()];
-                groupArray = (Group[]) list.toArray(groupArray);
+                groupArray = list.toArray(groupArray);
                 return groupArray;
             }
         }
@@ -621,7 +621,7 @@ public class RoleDisseminator implements PackageDisseminator
             if(list.size()>0)
             {
                 Group[] groupArray = new Group[list.size()];
-                groupArray = (Group[]) list.toArray(groupArray);
+                groupArray = list.toArray(groupArray);
                 return groupArray;
             }
         }

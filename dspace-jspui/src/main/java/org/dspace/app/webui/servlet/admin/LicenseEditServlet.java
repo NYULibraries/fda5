@@ -71,7 +71,7 @@ public class LicenseEditServlet extends DSpaceServlet
         else
         {
             // Get text string from form
-            String license = (String)request.getParameter("license");
+            String license = request.getParameter("license");
 
             // Is the license empty?
             if (license.trim().equals(""))

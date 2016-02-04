@@ -85,7 +85,7 @@ public abstract class IdentifierProvider {
      * @throws IdentifierNotFoundException
      * @throws IdentifierNotResolvableException 
      */
-    public abstract DSpaceObject resolve(Context context, String identifier, String... attributes) throws IdentifierNotFoundException, IdentifierNotResolvableException;;
+    public abstract DSpaceObject resolve(Context context, String identifier, String... attributes) throws IdentifierNotFoundException, IdentifierNotResolvableException;
 
     /**
      * Return the identifier for a DSpaceObject.
@@ -96,7 +96,7 @@ public abstract class IdentifierProvider {
      * @throws IdentifierNotFoundException
      * @throws IdentifierNotResolvableException 
      */
-    public abstract String lookup(Context context, DSpaceObject object) throws IdentifierNotFoundException, IdentifierNotResolvableException;;
+    public abstract String lookup(Context context, DSpaceObject object) throws IdentifierNotFoundException, IdentifierNotResolvableException;
 
     /**
      * Unbind this type of identifier(s) from an object.

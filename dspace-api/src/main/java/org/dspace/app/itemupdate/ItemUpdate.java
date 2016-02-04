@@ -513,7 +513,7 @@ public class ItemUpdate {
      * @throws IOException
      */
 	private File initUndoArchive(File sourceDir)
-	throws FileNotFoundException, IOException
+	throws IOException
 	{				
 		File parentDir = sourceDir.getCanonicalFile().getParentFile();
 		if (parentDir == null)

@@ -356,12 +356,8 @@ public class TableRow
         {
             int i = ((Integer) value).intValue();
 
-            if (i == 0)
-            {
-                return false; // 0 is false
-            }
+            return i != 0;
 
-            return true; // nonzero is true
         }
         else if (value instanceof Long)
         {
@@ -369,7 +365,7 @@ public class TableRow
         }
         else if (value instanceof BigDecimal)
         {
-            return ! ((BigDecimal) value).equals(BigDecimal.ZERO);
+            return ! value.equals(BigDecimal.ZERO);
         }
         else
         {

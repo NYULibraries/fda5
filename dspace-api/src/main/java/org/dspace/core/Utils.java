@@ -157,8 +157,8 @@ public final class Utils
         // This is far from the most efficient way to do things...
         for (int i = 0; i < data.length; i++)
         {
-            int low = (int) (data[i] & 0x0F);
-            int high = (int) (data[i] & 0xF0);
+            int low = data[i] & 0x0F;
+            int high = data[i] & 0xF0;
 
             result.append(Integer.toHexString(high).substring(0, 1));
             result.append(Integer.toHexString(low));

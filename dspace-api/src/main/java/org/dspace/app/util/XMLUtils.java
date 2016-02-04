@@ -117,7 +117,7 @@ public class XMLUtils
         Element element = null;
         if (nodeList != null && nodeList.size() > 0)
         {
-            element = (Element) nodeList.get(0);
+            element = nodeList.get(0);
         }
         return element;
     }

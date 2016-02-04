@@ -55,11 +55,8 @@ public class WorkExternalIdentifier {
         if (workExternalIdenfitierID != null ? !workExternalIdenfitierID.equals(that.workExternalIdenfitierID) : that.workExternalIdenfitierID != null) {
             return false;
         }
-        if (workExternalIdentifierType != that.workExternalIdentifierType) {
-            return false;
-        }
+        return workExternalIdentifierType == that.workExternalIdentifierType;
 
-        return true;
     }
 
     @Override

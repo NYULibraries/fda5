@@ -158,7 +158,7 @@ public final class DSpaceConfigurationService implements ConfigurationService {
             log.info("Cleared the configuration setting for name ("+name+")");
         } else {
             SimpleTypeConverter converter = new SimpleTypeConverter();
-            String sVal = (String)converter.convertIfNecessary(value, String.class);
+            String sVal = converter.convertIfNecessary(value, String.class);
             changed = loadConfig(name, sVal);
         }
         return changed;
@@ -683,7 +683,7 @@ public final class DSpaceConfigurationService implements ConfigurationService {
         if (value != null) {
             if (type.isArray()) {
                 String[] values = value.split(",");
-                return (T)converter.convertIfNecessary(values, type);
+                return converter.convertIfNecessary(values, type);
             }
 
             if (type.isAssignableFrom(String.class)) {
@@ -693,10 +693,10 @@ public final class DSpaceConfigurationService implements ConfigurationService {
             if (boolean.class.equals(type)) {
                 return (T)Boolean.FALSE;
             } else if (int.class.equals(type) || long.class.equals(type)) {
-                return (T)converter.convertIfNecessary(0, type);
+                return converter.convertIfNecessary(0, type);
             }
         }
 
-        return (T)converter.convertIfNecessary(value, type);
+        return converter.convertIfNecessary(value, type);
     }
 }

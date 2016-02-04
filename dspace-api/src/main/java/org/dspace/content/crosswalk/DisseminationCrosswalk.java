@@ -31,7 +31,7 @@ import org.jdom.Namespace;
 public interface DisseminationCrosswalk
 {
     /** XSI namespace, required for xsi:schemalocation attributes */
-    static final Namespace XSI_NS =
+    Namespace XSI_NS =
         Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
 
     /**
@@ -40,7 +40,7 @@ public interface DisseminationCrosswalk
      *
      * @return array of namespaces, which may be empty.
      */
-    public Namespace[] getNamespaces();
+    Namespace[] getNamespaces();
 
     /**
      * Get the XML Schema location(s) of the target metadata format.
@@ -53,7 +53,7 @@ public interface DisseminationCrosswalk
      * @return SchemaLocation string, including URI namespace, followed by
      *  whitespace and URI of XML schema document, or empty string if unknown.
      */
-    public String getSchemaLocation();
+    String getSchemaLocation();
 
     /**
      * Predicate: Can this disseminator crosswalk the given object.
@@ -62,7 +62,7 @@ public interface DisseminationCrosswalk
      * @param dso  dspace object, e.g. an <code>Item</code>.
      * @return true when disseminator is capable of producing metadata.
      */
-    public boolean canDisseminate(DSpaceObject dso);
+    boolean canDisseminate(DSpaceObject dso);
 
     /**
      * Predicate: Does this disseminator prefer to return a list of Elements,
@@ -78,7 +78,7 @@ public interface DisseminationCrosswalk
      *
      * @return true when disseminator prefers you call disseminateList().
      */
-    public boolean preferList();
+    boolean preferList();
 
     /**
      * Execute crosswalk, returning List of XML elements.
@@ -99,7 +99,7 @@ public interface DisseminationCrosswalk
      * @throws SQLException  Database failure in services this calls
      * @throws AuthorizeException current user not authorized for this operation.
      */
-    public List<Element> disseminateList(DSpaceObject dso)
+    List<Element> disseminateList(DSpaceObject dso)
         throws CrosswalkException, IOException, SQLException,
                AuthorizeException;
 
@@ -118,7 +118,7 @@ public interface DisseminationCrosswalk
      * @throws SQLException  Database failure in services this calls
      * @throws AuthorizeException current user not authorized for this operation.
      */
-    public Element disseminateElement(DSpaceObject dso)
+    Element disseminateElement(DSpaceObject dso)
         throws CrosswalkException, IOException, SQLException,
                AuthorizeException;
 }

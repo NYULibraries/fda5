@@ -581,7 +581,7 @@ public class Item extends DSpaceObject
         }
 
         Collection[] collectionArray = new Collection[collections.size()];
-        collectionArray = (Collection[]) collections.toArray(collectionArray);
+        collectionArray = collections.toArray(collectionArray);
 
         return collectionArray;
     }
@@ -637,7 +637,7 @@ public class Item extends DSpaceObject
         }
 
         Community[] communityArray = new Community[communities.size()];
-        communityArray = (Community[]) communities.toArray(communityArray);
+        communityArray = communities.toArray(communityArray);
 
         return communityArray;
     }
@@ -690,7 +690,7 @@ public class Item extends DSpaceObject
         }
         
         Bundle[] bundleArray = new Bundle[bundles.size()];
-        bundleArray = (Bundle[]) bundles.toArray(bundleArray);
+        bundleArray = bundles.toArray(bundleArray);
 
         return bundleArray;
     }
@@ -718,7 +718,7 @@ public class Item extends DSpaceObject
         }
 
         Bundle[] bundleArray = new Bundle[matchingBundles.size()];
-        bundleArray = (Bundle[]) matchingBundles.toArray(bundleArray);
+        bundleArray = matchingBundles.toArray(bundleArray);
 
         return bundleArray;
     }
@@ -1378,12 +1378,8 @@ public class Item extends DSpaceObject
          {
              return false;
          }
-         if (this.getID() != other.getID())
-         {
-             return false;
-         }
+         return this.getID() == other.getID();
 
-         return true;
      }
 
      @Override
@@ -1754,12 +1750,8 @@ public class Item extends DSpaceObject
         }
 
         // is this person an COLLECTION_EDITOR for the owning collection?
-        if (getOwningCollection().canEditBoolean(false))
-        {
-            return true;
-        }
+        return getOwningCollection().canEditBoolean(false);
 
-        return false;
     }
     
     public String getName()
@@ -1810,7 +1802,19 @@ public class Item extends DSpaceObject
         }
         return new ItemIterator(context, rows);
      }
-    
+
+    public boolean isPublic() throws SQLException
+    {
+       boolean isPublic=false;
+       for(ResourcePolicy policy:AuthorizeManager.getPolicies(ourContext,this)) {
+           if (policy.getGroupID() == 0 && policy.getAction() == Constants.READ) {
+               isPublic = true;
+               break;
+           }
+       }
+     return isPublic;
+    }
+
     public DSpaceObject getAdminObject(int action) throws SQLException
     {
         DSpaceObject adminObject = null;

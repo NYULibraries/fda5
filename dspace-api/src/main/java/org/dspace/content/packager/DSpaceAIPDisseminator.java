@@ -144,14 +144,7 @@ public class DSpaceAIPDisseminator extends AbstractMETSDisseminator
 
             //check when this item was last modified.
             Item i = (Item) dso;
-            if(i.getLastModified().after(afterDate))
-            {
-                disseminate = true;
-            }
-            else
-            {
-                disseminate = false;
-            }
+            disseminate = i.getLastModified().after(afterDate);
         }
 
         if(disseminate)

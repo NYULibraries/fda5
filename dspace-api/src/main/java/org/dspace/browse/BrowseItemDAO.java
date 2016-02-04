@@ -19,7 +19,7 @@ public interface BrowseItemDAO
      * @return array of items
      * @throws java.sql.SQLException
      */
-    public BrowseItem[] findAll()
+    BrowseItem[] findAll()
         throws SQLException;
 
     /**
@@ -40,6 +40,6 @@ public interface BrowseItemDAO
      * @return matching metadata values.
      * @throws SQLException
      */
-    public Metadatum[] queryMetadata(int itemId, String schema, String element, String qualifier, String lang)
+    Metadatum[] queryMetadata(int itemId, String schema, String element, String qualifier, String lang)
     	throws SQLException;
 }

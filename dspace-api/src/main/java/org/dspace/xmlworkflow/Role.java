@@ -32,7 +32,7 @@ public class Role {
     private boolean isInternal;
     private Scope scope;
 
-    public static enum Scope{
+    public enum Scope{
         REPOSITORY,
         COLLECTION,
         ITEM

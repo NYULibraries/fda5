@@ -31,7 +31,7 @@ public class SolrLoggerUsageEventListener extends AbstractUsageEventListener {
 
 		if(event instanceof UsageEvent)
 		{
-			log.debug("Usage event received " + ((UsageEvent)event).getName());
+			log.debug("Usage event received " + event.getName());
 			try{
 			    UsageEvent ue = (UsageEvent)event;
 			

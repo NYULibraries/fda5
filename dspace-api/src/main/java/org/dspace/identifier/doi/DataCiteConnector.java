@@ -297,14 +297,7 @@ implements DOIConnector
             // we will handle this as if it reserved for an unknown object.
             case (410) :
             {
-                if (null == dso)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return null == dso;
             }
                 
             // Catch all other http status code in case we forgot one.

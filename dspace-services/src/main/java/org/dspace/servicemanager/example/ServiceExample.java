@@ -18,11 +18,11 @@ public interface ServiceExample {
     /**
      * @return some string for testing
      */
-    public String getName();
+    String getName();
 
     /**
      * @return some string from another service
      */
-    public String getOtherName();
+    String getOtherName();
 
 }

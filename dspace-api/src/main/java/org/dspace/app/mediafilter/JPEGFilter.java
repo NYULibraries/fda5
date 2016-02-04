@@ -76,9 +76,9 @@ public class JPEGFilter extends MediaFilter implements SelfRegisterInputFormats
                 .getIntProperty("thumbnail.maxwidth");
         float ymax = (float) ConfigurationManager
                 .getIntProperty("thumbnail.maxheight");
-        boolean blurring = (boolean) ConfigurationManager
+        boolean blurring = ConfigurationManager
                 .getBooleanProperty("thumbnail.blurring");
-        boolean hqscaling = (boolean) ConfigurationManager
+        boolean hqscaling = ConfigurationManager
                 .getBooleanProperty("thumbnail.hqscaling");
 
         // now get the image dimensions
@@ -145,7 +145,7 @@ public class JPEGFilter extends MediaFilter implements SelfRegisterInputFormats
         if (blurring)
         {
                 // send the buffered image off to get blurred.
-                buf = getBlurredInstance((BufferedImage) buf);
+                buf = getBlurredInstance(buf);
         }
 
         // Use high quality scaling method if selected in config.
@@ -153,8 +153,8 @@ public class JPEGFilter extends MediaFilter implements SelfRegisterInputFormats
         if (hqscaling)
         {
                 // send the buffered image off to get an HQ downscale.
-                buf = getScaledInstance((BufferedImage) buf, (int) xsize, (int) ysize,
-                        (Object) RenderingHints.VALUE_INTERPOLATION_BICUBIC, (boolean) true);
+                buf = getScaledInstance(buf, (int) xsize, (int) ysize,
+                        RenderingHints.VALUE_INTERPOLATION_BICUBIC, true);
         }
 
         // now render the image into the thumbnail buffer
@@ -257,7 +257,7 @@ public class JPEGFilter extends MediaFilter implements SelfRegisterInputFormats
     {
         int type = (buf.getTransparency() == Transparency.OPAQUE) ?
             BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
-        BufferedImage scalebuf = (BufferedImage)buf;
+        BufferedImage scalebuf = buf;
         int w, h;
         if (higherQuality) {
             // Use multi-step technique: start with original size, then

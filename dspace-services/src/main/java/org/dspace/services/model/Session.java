@@ -26,7 +26,7 @@ public interface Session extends HttpSession {
      * from HttpSession unless no session id was specified when the 
      * session was bound.
      */
-    public String getSessionId();
+    String getSessionId();
 
     /**
      * Return the internal user ID for this session.
@@ -34,34 +34,34 @@ public interface Session extends HttpSession {
      * @return internal user ID for the user using this session.
      * This is null if the session is anonymous.
      */
-    public String getUserId();
+    String getUserId();
 
     /**
      * Get the external/enterprise user ID for this session.
      *
      * @return the external/enterprise user id of the user associated with this session
      */
-    public String getUserEID();
+    String getUserEID();
 
     /**
      * @return true if this session is active OR false if the session has timed out or been invalidated
      */
-    public boolean isActive();
+    boolean isActive();
 
     /**
      * @return id of the server with which this session is associated.
      */
-    public String getServerId();
+    String getServerId();
 
     /**
      * @return the IP Address from which this session originated 
      */
-    public String getOriginatingHostIP();
+    String getOriginatingHostIP();
 
     /**
      * @return the hostname from which this session originated
      */
-    public String getOriginatingHostName();
+    String getOriginatingHostName();
 
     /**
      * Get an attribute from the session if one exists.
@@ -70,7 +70,7 @@ public interface Session extends HttpSession {
      *            the key for the attribute
      * @return the value if one exists OR null if none
      */
-    public String getAttribute(String key);
+    String getAttribute(String key);
 
     /**
      * Set an attribute on a session.
@@ -80,7 +80,7 @@ public interface Session extends HttpSession {
      * @param value
      *            the value (if this is null then the attribute is removed)
      */
-    public void setAttribute(String key, String value);
+    void setAttribute(String key, String value);
 
     /**
      * Get all attributes of this session.
@@ -88,12 +88,12 @@ public interface Session extends HttpSession {
      * @return a copy of the attributes in this session.
      * Modifying it has no effect on the session attributes.
      */
-    public Map<String, String> getAttributes();
+    Map<String, String> getAttributes();
 
     /**
      * Purges all data from this session and effectively resets it to an 
      * anonymous session.  Does not invalidate the session, though.
      */
-    public void clear();
+    void clear();
 
 }

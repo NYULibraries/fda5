@@ -68,7 +68,7 @@ public class ElasticSearchLogger {
 
     private static Client client;
 
-    public static enum ClientType {
+    public enum ClientType {
         NODE, LOCAL, TRANSPORT
     }
 
@@ -109,11 +109,7 @@ public class ElasticSearchLogger {
         }
         locationService = service;
 
-        if ("true".equals(ConfigurationManager.getProperty("useProxies"))) {
-            useProxies = true;
-        } else {
-            useProxies = false;
-        }
+            useProxies = "true".equals(ConfigurationManager.getProperty("useProxies"));
 
         log.info("useProxies=" + useProxies);
         

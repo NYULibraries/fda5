@@ -165,14 +165,7 @@ public abstract class DSpaceObject
                                 {
                                     matched = true;
                                 }
-                                else if (dcv.value != null && dcv.value.equals(text))
-                                {
-                                    matched = true;
-                                }
-                                else
-                                {
-                                    matched = false;
-                                }
+                                else matched = dcv.value != null && dcv.value.equals(text);
                             }
 
                             // Check the language is the same
@@ -183,14 +176,7 @@ public abstract class DSpaceObject
                                 {
                                     matched = true;
                                 }
-                                else if (dcv.language != null && dcv.language.equals(lang))
-                                {
-                                    matched = true;
-                                }
-                                else
-                                {
-                                    matched = false;
-                                }
+                                else matched = dcv.language != null && dcv.language.equals(lang);
                             }
 
                             // check that authority and confidence match
@@ -601,7 +587,7 @@ public abstract class DSpaceObject
 
         // Create an array of matching values
         Metadatum[] valueArray = new Metadatum[values.size()];
-        valueArray = (Metadatum[]) values.toArray(valueArray);
+        valueArray = values.toArray(valueArray);
 
         return valueArray;
     }

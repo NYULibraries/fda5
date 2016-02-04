@@ -135,7 +135,7 @@ public class CitationPage extends AbstractCurationTask {
                 //If bitstream is a PDF document then it is citable.
                 CitationDocument citationDocument = new CitationDocument();
 
-                if(citationDocument.canGenerateCitationVersion(bitstream)) {
+                if(CitationDocument.canGenerateCitationVersion(bitstream)) {
                     this.resBuilder.append(item.getHandle() + " - "
                             + bitstream.getName() + " is citable.");
                     try {

@@ -71,7 +71,7 @@ public interface IngestionCrosswalk
      * @throws SQLException  Database failure in services this calls
      * @throws AuthorizeException current user not authorized for this operation.
      */
-    public void ingest(Context context, DSpaceObject dso, List<Element> metadata)
+    void ingest(Context context, DSpaceObject dso, List<Element> metadata)
         throws CrosswalkException, IOException, SQLException, AuthorizeException;
 
     /**
@@ -93,6 +93,6 @@ public interface IngestionCrosswalk
      * @throws SQLException  Database failure in services this calls
      * @throws AuthorizeException current user not authorized for this operation.
      */
-    public void ingest(Context context, DSpaceObject dso, Element root)
+    void ingest(Context context, DSpaceObject dso, Element root)
         throws CrosswalkException, IOException, SQLException, AuthorizeException;
 }

@@ -402,7 +402,7 @@ public class DOIIdentifierProviderTest
         Item item = newItem();
         String doi = this.createDOI(item, DOIIdentifierProvider.IS_REGISTERED, false);
         
-        String retrievedDOI = provider.lookup(context, (DSpaceObject) item);
+        String retrievedDOI = provider.lookup(context, item);
         
         assertNotNull("Failed to loookup doi.", retrievedDOI);
         assertTrue("Loaded wrong DOI on lookup.", doi.equals(retrievedDOI));
@@ -555,7 +555,7 @@ public class DOIIdentifierProviderTest
 
     @Test
     public void testReserve_DOI()
-            throws SQLException, SQLException, AuthorizeException, IOException,
+            throws SQLException, AuthorizeException, IOException,
             IdentifierException
     {
         Item item = newItem();
@@ -573,7 +573,7 @@ public class DOIIdentifierProviderTest
     
     @Test
     public void testRegister_unreserved_DOI()
-            throws SQLException, SQLException, AuthorizeException, IOException,
+            throws SQLException, AuthorizeException, IOException,
             IdentifierException
     {
         Item item = newItem();
@@ -591,7 +591,7 @@ public class DOIIdentifierProviderTest
 
     @Test
     public void testRegister_reserved_DOI()
-            throws SQLException, SQLException, AuthorizeException, IOException,
+            throws SQLException, AuthorizeException, IOException,
             IdentifierException
     {
         Item item = newItem();
@@ -609,7 +609,7 @@ public class DOIIdentifierProviderTest
     
     @Test
     public void testCreate_and_Register_DOI()
-            throws SQLException, SQLException, AuthorizeException, IOException,
+            throws SQLException, AuthorizeException, IOException,
             IdentifierException
     {
         Item item = newItem();

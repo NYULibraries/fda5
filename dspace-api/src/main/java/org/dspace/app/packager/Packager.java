@@ -482,7 +482,7 @@ public class Packager
      * @throws PackageException
      */
     protected void ingest(Context context, PackageIngester sip, PackageParameters pkgParams, String sourceFile, DSpaceObject parentObjs[])
-            throws IOException, SQLException, FileNotFoundException, AuthorizeException, CrosswalkException, PackageException
+            throws IOException, SQLException, AuthorizeException, CrosswalkException, PackageException
     {
         // make sure we have an input file
         File pkgFile = new File(sourceFile);
@@ -623,7 +623,7 @@ public class Packager
     protected void disseminate(Context context, PackageDisseminator dip,
 			       DSpaceObject dso, PackageParameters pkgParams,
 			       String outputFile)
-            throws IOException, SQLException, FileNotFoundException, AuthorizeException, CrosswalkException, PackageException
+            throws IOException, SQLException, AuthorizeException, CrosswalkException, PackageException
     {
         // initialize output file
         File pkgFile = new File(outputFile);
@@ -703,7 +703,7 @@ public class Packager
      * @throws PackageException
      */
     protected void replace(Context context, PackageIngester sip, PackageParameters pkgParams, String sourceFile, DSpaceObject objToReplace)
-            throws IOException, SQLException, FileNotFoundException, AuthorizeException, CrosswalkException, PackageException
+            throws IOException, SQLException, AuthorizeException, CrosswalkException, PackageException
     {
 
         // make sure we have an input file

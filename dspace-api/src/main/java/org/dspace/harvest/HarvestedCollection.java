@@ -103,13 +103,10 @@ public class HarvestedCollection
      */
     public static boolean isHarvestable(Context c, int collectionId) throws SQLException 
     {
-    	HarvestedCollection hc = HarvestedCollection.find(c, collectionId); 
-    	if (hc != null && hc.getHarvestType() > 0 && hc.getOaiSource() != null && hc.getOaiSetId() != null && 
-    			hc.getHarvestStatus() != HarvestedCollection.STATUS_UNKNOWN_ERROR) {
-    		return true;
-    	}
-    	return false;   
-    }
+    	HarvestedCollection hc = HarvestedCollection.find(c, collectionId);
+		return hc != null && hc.getHarvestType() > 0 && hc.getOaiSource() != null && hc.getOaiSetId() != null &&
+				hc.getHarvestStatus() != HarvestedCollection.STATUS_UNKNOWN_ERROR;
+	}
     
     /** Returns whether this harvest instance is actually harvestable, i.e. whether its settings
      * options are set up correctly. This is distinct from "ready", since this collection may
@@ -117,13 +114,10 @@ public class HarvestedCollection
      */
     public boolean isHarvestable() throws SQLException 
     {
-    	if (this.getHarvestType() > 0 && this.getOaiSource() != null && this.getOaiSetId() != null && 
-    			this.getHarvestStatus() != HarvestedCollection.STATUS_UNKNOWN_ERROR) {
-    		return true;
-    	}
+		return this.getHarvestType() > 0 && this.getOaiSource() != null && this.getOaiSetId() != null &&
+				this.getHarvestStatus() != HarvestedCollection.STATUS_UNKNOWN_ERROR;
 
-    	return false;   
-    }
+	}
     
     /** Returns whether the specified collection is ready for immediate harvest. 
      */
@@ -135,13 +129,9 @@ public class HarvestedCollection
     
     public boolean isReady() throws SQLException 
     {
-    	if (this.isHarvestable() &&	(this.getHarvestStatus() == HarvestedCollection.STATUS_READY || this.getHarvestStatus() == HarvestedCollection.STATUS_OAI_ERROR))
-        {
-            return true;
-        }
+		return this.isHarvestable() && (this.getHarvestStatus() == HarvestedCollection.STATUS_READY || this.getHarvestStatus() == HarvestedCollection.STATUS_OAI_ERROR);
 
-    	return false;   
-    }
+	}
     
     
     /** Find all collections that are set up for harvesting 

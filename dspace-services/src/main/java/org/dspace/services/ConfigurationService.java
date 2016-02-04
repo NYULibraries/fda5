@@ -59,7 +59,7 @@ public interface ConfigurationService {
      * @return the property value OR null if none is found
      * @throws UnsupportedOperationException if the type cannot be converted to the requested type
      */
-    public <T> T getPropertyAsType(String name, Class<T> type);
+    <T> T getPropertyAsType(String name, Class<T> type);
 
     /**
      * Get a configuration property (setting) from the system, or return
@@ -71,7 +71,7 @@ public interface ConfigurationService {
      * @return the property value OR null if none is found
      * @throws IllegalArgumentException if the defaultValue type does not match the type of the property by name
      */
-    public <T> T getPropertyAsType(String name, T defaultValue);
+    <T> T getPropertyAsType(String name, T defaultValue);
 
     /**
      * Get a configuration property (setting) from the system, or return 
@@ -87,14 +87,14 @@ public interface ConfigurationService {
      * @return the property value OR null if none is found
      * @throws IllegalArgumentException if the defaultValue type does not match the type of the property by name
      */
-    public <T> T getPropertyAsType(String name, T defaultValue, boolean setDefaultIfNotFound);
+    <T> T getPropertyAsType(String name, T defaultValue, boolean setDefaultIfNotFound);
 
     /**
      * Get all currently known configuration settings
      * 
      * @return all the configuration properties as a map of name -> value
      */
-    public Map<String, String> getAllProperties();
+    Map<String, String> getAllProperties();
 
     /**
      * Convenience method - get a configuration property (setting) from 
@@ -103,7 +103,7 @@ public interface ConfigurationService {
      * @param name the property name
      * @return the property value OR null if none is found
      */
-    public String getProperty(String name);
+    String getProperty(String name);
 
     /**
      * Convenience method - get all configuration properties (settings)
@@ -111,7 +111,7 @@ public interface ConfigurationService {
      * 
      * @return all the configuration properties in a properties object (name -> value)
      */
-    public Properties getProperties();
+    Properties getProperties();
 
     /**
      * Set a configuration property (setting) in the system.
@@ -124,6 +124,6 @@ public interface ConfigurationService {
      * @throws IllegalArgumentException if the name is null
      * @throws UnsupportedOperationException if the type cannot be converted to something that is understandable by the system as a configuration property value
      */
-    public boolean setProperty(String name, Object value);
+    boolean setProperty(String name, Object value);
 
 }

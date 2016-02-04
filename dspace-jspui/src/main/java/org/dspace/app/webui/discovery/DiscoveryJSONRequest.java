@@ -78,10 +78,9 @@ public class DiscoveryJSONRequest extends JSONRequest
 				
 				@Override
 				public boolean shouldSkipField(FieldAttributes f) {
-					
-					if(f.getName().equals("asFilterQuery"))return true;
-					return false;
-				}
+
+                    return f.getName().equals("asFilterQuery");
+                }
 				
 				@Override
 				public boolean shouldSkipClass(Class<?> clazz) {

@@ -22,7 +22,7 @@ public interface SwordElementInterface
     * 
     * @return The Element. 
     */
-   public Element marshall( ); 
+   Element marshall();
   
    /**
     * Unmarshall the data in the specified element and store it
@@ -32,6 +32,6 @@ public interface SwordElementInterface
     * @throws UnmarshallException If the element is not of the 
     * correct type, or if there is an error unmarshalling the data. 
     */
-   public void unmarshall( Element element )
+   void unmarshall(Element element)
    throws UnmarshallException;
 }
