@@ -199,7 +199,7 @@ public class LayoutTag extends BodyTagSupport
             {
 
                 //Add Link to Community List - modified by Kate
-                parents.add("Communities&Collections");
+                parents.add("Communities & Collections");
                 if(title!=null) {
                     parentLinks.add("/community-list");
                 }
@@ -211,6 +211,8 @@ public class LayoutTag extends BodyTagSupport
                 // "commLink" mode - show all parent communities
                 Community[] comms = (Community[]) request
                         .getAttribute("dspace.communities");
+                Collection col = (Collection) request
+                        .getAttribute("dspace.collection");
 
                 if (comms != null)
                 {
@@ -219,6 +221,12 @@ public class LayoutTag extends BodyTagSupport
                         parents.add(comms[i].getMetadata("name"));
                         parentLinks.add("/handle/" + comms[i].getHandle());
                     }
+                }
+                //added by Kate not to repeat collection twice
+                if (col != null && !col.getName().equalsIgnoreCase(title))
+                {
+                    parents.add(col.getName());
+                    parentLinks.add("/handle/" + col.getHandle());
                 }
                 if (title != null)
                 {

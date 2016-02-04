@@ -226,7 +226,6 @@
    <%if (mostdownloaded != null && mostdownloaded.count() > 0)
       {
       %>
-             <div class="col-md-4">
                            <div class="panel panel-primary homepage-sidebar">
                              <div class="panel-heading"><h1>Most downloaded</h1></div>
                              <div class="panel-body">
@@ -273,8 +272,7 @@
 
       %>     </div>
               </div>
-                  </div> <!-- end col 4 -->
-                </div> <!-- end col row  -->
+
           <%} %>
 
 
