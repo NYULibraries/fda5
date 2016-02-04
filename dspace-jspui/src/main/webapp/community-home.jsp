@@ -196,9 +196,63 @@
 %>
 </section>
 
-    <% if(editor_button || add_button)  // edit button(s)
-    { %>
+
     <dspace:sidebar>
+    <%if (mostdownloaded != null && mostdownloaded.count() > 0)
+    {
+    %>
+           <div class="col-md-4">
+                         <div class="panel panel-primary homepage-sidebar">
+                           <div class="panel-heading"><h1>Most downloaded</h1></div>
+                           <div class="panel-body">
+
+                        <%
+
+                        for (Item item : mostdownloaded.getMostDownloaded())
+                        {
+
+                          if(item.isPublic()||editor_button) {
+                            Collection col=item.getCollections()[0];
+                            Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
+                            String displayTitle = "Untitled";
+                            if (dcv != null & dcv.length > 0)
+                            {
+                                displayTitle = dcv[0].value;
+                            }
+                            dcv = item.getMetadata("dc", "contributor", "author", Item.ANY);
+                            Metadatum[] authors =dcv;
+
+                    %>
+                        <article >
+                        <div class="communityflag"><span>Collection:</span>
+                            <a href="<%= request.getContextPath() %>/handle/<%=col.getHandle() %>" ><%= col.getName()  %></a></div>
+                            <h1><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h1>
+                            <% if (dcv!=null&&dcv.length>0)
+                                {
+                                 for(int i=0;i<authors.length;i++)
+                                 {
+                                   String authorQuery=""+request.getContextPath()+"/simple-search?filterquery="
+                                                 +URLEncoder.encode(authors[i].value,"UTF-8")
+                                                 + "&amp;filtername="+URLEncoder.encode("author","UTF-8")+"&amp;filtertype="
+                                                 +URLEncoder.encode("equals","UTF-8");
+                            %>
+                            	   <div class="authors">
+                            		 <a class="authors" href="<%=authorQuery %>"> <%= StringUtils.abbreviate(authors[i].value,36) %></a>
+                            	   </div>
+                               <% }
+                               } %>
+                       </article>
+                      <%
+                       }
+                      }
+
+    %>     </div>
+            </div>
+                </div> <!-- end col 4 -->
+              </div> <!-- end col row  -->
+        <%} %>
+               <% if(editor_button || add_button)  // edit button(s)
+                  { %>
 		 <div class="panel panel-warning">
              <div class="panel-heading">
              	<fmt:message key="jsp.admintools"/>
@@ -247,60 +301,9 @@
 			<% } %>
 			</div>
 		</div>
-  </dspace:sidebar>
-    <% } %>
-     <div class="col-md-4">
-                    <div class="panel panel-primary homepagesearch">
-                      <div class="panel-heading">
-                        <h1>Most Popular Items</h1></div>
-                      <div class="panel-body">
-                      <div class="row">
-      <%
-      if (mostdownloaded != null && mostdownloaded.count() > 0)
-      {
-      %>
-              <div class="col-md-8">
-              <div class="panel panel-primary">
-
-                          <%
-
-                          for (Item item : mostdownloaded.getMostDownloaded())
-                          {
-                            if(item!=null) {
-                              Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
-                              String displayTitle = "Untitled";
-                              if (dcv != null & dcv.length > 0)
-                              {
-                                  displayTitle = dcv[0].value;
-                              }
-                              dcv = item.getMetadata("dc", "description", "abstract", Item.ANY);
-                              String displayAbstract = "";
-                              if (dcv != null & dcv.length > 0)
-                              {
-                                  displayAbstract = dcv[0].value;
-                              }
-                      %>
-                          <div style="padding-bottom: 10px; min-height: 200px;" class="item">
-                              <a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>" class="btn"><%= displayTitle  %></a>
-                              <p><%= displayAbstract %></p>
-                            </div>
-                          </div>
-                        <%
-
-                           }
-                           }
-                      %>
-
-
-           </div></div>
-      <%
-      }
-      %>
-
-                      </div>
-                    </div>
-                  </div> <!-- end col 4 -->
-                </div> <!-- end col row  -->
+		<% } %>
+	</div>
+   </dspace:sidebar>
 </dspace:layout>
 <%! private void build(Community c) throws SQLException {
 

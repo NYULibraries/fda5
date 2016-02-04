@@ -149,7 +149,7 @@ if (mostdownloaded != null && mostdownloaded.count() > 0)
                     for (Item item : mostdownloaded.getMostDownloaded())
                     {
 
-                      if(item.isPublic()||item.isDiscoverable()) {
+                      if(item.isPublic()) {
                         Collection col=item.getCollections()[0];
                         Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
                         String displayTitle = "Untitled";
@@ -184,10 +184,10 @@ if (mostdownloaded != null && mostdownloaded.count() > 0)
                    }
                   }
 
-}
 %>     </div>
         </div>
             </div> <!-- end col 4 -->
           </div> <!-- end col row  -->
+<% } %>
      
 </dspace:layout>
