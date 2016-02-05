@@ -65,7 +65,7 @@
     Boolean submit_b      = (Boolean)request.getAttribute("can_submit_button");
     boolean submit_button = (submit_b == null ? false : submit_b.booleanValue());
 
-	// get the browse indices
+  // get the browse indices
     BrowseIndex[] bis = BrowseIndex.getBrowseIndices();
 
     // Put the metadata values into guaranteed non-null variables
@@ -107,19 +107,19 @@
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
 <dspace:layout locbar="commLink" title="<%= name %>" feedData="<%= feedData %>">
 
-    <div class="row"><div class="col-md-8"><h2><%= name %></h2></div>
-<%  if (logo != null) { %>
+   <h2><%= name %></h2>
+      <%  if (logo != null) { %>
         <div class="col-md-4">
-        	<img class="img-responsive pull-right" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
+          <img class="img-responsive pull-right" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
         </div>
-<% 	} %>
-	</div>
+<%  } %>
+
 <%
-	if (StringUtils.isNotBlank(intro)) { %>
+  if (StringUtils.isNotBlank(intro)) { %>
   <div class="description">
-	<%= intro %>
-</div>
-<% 	} %>
+  <%= intro %>
+  </div>
+  <%  } %>
 
   <p class="copyrightText"> <%= copyright %></p>
   
@@ -127,7 +127,7 @@
 
 
 <div class="row">
-	<%@ include file="discovery/static-tagcloud-facet.jsp" %>
+  <%@ include file="discovery/static-tagcloud-facet.jsp" %>
 </div>
 <div class="row">
   <div class="col-md-8">
@@ -260,9 +260,9 @@
                                                    + "&amp;filtername="+URLEncoder.encode("author","UTF-8")+"&amp;filtertype="
                                                    +URLEncoder.encode("equals","UTF-8");
                               %>
-                              	   <div class="authors">
-                              		 <a class="authors" href="<%=authorQuery %>"> <%= StringUtils.abbreviate(authors[i].value,36) %></a>
-                              	   </div>
+                                   <div class="authors">
+                                   <a class="authors" href="<%=authorQuery %>"> <%= StringUtils.abbreviate(authors[i].value,36) %></a>
+                                   </div>
                                  <% }
                                  } %>
                          </article>
@@ -279,7 +279,7 @@
 <% if(admin_button || editor_button ) { %>
                  <div class="panel panel-warning">
                  <div class="panel-heading"><fmt:message key="jsp.admintools"/>
-                 	<span class="pull-right"><dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.collection-admin\")%>"><fmt:message key="jsp.adminhelp"/></dspace:popup></span>
+                  <span class="pull-right"><dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.collection-admin\")%>"><fmt:message key="jsp.adminhelp"/></dspace:popup></span>
                  </div>
                  <div class="panel-body">              
 <% if( editor_button ) { %>
@@ -294,13 +294,13 @@
 <% if( admin_button ) { %>
                  <form method="post" action="<%=request.getContextPath()%>/tools/itemmap">
                   <input type="hidden" name="cid" value="<%= collection.getID() %>" />
-				  <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.collection-home.item.button"/>" />                  
+          <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.collection-home.item.button"/>" />                  
                 </form>
 <% if(submitters != null) { %>
-		      <form method="get" action="<%=request.getContextPath()%>/tools/group-edit">
-		        <input type="hidden" name="group_id" value="<%=submitters.getID()%>" />
-		        <input class="btn btn-default col-md-12" type="submit" name="submit_edit" value="<fmt:message key="jsp.collection-home.editsub.button"/>" />
-		      </form>
+          <form method="get" action="<%=request.getContextPath()%>/tools/group-edit">
+            <input type="hidden" name="group_id" value="<%=submitters.getID()%>" />
+            <input class="btn btn-default col-md-12" type="submit" name="submit_edit" value="<fmt:message key="jsp.collection-home.editsub.button"/>" />
+          </form>
 <% } %>
 <% if( editor_button || admin_button) { %>
                 <form method="post" action="<%=request.getContextPath()%>/mydspace">
@@ -326,33 +326,33 @@
 <%  } %>
 
 <%
-	if (rs != null)
-	{
+  if (rs != null)
+  {
 %>
-	<h3><fmt:message key="jsp.collection-home.recentsub"/></h3>
+  <h3><fmt:message key="jsp.collection-home.recentsub"/></h3>
 <%
-		Item[] items = rs.getRecentSubmissions();
-		for (int i = 0; i < items.length; i++)
-		{
-			Metadatum[] dcv = items[i].getMetadata("dc", "title", null, Item.ANY);
-			String displayTitle = "Untitled";
-			if (dcv != null)
-			{
-				if (dcv.length > 0)
-				{
-					displayTitle = dcv[0].value;
-				}
-			}
-			%><p class="recentItem"><a href="<%= request.getContextPath() %>/handle/<%= items[i].getHandle() %>"><%= displayTitle %></a></p><%
-		}
+    Item[] items = rs.getRecentSubmissions();
+    for (int i = 0; i < items.length; i++)
+    {
+      Metadatum[] dcv = items[i].getMetadata("dc", "title", null, Item.ANY);
+      String displayTitle = "Untitled";
+      if (dcv != null)
+      {
+        if (dcv.length > 0)
+        {
+          displayTitle = dcv[0].value;
+        }
+      }
+      %><p class="recentItem"><a href="<%= request.getContextPath() %>/handle/<%= items[i].getHandle() %>"><%= displayTitle %></a></p><%
+    }
 %>
     <p>&nbsp;</p>
 <%      } %>
 
     <%= sidebar %>
     <%
-    	int discovery_panel_cols = 12;
-    	int discovery_facet_cols = 12;
+      int discovery_panel_cols = 12;
+      int discovery_facet_cols = 12;
     %>
     <%@ include file="discovery/static-sidebar-facet.jsp" %>
 
@@ -366,7 +366,7 @@
             <input type="hidden" name="collection" value="<%= collection.getID() %>" />
       <input class="btn btn-success col-md-12" type="submit" name="submit" value="<fmt:message key="jsp.collection-home.submit.button"/>" />
           </form>
-          <p>Subscribe to this collection to receive daily e-mail notification of new additions</p>
+          <p>Receive email updates when new material is added to this collection.</p>
 <%  } %>
         <form  method="get" action="">
 <%  if (loggedIn && subscribed)
@@ -377,7 +377,7 @@
              
                   <!--<fmt:message key="jsp.collection-home.subscribe.msg"/>-->
               
-             <p>Daily email updates from this collection:</p>
+             <p>Receive email updates when new material is added to this collection.</p>
         <input class="btn btn-sm btn-info" type="submit" name="submit_subscribe" value="<fmt:message key="jsp.collection-home.subscribe"/>" />
          
 <%  }
