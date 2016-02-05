@@ -107,30 +107,29 @@
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
 <dspace:layout locbar="commLink" title="<%= name %>" feedData="<%= feedData %>">
 
-   <h2><%= name %></h2>
-      <%  if (logo != null) { %>
-        <div class="col-md-4">
-          <img class="img-responsive pull-right" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
-        </div>
-<%  } %>
+  <header class="page-title-area">
+    <%  if (logo != null) { %>
+      <div class="img-hold">
+        <img class="img-responsive" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
+      </div>
+    <%  } %>
+    <h2><%= name %></h2>
+  </header>
 
 <%
   if (StringUtils.isNotBlank(intro)) { %>
   <div class="description">
   <%= intro %>
-  </div>
-  <%  } %>
+</div>
+<%  } %>
 
   <p class="copyrightText"> <%= copyright %></p>
   
   <%-- Browse --%>
 
 
-<div class="row">
   <%@ include file="discovery/static-tagcloud-facet.jsp" %>
-</div>
-<div class="row">
-  <div class="col-md-8">
+
     <section class="search-area">
     <form method="get" action="/jspui/simple-search" class="simplest-search">
       <div class="form-group-flex">
@@ -143,8 +142,7 @@
       </div>
     </form>
   </section>
-  </div>
-</div>
+<section class="collectionlist">
 
 <% if (show_items)
    {
@@ -170,6 +168,7 @@
         String bi_name_key = "browse.menu." + bi.getSortOption().getName();
         String so_name_key = "browse.order." + (bi.isAscending() ? "asc" : "desc");
 %>
+
     <%-- give us the top report on what we are looking at --%>
     <fmt:message var="bi_name" key="<%= bi_name_key %>"/>
     <fmt:message var="so_name" key="<%= so_name_key %>"/>
@@ -216,7 +215,7 @@
       }
 %>
     </div>
-
+</section>
 <%
    } // end of if (show_title)
 %>

@@ -126,12 +126,13 @@
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
 <dspace:layout locbar="commLink" title="<%= name %>" feedData="<%= feedData %>">
 
-
-  <div class="page-title-area"><h2><%= name %></h2></div>
+<header class="page-title-area">
+  
   <%  if (logo != null) { %>
   <div class="img-hold">
       <img class="img-responsive" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
   </div> 
+  <h2><%= name %></h2></header>
   <% } %>
 
 
