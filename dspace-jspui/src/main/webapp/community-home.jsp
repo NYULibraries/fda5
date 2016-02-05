@@ -69,7 +69,7 @@
     Boolean remove_b = (Boolean)request.getAttribute("remove_button");
     boolean remove_button = (remove_b == null ? false : remove_b.booleanValue());
 
-	// get the browse indices
+  // get the browse indices
     BrowseIndex[] bis = BrowseIndex.getBrowseIndices();
 
     // Put the metadata values into guaranteed non-null variables
@@ -125,15 +125,14 @@
 
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
 <dspace:layout locbar="commLink" title="<%= name %>" feedData="<%= feedData %>">
-<div class="container">
-<div class="row">
-	<div class="col-md-8">
-        <div class="page-title-area"><h2><%= name %></h2></div>
-<%  if (logo != null) { %>
-     <div class="img-hold">
-     	<img class="img-responsive" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
-     </div> 
-<% } %>
+
+
+  <div class="page-title-area"><h2><%= name %></h2></div>
+  <%  if (logo != null) { %>
+  <div class="img-hold">
+      <img class="img-responsive" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
+  </div> 
+  <% } %>
 
 
 <section class="search-area">
@@ -145,18 +144,16 @@
   </form>
 </section>
 
-<div class="row">
-        <%@ include file="discovery/static-tagcloud-facet.jsp" %>
-</div>
-<div>
+<%@ include file="discovery/static-tagcloud-facet.jsp" %>
+
 <section class="collections-list">
-        <div class="fda-tree">
+    <div class="fda-tree">
 <%
-	boolean showLogos = ConfigurationManager.getBooleanProperty("jspui.community-home.logos", true);
-	if (subcommunities.length != 0)
+  boolean showLogos = ConfigurationManager.getBooleanProperty("jspui.community-home.logos", true);
+  if (subcommunities.length != 0)
     {
 %>
-		<h3>Collections and sub-communities</h3>
+    <h3>Collections and sub-communities</h3>
 <%
         for (int j = 0; j < subcommunities.length; j++)
         {
@@ -169,11 +166,10 @@
 <%
     }
 %>
-
 <%
     if (collections.length != 0)
     { %>
-<ul>
+  <ul>
             <%for (int j = 0; j < collections.length; j++)
             {%>
                 <li>
@@ -190,12 +186,12 @@
               </form>
             <% } %>
         <%} %>
-
+  </ul>
 <%
         }
 %>
+  </div>
 </section>
-</div>
 
     <dspace:sidebar>
     <%if (mostdownloaded != null && mostdownloaded.count() > 0)
@@ -223,7 +219,7 @@
 
                     %>
                         <article >
-                        <div class="communityflag"><span>Collection:</span>
+                          <div class="communityflag"><span>Collection:</span>
                             <a href="<%= request.getContextPath() %>/handle/<%=col.getHandle() %>" ><%= col.getName()  %></a></div>
                             <h1><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h1>
                             <% if (dcv!=null&&dcv.length>0)
@@ -235,9 +231,9 @@
                                                  + "&amp;filtername="+URLEncoder.encode("author","UTF-8")+"&amp;filtertype="
                                                  +URLEncoder.encode("equals","UTF-8");
                             %>
-                            	   <div class="authors">
-                            		 <a class="authors" href="<%=authorQuery %>"> <%= StringUtils.abbreviate(authors[i].value,36) %></a>
-                            	   </div>
+                                 <div class="authors">
+                                 <a class="authors" href="<%=authorQuery %>"> <%= StringUtils.abbreviate(authors[i].value,36) %></a>
+                                 </div>
                                <% }
                                } %>
                        </article>
@@ -250,26 +246,26 @@
         <%} %>
                <% if(editor_button || add_button)  // edit button(s)
                   { %>
-		 <div class="panel panel-warning">
+     <div class="panel panel-warning">
              <div class="panel-heading">
-             	<fmt:message key="jsp.admintools"/>
-             	<span class="pull-right">
-             		<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.site-admin\")%>"><fmt:message key="jsp.adminhelp"/></dspace:popup>
-             	</span>
-             	</div>
+              <fmt:message key="jsp.admintools"/>
+              <span class="pull-right">
+                <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.site-admin\")%>"><fmt:message key="jsp.adminhelp"/></dspace:popup>
+              </span>
+              </div>
              <div class="panel-body">
              <% if(editor_button) { %>
-	            <form method="post" action="<%=request.getContextPath()%>/tools/edit-communities">
-		          <input type="hidden" name="community_id" value="<%= community.getID() %>" />
-		          <input type="hidden" name="action" value="<%=EditCommunitiesServlet.START_EDIT_COMMUNITY%>" />
+              <form method="post" action="<%=request.getContextPath()%>/tools/edit-communities">
+              <input type="hidden" name="community_id" value="<%= community.getID() %>" />
+              <input type="hidden" name="action" value="<%=EditCommunitiesServlet.START_EDIT_COMMUNITY%>" />
                   <%--<input type="submit" value="Edit..." />--%>
                   <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.general.edit.button"/>" />
                 </form>
              <% } %>
              <% if(add_button) { %>
 
-				<form method="post" action="<%=request.getContextPath()%>/tools/collection-wizard">
-		     		<input type="hidden" name="community_id" value="<%= community.getID() %>" />
+        <form method="post" action="<%=request.getContextPath()%>/tools/collection-wizard">
+            <input type="hidden" name="community_id" value="<%= community.getID() %>" />
                     <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.community-home.create1.button"/>" />
                 </form>
                 
@@ -295,10 +291,10 @@
                  <input type="hidden" name="handle" value="<%= community.getHandle() %>" />
                  <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.general.metadataexport.button"/>" />
                </form>
-			<% } %>
-			</div>
-		</div>
-		<% } %>
+      <% } %>
+      </div>
+    </div>
+    <% } %>
    </dspace:sidebar>
 </dspace:layout>
 <%! private void build(Community c) throws SQLException {
