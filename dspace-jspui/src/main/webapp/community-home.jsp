@@ -177,15 +177,7 @@
 				 <h4><a href="<%= request.getContextPath() %>/handle/<%= collections[j].getHandle() %>">
 			  <%= collections[j].getMetadata("name") %></a></h4>
 				</li>
-			  <% if (remove_button) { %>
-			  <form class="btn-group" method="post" action="<%=request.getContextPath()%>/tools/edit-communities">
-				  <input type="hidden" name="parent_community_id" value="<%= community.getID() %>" />
-				  <input type="hidden" name="community_id" value="<%= community.getID() %>" />
-				  <input type="hidden" name="collection_id" value="<%= collections[j].getID() %>" />
-				  <input type="hidden" name="action" value="<%=EditCommunitiesServlet.START_DELETE_COLLECTION%>" />
-				  <button type="submit" class="btn btn-xs btn-danger"><span class="glyphicon glyphicon-trash"></span></button>
-			  </form>
-			<% } %>
+	
 		<%} %>
   </ul>
 <%
