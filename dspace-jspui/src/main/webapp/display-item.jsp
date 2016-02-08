@@ -132,17 +132,19 @@
 		<%
 		    }
 		%>
-		
 
-                <%-- <strong>Please use this identifier to cite or link to this item:
-                <code><%= HandleManager.getCanonicalForm(handle) %></code></strong>--%>
-                <div class="well"><fmt:message key="jsp.display-item.identifier"/>
+        <div class="alert alert-warning">
+               <strong>Please use this identifier to cite or link to this item:
+                <code><%= HandleManager.getCanonicalForm(handle) %></code></strong>
+           <fmt:message key="jsp.display-item.identifier"/>
                 <code><%= HandleManager.getCanonicalForm(handle) %></code></div>
+
+		<!-- side bar --> 
 <%
         if (admin_button)  // admin edit button
         { %>
         <dspace:sidebar>
-            <div class="panel panel-warning">
+            <div class="panel panel-admin-tools">
             	<div class="panel-heading"><fmt:message key="jsp.admintools"/></div>
             	<div class="panel-body">
                 <form method="get" action="<%= request.getContextPath() %>/tools/edit-item">
@@ -187,8 +189,16 @@
 
     String displayStyle = (displayAll ? "full" : "");
 %>
+
+  <!-- Here's the item itself -->
     <dspace:item-preview item="<%= item %>" />
     <dspace:item item="<%= item %>" collections="<%= collections %>" style="<%= displayStyle %>" />
+
+
+    <!-- show full item record button -->
+
+
+
 <div class="container row">
 <%
     String locationLink = request.getContextPath() + "/handle/" + handle;
