@@ -132,15 +132,25 @@
 
         });
       }
-
-
     });
+
+
+    
+		jQ("#sort_by").change(function(){
+       jQ(this).closest('form').trigger('submit');
+    });
+    jQ("#rpp_select").change(function(){
+       jQ(this).closest('form').trigger('submit');
+		});
 
 
 		jQ( "#spellCheckQuery").click(function(){
 			jQ("#query").val(jQ(this).attr('data-spell'));
 			jQ("#main-query-submit").click();
 		});
+
+		
+
 		jQ( "#filterquery" )
 			.autocomplete({
 				source: function( request, response ) {
@@ -182,7 +192,10 @@
 
     <%-- <h1>Search Results</h1> --%>
 
-<h2><fmt:message key="jsp.search.title"/></h2>
+<%-- <h2 class="search-page-title"><fmt:message key="jsp.search.title"/></h2> --%>
+
+
+
 
 <div class="discovery-search-form panel panel-default">
     <%-- Controls for a repeat search --%>
@@ -192,15 +205,15 @@
     		<div class="form-flex-item">
         	<label for="tlocation"><fmt:message key="jsp.search.results.searchin"/></label></div>
          	<div class="form-flex-item">
-         		<select name="location" id="tlocation">
+         		<select name="location" id="tlocation" class="form-control">
 <%
     if (scope == null)
     {
         // Scope of the search was all of DSpace.  The scope control will list
         // "all of DSpace" and the communities.
 %>
-                                    <%-- <option selected value="/">All of DSpace</option> --%>
-                                    <option selected="selected" value="/"><fmt:message key="jsp.general.genericScope"/></option>
+                <%-- <option selected value="/">All of DSpace</option> --%>
+                <option selected="selected" value="/"><fmt:message key="jsp.general.genericScope"/></option>
 <%  }
     else
     {
@@ -252,7 +265,7 @@
 					<%  }  %>  
 				</div>
 				<div class="form-flex-item" >	
-			    <select id="filter_field_<%=idx %>" name="filter_field_<%=idx %>">
+			    <select id="filter_field_<%=idx %>" name="filter_field_<%=idx %>" class="form-control">
 				<%
 					for (DiscoverySearchFilter searchFilter : availableFilters)
 					{
@@ -272,7 +285,7 @@
 					}
 				%>
 				</select>
-				<select id="filter_type_<%=idx %>" name="filter_type_<%=idx %>">
+				<select id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" class="form-control">
 				<%
 					for (String opt : options)
 					{
@@ -281,7 +294,7 @@
 					}
 				%>
 				</select>
-				<input type="text" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[2]) %>" size="45"/>
+				<input type="text" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[2]) %>" size="45"  class="form-control" />
 				<input class="btn btn-default" type="submit" id="submit_filter_remove_<%=idx %>" name="submit_filter_remove_<%=idx %>" value="X" />
 			</div>
 </div>
@@ -301,6 +314,8 @@
 		</section>
 <% if (availableFilters.size() > 0) { %>
 		<div class="discovery-search-filters panel-body">
+
+
 			<form action="simple-search" method="get">
 				<div class="form-group-flex">
 			  	<div class="form-flex-item">
@@ -322,7 +337,7 @@
 					idx++;
 				}
 		} %>
-		<select id="filtername" name="filtername">
+		<select id="filtername" name="filtername" class="form-control">
 		<%
 			for (DiscoverySearchFilter searchFilter : availableFilters)
 			{
@@ -333,7 +348,7 @@
 		</select> 
 		</div>
     <div class="form-flex-item">
-			<select id="filtertype" name="filtertype">
+			<select id="filtertype" name="filtertype" class="form-control">
 		<%
 			for (String opt : options)
 			{
@@ -344,7 +359,7 @@
 		</select>
 		</div>
     <div class="form-flex-item">
-		<input type="text" id="filterquery" name="filterquery" required="required" />
+		<input type="text" id="filterquery" name="filterquery" class="form-control" 	required="required" />
 		<input type="hidden" value="<%= rpp %>" name="rpp" />
 		<input type="hidden" value="<%= sortedBy %>" name="sort_by" />
 		<input type="hidden" value="<%= order %>" name="order" />
@@ -414,28 +429,27 @@ else if( qResults != null)
     lastURL = lastURL + (pageTotal-1) * qResults.getMaxResults();
 
 
-%><div class="resultsnum">
+%>
+ <div class="discovery-results-header">
 <%
 	long lastHint = qResults.getStart()+qResults.getMaxResults() <= qResults.getTotalSearchResults()?
 	        qResults.getStart()+qResults.getMaxResults():qResults.getTotalSearchResults();
 %>
     <%-- <p>Results <//%=qResults.getStart()+1%>-<//%=qResults.getStart()+qResults.getHitHandles().size()%> of --%>
-	<h3><fmt:message key="jsp.search.results.results">
+	<h3 class="resultsnum"><fmt:message key="jsp.search.results.results">
 
-        <fmt:param><%=qResults.getStart()+1%></fmt:param>
+        <fmt:param><%=qResults.getStart()+1%></fmt:param> 
         <fmt:param><%=lastHint%></fmt:param>
         <fmt:param><%=qResults.getTotalSearchResults()%></fmt:param>
       <fmt:param><%=(float) qResults.getSearchTime() / 1000%></fmt:param>
     </fmt:message></h3>
-
-
-
-
 <!-- give a content to the div -->
-</div>
+	
 
- <div class="discovery-pagination-controls ">
-   <form action="simple-search" method="get">
+ <div class="discovery-pagination-controls">
+
+
+   <form action="simple-search" method="get" id="results-sorting">
    <input type="hidden" value="<%= StringEscapeUtils.escapeHtml(searchScope) %>" name="location" />
    <input type="hidden" value="<%= StringEscapeUtils.escapeHtml(query) %>" name="query" />
 	<% if (appliedFilterQueries.size() > 0 ) { 
@@ -451,8 +465,8 @@ else if( qResults != null)
 					idx++;
 				}
 	} %>	
-           <label for="rpp"><fmt:message key="search.results.perpage"/></label>
-           <select name="rpp">
+          
+           <select name="rpp" class="form-control" id="rpp_select">
 <%
                for (int i = 5; i <= 100 ; i += 5)
                {
@@ -462,35 +476,38 @@ else if( qResults != null)
 <%
                }
 %>
-           </select>
-           &nbsp;|&nbsp;
+           </select> results
+           <!--    <label for="rpp"><fmt:message key="search.results.perpage"/></label>  &nbsp;|&nbsp; -->
+          
 <%
            if (sortOptions.size() > 0)
            {
 %>
-               <label for="sort_by"><fmt:message key="search.results.sort-by"/></label>
-               <select name="sort_by">
-                   <option value="score"><fmt:message key="search.sort-by.relevance"/></option>
-<%
+            <!--   <label for="sort_by"><fmt:message key="search.results.sort-by"/></label> -->
+            sorted by
+               <select name="sort_by" id="sort_by" class="form-control">
+                  <option value="score"><fmt:message key="search.sort-by.relevance"/></option>
+                	<option value="dc.title_sort">Title A-Z</option>
+                	<option value="dc.title_sort">Title Z-A</option>
+ 									<option value="dc.date.issued_dt">Newest</option>
+ 									<option value="dc.date.issued_dt">Oldest</option>
+<%--
                for (String sortBy : sortOptions)
                {
                    String selected = (sortBy.equals(sortedBy) ? "selected=\"selected\"" : "");
                    String mKey = "search.sort-by." + sortBy;
                    %> <option value="<%= sortBy %>" <%= selected %>><fmt:message key="<%= mKey %>"/></option><%
                }
-%>
+--%>
                </select>
 <%
            }
+
+
 %>
-           <label for="order"><fmt:message key="search.results.order"/></label>
-           <select name="order">
-               <option value="ASC" <%= ascSelected %>><fmt:message key="search.order.asc" /></option>
-               <option value="DESC" <%= descSelected %>><fmt:message key="search.order.desc" /></option>
-           </select>
-         
+          <input type="hidden" value="ASC">
        
-           <input class="btn btn-default" type="submit" name="submit_search" value="<fmt:message key="search.update" />" />
+           <input style="display:none" class="btn btn-default" type="submit" name="submit_search" value="<fmt:message key="search.update" />" />
 
 <%
     if (admin_button)
@@ -499,7 +516,7 @@ else if( qResults != null)
     }
 %>
 </form>
-   </div>
+   </div></div>
 
 
 
