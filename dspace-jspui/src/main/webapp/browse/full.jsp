@@ -268,9 +268,9 @@
 
 	</form>
 	</div>
-<div class="panel panel-primary">
+<div class="panel panel-primary browsing-by">
 	<%-- give us the top report on what we are looking at --%>
-	<div class="panel-heading text-center">
+	<div class="panel-heading ">
 		<fmt:message key="browse.full.range">
 			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
 			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
