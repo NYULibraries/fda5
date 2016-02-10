@@ -72,10 +72,10 @@
     List<String> sortOptions = (List<String>) request.getAttribute("sortOptions");
 
     String query = (String) request.getAttribute("query");
-	if (query == null)
-	{
+		if (query == null)
+		{
 	    query = "";
-	}
+		}
     Boolean error_b = (Boolean)request.getAttribute("search.error");
     boolean error = (error_b == null ? false : error_b.booleanValue());
     
@@ -85,12 +85,12 @@
     String ascSelected = (SortOption.ASCENDING.equalsIgnoreCase(order)   ? "selected=\"selected\"" : "");
     String descSelected = (SortOption.DESCENDING.equalsIgnoreCase(order) ? "selected=\"selected\"" : "");
     String httpFilters ="";
-	String spellCheckQuery = (String) request.getAttribute("spellcheck");
+		String spellCheckQuery = (String) request.getAttribute("spellcheck");
     List<DiscoverySearchFilter> availableFilters = (List<DiscoverySearchFilter>) request.getAttribute("availableFilters");
-	List<String[]> appliedFilters = (List<String[]>) request.getAttribute("appliedFilters");
-	List<String> appliedFilterQueries = (List<String>) request.getAttribute("appliedFilterQueries");
-	if (appliedFilters != null && appliedFilters.size() >0 ) 
-	{
+		List<String[]> appliedFilters = (List<String[]>) request.getAttribute("appliedFilters");
+		List<String> appliedFilterQueries = (List<String>) request.getAttribute("appliedFilterQueries");
+		if (appliedFilters != null && appliedFilters.size() >0 ) 
+		{
 	    int idx = 1;
 	    for (String[] filter : appliedFilters)
 	    {
@@ -99,7 +99,7 @@
 	        httpFilters += "&amp;filter_value_"+idx+"="+URLEncoder.encode(filter[2],"UTF-8");
 	        idx++;
 	    }
-	}
+		}
     int rpp          = qArgs.getMaxResults();
     int etAl         = ((Integer) request.getAttribute("etal")).intValue();
 
@@ -116,19 +116,19 @@
 	jQ(document).ready(function() {
 
 		jQ("#addafilter-link").click(function(e) {
-      console.log("clicked");
+      //console.log("clicked");
       e.preventDefault();
       openstate = jQ(".discovery-search-filters").is(":visible");
       if (!openstate) {
         jQ(".discovery-query").addClass("open");
         jQ(".discovery-search-filters").slideDown("fast", function() {
-          console.log("1 animation done");
+         // console.log("1 animation done");
 
         });
       } else {
         jQ(".discovery-query").removeClass("open");
         jQ(".discovery-search-filters").slideUp("fast", function() {
-          console.log("2 animation done");
+          //console.log("2 animation done");
 
         });
       }
@@ -425,7 +425,7 @@ else if( qResults != null)
         <fmt:param><%=qResults.getStart()+1%></fmt:param>
         <fmt:param><%=lastHint%></fmt:param>
         <fmt:param><%=qResults.getTotalSearchResults()%></fmt:param>
-        <fmt:param><%=(float) qResults.getSearchTime() / 1000%></fmt:param>
+      <fmt:param><%=(float) qResults.getSearchTime() / 1000%></fmt:param>
     </fmt:message></h3>
 
 
@@ -506,24 +506,28 @@ else if( qResults != null)
  
 <div class="discovery-result-results">
 <% if (communities.length > 0 ) { %>
-   
+   <div class="community-results">
     <h3><fmt:message key="jsp.search.results.comhits"/></h3>
     <dspace:communitylist  communities="<%= communities %>" />
-  
-<% } %>
+  </div>
+<%  } %>
+	
 
 <% if (collections.length > 0 ) { %>
-   
+    <div class="collection-results">
     <h3><fmt:message key="jsp.search.results.colhits"/></h3>
     <dspace:collectionlist collections="<%= collections %>" />
    
+  </div>
 <% } %>
 
 <% if (items.length > 0) { %>
-   
+    <div class="item-results">
+    <% if ((communities.length > 0) || (collections.length > 0 ) ) { %>
     <h3><fmt:message key="jsp.search.results.itemhits"/></h3>
+    <% } %>
     <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" />
-  
+    </div>
 <% } %>
 </div>
    
@@ -531,8 +535,8 @@ else if( qResults != null)
 <%-- show again the navigation info/links --%>
 <div class="discovery-result-pagination row container">
     <%-- <p align="center">Results <//%=qResults.getStart()+1%>-<//%=qResults.getStart()+qResults.getHitHandles().size()%> of --%>
-
-    <ul class="pagination pull-right">
+<div class="text-center">
+    <ul class="pagination ">
 <%
 if (pageFirst != pageCurrent)
 {
@@ -586,7 +590,7 @@ else
     %><li class="disabled"><span><fmt:message key="jsp.search.general.next" /></span></li><%
 }
 %>
-</ul>
+</ul></div>
 <!-- give a content to the div -->
 </div>
 
@@ -625,9 +629,9 @@ else
 	}
 	if (brefine) {
 %>
-
-<h3 class="facets"><fmt:message key="jsp.search.facet.refine" /></h3>
-<div id="facets" class="facets">
+<div class="panel">
+<div class="panel-heading"><fmt:message key="jsp.search.facet.refine" /></div>
+<div id="facets" class="facetBox panel-body">
 
 <%
 	for (DiscoverySearchFilterFacet facetConf : facetsConf)
@@ -643,8 +647,8 @@ else
 	    int limit = facetConf.getFacetLimit()+1;
 	    
 	    String fkey = "jsp.search.facet.refine."+f;
-	    %><div id="facet_<%= f %>" class="panel">
-	    <div class="panel-heading"><fmt:message key="<%= fkey %>" /></div>
+	    %><div id="facet_<%= f %>" class="facets">
+	    <span class="facetName"><fmt:message key="<%= fkey %>" /></span>
 	    <ul class="list-group"><%
 	    int idx = 1;
 	    int currFp = UIUtil.getIntParameter(request, f+"_page");
@@ -712,7 +716,7 @@ else
 	}
 
 %>
-
+	</div>
 </div>
 <% } %>
 </dspace:sidebar>
