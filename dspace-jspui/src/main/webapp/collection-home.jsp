@@ -186,16 +186,8 @@
 
 <%-- output the results using the browselist tag --%>
      <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" />
-    <%-- give us the bottom report on what we are looking at --%>
-    <div class="browse_range">
-        <fmt:message key="jsp.collection-home.content.range">
-            <fmt:param value="${bi_name}"/>
-            <fmt:param value="${so_name}"/>
-            <fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
-            <fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
-            <fmt:param value="<%= Integer.toString(bi.getTotal()) %>"/>
-        </fmt:message>
-    </div>
+    <%-- give us the bottom repaort on what we are looking at --%>
+    
 
     <%--  do the bottom previous and next page links --%>
     <div class="prev-next-links">
