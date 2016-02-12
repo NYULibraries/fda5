@@ -221,11 +221,24 @@
 %>
 
   <dspace:sidebar>
+  <aside class="sidebar">
 
-   <%if (mostdownloaded != null && mostdownloaded.count() > 0)
-      {
-      %>
-                           <div class="panel panel-primary homepage-sidebar">
+  <%  if (submit_button)
+    { %>
+    <div class = "panel panel-default ">
+      <div class = "panel-heading">Submit Item</div>
+      <div class = "panel-body">
+       <form class="form-group" action="<%= request.getContextPath() %>/submit" method="post">
+        <input type="hidden" name="collection" value="<%= collection.getID() %>" />
+        <input class="btn btn-info col-md-12" type="submit" name="submit" value="<fmt:message key="jsp.collection-home.submit.button"/>" />
+      </form>
+    </div>
+  </div>
+<%  } %>
+
+   <%if (mostdownloaded != null && mostdownloaded.count() > 0) { %>
+
+  <div class="panel panel-primary most-downloaded">
                              <div class="panel-heading"><h1>Most downloaded</h1></div>
                              <div class="panel-body">
 
@@ -273,6 +286,8 @@
               </div>
 
           <%} %>
+
+  
 
 
 <% if(admin_button || editor_button ) { %>
@@ -356,17 +371,14 @@
     <%@ include file="discovery/static-sidebar-facet.jsp" %>
 
 
+
+
+
+
 <div class = "panel panel-default ">
     <div class = "panel-heading">Email subscription</div>
   <div class = "panel-body">
-    <%  if (submit_button)
-    { %>
-          <form class="form-group" action="<%= request.getContextPath() %>/submit" method="post">
-            <input type="hidden" name="collection" value="<%= collection.getID() %>" />
-      <input class="btn btn-success col-md-12" type="submit" name="submit" value="<fmt:message key="jsp.collection-home.submit.button"/>" />
-          </form>
-          <p>Receive email updates when new material is added to this collection.</p>
-<%  } %>
+
         <form  method="get" action="">
 <%  if (loggedIn && subscribed)
     { %>
@@ -377,13 +389,13 @@
                   <!--<fmt:message key="jsp.collection-home.subscribe.msg"/>-->
               
              <p>Receive email updates when new material is added to this collection.</p>
-        <input class="btn btn-sm btn-info" type="submit" name="submit_subscribe" value="<fmt:message key="jsp.collection-home.subscribe"/>" />
+        <input class="btn btn-info col-md-12" type="submit" name="submit_subscribe" value="<fmt:message key="jsp.collection-home.subscribe"/>" />
          
 <%  }
 %>
         </form></div>
 </div>
-
+</aside>
   </dspace:sidebar>
 
 </dspace:layout>
