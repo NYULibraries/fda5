@@ -63,7 +63,7 @@
 
 <div class="panel">
 <div class="panel-heading"><fmt:message key="jsp.search.facet.refine" /></div>
-<div id="facets" class="panel-body">
+<div id="facets" class="panel-body facets">
 	
 	
 <%
