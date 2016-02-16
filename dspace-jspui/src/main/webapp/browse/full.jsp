@@ -255,58 +255,7 @@
 %>
 		</select>
 
-		<label for="etal"><fmt:message key="browse.full.etal" /></label>
-		<select name="etal">
-<%
-	String unlimitedSelect = "";
-	if (bi.getEtAl() == -1)
-	{
-		unlimitedSelect = "selected=\"selected\"";
-	}
-%>
-			<option value="0" <%= unlimitedSelect %>><fmt:message key="browse.full.etal.unlimited"/></option>
-<%
-	int cfgd = ConfigurationManager.getIntProperty("webui.browse.author-limit");
-	boolean insertedCurrent = false;
-	boolean insertedDefault = false;
-	for (int i = 0; i <= 50 ; i += 5)
-	{
-		// for the first one, we want 1 author, not 0
-		if (i == 0)
-		{
-			String sel = (i + 1 == bi.getEtAl() ? "selected=\"selected\"" : "");
-			%><option value="1" <%= sel %>>1</option><%
-		}
-		
-		// if the current i is greated than that configured by the user,
-		// insert the one specified in the right place in the list
-		if (i > bi.getEtAl() && !insertedCurrent && bi.getEtAl() != -1 && bi.getEtAl() != 0 && bi.getEtAl() != 1)
-		{
-			%><option value="<%= bi.getEtAl() %>" selected="selected"><%= bi.getEtAl() %></option><%
-			insertedCurrent = true;
-		}
-		
-		// if the current i is greated than that configured by the administrator (dspace.cfg)
-		// insert the one specified in the right place in the list
-		if (i > cfgd && !insertedDefault && cfgd != -1 && cfgd != 0 && cfgd != 1 && bi.getEtAl() != cfgd)
-		{
-			%><option value="<%= cfgd %>"><%= cfgd %></option><%
-			insertedDefault = true;
-		}
-		
-		// determine if the current not-special case is selected
-		String selected = (i == bi.getEtAl() ? "selected=\"selected\"" : "");
-		
-		// do this for all other cases than the first and the current
-		if (i != 0 && i != bi.getEtAl())
-		{
-%>	
-			<option value="<%= i %>" <%= selected %>><%= i %></option>
-<%
-		}
-	}
-%>
-		</select>
+
 
 		<input type="submit" class="btn btn-default" name="submit_browse" value="<fmt:message key="jsp.general.update"/>"/>
 
@@ -319,9 +268,9 @@
 
 	</form>
 	</div>
-<div class="panel panel-primary">
+<div class="panel panel-primary browsing-by">
 	<%-- give us the top report on what we are looking at --%>
-	<div class="panel-heading text-center">
+	<div class="panel-heading ">
 		<fmt:message key="browse.full.range">
 			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
 			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
