@@ -406,7 +406,7 @@ else if( qResults != null)
     long pageCurrent = ((Long)request.getAttribute("pagecurrent")).longValue();
     long pageLast    = ((Long)request.getAttribute("pagelast"   )).longValue();
     long pageFirst   = ((Long)request.getAttribute("pagefirst"  )).longValue();
-    
+
     // create the URLs accessing the previous and next search result pages
     String baseURL =  request.getContextPath()
                     + (searchScope != "" ? "/handle/" + searchScope : "")
@@ -469,26 +469,25 @@ else if( qResults != null)
 					idx++;
 				}
 	} %>	
-          
+		
            <select name="rpp" class="form-control" id="rpp_select">
 <%
                for (int i = 5; i <= 100 ; i += 5)
                {
                    String selected = (i == rpp ? "selected=\"selected\"" : "");
 %>
-                   <option value="<%= i %>" <%= selected %>><%= i %></option>
+                   <option value="<%= i %>" <%= selected %>><%= i %> per page</option>
 <%
                }
 %>
-           </select> results
-           <!--    <label for="rpp"><fmt:message key="search.results.perpage"/></label>  &nbsp;|&nbsp; -->
+           </select> 
           
 <%
            if (sortOptions.size() > 0)
            {
 %>
-            <!--   <label for="sort_by"><fmt:message key="search.results.sort-by"/></label> -->
-            sorted by
+            <!--   <label for="sort_by">   sorted by <fmt:message key="search.results.sort-by"/></label> -->
+         
 							<select name="sort_by" id="sort_by" class="form-control">
 									<option value="score"><fmt:message key="search.sort-by.relevance"/></option>
 									<option data-order="ASC" value="dc.title_sort" <%= titleAscSelected %>>Title A-Z</option>
@@ -547,7 +546,12 @@ else if( qResults != null)
 
 <%-- show again the navigation info/links --%>
 <div class="discovery-result-pagination row container">
+
     <%-- <p align="center">Results <//%=qResults.getStart()+1%>-<//%=qResults.getStart()+qResults.getHitHandles().size()%> of --%>
+<%
+if (pageTotal > 1) { %>
+  
+
 <div class="text-center">
     <ul class="pagination ">
 <%
@@ -604,6 +608,9 @@ else
 }
 %>
 </ul></div>
+
+<% } %>
+
 <!-- give a content to the div -->
 </div>
 
@@ -697,7 +704,7 @@ else
 	    }
 	    if (currFp > 0 || idx == limit)
 	    {
-	        %><li class="list-group-item"><span style="visibility: hidden;">.</span>
+	        %><li class="list-group-item list-group-nextlink">
 	        <% if (currFp > 0) { %>
 	        <a class="pull-left" href="<%= request.getContextPath()
 	            + (searchScope!=""?"/handle/"+searchScope:"")
