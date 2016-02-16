@@ -177,6 +177,12 @@ body .search-area {
 }
 
 /* line 27, ../../sass/partials/_search.scss */
+form#results-pp {
+  float: left;
+  margin-top: 20px;
+}
+
+/* line 32, ../../sass/partials/_search.scss */
 .form-control:focus, .btn:focus, *:focus {
   border-color: #008996 !important;
   outline: 0;
@@ -185,24 +191,24 @@ body .search-area {
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 137, 150, 0.6);
 }
 
-/* line 35, ../../sass/partials/_search.scss */
+/* line 40, ../../sass/partials/_search.scss */
 .search-page-title, .resultsnum {
   font-weight: normal;
 }
 
-/* line 41, ../../sass/partials/_search.scss */
+/* line 46, ../../sass/partials/_search.scss */
 .discovery-result-pagination h2 {
   font-size: 1.5rem;
 }
 
-/* line 46, ../../sass/partials/_search.scss */
+/* line 51, ../../sass/partials/_search.scss */
 .discovery-result-results {
-  margin: 1rem 0;
+  margin: 12px 0;
   border-top: 4px double #d2cdc9;
   border-bottom: 4px double #d2cdc9;
 }
 
-/* line 52, ../../sass/partials/_search.scss */
+/* line 57, ../../sass/partials/_search.scss */
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
   z-index: 2;
   color: #fff;
@@ -211,21 +217,21 @@ body .search-area {
   border-color: #B5ADA6;
 }
 
-/* line 61, ../../sass/partials/_search.scss */
+/* line 66, ../../sass/partials/_search.scss */
 .simplest-search .input-hold {
   display: block;
   -webkit-flex: 1 1 auto;
   flex: 1 1 auto;
 }
 
-/* line 65, ../../sass/partials/_search.scss */
+/* line 70, ../../sass/partials/_search.scss */
 .simplest-search .input-hold input#query {
   border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
   border-right: none;
 }
 
-/* line 71, ../../sass/partials/_search.scss */
+/* line 76, ../../sass/partials/_search.scss */
 .simplest-search .input-hold input {
   width: 100%;
   padding: 6px 12px;
@@ -236,7 +242,7 @@ body .search-area {
   height: 40px;
 }
 
-/* line 80, ../../sass/partials/_search.scss */
+/* line 85, ../../sass/partials/_search.scss */
 .simplest-search .button-hold {
   min-width: 15%;
   display: block;
@@ -253,7 +259,7 @@ body .search-area {
   background-image: linear-gradient(#a49483, #8a7d6e);
 }
 
-/* line 90, ../../sass/partials/_search.scss */
+/* line 95, ../../sass/partials/_search.scss */
 .simplest-search .button-hold button {
   width: 100%;
   background: transparent;
@@ -263,43 +269,43 @@ body .search-area {
   height: 40px;
 }
 
-/* line 100, ../../sass/partials/_search.scss */
+/* line 105, ../../sass/partials/_search.scss */
 .form-control {
   display: inline-block;
   width: auto;
 }
 
-/* line 105, ../../sass/partials/_search.scss */
+/* line 110, ../../sass/partials/_search.scss */
 .discovery-search-form {
   background-color: #e1dedb;
   box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-color: #d2cdc9;
 }
 
-/* line 109, ../../sass/partials/_search.scss */
+/* line 114, ../../sass/partials/_search.scss */
 .discovery-search-form .discovery-query {
   transition: all .1s ease-in;
 }
 
-/* line 113, ../../sass/partials/_search.scss */
+/* line 118, ../../sass/partials/_search.scss */
 .discovery-search-form .discovery-query .interface-link {
   color: #6f6152;
   text-decoration: underline;
   display: inline-block;
 }
 
-/* line 119, ../../sass/partials/_search.scss */
+/* line 124, ../../sass/partials/_search.scss */
 .discovery-search-form label {
   margin-bottom: 0;
   width: 68px;
 }
 
-/* line 123, ../../sass/partials/_search.scss */
+/* line 128, ../../sass/partials/_search.scss */
 .discovery-search-form .discovery-query.open {
   padding: 15px 15px 0;
 }
 
-/* line 126, ../../sass/partials/_search.scss */
+/* line 131, ../../sass/partials/_search.scss */
 .discovery-search-form .form-group-flex {
   margin: 10px 0;
   display: flex;
@@ -313,12 +319,12 @@ body .search-area {
   align-items: center;
 }
 
-/* line 138, ../../sass/partials/_search.scss */
+/* line 143, ../../sass/partials/_search.scss */
 .discovery-search-form select {
   max-width: 100%;
 }
 
-/* line 141, ../../sass/partials/_search.scss */
+/* line 146, ../../sass/partials/_search.scss */
 .discovery-search-form .form-flex-item {
   display: block;
   -webkit-flex: 0 1 auto;
@@ -331,25 +337,25 @@ body .search-area {
   max-width: 100%;
 }
 
-/* line 152, ../../sass/partials/_search.scss */
+/* line 157, ../../sass/partials/_search.scss */
 .discovery-search-form .form-flex-item:last-child {
   margin-right: 0px;
 }
 
-/* line 155, ../../sass/partials/_search.scss */
+/* line 160, ../../sass/partials/_search.scss */
 .discovery-search-form .form-flex-item.item-label {
   -webkit-flex: 0 0 auto;
   flex: 0 0 auto;
 }
 
-/* line 159, ../../sass/partials/_search.scss */
+/* line 164, ../../sass/partials/_search.scss */
 .discovery-search-form .discovery-search-filters {
   display: none;
   width: 100% !important;
   background-color: #ccc7c2;
 }
 
-/* line 166, ../../sass/partials/_search.scss */
+/* line 171, ../../sass/partials/_search.scss */
 .table thead > tr > th,
 .table tbody > tr > th,
 .table tfoot > tr > th,
@@ -360,19 +366,19 @@ body .search-area {
   text-align: left;
 }
 
-/* line 177, ../../sass/partials/_search.scss */
+/* line 182, ../../sass/partials/_search.scss */
 .table.panel-body td:first-child, .table.panel-body th:first-child {
   padding-left: 15px;
 }
 
-/* line 184, ../../sass/partials/_search.scss */
+/* line 189, ../../sass/partials/_search.scss */
 .item-results .table td:first-child, .collectionlist .table td:first-child, .browsing-by .table td:first-child {
   padding-right: 25px;
   text-align: left;
   white-space: nowrap;
 }
 
-/* line 189, ../../sass/partials/_search.scss */
+/* line 194, ../../sass/partials/_search.scss */
 .item-results .table td:nth-child(2), .collectionlist .table td:nth-child(2), .browsing-by .table td:nth-child(2) {
   /* the title column */
   padding-right: 25px;
@@ -381,47 +387,47 @@ body .search-area {
   font-weight: bold;
 }
 
-/* line 199, ../../sass/partials/_search.scss */
+/* line 204, ../../sass/partials/_search.scss */
 #startnewsearch-link {
   display: block;
 }
 
-/* line 203, ../../sass/partials/_search.scss */
+/* line 208, ../../sass/partials/_search.scss */
 .discovery-results-header {
   margin-top: 3rem;
 }
 
-/* line 205, ../../sass/partials/_search.scss */
+/* line 210, ../../sass/partials/_search.scss */
 .discovery-results-header .resultsnum {
   margin: 8px 0 0;
   float: left;
 }
 
-/* line 208, ../../sass/partials/_search.scss */
+/* line 213, ../../sass/partials/_search.scss */
 .discovery-results-header .resultsnum span {
   font-size: 1rem;
 }
 
-/* line 214, ../../sass/partials/_search.scss */
+/* line 219, ../../sass/partials/_search.scss */
 input#query {
   width: 100%;
   padding: 6px 12px;
   font-size: 17px;
 }
 
-/* line 220, ../../sass/partials/_search.scss */
+/* line 225, ../../sass/partials/_search.scss */
 .discovery-pagination-controls {
   text-align: right;
 }
 
-/* line 222, ../../sass/partials/_search.scss */
+/* line 227, ../../sass/partials/_search.scss */
 .discovery-pagination-controls .form-group-flex {
   /*background-color: pink;*/
   margin-bottom: 15px;
   display: none;
 }
 
-/* line 227, ../../sass/partials/_search.scss */
+/* line 232, ../../sass/partials/_search.scss */
 .discovery-pagination-controls .form-flex-item {
   /*  background-color: red;*/
   -webkit-flex: 1 1 auto;
@@ -435,14 +441,14 @@ input#query {
   align-items: center;
 }
 
-/* line 241, ../../sass/partials/_search.scss */
+/* line 246, ../../sass/partials/_search.scss */
 .remove-filter .btn {
   padding: 2px 0 0 0;
   height: 25px;
   width: 25px;
 }
 
-/* line 247, ../../sass/partials/_search.scss */
+/* line 252, ../../sass/partials/_search.scss */
 .small-button .btn {
   padding: 2px 5px 0 5px;
   height: 25px;
@@ -586,70 +592,71 @@ input#query {
 .navbar-inverse {
   background-image: none;
   background-color: #57068C;
+  border-color: #57068C;
 }
 
-/* line 38, ../../sass/partials/_topnavbar.scss */
+/* line 39, ../../sass/partials/_topnavbar.scss */
 .navbar-inverse .navbar-nav > li > a,
 .navbar-inverse .navbar-bottom a {
   color: #ddd;
 }
 
 @media (max-width: 767px) {
-  /* line 43, ../../sass/partials/_topnavbar.scss */
+  /* line 44, ../../sass/partials/_topnavbar.scss */
   .navbar-inverse .navbar-nav .open .dropdown-menu {
     margin-left: 4em;
   }
-  /* line 45, ../../sass/partials/_topnavbar.scss */
+  /* line 46, ../../sass/partials/_topnavbar.scss */
   .navbar-inverse .navbar-nav .open .dropdown-menu > li > a, .navbar-inverse .navbar-nav .open .dropdown-menu .dropdown-header {
     padding: 5px;
     color: #ddd;
   }
-  /* line 49, ../../sass/partials/_topnavbar.scss */
+  /* line 50, ../../sass/partials/_topnavbar.scss */
   .navbar-inverse .navbar-nav .open .dropdown-menu .divider {
     border-top: 1px solid #3f0465;
     box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 }
 
-/* line 57, ../../sass/partials/_topnavbar.scss */
+/* line 58, ../../sass/partials/_topnavbar.scss */
 header div.navbar-right {
   margin-top: 10px;
 }
 
 @media (min-width: 0em) and (max-width: 991px) {
-  /* line 62, ../../sass/partials/_topnavbar.scss */
+  /* line 63, ../../sass/partials/_topnavbar.scss */
   .container > .navbar-header, .container > .navbar-collapse {
     margin-right: 0px;
     margin-left: 0px;
   }
-  /* line 66, ../../sass/partials/_topnavbar.scss */
+  /* line 67, ../../sass/partials/_topnavbar.scss */
   .navbar-collapse {
     max-height: none;
   }
-  /* line 69, ../../sass/partials/_topnavbar.scss */
+  /* line 70, ../../sass/partials/_topnavbar.scss */
   .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
     background-color: #3f0465;
     border-color: #3f0465;
   }
-  /* line 73, ../../sass/partials/_topnavbar.scss */
+  /* line 74, ../../sass/partials/_topnavbar.scss */
   .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
     color: #fff;
     background-color: #3f0465;
   }
-  /* line 77, ../../sass/partials/_topnavbar.scss */
+  /* line 78, ../../sass/partials/_topnavbar.scss */
   .navbar-header {
     background: transparent url("../../../image/nyu_fda_logo_concise.svg") no-repeat 0px center;
   }
-  /* line 80, ../../sass/partials/_topnavbar.scss */
+  /* line 81, ../../sass/partials/_topnavbar.scss */
   .navbar-header img {
     opacity: 0.0;
     width: 200px;
   }
-  /* line 84, ../../sass/partials/_topnavbar.scss */
+  /* line 85, ../../sass/partials/_topnavbar.scss */
   .navbar-toggle {
     margin-top: 15px;
   }
-  /* line 87, ../../sass/partials/_topnavbar.scss */
+  /* line 88, ../../sass/partials/_topnavbar.scss */
   header div.navbar-right {
     margin-left: 0;
   }
@@ -994,10 +1001,15 @@ a.btn-primary:link, a.btn-primary:hover, a.btn-primary:focus, a.btn-primary:visi
 
 /* line 17, ../../sass/partials/_facets.scss */
 .facets .list-group-item {
-  font-size: .75rem;
+  font-size: .8rem;
 }
 
-/* line 20, ../../sass/partials/_facets.scss */
+/* line 22, ../../sass/partials/_facets.scss */
+.facets .list-group-nextlink a:hover {
+  background-color: inherit;
+}
+
+/* line 27, ../../sass/partials/_facets.scss */
 .facets li {
   padding: 0;
 }
