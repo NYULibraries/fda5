@@ -82,6 +82,10 @@
     DiscoverQuery qArgs = (DiscoverQuery) request.getAttribute("queryArgs");
     String sortedBy = qArgs.getSortField();
     String order = qArgs.getSortOrder().toString();
+    String titleAscSelected = ((sortedBy.equalsIgnoreCase("dc.title_sort") && (order.equalsIgnoreCase("ASC"))) ? "selected=\"selected\"" : "");
+    String titleDescSelected = ((sortedBy.equalsIgnoreCase("dc.title_sort") && (order.equalsIgnoreCase("DESC")))  ? "selected=\"selected\"" : "");
+    String dateIAscSelected = ((sortedBy.equalsIgnoreCase("dc.date.issued_dt") && (order.equalsIgnoreCase("ASC"))) ? "selected=\"selected\"" : "");
+    String dateIDescSelected = ((sortedBy.equalsIgnoreCase("dc.date.issued_dt") && (order.equalsIgnoreCase("DESC")))  ? "selected=\"selected\"" : "");
     String ascSelected = (SortOption.ASCENDING.equalsIgnoreCase(order)   ? "selected=\"selected\"" : "");
     String descSelected = (SortOption.DESCENDING.equalsIgnoreCase(order) ? "selected=\"selected\"" : "");
     String httpFilters ="";
@@ -133,12 +137,12 @@
         });
       }
     });
-
-
-    
 		jQ("#sort_by").change(function(){
-       jQ(this).closest('form').trigger('submit');
-    });
+			var direction = jQ(this).find("option:selected").attr('data-order');
+			var hiddenfield = jQ(this).closest('form').find('input[name=order]');
+			hiddenfield.val(direction);
+			jQ(this).closest('form').trigger('submit');
+		});
     jQ("#rpp_select").change(function(){
        jQ(this).closest('form').trigger('submit');
 		});
@@ -485,27 +489,19 @@ else if( qResults != null)
 %>
             <!--   <label for="sort_by"><fmt:message key="search.results.sort-by"/></label> -->
             sorted by
-               <select name="sort_by" id="sort_by" class="form-control">
-                  <option value="score"><fmt:message key="search.sort-by.relevance"/></option>
-                	<option value="dc.title_sort">Title A-Z</option>
-                	<option value="dc.title_sort">Title Z-A</option>
- 									<option value="dc.date.issued_dt">Newest</option>
- 									<option value="dc.date.issued_dt">Oldest</option>
-<%--
-               for (String sortBy : sortOptions)
-               {
-                   String selected = (sortBy.equals(sortedBy) ? "selected=\"selected\"" : "");
-                   String mKey = "search.sort-by." + sortBy;
-                   %> <option value="<%= sortBy %>" <%= selected %>><fmt:message key="<%= mKey %>"/></option><%
-               }
---%>
-               </select>
+							<select name="sort_by" id="sort_by" class="form-control">
+									<option value="score"><fmt:message key="search.sort-by.relevance"/></option>
+									<option data-order="ASC" value="dc.title_sort" <%= titleAscSelected %>>Title A-Z</option>
+									<option data-order="DESC" value="dc.title_sort" <%= titleDescSelected %>>Title Z-A</option>
+ 									<option data-order="DESC" value="dc.date.issued_dt" <%=dateIDescSelected%>  >Newest</option>
+ 									<option data-order="ASC" value="dc.date.issued_dt" <%=dateIAscSelected%>>Oldest</option>
+							</select>
 <%
            }
 
 
 %>
-          <input type="hidden" value="ASC">
+          <input type="hidden" value="<%= order %>" name="order" />
        
            <input style="display:none" class="btn btn-default" type="submit" name="submit_search" value="<fmt:message key="search.update" />" />
 
