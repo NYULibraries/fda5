@@ -454,6 +454,65 @@ input#query {
   height: 25px;
 }
 
+/* line 1, ../../sass/partials/_browse.scss */
+.browseheader {
+  width: auto;
+  overflow: auto;
+}
+
+/* line 5, ../../sass/partials/_browse.scss */
+.browseheader h2 {
+  font-weight: normal;
+  font-weight: 300;
+  margin-bottom: 0;
+  line-height: 1.2;
+}
+
+/* line 12, ../../sass/partials/_browse.scss */
+.browseheader #browse_controls {
+  margin-top: 24px;
+}
+
+/* line 18, ../../sass/partials/_browse.scss */
+.browselist-heading {
+  padding: 0 0 10px 0;
+  display: flex;
+  align-items: flex-end;
+  margin-top: -6px;
+  justify-content: flex-end;
+}
+
+/* line 25, ../../sass/partials/_browse.scss */
+.browselist-heading .flexset {
+  flex: auto;
+}
+
+/* line 28, ../../sass/partials/_browse.scss */
+.browselist-heading .start-to-finish-info {
+  font-size: 1rem;
+}
+
+/* line 34, ../../sass/partials/_browse.scss */
+.browse-list-list {
+  margin-top: 0;
+}
+
+/* line 36, ../../sass/partials/_browse.scss */
+.browse-list-list .table td:nth-child(1) {
+  padding-right: 30px;
+}
+
+/* line 39, ../../sass/partials/_browse.scss */
+.browse-list-list .table td:nth-child(2) {
+  width: 63%;
+  padding-right: 30px;
+}
+
+/* line 43, ../../sass/partials/_browse.scss */
+.browse-list-list th {
+  padding-top: 20px !important;
+}
+
 /* line 1, ../../sass/partials/_tree.scss */
 .collections-list h3 {
   border-bottom: 1px solid #d5d1cd;
@@ -1048,35 +1107,41 @@ form.edit_metadata {
   margin-bottom: 5px;
 }
 
-/* line 49, ../../sass/dspace-theme.scss */
+/* line 50, ../../sass/dspace-theme.scss */
 html {
   font-size: 100%;
 }
 
-/* line 53, ../../sass/dspace-theme.scss */
+/* line 54, ../../sass/dspace-theme.scss */
 #content {
   padding-bottom: 60px;
   margin-top: 20px;
 }
 
-/* line 58, ../../sass/dspace-theme.scss */
+/* line 59, ../../sass/dspace-theme.scss */
 a:link,
 a:visited {
   color: #008996;
 }
 
-/* line 63, ../../sass/dspace-theme.scss */
+/* line 64, ../../sass/dspace-theme.scss */
 .brand {
   font-size: 1rem;
   max-width: 44em;
 }
 
-/* line 66, ../../sass/dspace-theme.scss */
+/* line 67, ../../sass/dspace-theme.scss */
 .brand h4 {
   color: #A49483;
 }
 
 /* line 72, ../../sass/dspace-theme.scss */
+h2, .h2 {
+  font-weight: normal;
+  font-weight: 300;
+}
+
+/* line 78, ../../sass/dspace-theme.scss */
 .collections-list h3 {
   color: #4f453a;
   margin: 10px 0;

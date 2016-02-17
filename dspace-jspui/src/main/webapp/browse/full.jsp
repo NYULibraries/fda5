@@ -185,18 +185,32 @@
 <dspace:layout locbar="Link" titlekey="browse.page-title" navbar="<%=layoutNavbar %>">
 
 	<%-- Build the header (careful use of spacing) --%>
-	<h2>
-		<fmt:message key="browse.full.header"><fmt:param value="<%= scope %>"/></fmt:message> <fmt:message key="<%= typeKey %>"/> <%= value %>
-	</h2>
+	<header class="browseheader">
+	<h2><fmt:message key="browse.full.header"><fmt:param value="<%= scope %>"/></fmt:message> <fmt:message key="<%= typeKey %>"/> <%= value %></h2>
 
 	<%-- Include the main navigation for all the browse pages --%>
 	<%-- This first part is where we render the standard bits required by both possibly navigations --%>
 	
 	<%-- End of Navigation Headers --%>
 
+</header>
+<div class="browse-list item-results">
+	<%-- give us the top report on what we are looking at --%>
+	<div class="browselist-heading">
+
+	<%--  do the top previous and next page links --%>
+
+	<div class="start-to-finish-info flexset">
+		<fmt:message key="browse.full.range">
+			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
+			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
+			<fmt:param value="<%= Integer.toString(bi.getTotal()) %>"/>
+		</fmt:message>
+		</div>
+			<div class="f1 flexset">
 	<%-- Include a component for modifying sort by, order, results per page, and et-al limit --%>
 	<div id="browse_controls" class="discovery-pagination-controls">
-	<form method="get" action="<%= formaction %>">
+		<form method="get" action="<%= formaction %>">
 		<input type="hidden" name="type" value="<%= bix.getName() %>"/>
 <%
 		if (bi.hasAuthority())
@@ -228,14 +242,11 @@
 	if (sortOptions.size() > 1) // && bi.getBrowseLevel() > 0
 	{
 
-
-
-		%>
-	
+	%>
 
 		<select name="sort_by" id="sort_by" class="form-control">
- 				<option value="1" data-order="ASC"  <%= titleAscSelected %>>Title A-Z</option>
- 				<option value="1" data-order="DESC" <%= titleDescSelected %>>Title Z-A</option>
+ 				<option value="1" data-order="ASC"  <%= titleAscSelected %>>Sorting by Title A-Z</option>
+ 				<option value="1" data-order="DESC" <%= titleDescSelected %>>Sorting by Title Z-A</option>
  				<option value="2" data-order="DESC" <%= dateIDescSelected %>>Issue date newest</option>
  				<option value="2" data-order="ASC" 	<%= dateIAscSelected %>>Issue date oldest</option>
  				<option value="3" data-order="DESC" <%= dateSDescSelected %>>Submit date newest</option>
@@ -243,7 +254,7 @@
 		</select>
 
 		<input type="hidden" value="<%= direction %>" name="order" />
-<%
+	<%
 	}
 %>
 	
@@ -253,7 +264,7 @@
 	{
 		String selected = (i == rpp ? "selected=\"selected\"" : "");
 %>	
-			<option value="<%= i %>" <%= selected %>><%= i %></option>
+			<option value="<%= i %>" <%= selected %>><%= i %> per page</option>
 <%
 	}
 %>
@@ -271,35 +282,12 @@
 
 	</form>
 	</div>
-<div class="panelx panel-primaryx browsing-by">
-	<%-- give us the top report on what we are looking at --%>
-	<div class="panel-headingx ">
-		<fmt:message key="browse.full.range">
-			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
-			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
-			<fmt:param value="<%= Integer.toString(bi.getTotal()) %>"/>
-		</fmt:message>
-
-	<%--  do the top previous and next page links --%>
-<% 
-	if (bi.hasPrevPage())
-	{
-%>
-	<a class="pull-left" href="<%= prev %>"><fmt:message key="browse.full.prev"/></a>&nbsp;
-<%
-	}
-%>
-
-<%
-	if (bi.hasNextPage())
-	{
-%>
-	&nbsp;<a class="pull-right" href="<%= next %>"><fmt:message key="browse.full.next"/></a>
-<%
-	}
-%>
 	</div>
-	
+
+
+
+	</div>
+	<div class ="discovery-result-results browse-list-list">
     <%-- output the results using the browselist tag --%>
     <%
     	if (bix.isMetadataIndex())
@@ -321,8 +309,9 @@
 	<%
     	}
 	%>
+</div>
 	<%-- give us the bottom report on what we are looking at --%>
-	<div class="panel-footer text-center">
+	<div class="text-center">
 		<fmt:message key="browse.full.range">
 			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
 			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
