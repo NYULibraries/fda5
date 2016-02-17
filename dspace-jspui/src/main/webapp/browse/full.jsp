@@ -153,6 +153,15 @@
 	String sortedBy = so.getName();
 	String ascSelected = (bi.isAscending() ? "selected=\"selected\"" : "");
 	String descSelected = (bi.isAscending() ? "" : "selected=\"selected\"");
+	String theNum = Integer.toString(so.getNumber());
+	String titleAscSelected = 	((direction.equalsIgnoreCase("ASC") && theNum.equals("1")) ? "selected=\"selected\"" : "");
+  String titleDescSelected = 	((direction.equalsIgnoreCase("DESC") && theNum.equals("1"))  ? "selected=\"selected\"" : "");
+ 	String dateIAscSelected = 	((direction.equalsIgnoreCase("ASC") && theNum.equals("2")) ? "selected=\"selected\"" : "");
+  String dateIDescSelected = 	((direction.equalsIgnoreCase("DESC") && theNum.equals("2")) ? "selected=\"selected\"" : "");
+  String dateSAscSelected = 	((direction.equalsIgnoreCase("ASC") && theNum.equals("3")) ? "selected=\"selected\"" : "");
+  String dateSDescSelected = 	((direction.equalsIgnoreCase("DESC") && theNum.equals("3")) ? "selected=\"selected\"" : "");
+
+
 	int rpp = bi.getResultsPerPage();
 	
 	// the message key for the type
@@ -186,7 +195,7 @@
 	<%-- End of Navigation Headers --%>
 
 	<%-- Include a component for modifying sort by, order, results per page, and et-al limit --%>
-	<div id="browse_controls" class="well text-center">
+	<div id="browse_controls" class="discovery-pagination-controls">
 	<form method="get" action="<%= formaction %>">
 		<input type="hidden" name="type" value="<%= bix.getName() %>"/>
 <%
@@ -218,32 +227,27 @@
 	Set<SortOption> sortOptions = SortOption.getSortOptions();
 	if (sortOptions.size() > 1) // && bi.getBrowseLevel() > 0
 	{
-%>
-		<label for="sort_by"><fmt:message key="browse.full.sort-by"/></label>
-		<select name="sort_by">
-<%
-		for (SortOption sortBy : sortOptions)
-		{
-            if (sortBy.isVisible())
-            {
-                String selected = (sortBy.getName().equals(sortedBy) ? "selected=\"selected\"" : "");
-                String mKey = "browse.sort-by." + sortBy.getName();
-                %> <option value="<%= sortBy.getNumber() %>" <%= selected %>><fmt:message key="<%= mKey %>"/></option><%
-            }
-        }
-%>
+
+
+
+		%>
+	
+
+		<select name="sort_by" id="sort_by" class="form-control">
+ 				<option value="1" data-order="ASC"  <%= titleAscSelected %>>Title A-Z</option>
+ 				<option value="1" data-order="DESC" <%= titleDescSelected %>>Title Z-A</option>
+ 				<option value="2" data-order="DESC" <%= dateIDescSelected %>>Issue date newest</option>
+ 				<option value="2" data-order="ASC" 	<%= dateIAscSelected %>>Issue date oldest</option>
+ 				<option value="3" data-order="DESC" <%= dateSDescSelected %>>Submit date newest</option>
+ 				<option value="3" data-order="ASC" 	<%= dateSAscSelected %>>Submit date oldest</option>
 		</select>
+
+		<input type="hidden" value="<%= direction %>" name="order" />
 <%
 	}
 %>
-		<label for="order"><fmt:message key="browse.full.order"/></label>
-		<select name="order">
-			<option value="ASC" <%= ascSelected %>><fmt:message key="browse.order.asc" /></option>
-			<option value="DESC" <%= descSelected %>><fmt:message key="browse.order.desc" /></option>
-		</select>
-
-		<label for="rpp"><fmt:message key="browse.full.rpp"/></label>
-		<select name="rpp">
+	
+	<select name="rpp" id="rpp_select" class="form-control">
 <%
 	for (int i = 5; i <= 100 ; i += 5)
 	{
@@ -253,11 +257,10 @@
 <%
 	}
 %>
-		</select>
+	</select>
 
 
-
-		<input type="submit" class="btn btn-default" name="submit_browse" value="<fmt:message key="jsp.general.update"/>"/>
+	<input type="submit" style="display:none" class="btn btn-default" name="submit_browse" value="<fmt:message key="jsp.general.update"/>"/>
 
 <%
     if (admin_button && !withdrawn && !privateitems)
@@ -268,9 +271,9 @@
 
 	</form>
 	</div>
-<div class="panel panel-primary browsing-by">
+<div class="panelx panel-primaryx browsing-by">
 	<%-- give us the top report on what we are looking at --%>
-	<div class="panel-heading ">
+	<div class="panel-headingx ">
 		<fmt:message key="browse.full.range">
 			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
 			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
@@ -350,5 +353,19 @@
 	<%-- 
 	<!-- <%= bi.toString() %> -->
 	--%>
+<script type="text/javascript">
+	var jQ = jQuery.noConflict();
+	jQ(document).ready(function() {
+			jQ("#sort_by").change(function(){
+				var direction = jQ(this).find("option:selected").attr('data-order');
+				var hiddenfield = jQ(this).closest('form').find('input[name=order]');
+				hiddenfield.val(direction);
+				jQ(this).closest('form').trigger('submit');
+			});
+    	jQ("#rpp_select").change(function(){
+       	jQ(this).closest('form').trigger('submit');
+			});
+	});
+</script>		
 
 </dspace:layout>
