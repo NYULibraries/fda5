@@ -67,7 +67,6 @@ body .search-area {
 /* line 1, ../../sass/partials/_panels.scss */
 .panel, .panel-info {
   background-color: #F6F5F4;
-  border-color: rgba(181, 173, 166, 0.1);
 }
 
 /* line 4, ../../sass/partials/_panels.scss */
@@ -79,10 +78,9 @@ body .search-area {
 
 /* line 9, ../../sass/partials/_panels.scss */
 .panel > .panel-heading, .panel-info > .panel-heading {
-  color: #333;
   background-image: none;
   background-color: rgba(181, 173, 166, 0.4);
-  border-color: rgba(181, 173, 166, 0.5);
+  border: 1px solid rgba(181, 173, 166, 0.2);
   text-transform: uppercase;
   font-size: .9rem;
   color: #7e6e5c;
@@ -90,7 +88,14 @@ body .search-area {
   text-shadow: 0px 1px 0px rgba(255, 255, 255, 0.6);
 }
 
-/* line 23, ../../sass/partials/_panels.scss */
+/* line 22, ../../sass/partials/_panels.scss */
+.panel-body {
+  border-left: 1px solid rgba(181, 173, 166, 0.2);
+  border-right: 1px solid rgba(181, 173, 166, 0.2);
+  border-bottom: 1px solid rgba(181, 173, 166, 0.2);
+}
+
+/* line 28, ../../sass/partials/_panels.scss */
 .panel-primary {
   border-color: rgba(181, 173, 166, 0.4);
   border-radius: 0;
@@ -98,49 +103,38 @@ body .search-area {
   background-color: rgba(181, 173, 166, 0.2);
 }
 
-/* line 30, ../../sass/partials/_panels.scss */
+/* line 35, ../../sass/partials/_panels.scss */
 .panel-simple-search {
   border-radius: 0;
   border: none;
   background-color: rgba(181, 173, 166, 0.4);
 }
 
-/* line 34, ../../sass/partials/_panels.scss */
+/* line 39, ../../sass/partials/_panels.scss */
 .panel-simple-search > .panel-heading {
   display: none;
 }
 
-/* line 39, ../../sass/partials/_panels.scss */
+/* line 44, ../../sass/partials/_panels.scss */
 .panel-footer {
   background-color: rgba(181, 173, 166, 0.3);
 }
 
-/* line 44, ../../sass/partials/_panels.scss */
+/* line 49, ../../sass/partials/_panels.scss */
 .panel-admin-tools form {
   margin-bottom: 5px;
 }
 
-/* line 47, ../../sass/partials/_panels.scss */
+/* line 52, ../../sass/partials/_panels.scss */
 .panel-admin-tools form:last-child {
   margin-bottom: 0px;
 }
 
-/* line 52, ../../sass/partials/_panels.scss */
+/* line 57, ../../sass/partials/_panels.scss */
 .well {
   background-image: none;
   background-color: rgba(181, 173, 166, 0.1);
   border-radius: 0;
-}
-
-/* line 58, ../../sass/partials/_panels.scss */
-.facetName {
-  display: block;
-  color: #A49483;
-  text-transform: uppercase;
-  font-size: .85rem;
-  font-weight: 500;
-  padding: 0 0 3px 5px;
-  text-shadow: 1px 1px 1px white;
 }
 
 /* line 1, ../../sass/partials/_search.scss */
@@ -465,7 +459,7 @@ input#query {
   font-weight: normal;
   font-weight: 300;
   margin-bottom: 0;
-  line-height: 1.2;
+  line-height: 1.5;
 }
 
 /* line 12, ../../sass/partials/_browse.scss */
@@ -477,40 +471,114 @@ input#query {
 .browselist-heading {
   padding: 0 0 10px 0;
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
-  margin-top: -6px;
-  justify-content: flex-end;
+  justify-content: space-between;
 }
 
-/* line 25, ../../sass/partials/_browse.scss */
+/* line 26, ../../sass/partials/_browse.scss */
 .browselist-heading .flexset {
   flex: auto;
 }
 
-/* line 28, ../../sass/partials/_browse.scss */
-.browselist-heading .start-to-finish-info {
-  font-size: 1rem;
+/* line 29, ../../sass/partials/_browse.scss */
+.browselist-heading .f1 {
+  flex: 1 0 auto;
+  white-space: nowrap;
 }
 
 /* line 34, ../../sass/partials/_browse.scss */
+.browselist-heading .start-to-finish-info {
+  font-size: 1rem;
+  line-height: 1;
+  flex: 1 0 auto;
+  white-space: nowrap;
+}
+
+@media (max-width: 650px) {
+  /* line 18, ../../sass/partials/_browse.scss */
+  .browselist-heading {
+    -webkit-flex-flow: column nowrap;
+    flex-flow: column wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+  /* line 47, ../../sass/partials/_browse.scss */
+  .browselist-heading .flexset {
+    margin: 10px 0 0;
+  }
+}
+
+/* line 53, ../../sass/partials/_browse.scss */
 .browse-list-list {
   margin-top: 0;
 }
 
-/* line 36, ../../sass/partials/_browse.scss */
+/* line 55, ../../sass/partials/_browse.scss */
 .browse-list-list .table td:nth-child(1) {
   padding-right: 30px;
 }
 
-/* line 39, ../../sass/partials/_browse.scss */
+/* line 58, ../../sass/partials/_browse.scss */
 .browse-list-list .table td:nth-child(2) {
   width: 63%;
   padding-right: 30px;
 }
 
-/* line 43, ../../sass/partials/_browse.scss */
+/* line 62, ../../sass/partials/_browse.scss */
 .browse-list-list th {
   padding-top: 20px !important;
+}
+
+/* line 64, ../../sass/partials/_browse.scss */
+.browse-list-list th#t1 strong {
+  font-weight: bold;
+}
+
+/* line 68, ../../sass/partials/_browse.scss */
+.browse-list-list td[headers="t1"] strong {
+  font-weight: normal;
+}
+
+/*    */
+/* line 77, ../../sass/partials/_browse.scss */
+.taxonomy-browse .browselist-heading {
+  margin-bottom: 15px;
+  border-bottom: 4px double #d2cdc9;
+}
+
+/* line 81, ../../sass/partials/_browse.scss */
+.taxonomy-browse ul {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: flex-start;
+  justify-content: flex-start;
+  margin-top: 5px;
+}
+
+/* line 87, ../../sass/partials/_browse.scss */
+.taxonomy-browse ul li {
+  flex: 1 1 50%;
+  min-width: 400px;
+  display: block;
+  margin-bottom: -1px;
+  margin-right: -1px;
+  background-color: #fff;
+  border: 1px solid rgba(181, 173, 166, 0.5);
+}
+
+/* line 96, ../../sass/partials/_browse.scss */
+.taxonomy-browse ul li a:link {
+  font-size: 1rem;
+  display: block;
+}
+
+/* line 104, ../../sass/partials/_browse.scss */
+.taxonomy-browse ul li a .badge {
+  margin-left: 15px;
+  margin-top: 2px;
+  float: none;
+  vertical-align: top;
 }
 
 /* line 1, ../../sass/partials/_tree.scss */
@@ -1071,6 +1139,17 @@ a.btn-primary:link, a.btn-primary:hover, a.btn-primary:focus, a.btn-primary:visi
 /* line 27, ../../sass/partials/_facets.scss */
 .facets li {
   padding: 0;
+}
+
+/* line 32, ../../sass/partials/_facets.scss */
+.facetName {
+  display: block;
+  color: #A49483;
+  text-transform: uppercase;
+  font-size: .85rem;
+  font-weight: 500;
+  padding: 0 0 3px 5px;
+  text-shadow: 1px 1px 1px white;
 }
 
 /* line 2, ../../sass/partials/_itempage.scss */
