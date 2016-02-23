@@ -132,9 +132,8 @@
   <div class="img-hold">
 	  <img class="img-responsive" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
   </div> 
-  <h2><%= name %></h2></header>
   <% } %>
-
+ <h2><%= name %></h2></header>
 
 <section class="search-area">
   <form method="get" action="simple-search" class="simplest-search">
@@ -187,10 +186,11 @@
 </section>
 
 	<dspace:sidebar>
+	<aside class="sidebar">
 	<%if (mostdownloaded != null && mostdownloaded.count() > 0)
 	{
 	%>
-						 <div class="panel panel-primary homepage-sidebar">
+						 <div class="panel panel-primary most-downloaded">
 						   <div class="panel-heading"><h1>Most downloaded</h1></div>
 						   <div class="panel-body">
 
@@ -288,6 +288,7 @@
 	  </div>
 	</div>
 	<% } %>
+</aside>
    </dspace:sidebar>
 </dspace:layout>
 <%! private void build(Community c) throws SQLException {

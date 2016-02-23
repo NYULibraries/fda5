@@ -90,7 +90,7 @@
     {
 %>     
 <dspace:sidebar>
-			<div class="panel panel-warning">
+			<div class="panel panel-admin-tools">
 			<div class="panel-heading">
 				<fmt:message key="jsp.admintools"/>
 				<span class="pull-right">

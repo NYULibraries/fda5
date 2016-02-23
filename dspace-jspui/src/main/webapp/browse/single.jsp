@@ -32,6 +32,7 @@
 
 	//First, get the browse info object
 	BrowseInfo bi = (BrowseInfo) request.getAttribute("browse.info");
+
 	BrowseIndex bix = bi.getBrowseIndex();
 
 	//values used by the header
@@ -76,7 +77,7 @@
 	{
 		linkBase = linkBase + "handle/" + community.getHandle() + "/";
 	}
-	
+
 	String direction = (bi.isAscending() ? "ASC" : "DESC");
 	String sharedLink = linkBase + "browse?type=" + URLEncoder.encode(bix.getName(), "UTF-8") +
 						"&amp;order=" + URLEncoder.encode(direction, "UTF-8") +
@@ -119,21 +120,34 @@
 <dspace:layout locbar="Link" titlekey="browse.page-title">
 
 	<%-- Build the header (careful use of spacing) --%>
+	<header class="browseheader">
 	<h2>
 		<fmt:message key="browse.single.header"><fmt:param value="<%= scope %>"/></fmt:message> <fmt:message key="<%= typeKey %>"/>
 	</h2>
-	
+	</header>
 <%
 	if (!bix.isTagCloudEnabled())
 	{
 %>
-	<%-- Include the main navigation for all the browse pages --%>
-	<%-- This first part is where we render the standard bits required by both possibly navigations --%>
+
+
+
+
+	<%-- give us the top report on what we are looking at --%>
+	<div class="taxonomy-browse ">
+	<div class=" browselist-heading">
+	<div class="start-to-finish-info flexset">
+		<fmt:message key="browse.single.range">
+			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
+			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
+			<fmt:param value="<%= Integer.toString(bi.getTotal()) %>"/>
+		</fmt:message>
+		</div>
 
 	<%-- Include a component for modifying sort by, order and results per page --%>
-	<div id="browse_controls" class="well text-center">
-	<form method="get" action="<%= formaction %>">
-		<input type="hidden" name="type" value="<%= bix.getName() %>"/>
+		<div class="flexset discovery-pagination-controls f1">
+			<form method="get" action="<%= formaction %>">
+			<input type="hidden" name="type" value="<%= bix.getName() %>"/>
 		
 <%-- The following code can be used to force the browse around the current focus.  Without
       it the browse will revert to page 1 of the results each time a change is made --%>
@@ -143,39 +157,30 @@
 			%><input type="hidden" name="vfocus" value="<%= bi.getFocus() %>"/><%
 		}
 --%>
-		<label for="order"><fmt:message key="browse.single.order"/></label>
-		<select name="order">
-			<option value="ASC" <%= ascSelected %>><fmt:message key="browse.order.asc" /></option>
-			<option value="DESC" <%= descSelected %>><fmt:message key="browse.order.desc" /></option>
+	<%--	<label for="order"><fmt:message key="browse.single.order"/></label>--%>
+		<select name="order" id="order_sort" class="form-control">
+		<%--		<fmt:message key="browse.order.asc" />--%>
+			<option value="ASC" <%= ascSelected %>>Sorting A-Z</option>
+			<option value="DESC" <%= descSelected %>>Sorting Z-A</option>
 		</select>
 		
-		<label for="rpp"><fmt:message key="browse.single.rpp"/></label>
-		<select name="rpp">
+		<%--	<label for="rpp"><fmt:message key="browse.single.rpp"/></label>--%>
+		<select name="rpp" class="form-control" id="rpp_select">
 <%
-	for (int i = 5; i <= 100 ; i += 5)
+	for (int i = 10; i <= 100 ; i += 10)
 	{
 		String selected = (i == rpp ? "selected=\"selected\"" : "");
 %>	
-			<option value="<%= i %>" <%= selected %>><%= i %></option>
+			<option value="<%= i %>" <%= selected %>><%= i %> per page</option>
 <%
 	}
 %>
 		</select>
-		<input type="submit" class="btn btn-default" name="submit_browse" value="<fmt:message key="jsp.general.update"/>"/>
+		<input type="submit" style="display:none" class="btn btn-default" name="submit_browse" value="<fmt:message key="jsp.general.update"/>"/>
 	</form>
 	</div>
-
-<div class="row col-md-offset-3 col-md-6">
-	<%-- give us the top report on what we are looking at --%>
-	<div class="panel panel-primary">
-	<div class="panel-heading text-center">
-		<fmt:message key="browse.single.range">
-			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
-			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
-			<fmt:param value="<%= Integer.toString(bi.getTotal()) %>"/>
-		</fmt:message>
-	
-	<%--  do the top previous and next page links --%>
+	</div>
+	<%--  do the bottom previous and next page links --%>
 <% 
 	if (bi.hasPrevPage())
 	{
@@ -193,25 +198,23 @@
 <%
 	}
 %>
-	</div>
-
-<ul class="list-group">
+<ul class="list-group facets">
 <%
     String[][] results = bi.getStringResults();
 
     for (int i = 0; i < results.length; i++)
     {
 %>
-                <li class="list-group-item">
-                    <a href="<%= sharedLink %><% if (results[i][1] != null) { %>&amp;authority=<%= URLEncoder.encode(results[i][1], "UTF-8") %>" class="authority <%= bix.getName() %>"><%= Utils.addEntities(results[i][0]) %></a> <% } else { %>&amp;value=<%= URLEncoder.encode(results[i][0], "UTF-8") %>"><%= Utils.addEntities(results[i][0]) %></a> <% } %>
-					<%= StringUtils.isNotBlank(results[i][2])?" <span class=\"badge\">"+results[i][2]+"</span>":""%>
-                </li>
+      <li >
+              <a href="<%= sharedLink %><% if (results[i][1] != null) { %>&amp;authority=<%= URLEncoder.encode(results[i][1], "UTF-8") %>" class="authority <%= bix.getName() %>"><%= Utils.addEntities(results[i][0]) %></a> <% } else { %>&amp;value=<%= URLEncoder.encode(results[i][0], "UTF-8") %>"><%= Utils.addEntities(results[i][0]) %>	<%= StringUtils.isNotBlank(results[i][2])?" <span class=\"badge\">"+results[i][2]+"</span>":""%></a> <% } %>
+				
+      </li>
 <%
     }
 %>
-        </ul>
+        </ul></div>
 	<%-- give us the bottom report on what we are looking at --%>
-	<div class="panel-footer text-center">
+	<div class="text-center">
 		<fmt:message key="browse.single.range">
 			<fmt:param value="<%= Integer.toString(bi.getStart()) %>"/>
 			<fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
@@ -237,8 +240,8 @@
 	}
 %>
 	</div>
-</div>
-</div>
+
+
 	<%-- dump the results for debug (uncomment to enable) --%>
 	<%-- 
 	<!-- <%= bi.toString() %> -->
@@ -254,4 +257,19 @@
 <%
 	}
 %>
+
+<script type="text/javascript">
+	var jQ = jQuery.noConflict();
+	jQ(document).ready(function() {
+			jQ("#order_sort").change(function(){
+				var direction = jQ(this).find("option:selected").attr('data-order');
+				var hiddenfield = jQ(this).closest('form').find('input[name=order]');
+				hiddenfield.val(direction);
+				jQ(this).closest('form').trigger('submit');
+			});
+    	jQ("#rpp_select").change(function(){
+       	jQ(this).closest('form').trigger('submit');
+			});
+	});
+</script>	
 </dspace:layout>
