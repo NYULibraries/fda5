@@ -52,7 +52,7 @@
 
 	<h1><fmt:message key="jsp.submit.show-license.title" />
 	<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") +\"#license\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup></h1>
-	<div class="alert alert-info"><fmt:message key="jsp.submit.show-license.info1"/></div>
+	<!--<div class="alert alert-info"><fmt:message key="jsp.submit.show-license.info1"/></div>-->
 
         <%-- <p><strong>Not granting the license will not delete your submission.</strong>
         Your item will remain in your "My DSpace" page.  You can then either remove

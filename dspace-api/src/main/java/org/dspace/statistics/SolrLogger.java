@@ -35,6 +35,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 import org.apache.solr.common.params.*;
 import org.apache.solr.common.util.JavaBinCodec;
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.*;
 import org.dspace.content.Collection;
 import org.dspace.core.ConfigurationManager;
@@ -210,6 +211,7 @@ public class SolrLogger
             if(dspaceObject instanceof Bitstream)
             {
                 Bitstream bit = (Bitstream) dspaceObject;
+                doc1.addField("isPublic",bit.isPublic());
                 Bundle[] bundles = bit.getBundles();
                 for (Bundle bundle : bundles) {
                     doc1.addField("bundleName", bundle.getName());
@@ -248,9 +250,12 @@ public class SolrLogger
 			if (dspaceObject instanceof Bitstream) {
 				Bitstream bit = (Bitstream) dspaceObject;
 				Bundle[] bundles = bit.getBundles();
+                //added by Kate to register private items
+
 				for (Bundle bundle : bundles) {
 					doc1.addField("bundleName", bundle.getName());
 				}
+
 			}
 
 			doc1.addField("statistics_type", StatisticsType.VIEW.text());

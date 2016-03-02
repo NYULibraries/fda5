@@ -551,7 +551,8 @@ public class EditItemServlet extends DSpaceServlet
         request.setAttribute("dc.types", types);
         request.setAttribute("metadataFields", metadataFields);
 
-        JSPManager.showJSP(request, response, "/tools/edit-item-form.jsp");
+        /**JSPManager.showJSP(request, response, "/tools/edit-item-form.jsp");*/
+        JSPManager.showJSP(request, response, "/submit/edit-metadata.jsp");
     }
 
     /**

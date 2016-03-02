@@ -49,10 +49,9 @@
 %>
 
 <dspace:layout style="submission" titlekey="jsp.dspace-admin.batchimport.title"
-               navbar="admin"
+               navbar="default"
                locbar="link"
-               parenttitlekey="jsp.administer"
-               parentlink="/dspace-admin" 
+               parentlink="/"
                nocache="true">
 
     <h1><fmt:message key="jsp.dspace-admin.batchimport.title"/></h1>
@@ -87,7 +86,7 @@
 	}
 %>
 
-    <form method="post" action="<%= request.getContextPath() %>/dspace-admin/batchimport" enctype="multipart/form-data">
+    <form method="post" action="<%= request.getContextPath() %>/tools/batchimport" enctype="multipart/form-data">
 	
 		<div class="form-group">
 			<label for="inputType"><fmt:message key="jsp.dspace-admin.batchmetadataimport.selectinputfile"/></label>
@@ -129,7 +128,6 @@
 			</label>
 			<div id="owning-collection-info"><i for="collection"><fmt:message key="jsp.dspace-admin.batchmetadataimport.selectowningcollection.info"/></i></div>
             <select class="form-control" name="collection" id="owning-collection-select">
-				<option value="-1"><fmt:message key="jsp.dspace-admin.batchmetadataimport.select"/></option>
  <% 
  		for (Collection collection : collections){
 				String selected = ((owningCollectionID != null) && (owningCollectionID == collection.getID())) ? "selected" : "";
@@ -140,7 +138,7 @@
  %>           	
             </select>
         </div>
-        
+        <%if(request.getAttribute("isAdmin")!=null) { %>
 		<% String displayValue = owningCollectionID != null ? "display:block" : "display:none"; %>
         <div class="form-group" id="other-collections-div" style="<%= displayValue %>">
 			<label for="collection"><fmt:message key="jsp.dspace-admin.batchmetadataimport.selectothercollections"/></label>
@@ -155,7 +153,9 @@
  %>           	
             </select>
         </div>
-        
+        <% } else { %>
+           <input type="hidden" name="colId" value="<%= request.getAttribute("colId") %>"/>
+         <% } %>
         <input class="btn btn-success" type="submit" name="submit" value="<fmt:message key="jsp.dspace-admin.general.upload"/>" />
 
     </form>

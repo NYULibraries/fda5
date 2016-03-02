@@ -749,7 +749,7 @@ public class MyDSpaceServlet extends DSpaceServlet
 				e.printStackTrace();
 			}
     	}
-    	else if (buttonPressed.equals("submit_resume")){
+    	else if (buttonPressed.equals("submit_resume")||request.getAttribute("cid")!=null){
     		// Set attributes
             request.setAttribute("uploadId", uploadId);
         	
@@ -763,8 +763,10 @@ public class MyDSpaceServlet extends DSpaceServlet
     		request.setAttribute("input-types", inputTypes);
     		
             // Forward to main mydspace page
-            JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
+            //JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
+            JSPManager.showJSP(request, response, "/tools/batchimport.jsp");
     	}
+
     	else {
     		showMainPage(context, request, response);
     	}

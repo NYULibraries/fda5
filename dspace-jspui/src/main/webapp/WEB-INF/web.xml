@@ -651,10 +651,15 @@
     <url-pattern>/dspace-admin/metadataimport</url-pattern>
   </servlet-mapping>
 
-  <servlet-mapping>
+  <!--<servlet-mapping>
     <servlet-name>batchimport</servlet-name>
     <url-pattern>/dspace-admin/batchimport</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>-->
+
+    <servlet-mapping>
+        <servlet-name>batchimport</servlet-name>
+        <url-pattern>/tools/batchimport</url-pattern>
+    </servlet-mapping>
   
   <servlet-mapping>
     <servlet-name>metadata-field-registry</servlet-name>

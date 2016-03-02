@@ -299,8 +299,13 @@
 
 <% if( admin_button ) { %>
                  <form method="post" action="<%=request.getContextPath()%>/tools/itemmap">
-                  <input type="hidden" name="cid" value="<%= collection.getID() %>" />
-          <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.collection-home.item.button"/>" />                  
+                                   <input type="hidden" name="cid" value="<%= collection.getID() %>" />
+
+                           <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.collection-home.item.button"/>" />
+                                 </form>
+                 <form method="get" action="<%=request.getContextPath()%>/tools/batchimport">
+                  <input type="hidden" name="colId" value="<%= collection.getID() %>" />
+          <input class="btn btn-default col-md-12" type="submit" value="Batch Import" />
                 </form>
 <% if(submitters != null) { %>
           <form method="get" action="<%=request.getContextPath()%>/tools/group-edit">
