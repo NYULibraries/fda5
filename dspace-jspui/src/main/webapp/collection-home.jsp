@@ -324,11 +324,14 @@
                  <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_MIGRATE_ARCHIVE %>" />
                  <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.mydspace.request.export.migratecollection"/>" />
                </form>
-               <form method="post" action="<%=request.getContextPath()%>/dspace-admin/metadataexport">
+               <form method="post" action="<%=request.getContextPath()%>/tools/metadataexport">
                  <input type="hidden" name="handle" value="<%= collection.getHandle() %>" />
                  <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.general.metadataexport.button"/>" />
                </form>
-               </div>
+               <form method="get" action="<%=request.getContextPath()%>/tools/metadataimport">
+                 <input type="hidden" name="handle" value="<%= collection.getHandle() %>" />
+                 <input class="btn btn-default col-md-12" type="submit" value="Import metadata" />
+               </form>
                </div>
 <% } %>
                  

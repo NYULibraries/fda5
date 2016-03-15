@@ -62,31 +62,43 @@ public class BatchImportServlet extends DSpaceServlet
 
 		// First, see if we have a multipart request (uploading a metadata file)
 		String contentType = request.getContentType();
+
 		if ((contentType != null) && (contentType.indexOf("multipart/form-data") != -1))
 		{
 			String message = null;
 
-
 			// Process the file uploaded
 			try {
+
+                //Get all the possible data loaders from the Spring configuration
+                BTEBatchImportService dls  = new DSpace().getSingletonService(BTEBatchImportService.class);
+                List<String> inputTypes =dls.getFileDataLoaders();
+                request.setAttribute("input-types", inputTypes);
+
 				// Wrap multipart request to get the submission info
 				FileUploadRequest wrapper = new FileUploadRequest(request);
 
 				String inputType = wrapper.getParameter("inputType");
+
 				List<String> reqCollectionsTmp = getRepeatedParameter(wrapper, "collections", "collections");
 				String[] reqCollections = new String[reqCollectionsTmp.size()];
 				reqCollectionsTmp.toArray(reqCollections);
 
 				//Get all collections
-				List<Collection> collections = null;
+
+				List<Collection> collections =(List<Collection>) request.getAttribute("collections");
+
 				String colIdS = wrapper.getParameter("colId");
 				if (colIdS!=null){
-					collections = new ArrayList<Collection>();
 					collections.add(Collection.find(context, Integer.parseInt(colIdS)));
 
 				}
 				else {
-					collections = Arrays.asList(Collection.findAll(context));
+                    if(AuthorizeManager.isAdmin(context)) {
+                        collections = Arrays.asList(Collection.findAll(context));
+                    } else {
+                        collections = Arrays.asList(Collection.findAuthorizedOptimized(context, Constants.ADMIN));
+                    }
 				}
 				request.setAttribute("collections", collections);
 
@@ -102,15 +114,9 @@ public class BatchImportServlet extends DSpaceServlet
 				if(owningCollection==null) {
 					if (!AuthorizeManager.isAdmin(context)) throw new AuthorizeException();
 				} else {
-					AuthorizeManager.authorizeAction(context, owningCollection,
-							Constants.COLLECTION_ADMIN);
+					AuthorizeManager.isAdmin(context, owningCollection);
 				}
 
-
-				//Get all the possible data loaders from the Spring configuration
-				BTEBatchImportService dls  = new DSpace().getSingletonService(BTEBatchImportService.class);
-				List<String> inputTypes =dls.getFileDataLoaders();
-				request.setAttribute("input-types", inputTypes);
 
 				if (reqCollectionsTmp!=null)
 					request.setAttribute("otherCollections", reqCollectionsTmp);
@@ -263,29 +269,29 @@ public class BatchImportServlet extends DSpaceServlet
 		//Get all collections
 		List<Collection> collections = null;
 		String colIdS = request.getParameter("colId");
-		if (colIdS!=null){
-			collections = new ArrayList<Collection>();
-			collections.add(Collection.find(context, Integer.parseInt(colIdS)));
+        int colId=Integer.parseInt(colIdS);
 
-		}
-		else {
-			collections = Arrays.asList(Collection.findAll(context));
-		}
+        // authorize check
+
+            AuthorizeManager.isAdmin(context, Collection.find(context,colId));
+
+
+            if(AuthorizeManager.isAdmin(context)) {
+                collections = Arrays.asList(Collection.findAll(context));
+            } else {
+                collections = Arrays.asList(Collection.findAuthorizedOptimized(context, Constants.ADMIN));
+            }
+
 
 		request.setAttribute("collections", collections);
-
-		// authorize check
-		for(Collection collection :collections) {
-			AuthorizeManager.authorizeAction(context, collection,
-					Constants.COLLECTION_ADMIN);
-		}
 
 		//Get all the possible data loaders from the Spring configuration
 		BTEBatchImportService dls  = new DSpace().getSingletonService(BTEBatchImportService.class);
 		List<String> inputTypes = dls.getFileDataLoaders();
 		request.setAttribute("input-types", inputTypes);
+        request.setAttribute("owningCollection",colId);
 
-		// Show the upload screen
+        // Show the upload screen
 		JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
 	}
 

@@ -84,7 +84,8 @@ public class MyDSpaceServlet extends DSpaceServlet
     public static final int REQUEST_MIGRATE_ARCHIVE = 6;
 
     public static final int REQUEST_BATCH_IMPORT_ACTION = 7;
-    
+
+
     
     protected void doDSGet(Context context, HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException,
@@ -137,12 +138,14 @@ public class MyDSpaceServlet extends DSpaceServlet
 
             break;
 
-        case REQUEST_BATCH_IMPORT_ACTION:
-            processBatchImportAction(context, request, response);
+            case REQUEST_BATCH_IMPORT_ACTION:
+                processBatchImportAction(context, request, response);
 
-            break;
-            
-        default:
+                break;
+
+
+
+            default:
             log.warn(LogManager.getHeader(context, "integrity_error", UIUtil
                     .getRequestLogInfo(request)));
             JSPManager.showIntegrityError(request, response);
