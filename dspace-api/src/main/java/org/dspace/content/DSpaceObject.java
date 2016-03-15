@@ -16,6 +16,8 @@ import org.apache.log4j.Logger;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.authorize.AuthorizeManager;
+import org.dspace.authorize.ResourcePolicy;
 import org.dspace.content.authority.ChoiceAuthorityManager;
 import org.dspace.content.authority.Choices;
 import org.dspace.content.authority.MetadataAuthorityManager;
@@ -814,6 +816,19 @@ public abstract class DSpaceObject
                       String value)
     {
         addMetadata(MetadataSchema.DC_SCHEMA, element, qualifier, lang, value);
+    }
+
+    /* Added by Kate as isDiscoverable not always useful */
+    public boolean isPublic() throws SQLException
+    {
+        boolean isPublic=false;
+        for(ResourcePolicy policy: AuthorizeManager.getPolicies(ourContext,this)) {
+            if (policy.getGroupID() == 0 && policy.getAction() == Constants.READ) {
+                isPublic = true;
+                break;
+            }
+        }
+        return isPublic;
     }
 
     /**

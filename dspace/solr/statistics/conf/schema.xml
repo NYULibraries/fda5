@@ -302,10 +302,14 @@
    <field name="dns" type="string" indexed="true" stored="true" required="false" docValues="true"/>
    <field name="userAgent" type="string" indexed="true" stored="true" required="false" docValues="true"/>
    <field name="isBot" type="boolean" indexed="true" stored="true" required="false" />
+   <field name="isPublic" type="boolean" indexed="true" stored="true" required="false" />
    <field name="bundleName" type="string" indexed="true" stored="true" required="false" multiValued="true" docValues="true"/>
    <field name="referrer" type="string" indexed="true" stored="true" required="false" docValues="true"/>
     <!-- use uuid as uniqueKey update processor chain, see solrconfig.xml-->
    <field name="uid" type="string" indexed="true" stored="true" required="true" docValues="true"/>
+
+   <!-- field which defines if bitstream is public or private-->
+   <field name="public" type="boolean" indexed="true" stored="true" required="false" />
 
    <!--Can either be view/search/search_result/workflow-->
    <field name="statistics_type" type="string" indexed="true" stored="true" required="true" default="view" docValues="true"/>

@@ -5,6 +5,7 @@ import org.apache.jena.atlas.json.*;
 import org.apache.jena.atlas.json.JsonObject;
 import org.apache.log4j.Logger;
 
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.Item;
 import org.dspace.core.Context;
@@ -76,12 +77,17 @@ public class MostDownloadedManager {
 
             String queryString="type:0 AND bundleName:ORIGINAL";
             if(dso!=null) {
+                if(!AuthorizeManager.isAdmin(context, dso)) {
+                    queryString += " AND isPublic:true";
+                }
                 if(dso.getType()==Constants.COMMUNITY) {
                     queryString +=" AND owningComm:"+dso.getID();
                 }
                 if(dso.getType()==Constants.COLLECTION) {
-                    queryString +=" AND owningColl:"+dso.getID();
+                    queryString += " AND owningColl:" + dso.getID();
                 }
+            } else {
+                queryString +=" AND isPublic:true";
             }
 
             dq.setQuery(queryString);

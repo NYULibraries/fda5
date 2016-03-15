@@ -28,6 +28,7 @@ import org.dspace.app.webui.util.FileUploadRequest;
 import org.dspace.app.itemimport.BTEBatchImportService;
 import org.dspace.app.itemimport.ItemImport;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Collection;
 import org.dspace.core.*;
 import org.dspace.utils.DSpace;
@@ -39,216 +40,227 @@ import org.dspace.utils.DSpace;
  */
 public class BatchImportServlet extends DSpaceServlet
 {
-    /** log4j category */
-    private static Logger log = Logger.getLogger(BatchImportServlet.class);
+	/** log4j category */
+	private static Logger log = Logger.getLogger(BatchImportServlet.class);
 
-    /**
-     * Respond to a post request for metadata bulk importing via csv
-     *
-     * @param context a DSpace Context object
-     * @param request the HTTP request
-     * @param response the HTTP response
-     *
-     * @throws ServletException
-     * @throws IOException
-     * @throws SQLException
-     * @throws AuthorizeException
-     */
-    protected void doDSPost(Context context, HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException,
-            SQLException, AuthorizeException
-    {
+	/**
+	 * Respond to a post request for metadata bulk importing via csv
+	 *
+	 * @param context a DSpace Context object
+	 * @param request the HTTP request
+	 * @param response the HTTP response
+	 *
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws SQLException
+	 * @throws AuthorizeException
+	 */
+	protected void doDSPost(Context context, HttpServletRequest request,
+							HttpServletResponse response) throws ServletException, IOException,
+			SQLException, AuthorizeException
+	{
 
-    	// First, see if we have a multipart request (uploading a metadata file)
-    	String contentType = request.getContentType();
-    	if ((contentType != null) && (contentType.indexOf("multipart/form-data") != -1))
-    	{
-    		String message = null;
+		// First, see if we have a multipart request (uploading a metadata file)
+		String contentType = request.getContentType();
+		if ((contentType != null) && (contentType.indexOf("multipart/form-data") != -1))
+		{
+			String message = null;
 
-    		// Process the file uploaded
-    		try {
-    			// Wrap multipart request to get the submission info
-    			FileUploadRequest wrapper = new FileUploadRequest(request);
 
-    			String inputType = wrapper.getParameter("inputType");
-    			List<String> reqCollectionsTmp = getRepeatedParameter(wrapper, "collections", "collections");
-    			String[] reqCollections = new String[reqCollectionsTmp.size()];
-    			reqCollectionsTmp.toArray(reqCollections);
-    			
-    			//Get all collections
-    	    	List<Collection> collections = null;
-    	    	String colIdS = wrapper.getParameter("colId");
-    	    	if (colIdS!=null){
-    	    		collections = new ArrayList<Collection>();
-    	    		collections.add(Collection.find(context, Integer.parseInt(colIdS)));
+			// Process the file uploaded
+			try {
+				// Wrap multipart request to get the submission info
+				FileUploadRequest wrapper = new FileUploadRequest(request);
 
-    	    	}
-    	    	else {
-    	    		collections = Arrays.asList(Collection.findAll(context));
-    	    	}
-    	    	request.setAttribute("collections", collections);
-    	    	
-    	    	
-    	    	Collection owningCollection = null;
-    			if (wrapper.getParameter("collection") != null) {
-    				int colId = Integer.parseInt(wrapper.getParameter("collection"));
-    				if (colId > 0)
-    					owningCollection = Collection.find(context, colId);
-    			}
-    			
-    	    	//Get all the possible data loaders from the Spring configuration
-        		BTEBatchImportService dls  = new DSpace().getSingletonService(BTEBatchImportService.class);
-        		List<String> inputTypes =dls.getFileDataLoaders();
-        		request.setAttribute("input-types", inputTypes);
-        		
-        		if (reqCollectionsTmp!=null)
-        			request.setAttribute("otherCollections", reqCollectionsTmp);
-        		if (owningCollection!=null)
-        			request.setAttribute("owningCollection", owningCollection.getID());
-        		request.setAttribute("inputType", inputType);
-        		
-        		File f = null;
-    			String zipurl = null;
+				String inputType = wrapper.getParameter("inputType");
+				List<String> reqCollectionsTmp = getRepeatedParameter(wrapper, "collections", "collections");
+				String[] reqCollections = new String[reqCollectionsTmp.size()];
+				reqCollectionsTmp.toArray(reqCollections);
 
-    			if (inputType.equals("saf")){
-    				zipurl = wrapper.getParameter("zipurl");
-    				if (StringUtils.isEmpty(zipurl)) {
-    					request.setAttribute("has-error", "true");
-    					Locale locale = request.getLocale();
-    					ResourceBundle msgs = ResourceBundle.getBundle("Messages", locale);
-    					try {
-    						message = msgs.getString("jsp.layout.navbar-admin.batchimport.fileurlempty");
-    					} catch (Exception e) {
-    						message = "???jsp.layout.navbar-admin.batchimport.fileurlempty???";
-    					}
-    					
-    					request.setAttribute("message", message);
+				//Get all collections
+				List<Collection> collections = null;
+				String colIdS = wrapper.getParameter("colId");
+				if (colIdS!=null){
+					collections = new ArrayList<Collection>();
+					collections.add(Collection.find(context, Integer.parseInt(colIdS)));
 
-        				JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
+				}
+				else {
+					collections = Arrays.asList(Collection.findAll(context));
+				}
+				request.setAttribute("collections", collections);
 
-        				return;
-    				}
-    			}
-    			else {
-    				f = wrapper.getFile("file");
-    				if (f == null) {
-    					request.setAttribute("has-error", "true");
-    					Locale locale = request.getLocale();
-    					ResourceBundle msgs = ResourceBundle.getBundle("Messages", locale);
-    					try {
-    						message = msgs.getString("jsp.layout.navbar-admin.batchimport.fileempty");
-    					} catch (Exception e) {
-    						message = "???jsp.layout.navbar-admin.batchimport.fileempty???";
-    					}
-    					
-    					request.setAttribute("message", message);
 
-        				JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
+				Collection owningCollection = null;
+				if (wrapper.getParameter("collection") != null) {
+					int colId = Integer.parseInt(wrapper.getParameter("collection"));
+					if (colId > 0)
+						owningCollection = Collection.find(context, colId);
+				}
 
-        				return;
-    				}
-    				else if (owningCollection==null){
-    					request.setAttribute("has-error", "true");
-    					Locale locale = request.getLocale();
-    					ResourceBundle msgs = ResourceBundle.getBundle("Messages", locale);
-    					try {
-    						message = msgs.getString("jsp.layout.navbar-admin.batchimport.owningcollectionempty");
-    					} catch (Exception e) {
-    						message = "???jsp.layout.navbar-admin.batchimport.owningcollectionempty???";
-    					}
-    					
-    					request.setAttribute("message", message);
+				//Authorize. added by Kate
+				if(owningCollection==null) {
+					if (!AuthorizeManager.isAdmin(context)) throw new AuthorizeException();
+				} else {
+					AuthorizeManager.authorizeAction(context, owningCollection,
+							Constants.COLLECTION_ADMIN);
+				}
 
-        				JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
 
-        				return;
-    				}
-    			}
+				//Get all the possible data loaders from the Spring configuration
+				BTEBatchImportService dls  = new DSpace().getSingletonService(BTEBatchImportService.class);
+				List<String> inputTypes =dls.getFileDataLoaders();
+				request.setAttribute("input-types", inputTypes);
 
-    			String uploadId = wrapper.getParameter("uploadId");
-    			if (uploadId != null){
-    				request.setAttribute("uploadId", uploadId);
-    			}
+				if (reqCollectionsTmp!=null)
+					request.setAttribute("otherCollections", reqCollectionsTmp);
+				if (owningCollection!=null)
+					request.setAttribute("owningCollection", owningCollection.getID());
+				request.setAttribute("inputType", inputType);
 
-    			if (owningCollection==null && reqCollections != null && reqCollections.length > 0){
-    				request.setAttribute("has-error", "true");
+				File f = null;
+				String zipurl = null;
 
-    				Locale locale = request.getLocale();
-    				ResourceBundle msgs = ResourceBundle.getBundle("Messages", locale);
-    				String ms = msgs.getString("jsp.layout.navbar-admin.batchimport.owningcollection");
-    				if (ms == null){
-    					ms = "???jsp.layout.navbar-admin.batchimport.owningcollection???";
-    				}
-    				request.setAttribute("message", ms);
+				if (inputType.equals("saf")){
+					zipurl = wrapper.getParameter("zipurl");
+					if (StringUtils.isEmpty(zipurl)) {
+						request.setAttribute("has-error", "true");
+						Locale locale = request.getLocale();
+						ResourceBundle msgs = ResourceBundle.getBundle("Messages", locale);
+						try {
+							message = msgs.getString("jsp.layout.navbar-admin.batchimport.fileurlempty");
+						} catch (Exception e) {
+							message = "???jsp.layout.navbar-admin.batchimport.fileurlempty???";
+						}
 
-    				JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
+						request.setAttribute("message", message);
 
-    				return;
-    			}
+						JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
 
-    			try {
-    				String finalInputType = "saf";
-    				String filePath = zipurl;
-    				if (f!=null){
-    					finalInputType = inputType;
-        				filePath = f.getAbsolutePath();
-    				}
-    				
-    				ItemImport.processUIImport(filePath, owningCollection, reqCollections, uploadId, finalInputType, context);
-    				
-    				request.setAttribute("has-error", "false");
-    				request.setAttribute("uploadId", null);
+						return;
+					}
+				}
+				else {
+					f = wrapper.getFile("file");
+					if (f == null) {
+						request.setAttribute("has-error", "true");
+						Locale locale = request.getLocale();
+						ResourceBundle msgs = ResourceBundle.getBundle("Messages", locale);
+						try {
+							message = msgs.getString("jsp.layout.navbar-admin.batchimport.fileempty");
+						} catch (Exception e) {
+							message = "???jsp.layout.navbar-admin.batchimport.fileempty???";
+						}
 
-    			} catch (Exception e) {
-    				request.setAttribute("has-error", "true");
-    				message = e.getMessage();
-    				e.printStackTrace();
-    			}
-    		} catch (FileSizeLimitExceededException e) {
-    			request.setAttribute("has-error", "true");
-    			message = e.getMessage();
-    			e.printStackTrace();
-    		} catch (Exception e) {
-    			request.setAttribute("has-error", "true");
-    			message = e.getMessage();
-    			e.printStackTrace();
-    		}
+						request.setAttribute("message", message);
 
-       		request.setAttribute("message", message);
+						JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
 
-    		// Show the upload screen
-    		JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
+						return;
+					}
+					else if (owningCollection==null){
+						request.setAttribute("has-error", "true");
+						Locale locale = request.getLocale();
+						ResourceBundle msgs = ResourceBundle.getBundle("Messages", locale);
+						try {
+							message = msgs.getString("jsp.layout.navbar-admin.batchimport.owningcollectionempty");
+						} catch (Exception e) {
+							message = "???jsp.layout.navbar-admin.batchimport.owningcollectionempty???";
+						}
 
-    	}
-    	else
-    	{
-    		request.setAttribute("has-error", "true");
+						request.setAttribute("message", message);
 
-    		// Show the upload screen
-    		JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
-    	}
-    }
+						JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
 
-    /**
-     * GET request is only ever used to show the upload form
-     *
-     * @param context
-     *            a DSpace Context object
-     * @param request
-     *            the HTTP request
-     * @param response
-     *            the HTTP response
-     *
-     * @throws ServletException
-     * @throws IOException
-     * @throws SQLException
-     * @throws AuthorizeException
-     */
-    protected void doDSGet(Context context, HttpServletRequest request,
-            HttpServletResponse response) throws ServletException, IOException,
-            SQLException, AuthorizeException
-    {
-    	//Get all collections
+						return;
+					}
+				}
+
+				String uploadId = wrapper.getParameter("uploadId");
+				if (uploadId != null){
+					request.setAttribute("uploadId", uploadId);
+				}
+
+				if (owningCollection==null && reqCollections != null && reqCollections.length > 0){
+					request.setAttribute("has-error", "true");
+
+					Locale locale = request.getLocale();
+					ResourceBundle msgs = ResourceBundle.getBundle("Messages", locale);
+					String ms = msgs.getString("jsp.layout.navbar-admin.batchimport.owningcollection");
+					if (ms == null){
+						ms = "???jsp.layout.navbar-admin.batchimport.owningcollection???";
+					}
+					request.setAttribute("message", ms);
+
+					JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
+
+					return;
+				}
+
+				try {
+					String finalInputType = "saf";
+					String filePath = zipurl;
+					if (f!=null){
+						finalInputType = inputType;
+						filePath = f.getAbsolutePath();
+					}
+
+					ItemImport.processUIImport(filePath, owningCollection, reqCollections, uploadId, finalInputType, context);
+
+					request.setAttribute("has-error", "false");
+					request.setAttribute("uploadId", null);
+
+				} catch (Exception e) {
+					request.setAttribute("has-error", "true");
+					message = e.getMessage();
+					e.printStackTrace();
+				}
+			} catch (FileSizeLimitExceededException e) {
+				request.setAttribute("has-error", "true");
+				message = e.getMessage();
+				e.printStackTrace();
+			} catch (Exception e) {
+				request.setAttribute("has-error", "true");
+				message = e.getMessage();
+				e.printStackTrace();
+			}
+
+			request.setAttribute("message", message);
+
+			// Show the upload screen
+			JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
+
+		}
+		else
+		{
+			request.setAttribute("has-error", "true");
+
+			// Show the upload screen
+			JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
+		}
+	}
+
+	/**
+	 * GET request is only ever used to show the upload form
+	 *
+	 * @param context
+	 *            a DSpace Context object
+	 * @param request
+	 *            the HTTP request
+	 * @param response
+	 *            the HTTP response
+	 *
+	 * @throws ServletException
+	 * @throws IOException
+	 * @throws SQLException
+	 * @throws AuthorizeException
+	 */
+	protected void doDSGet(Context context, HttpServletRequest request,
+						   HttpServletResponse response) throws ServletException, IOException,
+			SQLException, AuthorizeException
+	{
+
+		//Get all collections
 		List<Collection> collections = null;
 		String colIdS = request.getParameter("colId");
 		if (colIdS!=null){
@@ -262,6 +274,12 @@ public class BatchImportServlet extends DSpaceServlet
 
 		request.setAttribute("collections", collections);
 
+		// authorize check
+		for(Collection collection :collections) {
+			AuthorizeManager.authorizeAction(context, collection,
+					Constants.COLLECTION_ADMIN);
+		}
+
 		//Get all the possible data loaders from the Spring configuration
 		BTEBatchImportService dls  = new DSpace().getSingletonService(BTEBatchImportService.class);
 		List<String> inputTypes = dls.getFileDataLoaders();
@@ -269,87 +287,87 @@ public class BatchImportServlet extends DSpaceServlet
 
 		// Show the upload screen
 		JSPManager.showJSP(request, response, "/dspace-admin/batchimport.jsp");
-    }
-    
-    /**
-     * Get repeated values from a form. If "foo" is passed in as the parameter,
-     * values in the form of parameters "foo", "foo_1", "foo_2", etc. are
-     * returned.
-     * <P>
-     * This method can also handle "composite fields" (metadata fields which may
-     * require multiple params, etc. a first name and last name).
-     *
-     * @param request
-     *            the HTTP request containing the form information
-     * @param metadataField
-     *            the metadata field which can store repeated values
-     * @param param
-     *            the repeated parameter on the page (used to fill out the
-     *            metadataField)
-     *
-     * @return a List of Strings
-     */
-    protected List<String> getRepeatedParameter(HttpServletRequest request,
-            String metadataField, String param)
-    {
-        List<String> vals = new LinkedList<String>();
+	}
 
-        int i = 1;    //start index at the first of the previously entered values
-        boolean foundLast = false;
+	/**
+	 * Get repeated values from a form. If "foo" is passed in as the parameter,
+	 * values in the form of parameters "foo", "foo_1", "foo_2", etc. are
+	 * returned.
+	 * <P>
+	 * This method can also handle "composite fields" (metadata fields which may
+	 * require multiple params, etc. a first name and last name).
+	 *
+	 * @param request
+	 *            the HTTP request containing the form information
+	 * @param metadataField
+	 *            the metadata field which can store repeated values
+	 * @param param
+	 *            the repeated parameter on the page (used to fill out the
+	 *            metadataField)
+	 *
+	 * @return a List of Strings
+	 */
+	protected List<String> getRepeatedParameter(HttpServletRequest request,
+												String metadataField, String param)
+	{
+		List<String> vals = new LinkedList<String>();
 
-        // Iterate through the values in the form.
-        while (!foundLast)
-        {
-            String s = null;
+		int i = 1;    //start index at the first of the previously entered values
+		boolean foundLast = false;
 
-            //First, add the previously entered values.
-            // This ensures we preserve the order that these values were entered
-            s = request.getParameter(param + "_" + i);
+		// Iterate through the values in the form.
+		while (!foundLast)
+		{
+			String s = null;
 
-            // If there are no more previously entered values,
-            // see if there's a new value entered in textbox
-            if (s==null)
-            {
-                s = request.getParameter(param);
-                //this will be the last value added
-                foundLast = true;
-            }
+			//First, add the previously entered values.
+			// This ensures we preserve the order that these values were entered
+			s = request.getParameter(param + "_" + i);
 
-            // We're only going to add non-null values
-            if (s != null)
-            {
-                boolean addValue = true;
+			// If there are no more previously entered values,
+			// see if there's a new value entered in textbox
+			if (s==null)
+			{
+				s = request.getParameter(param);
+				//this will be the last value added
+				foundLast = true;
+			}
 
-                // Check to make sure that this value was not selected to be
-                // removed.
-                // (This is for the "remove multiple" option available in
-                // Manakin)
-                String[] selected = request.getParameterValues(metadataField
-                        + "_selected");
+			// We're only going to add non-null values
+			if (s != null)
+			{
+				boolean addValue = true;
 
-                if (selected != null)
-                {
-                    for (int j = 0; j < selected.length; j++)
-                    {
-                        if (selected[j].equals(metadataField + "_" + i))
-                        {
-                            addValue = false;
-                        }
-                    }
-                }
+				// Check to make sure that this value was not selected to be
+				// removed.
+				// (This is for the "remove multiple" option available in
+				// Manakin)
+				String[] selected = request.getParameterValues(metadataField
+						+ "_selected");
 
-                if (addValue)
-                {
-                    vals.add(s.trim());
-                }
-            }
+				if (selected != null)
+				{
+					for (int j = 0; j < selected.length; j++)
+					{
+						if (selected[j].equals(metadataField + "_" + i))
+						{
+							addValue = false;
+						}
+					}
+				}
 
-            i++;
-        }
+				if (addValue)
+				{
+					vals.add(s.trim());
+				}
+			}
 
-        log.debug("getRepeatedParameter: metadataField=" + metadataField
-                + " param=" + metadataField + ", return count = "+vals.size());
+			i++;
+		}
 
-        return vals;
-    }
+		log.debug("getRepeatedParameter: metadataField=" + metadataField
+				+ " param=" + metadataField + ", return count = "+vals.size());
+
+		return vals;
+	}
 }

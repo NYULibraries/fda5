@@ -502,7 +502,8 @@ public class ShibAuthentication implements AuthenticationMethod
 				returnURL = "http://";
 
 			returnURL += host;
-			if (!(port == 443 || port == 80))
+			//Modified by Kate to accomodate apache/tomcat/ProxyPass
+			if (!(port == 443 || port == 80 || port==8080))
 				returnURL += ":" + port;
 			returnURL += "/" + contextPath + "/shibboleth-login";
 
@@ -580,8 +581,10 @@ public class ShibAuthentication implements AuthenticationMethod
 
 
 		// 1) First, look for a netid header.
+		//Modified by Kate to accomodate different netid structure
 		if (netidHeader != null) {
-			String netid = findSingleAttribute(request,netidHeader);
+			String netid = findSingleAttribute(request,netidHeader).split("@")[0];
+
 
 			if (netid != null) {
 				foundNetID = true;

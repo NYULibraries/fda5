@@ -11,10 +11,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.lang.StringUtils;
 
 import org.apache.log4j.Logger;
 
@@ -30,6 +34,8 @@ import org.dspace.core.Context;
 import org.dspace.core.ConfigurationManager;
 import org.dspace.curate.Curator;
 import org.dspace.submit.AbstractProcessingStep;
+
+
 
 /**
  * Upload step for DSpace. Processes the actual upload of files
@@ -261,6 +267,44 @@ public class UploadStep extends AbstractProcessingStep
         // -------------------------------------------------
         // Step #3: Check for a change in file description
         // -------------------------------------------------
+        // We have to check for descriptions from users using the resumable upload
+        // and from users using the simple upload.
+        // Beginning with the resumable ones.
+        Enumeration<String> parameterNames = request.getParameterNames();
+        Map<String, String> descriptions = new HashMap<>();
+        while (parameterNames.hasMoreElements())
+        {
+            String name = parameterNames.nextElement();
+            if (StringUtils.startsWithIgnoreCase(name, "description["))
+            {
+                descriptions.put(
+                        name.substring("description[".length(), name.length()-1),
+                        request.getParameter(name));
+            }
+        }
+        if (!descriptions.isEmpty())
+        {
+            // we got descriptions from the resumable upload
+            if (item != null)
+            {
+                Bundle[] bundles = item.getBundles("ORIGINAL");
+                for (Bundle bundle : bundles)
+                {
+                    Bitstream[] bitstreams = bundle.getBitstreams();
+                    for (Bitstream bitstream : bitstreams)
+                    {
+                        if (descriptions.containsKey(bitstream.getName()))
+                        {
+                            bitstream.setDescription(descriptions.get(bitstream.getName()));
+                            bitstream.update();
+                        }
+                    }
+                }
+            }
+            return STATUS_COMPLETE;
+        }
+        
+        // Going on with descriptions from the simple upload
         String fileDescription = request.getParameter("description");
 
         if (fileDescription != null && fileDescription.length() > 0)
