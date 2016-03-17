@@ -50,9 +50,9 @@
         <meta name="Generator" content="<%= generator %>" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="<%= request.getContextPath() %>/favicon.ico" type="image/x-icon"/>
-	    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/jquery-ui-1.10.3.custom/redmond/jquery-ui-1.10.3.custom.css" type="text/css" />
-	    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/bootstrap/bootstrap.min.css" type="text/css" />
-	    <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/bootstrap/dspace-theme.css" type="text/css" />
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/jquery-ui-1.10.3.custom/redmond/jquery-ui-1.10.3.custom.css" type="text/css" />
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/bootstrap/bootstrap.min.css" type="text/css" />
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/static/css/bootstrap/dspace-theme.css" type="text/css" />
 <%
     if (!"NONE".equals(feedRef))
     {
@@ -78,11 +78,11 @@
         }
 %>
         
-	<script type='text/javascript' src="<%= request.getContextPath() %>/static/js/jquery/jquery-1.10.2.min.js"></script>
-	<script type='text/javascript' src='<%= request.getContextPath() %>/static/js/jquery/jquery-ui-1.10.3.custom.min.js'></script>
-	<script type='text/javascript' src='<%= request.getContextPath() %>/static/js/bootstrap/bootstrap.min.js'></script>
-	<script type='text/javascript' src='<%= request.getContextPath() %>/static/js/holder.js'></script>
-	<script type="text/javascript" src="<%= request.getContextPath() %>/utils.js"></script>
+    <script type='text/javascript' src="<%= request.getContextPath() %>/static/js/jquery/jquery-1.10.2.min.js"></script>
+    <script type='text/javascript' src='<%= request.getContextPath() %>/static/js/jquery/jquery-ui-1.10.3.custom.min.js'></script>
+    <script type='text/javascript' src='<%= request.getContextPath() %>/static/js/bootstrap/bootstrap.min.js'></script>
+    <script type='text/javascript' src='<%= request.getContextPath() %>/static/js/holder.js'></script>
+    <script type="text/javascript" src="<%= request.getContextPath() %>/utils.js"></script>
     <script type="text/javascript" src="<%= request.getContextPath() %>/static/js/choice-support.js"> </script>
 
     <%--Gooogle Analytics recording.--%>
@@ -105,9 +105,9 @@
     }
     if (extraHeadDataLast != null)
     { %>
-		<%= extraHeadDataLast %>
-		<%
-		    }
+        <%= extraHeadDataLast %>
+        <%
+            }
     %>
     
 
@@ -134,11 +134,11 @@
     }
     else
     {
-    	%>
+        %>
         <div class="container">
             <dspace:include page="/layout/navbar-minimal.jsp" />
         </div>
-<%    	
+<%      
     }
 %>
 <script type="text/javascript">
@@ -163,9 +163,7 @@
               jQ( this ).text("+");
             }
           });
-        } else {
-          jQ( this ).addClass("has-no-sublist");
-        }
+        } 
     });
   });
   </script>
@@ -188,6 +186,6 @@
         <%-- Page contents --%>
 <div class="container">
 <% if (request.getAttribute("dspace.layout.sidebar") != null) { %>
-	<div class="row">
-		<div class="col-md-9">
-<% } %>		
+    <div class="row">
+        <div class="col-md-9">
+<% } %>     
