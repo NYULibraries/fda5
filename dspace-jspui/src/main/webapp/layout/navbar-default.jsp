@@ -77,11 +77,11 @@
 %>
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-			<a class="navbar-brand" href="<%= request.getContextPath() %>"><img height="35" width="432" src="<%= request.getContextPath() %>/image/nyu_fda_logo.png" alt="FDA" /> </a> </div>
+			<a class="navbar-brand" href="/"><img height="35" width="432" src="<%= request.getContextPath() %>/image/nyu_fda_logo.png" alt="FDA" /> </a> </div>
 			<nav class="collapse navbar-collapse bs-navbar-collapse" >
 			<div class="nav navbar-nav navbar-right">
 				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown"> <a href="/jspui/index.php#" class="dropdown-toggle" data-toggle="dropdown">Browse <b class="caret"></b></a>
+					<li class="dropdown"> <a href="/jspui" class="dropdown-toggle" data-toggle="dropdown">Browse <b class="caret"></b></a>
 						<ul class="dropdown-menu">
 							<li><a href="<%= request.getContextPath() %>/community-list">Communities<br/>
 								&amp;&nbsp;Collections</a></li>

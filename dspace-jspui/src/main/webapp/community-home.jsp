@@ -269,26 +269,6 @@
 					<input class="btn btn-default col-md-12" type="submit" name="submit" value="<fmt:message key="jsp.community-home.create2.button"/>" />
 				 </form>
 			 <% } %>
-			<% if( editor_button ) { %>
-				<form method="post" action="<%=request.getContextPath()%>/mydspace">
-				  <input type="hidden" name="community_id" value="<%= community.getID() %>" />
-				  <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_EXPORT_ARCHIVE %>" />
-				  <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.mydspace.request.export.community"/>" />
-				</form>
-			  <form method="post" action="<%=request.getContextPath()%>/mydspace">
-				<input type="hidden" name="community_id" value="<%= community.getID() %>" />
-				<input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_MIGRATE_ARCHIVE %>" />
-				<input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.mydspace.request.export.migratecommunity"/>" />
-				</form>
-				<form method="post" action="<%=request.getContextPath()%>/tools/metadataexport">
-				 <input type="hidden" name="handle" value="<%= community.getHandle() %>" />
-				 <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.general.metadataexport.button"/>" />
-			   </form>
-			    <form method="post" action="<%=request.getContextPath()%>/tools/metadataimport">
-                  <input type="hidden" name="handle" value="<%= community.getHandle() %>" />
-                  <input class="btn btn-default col-md-12" type="submit" value="Import metadata" />
-                 </form>
-	  <% } %>
 	  </div>
 	</div>
 	<% } %>

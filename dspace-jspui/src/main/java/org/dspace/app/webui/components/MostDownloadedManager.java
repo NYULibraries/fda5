@@ -105,7 +105,7 @@ public class MostDownloadedManager {
                 for (DiscoverResult.FacetResult facetField : facetFields) {
                     int itemID=new Integer(facetField.getSortValue());
                     Item item=Item.find(context, itemID);
-                    items[i]=item;
+                    if(item!=null) items[i]=item;
                     i++;
                 }
 

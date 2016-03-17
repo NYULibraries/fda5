@@ -124,9 +124,28 @@
 <%  } %>
 
   <p class="copyrightText"> <%= copyright %></p>
-  
-  <%-- Browse --%>
 
+  <%-- Browse --%>
+    <div class="panel panel-primary">
+    	<div class="panel-heading">
+          <fmt:message key="jsp.general.browse"/>
+  	</div>
+  	<div class="panel-body">
+  	<%-- Insert the dynamic list of browse options --%>
+  <%
+  	for (int i = 0; i < bis.length; i++)
+  	{
+  		String key = "browse.menu." + bis[i].getName();
+  %>
+  	<form method="get" class="btn-group" action="<%= request.getContextPath() %>/handle/<%= collection.getHandle() %>/browse">
+  		<input type="hidden" name="type" value="<%= bis[i].getName() %>"/>
+  		<%-- <input type="hidden" name="collection" value="<%= collection.getHandle() %>" /> --%>
+  		<input type="submit" class="btn btn-default" name="submit_browse" value="<fmt:message key="<%= key %>"/>"/>
+  	</form>
+  <%
+  	}
+  %>	</div>
+  </div>
 
   <%@ include file="discovery/static-tagcloud-facet.jsp" %>
 
@@ -314,16 +333,6 @@
           </form>
 <% } %>
 <% if( editor_button || admin_button) { %>
-                <form method="post" action="<%=request.getContextPath()%>/mydspace">
-                  <input type="hidden" name="collection_id" value="<%= collection.getID() %>" />
-                  <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_EXPORT_ARCHIVE %>" />
-                  <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.mydspace.request.export.collection"/>" />
-                </form>
-               <form method="post" action="<%=request.getContextPath()%>/mydspace">
-                 <input type="hidden" name="collection_id" value="<%= collection.getID() %>" />
-                 <input type="hidden" name="step" value="<%= MyDSpaceServlet.REQUEST_MIGRATE_ARCHIVE %>" />
-                 <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.mydspace.request.export.migratecollection"/>" />
-               </form>
                <form method="post" action="<%=request.getContextPath()%>/tools/metadataexport">
                  <input type="hidden" name="handle" value="<%= collection.getHandle() %>" />
                  <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.general.metadataexport.button"/>" />

@@ -85,9 +85,10 @@
 				</div>
 		</div>
 
-        <h3 class="access-setting"><fmt:message key="jsp.submit.access.embargo_setting.heading"/></h3>
+     <!--   <h3 class="access-setting"><fmt:message key="jsp.submit.access.embargo_setting.heading"/></h3>
 
-        <dspace:access-setting subInfo="<%= subInfo %>" dso="<%= subInfo.getSubmissionItem().getItem() %>" embargo="<%= advanced ? true : false %>" addpolicy="<%= advanced ? true : false %>" />
+        <dspace:access-setting subInfo="<%= subInfo %>" dso="<%= subInfo.getSubmissionItem().getItem() %>"
+        embargo="<%= advanced ? true : false %>" addpolicy="<%= advanced ? true : false %>" /> -->
 		</div>
 		</div>
 		
