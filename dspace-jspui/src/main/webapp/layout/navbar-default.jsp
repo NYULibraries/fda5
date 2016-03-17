@@ -81,7 +81,9 @@
 			<nav class="collapse navbar-collapse bs-navbar-collapse" >
 			<div class="nav navbar-nav navbar-right">
 				<ul class="nav navbar-nav navbar-right">
+
 					<li class="dropdown"> <a href="/jspui" class="dropdown-toggle" data-toggle="dropdown">Browse <b class="caret"></b></a>
+
 						<ul class="dropdown-menu">
 							<li><a href="<%= request.getContextPath() %>/community-list">Communities<br/>
 								&amp;&nbsp;Collections</a></li>
