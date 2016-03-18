@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -37,6 +38,7 @@ import org.dspace.app.webui.util.UIUtil;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.browse.BrowseException;
 import org.dspace.content.Bitstream;
+import org.dspace.content.Bitstream.BitstreamComparator;
 import org.dspace.content.Bundle;
 import org.dspace.content.Collection;
 import org.dspace.content.DCDate;
@@ -915,6 +917,8 @@ public class ItemTag extends TagSupport
             		for (int i = 0; i < bundles.length; i++)
             		{
             			Bitstream[] bitstreams = bundles[i].getBitstreams();
+
+                        Arrays.sort(bitstreams, new BitstreamComparator());
 
             			for (int k = 0; k < bitstreams.length; k++)
             			{

@@ -105,7 +105,7 @@ public class CollectionItemList implements CollectionHomeProcessor
         try
         {
             BrowseIndex bi =null;
-            if(number>0)
+            if(number>0&&(number-1)<names.length)
               bi=BrowseIndex.getBrowseIndex(names[number-1]);
             else
                 bi=BrowseIndex.getBrowseIndex(name);

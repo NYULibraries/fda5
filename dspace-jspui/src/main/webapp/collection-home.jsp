@@ -126,26 +126,7 @@
   <p class="copyrightText"> <%= copyright %></p>
 
   <%-- Browse --%>
-    <div class="panel panel-primary">
-    	<div class="panel-heading">
-          <fmt:message key="jsp.general.browse"/>
-  	</div>
-  	<div class="panel-body">
-  	<%-- Insert the dynamic list of browse options --%>
-  <%
-  	for (int i = 0; i < bis.length; i++)
-  	{
-  		String key = "browse.menu." + bis[i].getName();
-  %>
-  	<form method="get" class="btn-group" action="<%= request.getContextPath() %>/handle/<%= collection.getHandle() %>/browse">
-  		<input type="hidden" name="type" value="<%= bis[i].getName() %>"/>
-  		<%-- <input type="hidden" name="collection" value="<%= collection.getHandle() %>" /> --%>
-  		<input type="submit" class="btn btn-default" name="submit_browse" value="<fmt:message key="<%= key %>"/>"/>
-  	</form>
-  <%
-  	}
-  %>	</div>
-  </div>
+
 
   <%@ include file="discovery/static-tagcloud-facet.jsp" %>
 
