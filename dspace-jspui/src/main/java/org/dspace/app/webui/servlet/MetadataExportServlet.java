@@ -22,6 +22,7 @@ import org.dspace.app.bulkedit.MetadataExport;
 import org.dspace.app.bulkedit.DSpaceCSV;
 import org.dspace.app.webui.util.JSPManager;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.core.*;
 import org.dspace.content.DSpaceObject;
 import org.dspace.content.ItemIterator;
@@ -62,6 +63,10 @@ public class MetadataExportServlet extends DSpaceServlet
         {
             log.info(LogManager.getHeader(context, "metadataexport", "exporting_handle:" + handle));
             DSpaceObject thing = HandleManager.resolveToObject(context, handle);
+            //Authorize. added by Kate
+
+            if (!AuthorizeManager.isAdmin(context,thing)) throw new AuthorizeException();
+
             if (thing != null)
             {
                 if (thing.getType() == Constants.ITEM)

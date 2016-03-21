@@ -99,13 +99,14 @@
         if (cols != null && cols.length > 0)
         {
  
+
             for (int j = 0; j < cols.length; j++)
             {
                 out.println("<li>");
                 out.println("<h4><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a></h4>");
                 out.println("</li>");
             }
-      
+
         }
        if ((comms != null && comms.length > 0) || (cols != null && cols.length > 0) ) {
              out.println( "</ul>" );
@@ -185,6 +186,7 @@ if (mostdownloaded != null && mostdownloaded.count() > 0)
                                              + "&amp;filtername="+URLEncoder.encode("author","UTF-8")+"&amp;filtertype="
                                              +URLEncoder.encode("equals","UTF-8");
                         %>
+
                              <div class="authors">
                              <a class="authors" href="<%=authorQuery %>"> <%= StringUtils.abbreviate(authors[i].value,36) %></a>
                              </div>

@@ -54,7 +54,7 @@
 					 <span class="icon-bar"></span>
 					 <span class="icon-bar"></span>
 				 </button>
-				<a class="navbar-brand" href="<%= request.getContextPath() %>"><img height="35" width="432" src="<%= request.getContextPath() %>/image/nyu_fda_logo.png" alt="FDA" /> </a> 
+				<a class="navbar-brand" href="/"><img height="35" width="432" src="<%= request.getContextPath() %>/image/nyu_fda_logo.png" alt="FDA" /> </a>
 			 </div>
 			 <nav class="admin-navbar collapse navbar-collapse bs-navbar-collapse" role="navigation">
 				 <ul class="nav navbar-nav admin-special-nav">

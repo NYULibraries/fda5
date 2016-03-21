@@ -16,15 +16,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.fileupload.FileUploadBase;
 import org.apache.log4j.Logger;
-import org.dspace.app.bulkedit.MetadataImportInvalidHeadingException;
+import org.dspace.app.bulkedit.*;
 import org.dspace.app.webui.util.JSPManager;
 import org.dspace.app.webui.util.FileUploadRequest;
-import org.dspace.app.bulkedit.MetadataImport;
-import org.dspace.app.bulkedit.DSpaceCSV;
-import org.dspace.app.bulkedit.BulkEditChange;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.authorize.AuthorizeManager;
+import org.dspace.content.DSpaceObject;
 import org.dspace.core.*;
+import org.dspace.handle.HandleManager;
 
 /**
  * Servlet to import metadata as CSV (comma separated values)
@@ -67,12 +68,31 @@ public class MetadataImportServlet extends DSpaceServlet
     {
         // First, see if we have a multipart request (uploading a metadata file)
         String contentType = request.getContentType();
-        HttpSession session = request.getSession(true);        
+        HttpSession session = request.getSession(true);
+        String handle = request.getParameter("handle");
+
+        if(handle==null) {
+            handle = (String) request.getAttribute("handle");
+        }
+        DSpaceObject thing=null;
+
+        if (handle != null) {
+            log.info(LogManager.getHeader(context, "metadataimport", "importing_handle:" + handle));
+            thing = HandleManager.resolveToObject(context, handle);
+        }
+
+        request.setAttribute("handle",handle);
+        log.info("content"+contentType);
+
         if ((contentType != null) && (contentType.indexOf("multipart/form-data") != -1))
         {
+
             // Process the file uploaded
             try
             {
+
+
+
                 // Get the changes
                 log.info(LogManager.getHeader(context, "metadataimport", "loading file"));
                 List<BulkEditChange> changes = processUpload(context, request);
@@ -97,26 +117,27 @@ public class MetadataImportServlet extends DSpaceServlet
                                                       changes.size() + " (" + limit + " allowed)"));
                     }
 
-                    JSPManager.showJSP(request, response, "/dspace-admin/metadataimport-showchanges.jsp");
+                    JSPManager.showJSP(request, response, "/tools/metadataimport-showchanges.jsp");
                 }
                 else
                 {
                     request.setAttribute("message", "No changes detected");
-                    JSPManager.showJSP(request, response, "/dspace-admin/metadataimport.jsp");
+                    JSPManager.showJSP(request, response, "/tools/metadataimport.jsp");
                 }
             }
             catch (MetadataImportInvalidHeadingException mihe) {
                 request.setAttribute("message", mihe.getBadHeader());
                 request.setAttribute("badheading", mihe.getType());
                 log.info(LogManager.getHeader(context, "metadataimport", "Error encountered while looking for changes: " + mihe.getMessage()));                
-                JSPManager.showJSP(request, response, "/dspace-admin/metadataimport-error.jsp");
+                JSPManager.showJSP(request, response, "/tools/metadataimport-error.jsp");
             }
             catch (Exception e)
             {
                 request.setAttribute("message", e.getMessage());
                 log.info(LogManager.getHeader(context, "metadataimport", "Error encountered while looking for changes: " + e.getMessage()));                
-                JSPManager.showJSP(request, response, "/dspace-admin/metadataimport-error.jsp");
+                JSPManager.showJSP(request, response, "/tools/metadataimport-error.jsp");
             }
+
         }
         else if ("confirm".equals(request.getParameter("type")))
         {
@@ -139,13 +160,13 @@ public class MetadataImportServlet extends DSpaceServlet
                 request.setAttribute("changes", changes);
                 request.setAttribute("changed", true);
                 request.setAttribute("allow", true);
-                JSPManager.showJSP(request, response, "/dspace-admin/metadataimport-showchanges.jsp");
+                JSPManager.showJSP(request, response, "/tools/metadataimport-showchanges.jsp");
             }
             catch (Exception e)
             {
                 request.setAttribute("message", e.getMessage());
                 log.debug(LogManager.getHeader(context, "metadataimport", "Error encountered while making changes: " + e.getMessage()));
-                JSPManager.showJSP(request, response, "/dspace-admin/metadataimport-error.jsp");
+                JSPManager.showJSP(request, response, "/tools/metadataimport-error.jsp");
             }
         }
         else if ("cancel".equals(request.getParameter("type")))
@@ -155,12 +176,12 @@ public class MetadataImportServlet extends DSpaceServlet
 
             request.setAttribute("message", "Changes cancelled. No items have been modified.");
             log.debug(LogManager.getHeader(context, "metadataimport", "Changes cancelled"));
-            JSPManager.showJSP(request, response, "/dspace-admin/metadataimport.jsp");
+            JSPManager.showJSP(request, response, "/tools/metadataimport.jsp");
         }
         else
         {
             // Show the upload screen
-            JSPManager.showJSP(request, response, "/dspace-admin/metadataimport.jsp");
+            JSPManager.showJSP(request, response, "/tools/metadataimport.jsp");
         }
     }
 
@@ -182,9 +203,14 @@ public class MetadataImportServlet extends DSpaceServlet
     protected void doDSGet(Context context, HttpServletRequest request,
             HttpServletResponse response) throws ServletException, IOException,
             SQLException, AuthorizeException
+
     {
+
+        String handle = request.getParameter("handle");
+        request.setAttribute("handle",handle);
+
         // Show the upload screen
-        JSPManager.showJSP(request, response, "/dspace-admin/metadataimport.jsp");
+        JSPManager.showJSP(request, response, "/tools/metadataimport.jsp");
     }
 
     /**
@@ -200,6 +226,25 @@ public class MetadataImportServlet extends DSpaceServlet
     {
         // Wrap multipart request to get the submission info
         FileUploadRequest wrapper = new FileUploadRequest(request);
+        String handle = wrapper.getParameter("handle");
+
+        if(handle==null) {
+            handle=(String) wrapper.getAttribute("hanlde");
+        }
+
+        DSpaceObject thing=null;
+
+        if (handle != null) {
+            log.info(LogManager.getHeader(context, "metadataimport", "importing_handle:" + handle));
+            thing = HandleManager.resolveToObject(context, handle);
+        }
+
+        //Authorize. added by Kate
+        if(handle==null) {
+            if (!AuthorizeManager.isAdmin(context)) throw new AuthorizeException("hyi vam");
+        } else {
+            if (!AuthorizeManager.isAdmin(context,thing)) throw new AuthorizeException("hyi1");
+        }
         File f = wrapper.getFile("file");
 
         // Run the import

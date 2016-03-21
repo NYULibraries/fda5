@@ -9,6 +9,7 @@ package org.dspace.app.webui.submit.step;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import org.dspace.app.webui.util.JSPManager;
 import org.dspace.app.webui.util.UIUtil;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.content.Collection;
+import org.dspace.content.Collection.CollectionComparator;
 import org.dspace.content.Community;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
@@ -127,18 +129,19 @@ public class JSPSelectCollectionStep extends JSPStep
 
             Collection[] collections;
 
+            // Show all collections
             if (com != null)
             {
                 // In a community. Show collections in that community only.
                 collections = Collection.findAuthorized(context, com,
                         Constants.ADD);
             }
-            else
-            {
-                // Show all collections
+            else {
                 collections = Collection.findAuthorizedOptimized(context,
                         Constants.ADD);
             }
+
+            Arrays.sort(collections,new CollectionComparator());
 
             // This is a special case, where the user came back to this
             // page after not selecting a collection. This will display
@@ -150,7 +153,7 @@ public class JSPSelectCollectionStep extends JSPStep
             }
 
             // save collections to request for JSP
-            request.setAttribute("collections", collections);
+            request.setAttribute("collections",collections);
 
             // we need to load the select collection JSP
             JSPStepManager.showJSP(request, response, subInfo, SELECT_COLLECTION_JSP);

@@ -40,13 +40,15 @@ public class CollectionItemList implements CollectionHomeProcessor
     // the number of authors to display before trncating
     private static final int etal    = ConfigurationManager.getIntProperty("webui.browse.author-limit", -1);
     // the number of items to display per page
-    private static final int perpage = ConfigurationManager.getIntProperty("webui.collectionhome.perpage", 20);
+    //private static final int perpage = ConfigurationManager.getIntProperty("webui.collectionhome.perpage", 20);
     // whether does use "dateaccessioned" as a sort option
     //   If true and the sort option "dateaccessioned" exists, use "dateaccessioned" as a sort option.
     //   Otherwise use the sort option pertaining the specified browse index
     private static boolean useDateaccessioned = ConfigurationManager.getBooleanProperty("webui.collectionhome.use.dateaccessioned", true);
     // the number of sort option "dateaccessioned"
-    private static int number = -1;
+    //private static int number = -1;
+
+    private static String[] names={"title", "dateissued"};
 
     static
     {
@@ -63,7 +65,7 @@ public class CollectionItemList implements CollectionHomeProcessor
                 {
                     if ("dateaccessioned".equals(option.getName()))
                     {
-                        number = option.getNumber();
+                        int number = option.getNumber();
                         break;
                     }
                 }
@@ -91,6 +93,10 @@ public class CollectionItemList implements CollectionHomeProcessor
         throws PluginException, AuthorizeException
     {
         int offset = UIUtil.getIntParameter(request, "offset");
+        int number= UIUtil.getIntParameter(request, "value");
+        String data_order=request.getParameter("data-order");
+        int perpage=UIUtil.getIntParameter(request, "rpp");
+
         if (offset < 0)
         {
             offset = 0;
@@ -98,7 +104,12 @@ public class CollectionItemList implements CollectionHomeProcessor
         
         try
         {
-            BrowseIndex bi = BrowseIndex.getBrowseIndex(name);
+            BrowseIndex bi =null;
+            if(number>0&&(number-1)<names.length)
+              bi=BrowseIndex.getBrowseIndex(names[number-1]);
+            else
+                bi=BrowseIndex.getBrowseIndex(name);
+
             if (bi == null || !"item".equals(bi.getDisplayType()))
             {
                 request.setAttribute("show.items", Boolean.FALSE);
@@ -111,10 +122,13 @@ public class CollectionItemList implements CollectionHomeProcessor
             scope.setEtAl(etal);
             scope.setOffset(offset);
             scope.setResultsPerPage(perpage);
-            if (number != -1)
-            {
+            if (number != -1) {
                 scope.setSortBy(number);
-                scope.setOrder(SortOption.DESCENDING);
+                if (data_order.equalsIgnoreCase("desc"))
+                    scope.setOrder(SortOption.DESCENDING);
+                else
+                    scope.setOrder(SortOption.ASCENDING);
+
             }
             BrowseEngine be = new BrowseEngine(context);
             BrowseInfo binfo = be.browse(scope);

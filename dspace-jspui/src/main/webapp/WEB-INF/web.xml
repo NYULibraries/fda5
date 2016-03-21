@@ -641,15 +641,25 @@
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
 
-  <servlet-mapping>
+  <!--<servlet-mapping>
     <servlet-name>metadataexport</servlet-name>
     <url-pattern>/dspace-admin/metadataexport</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>-->
 
-  <servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>metadataexport</servlet-name>
+        <url-pattern>/tools/metadataexport</url-pattern>
+    </servlet-mapping>
+
+  <!--<servlet-mapping>
     <servlet-name>metadataimport</servlet-name>
     <url-pattern>/dspace-admin/metadataimport</url-pattern>
-  </servlet-mapping>
+  </servlet-mapping>-->
+
+    <servlet-mapping>
+        <servlet-name>metadataimport</servlet-name>
+        <url-pattern>/tools/metadataimport</url-pattern>
+    </servlet-mapping>
 
   <!--<servlet-mapping>
     <servlet-name>batchimport</servlet-name>

@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -289,6 +290,13 @@ public class Bitstream extends DSpaceObject
         bRow.setColumn("sequence_id", sid);
         modifiedMetadata = true;
         addDetails("SequenceID");
+    }
+
+    public static class BitstreamComparator implements Comparator<Bitstream> {
+        @Override
+        public int compare(Bitstream bitstream1, Bitstream bitstream2) {
+            return bitstream1.getName().compareTo(bitstream2.getName());
+        }
     }
 
     /**
