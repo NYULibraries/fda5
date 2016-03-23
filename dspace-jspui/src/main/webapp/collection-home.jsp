@@ -340,51 +340,55 @@
 
 
 <% if(admin_button || editor_button ) { %>
+
          <div class="panel panel-admin-tools">
          <div class="panel-heading"><fmt:message key="jsp.admintools"/>
-          <span class="pull-right"><dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.collection-admin\")%>"><fmt:message key="jsp.adminhelp"/></dspace:popup></span>
-         </div>
-         <div class="panel-body">              
-<% if( editor_button ) { %>
-        <form method="post" action="<%=request.getContextPath()%>/tools/edit-communities">
-          <input type="hidden" name="collection_id" value="<%= collection.getID() %>" />
-          <input type="hidden" name="community_id" value="<%= community.getID() %>" />
-          <input type="hidden" name="action" value="<%= EditCommunitiesServlet.START_EDIT_COLLECTION %>" />
-          <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.general.edit.button"/>" />
+          <span class="pull-right"><dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.collection-admin\")%>"><fmt:message key="jsp.adminhelp"/></dspace:popup></span></div>
+         <div class="panel-body">      
+
+          <% if( editor_button ) { %>
+        
+                  <form method="post" action="<%=request.getContextPath()%>/tools/edit-communities">
+                    <input type="hidden" name="collection_id" value="<%= collection.getID() %>" />
+                    <input type="hidden" name="community_id" value="<%= community.getID() %>" />
+                    <input type="hidden" name="action" value="<%= EditCommunitiesServlet.START_EDIT_COLLECTION %>" />
+                    <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.general.edit.button"/>" />
+                  </form>
+          <% } %>
+
+          <% if( admin_button ) { %>
+      
+                    <form method="post" action="<%=request.getContextPath()%>/tools/itemmap">
+                      <input type="hidden" name="cid" value="<%= collection.getID() %>" >
+                      <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.collection-home.item.button"/>" >
+                    </form>
+                   <form method="get" action="<%=request.getContextPath()%>/tools/batchimport">
+                      <input type="hidden" name="colId" value="<%= collection.getID() %>" >
+                      <input class="btn btn-default col-md-12" type="submit" value="Batch Import" >
+                    </form>
+          <%  } %>
+        <% if(submitters != null) { %>
+              <form method="get" action="<%=request.getContextPath()%>/tools/group-edit">
+                <input type="hidden" name="group_id" value="<%=submitters.getID()%>" >
+                <input class="btn btn-default col-md-12" type="submit" name="submit_edit" value="<fmt:message key="jsp.collection-home.editsub.button"/>" >
+              </form>
+        <% } %>
+
+        <form method="post" action="<%=request.getContextPath()%>/tools/metadataexport">
+           <input type="hidden" name="handle" value="<%= collection.getHandle() %>" />
+           <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.general.metadataexport.button"/>" />
+           </form>
+           <form method="get" action="<%=request.getContextPath()%>/tools/metadataimport">
+           <input type="hidden" name="handle" value="<%= collection.getHandle() %>" />
+           <input class="btn btn-default col-md-12" type="submit" value="Import metadata" />
         </form>
+  
+
+      </div> <!-- end panel body -->       
+    </div>  <!-- end panel  -->   
 <% } %>
 
-<% if( admin_button ) { %>
-         <form method="post" action="<%=request.getContextPath()%>/tools/itemmap">
-                   <input type="hidden" name="cid" value="<%= collection.getID() %>" />
 
-               <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.collection-home.item.button"/>" />
-                 </form>
-         <form method="get" action="<%=request.getContextPath()%>/tools/batchimport">
-          <input type="hidden" name="colId" value="<%= collection.getID() %>" />
-      <input class="btn btn-default col-md-12" type="submit" value="Batch Import" />
-        </form>
-<% if(submitters != null) { %>
-      <form method="get" action="<%=request.getContextPath()%>/tools/group-edit">
-      <input type="hidden" name="group_id" value="<%=submitters.getID()%>" />
-      <input class="btn btn-default col-md-12" type="submit" name="submit_edit" value="<fmt:message key="jsp.collection-home.editsub.button"/>" />
-      </form>
-<% } %>
-<% if( editor_button || admin_button) { %>
-         <form method="post" action="<%=request.getContextPath()%>/tools/metadataexport">
-         <input type="hidden" name="handle" value="<%= collection.getHandle() %>" />
-         <input class="btn btn-default col-md-12" type="submit" value="<fmt:message key="jsp.general.metadataexport.button"/>" />
-         </form>
-         <form method="get" action="<%=request.getContextPath()%>/tools/metadataimport">
-         <input type="hidden" name="handle" value="<%= collection.getHandle() %>" />
-         <input class="btn btn-default col-md-12" type="submit" value="Import metadata" />
-         </form>
-         </div>
-<% } %>
-         
-<% } %>
-
-<%  } %>
 
 <%
   if (rs != null)
@@ -443,7 +447,7 @@
     </form></div>
 </div>
 </aside>
-  </dspace:sidebar>
+</dspace:sidebar>
 
 </dspace:layout>
 
