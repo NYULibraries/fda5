@@ -426,7 +426,7 @@
                         <div class="panel-heading">
                             Files To Upload
                         </div>
-
+                        <div class="panel-body">
                         <table class="table resumable-list">
                             <thead>
                                 <th>#</th>
@@ -436,6 +436,7 @@
                             </thead>
                             <tbody></tbody>
                         </table>
+                    </dov>
                     </div>
                 </div>
                 <script>
@@ -584,7 +585,7 @@
        				col++;
                    }
                %>
-
+              <div class="row">
             <div class="pull-right btn-group col-md-<%= (bSherpa?2:1) * col*2 + 4 %>">
                	<%  //if not first step, show "Previous" button
 					if(!SubmissionController.isFirstStep(request, subInfo))
@@ -597,12 +598,12 @@
                     	if (!fileRequired || subInfo.getSubmissionItem().getItem().hasUploadedFiles())
                         {
                     %>
-                                <input class="btn btn-warning col-md-<%= 12 / (col + 2) %>" type="submit" name="<%=UploadStep.SUBMIT_SKIP_BUTTON%>" value="<fmt:message key="jsp.submit.choose-file.skip"/>" />
+                                <input class="btn btn-default col-md-<%= 12 / (col + 2) %>" type="submit" name="<%=UploadStep.SUBMIT_SKIP_BUTTON%>" value="<fmt:message key="jsp.submit.choose-file.skip"/>" />
                     <%
                         }
                     %>   
                         <input class="btn btn-primary col-md-<%= 12 / (col + 2) %>" type="submit" name="<%=UploadStep.SUBMIT_UPLOAD_BUTTON%>" value="<fmt:message key="jsp.submit.general.next"/>" />
-            </div> 
+            </div> </div> 
         </div>
     </form>
     <% if (bSherpa) { %>
