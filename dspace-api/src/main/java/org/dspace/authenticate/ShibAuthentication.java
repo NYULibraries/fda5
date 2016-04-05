@@ -505,7 +505,10 @@ public class ShibAuthentication implements AuthenticationMethod
 			//Modified by Kate to accomodate apache/tomcat/ProxyPass
 			if (!(port == 443 || port == 80 || port==8080))
 				returnURL += ":" + port;
-			returnURL += "/" + contextPath + "/shibboleth-login";
+			//returnURL += "/" + contextPath + "/shibboleth-login";
+			returnURL += contextPath + "/shibboleth-login";
+
+
 
 			try {
 				shibURL += "?target="+URLEncoder.encode(returnURL, "UTF-8");

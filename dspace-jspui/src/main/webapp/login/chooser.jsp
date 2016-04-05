@@ -51,7 +51,6 @@
     <table class="miscTable" align="center" width="70%">
       <tr>
         <td class="evenRowEvenCol">
-          <h2><fmt:message key="jsp.login.chooser.chooseyour"/></h2>
           <ul>
 <%
     Iterator ai = AuthenticationManager.authenticationMethodIterator();
