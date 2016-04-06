@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.dspace.app.webui.util.Authenticate;
 import org.dspace.app.webui.util.JSPManager;
 import org.dspace.authorize.AuthorizeException;
+import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
 
@@ -38,6 +39,9 @@ public class LogoutServlet extends DSpaceServlet
     {
         log.info(LogManager.getHeader(context, "logout", ""));
 
+        //added by Kate - logout from shibboleth
+        String logout_url = ConfigurationManager.getProperty("authentication-shibboleth","logout_url");
+
         Authenticate.loggedOut(context, request);
 
         // if the user still logged in (i.e. it was a login as)?
@@ -49,6 +53,7 @@ public class LogoutServlet extends DSpaceServlet
         }
         
         // Display logged out message
-        JSPManager.showJSP(request, response, "/login/logged-out.jsp");
+        //JSPManager.showJSP(request, response, "/login/logged-out.jsp");
+        response.sendRedirect(logout_url);
     }
 }
