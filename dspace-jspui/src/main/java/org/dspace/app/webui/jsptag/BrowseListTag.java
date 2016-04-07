@@ -63,6 +63,9 @@ public class BrowseListTag extends TagSupport
     /** Column to emphasise, identified by metadata field */
     private String emphColumn;
 
+    /** Column to emphasise, identified by metadata field */
+    private boolean showThumbsCollection;
+
     /** Config value of thumbnail view toggle */
     private static boolean showThumbs;
 
@@ -102,7 +105,7 @@ public class BrowseListTag extends TagSupport
 
     static
     {
-        getThumbSettings();
+        //getThumbSettings();
 
         if (showThumbs)
         {
@@ -156,6 +159,9 @@ public class BrowseListTag extends TagSupport
             emphasiseTitle = emphColumn.equalsIgnoreCase("title");
         }
         */
+
+
+        log.error(""+getShowThumbsCollection());
 
         // get the elements to display
         String browseListLine  = null;
@@ -224,8 +230,9 @@ public class BrowseListTag extends TagSupport
         // Have we read a field configration from dspace.cfg?
         if (browseListLine != null)
         {
+            log.error("show"+getShowThumbsCollection());
             // If thumbnails are disabled, strip out any thumbnail column from the configuration
-            if (!showThumbs && browseListLine.contains("thumbnail"))
+            if (!showThumbs&&!getShowThumbsCollection() && browseListLine.contains("thumbnail"))
             {
                 // Ensure we haven't got any nulls
                 browseListLine  = browseListLine  == null ? "" : browseListLine;
@@ -714,21 +721,46 @@ public class BrowseListTag extends TagSupport
         emphColumn = emphColumnIn;
     }
 
+    /**
+     * Set the showThumb parameter -addec by Kate to be able to vary
+     * the settings per collections
+     *
+     * @return weather we will show thumnails or not
+     */
+    public boolean getShowThumbsCollection()
+    {
+        return showThumbsCollection;
+    }
+
+    /**
+     * Set the column to emphasise - "title", "date" or null
+     *
+     * @param showThumbsCollectionIn true if we want to show thumbnails
+     *
+     */
+    public void setShowThumbsCollection(boolean showThumbsCollectionIn)
+    {
+        this.showThumbsCollection = showThumbsCollectionIn;
+    }
+
     public void release()
     {
         highlightRow = -1;
         emphColumn = null;
         items = null;
+        showThumbsCollection=false;
     }
 
     /* get the required thumbnail config items */
-    private static void getThumbSettings()
+    private  void getThumbSettings()
     {
-        showThumbs = ConfigurationManager
-                .getBooleanProperty("webui.browse.thumbnail.show");
+                showThumbs = ConfigurationManager
+                    .getBooleanProperty("webui.browse.thumbnail.show");
 
-        if (showThumbs)
+
+        if (showThumbs||getShowThumbsCollection())
         {
+
             thumbItemListMaxHeight = ConfigurationManager
                     .getIntProperty("webui.browse.thumbnail.maxheight");
 
@@ -773,6 +805,8 @@ public class BrowseListTag extends TagSupport
         {
             Context c = UIUtil.obtainContext(hrq);
 
+            try
+            {
             InputStream is = BitstreamStorageManager.retrieve(c, bitstream
                     .getID());
 
@@ -780,6 +814,11 @@ public class BrowseListTag extends TagSupport
             // 	read in bitstream's image
             buf = ImageIO.read(is);
             is.close();
+            }
+            //if for some reasons assetstore is not available still show collection page- added by Kate
+            catch (java.io.FileNotFoundException iof) {
+                return "width=\"0\" height=\"0\"";
+            }
         }
         catch (SQLException sqle)
         {

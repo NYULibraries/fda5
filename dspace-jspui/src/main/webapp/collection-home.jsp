@@ -65,6 +65,9 @@
     Boolean submit_b      = (Boolean)request.getAttribute("can_submit_button");
     boolean submit_button = (submit_b == null ? false : submit_b.booleanValue());
 
+    //Added by Kate to show thumbnails for Schechener
+    Boolean show_thumbnails=(Boolean)request.getAttribute("show_thumbnails");;
+
   // get the browse indices
     BrowseIndex[] bis = BrowseIndex.getBrowseIndices();
 
@@ -242,7 +245,7 @@
 
 <div class ="discovery-result-results">
 <%-- output the results using the browselist tag --%>
-   <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" />
+   <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" showThumbsCollection="<%=show_thumbnails %>" />
   <%-- give us the bottom repaort on what we are looking at --%>
 </div>
 

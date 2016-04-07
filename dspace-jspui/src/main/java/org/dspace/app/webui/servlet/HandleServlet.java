@@ -627,7 +627,17 @@ public class HandleServlet extends DSpaceServlet
 
             // perform any necessary pre-processing
             preProcessCollectionHome(context, request, response, collection);
-            
+
+            //check if we need to show thumbnails -added by Kate for Schechener
+            String thumbnail_collections=ConfigurationManager.getProperty("webui.browse.thumbnail.show.list");
+
+            if(thumbnail_collections!=null&&thumbnail_collections.contains(collection.getHandle())) {
+                // set a variable if collection requires to show thumbnails
+                request.setAttribute("show_thumbnails", Boolean.TRUE );
+            } else {
+                request.setAttribute("show_thumbnails", Boolean.FALSE );
+            }
+
             // Is the user logged in/subscribed?
             EPerson e = context.getCurrentUser();
             boolean subscribed = false;
