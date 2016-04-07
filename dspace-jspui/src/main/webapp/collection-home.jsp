@@ -134,7 +134,7 @@
   <%@ include file="discovery/static-tagcloud-facet.jsp" %>
 
   <section class="search-area">
-  <form method="get" action="/jspui/simple-search" class="simplest-search">
+  <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
       <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
