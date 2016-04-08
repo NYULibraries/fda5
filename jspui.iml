@@ -119,7 +119,7 @@
     <orderEntry type="library" name="Maven: com.google.oauth-client:google-oauth-client:1.19.0" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.3" level="project" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
-    <orderEntry type="library" name="Maven: org.dspace:dspace-api-lang:5.0.6" level="project" />
+    <orderEntry type="library" name="Maven: org.dspace:dspace-api-lang:5.0.7" level="project" />
     <orderEntry type="library" name="Maven: ant-contrib:ant-contrib:1.0b3" level="project" />
     <orderEntry type="module" module-name="dspace-jspui" />
     <orderEntry type="module" module-name="dspace-jspui" />
@@ -140,6 +140,8 @@
     <orderEntry type="library" name="Maven: org.springframework:spring-web:3.1.1.RELEASE" level="project" />
     <orderEntry type="library" name="Maven: aopalliance:aopalliance:1.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.2.1" level="project" />
+    <orderEntry type="library" name="Maven: net.tanesha.recaptcha4j:recaptcha4j:0.0.7" level="project" />
+    <orderEntry type="library" name="Maven: org.dspace:oaicat:1.5.48" level="project" />
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: org.mcavallo:opencloud:0.3" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.servlet:servlet-api:2.5" level="project" />

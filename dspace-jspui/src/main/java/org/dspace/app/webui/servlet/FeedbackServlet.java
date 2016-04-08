@@ -27,7 +27,8 @@ import org.dspace.core.Email;
 import org.dspace.core.I18nUtil;
 import org.dspace.core.LogManager;
 import org.dspace.eperson.EPerson;
-
+import net.tanesha.recaptcha.ReCaptchaImpl;
+import net.tanesha.recaptcha.ReCaptchaResponse;
 /**
  * Servlet for handling user feedback
  *
@@ -47,6 +48,7 @@ public class FeedbackServlet extends DSpaceServlet
         // Obtain information from request
         // The page where the user came from
         String fromPage = request.getHeader("Referer");
+
 
         // Prevent spammers and splogbots from poisoning the feedback page
         String host = ConfigurationManager.getProperty("dspace.hostname");
@@ -94,12 +96,24 @@ public class FeedbackServlet extends DSpaceServlet
             EmailValidator ev = EmailValidator.getInstance();
             String feedback = request.getParameter("feedback");
 
+            String remoteAddr = request.getRemoteAddr();
+            ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
+            reCaptcha.setPrivateKey(ConfigurationManager.getProperty("webui.captcha.private_key"));
+
+            String challenge = request.getParameter("recaptcha_challenge_field");
+            String uresponse = request.getParameter("recaptcha_response_field");
+
+            ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
+
             // Check all data is there
             if ((formEmail == null) || formEmail.equals("")
-                    || (feedback == null) || feedback.equals("") || !ev.isValid(formEmail))
+                    || (feedback == null) || feedback.equals("") || !ev.isValid(formEmail) || !reCaptchaResponse.isValid())
             {
                 log.info(LogManager.getHeader(context, "show_feedback_form",
                         "problem=true"));
+                log.info("challenge:"+challenge+" uresp"+uresponse+"adr"+remoteAddr);
+                log.info("answer:"+reCaptchaResponse.getErrorMessage());
+                log.info("key:"+ConfigurationManager.getProperty("webui.captcha.private_key"));
                 request.setAttribute("feedback.problem", Boolean.TRUE);
                 JSPManager.showJSP(request, response, "/feedback/form.jsp");
 
@@ -122,9 +136,9 @@ public class FeedbackServlet extends DSpaceServlet
                 email.addArgument(feedback); // The feedback itself
 
                 // Replying to feedback will reply to email on form
-                email.setReplyTo(formEmail);
+                //email.setReplyTo(formEmail);
 
-                email.send();
+                //email.send();
 
                 log.info(LogManager.getHeader(context, "sent_feedback", "from="
                         + formEmail));
@@ -132,7 +146,8 @@ public class FeedbackServlet extends DSpaceServlet
                 JSPManager.showJSP(request, response,
                         "/feedback/acknowledge.jsp");
             }
-            catch (MessagingException me)
+            //catch (Messaging)Exception me)
+            catch (Exception me)
             {
                 log.warn(LogManager.getHeader(context,
                         "error_mailing_feedback", ""), me);

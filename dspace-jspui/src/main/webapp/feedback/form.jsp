@@ -19,9 +19,14 @@
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.dspace.org/dspace-tags.tld" prefix="dspace" %>
+<%@ page import="net.tanesha.recaptcha.ReCaptcha" %>
+<%@ page import="net.tanesha.recaptcha.ReCaptchaFactory" %>
+<%@ page import="org.dspace.core.ConfigurationManager" %>
 
 <%
-    boolean problem = (request.getParameter("feedback.problem") != null);
+    Boolean problem_f = (Boolean)request.getAttribute("feedback.problem");
+    boolean problem = (problem_f == null ? false : problem_f.booleanValue());
+
     String email = request.getParameter("email");
 
     if (email == null || email.equals(""))
@@ -64,7 +69,7 @@
 <%
     }
 %>
-    <form action="<%= request.getContextPath() %>/feedback" method="post">
+    <form action="feedback" method="post">
         <center>
             <table>
                 <tr>
@@ -74,6 +79,15 @@
                 <tr>
                     <td class="submitFormLabel"><label for="tfeedback"><fmt:message key="jsp.feedback.form.comment"/></label></td>
                     <td><textarea name="feedback" id="tfeedback" rows="6" cols="50"><%=StringEscapeUtils.escapeHtml(feedback)%></textarea></td>
+                </tr>
+                <tr>
+                <td td colspan="2" align="right">
+                <%
+                          ReCaptcha c = ReCaptchaFactory.newReCaptcha(ConfigurationManager.getProperty("webui.captcha.public_key"), ConfigurationManager.getProperty("webui.captcha.private_key"), false);
+                          out.print(c.createRecaptchaHtml(null, null));
+                        %>
+
+                </td>
                 </tr>
                 <tr>
                     <td colspan="2" align="center">

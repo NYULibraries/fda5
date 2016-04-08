@@ -683,6 +683,21 @@ public class HandleServlet extends DSpaceServlet
                     request.setAttribute("can_submit_button",
                             Boolean.FALSE);
                 }
+
+                // can they view this collection?
+                if (AuthorizeManager.authorizeActionBoolean(context,
+                        collection, Constants.READ))
+                {
+                    request
+                            .setAttribute("can_read",
+                                    Boolean.TRUE);
+
+                }
+                else
+                {
+                    request.setAttribute("can_read",
+                            Boolean.FALSE);
+                }
             }
 
             // Fire usage event.

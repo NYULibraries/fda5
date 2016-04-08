@@ -66,7 +66,11 @@
     boolean submit_button = (submit_b == null ? false : submit_b.booleanValue());
 
     //Added by Kate to show thumbnails for Schechener
-    Boolean show_thumbnails=(Boolean)request.getAttribute("show_thumbnails");;
+    Boolean show_thumbnails=(Boolean)request.getAttribute("show_thumbnails");
+
+    //Added by Kate to hide search box for private collection
+    Boolean  search_f   = (Boolean)request.getAttribute("can_read");
+    boolean  search_form = (search_f  == null ? false : search_f.booleanValue());
 
   // get the browse indices
     BrowseIndex[] bis = BrowseIndex.getBrowseIndices();
@@ -134,6 +138,8 @@
   <%@ include file="discovery/static-tagcloud-facet.jsp" %>
 
   <section class="search-area">
+  <% if (collection.isPublic()||search_form)
+    { %>
   <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
@@ -144,6 +150,11 @@
     </div>
     </div>
   </form>
+  <%  } else { %>
+     <div class="simplest-search" >
+          <p>You need to be login</p>
+     </div>
+  <%  } %>
   </section>
 <section class="collectionlist">
 
