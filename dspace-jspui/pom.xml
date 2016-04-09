@@ -136,9 +136,9 @@
         </dependency>
         <!-- Added by Kate for captcha -->
         <dependency>
-            <groupId>net.tanesha.recaptcha4j</groupId>
-            <artifactId>recaptcha4j</artifactId>
-            <version>0.0.7</version>
+            <groupId>org.dspace</groupId>
+            <artifactId>oaicat</artifactId>
+            <version>1.5.48</version>
         </dependency>
         <dependency>
             <groupId>commons-fileupload</groupId>
