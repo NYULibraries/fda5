@@ -152,7 +152,7 @@
   </form>
   <%  } else { %>
      <div class="simplest-search" >
-          <p>You need to be login</p>
+          <p> <fmt:message  key="jsp.collection-home.private.warning"/></p>
      </div>
   <%  } %>
   </section>

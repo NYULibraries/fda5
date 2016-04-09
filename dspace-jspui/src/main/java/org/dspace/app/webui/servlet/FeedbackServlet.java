@@ -27,8 +27,7 @@ import org.dspace.core.Email;
 import org.dspace.core.I18nUtil;
 import org.dspace.core.LogManager;
 import org.dspace.eperson.EPerson;
-import net.tanesha.recaptcha.ReCaptchaImpl;
-import net.tanesha.recaptcha.ReCaptchaResponse;
+
 /**
  * Servlet for handling user feedback
  *
@@ -68,6 +67,7 @@ public class FeedbackServlet extends DSpaceServlet
         }
 
         if (fromPage == null || fromPage.indexOf(basicHost) == -1)
+
         {
             throw new AuthorizeException();
         }
@@ -96,24 +96,13 @@ public class FeedbackServlet extends DSpaceServlet
             EmailValidator ev = EmailValidator.getInstance();
             String feedback = request.getParameter("feedback");
 
-            String remoteAddr = request.getRemoteAddr();
-            ReCaptchaImpl reCaptcha = new ReCaptchaImpl();
-            reCaptcha.setPrivateKey(ConfigurationManager.getProperty("webui.captcha.private_key"));
-
-            String challenge = request.getParameter("recaptcha_challenge_field");
-            String uresponse = request.getParameter("recaptcha_response_field");
-
-            ReCaptchaResponse reCaptchaResponse = reCaptcha.checkAnswer(remoteAddr, challenge, uresponse);
 
             // Check all data is there
             if ((formEmail == null) || formEmail.equals("")
-                    || (feedback == null) || feedback.equals("") || !ev.isValid(formEmail) || !reCaptchaResponse.isValid())
+                    || (feedback == null) || feedback.equals("") || !ev.isValid(formEmail))
             {
                 log.info(LogManager.getHeader(context, "show_feedback_form",
                         "problem=true"));
-                log.info("challenge:"+challenge+" uresp"+uresponse+"adr"+remoteAddr);
-                log.info("answer:"+reCaptchaResponse.getErrorMessage());
-                log.info("key:"+ConfigurationManager.getProperty("webui.captcha.private_key"));
                 request.setAttribute("feedback.problem", Boolean.TRUE);
                 JSPManager.showJSP(request, response, "/feedback/form.jsp");
 

@@ -136,7 +136,7 @@
  <h2><%= name %></h2></header>
 
 <section class="search-area">
-  <form method="get" action="/jspui/handle/<%= community.getHandle() %>" class="simplest-search">
+  <form method="get" action="/jspui/handle/<%= community.getHandle() %>/simple-search " class="simplest-search">
 	<div class="form-group-flex">
 	  <div class="input-hold"><input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
 	  <div class="button-hold">   <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>

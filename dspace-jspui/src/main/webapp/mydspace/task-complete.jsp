@@ -30,6 +30,6 @@
     <p><fmt:message key="jsp.mydspace.task-complete.text1"/></p>
  
     <%-- <p align="center"><a href="<%= request.getContextPath() %>/mydspace">Return to My DSpace </a></p> --%>
-    <%-<p align="center"><a href="<%= request.getContextPath() %>/mydspace"><fmt:message key="jsp.mydspace.general.returnto-mydspace"/> </a></p>--%>
+    <%-- <p align="center"><a href="<%= request.getContextPath() %>/mydspace"><fmt:message key="jsp.mydspace.general.returnto-mydspace"/> </a></p>--%>
  
 </dspace:layout>

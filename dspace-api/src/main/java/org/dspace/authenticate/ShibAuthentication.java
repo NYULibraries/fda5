@@ -217,6 +217,7 @@ public class ShibAuthentication implements AuthenticationMethod
 				eperson = registerNewEPerson(context, request);
 			    Group nyu_only=Group.findByName(context,nyu_group_name);
 			    nyu_only.addMember(eperson);
+			    //context.commit();
 
 			if (eperson == null) 
 				return AuthenticationMethod.NO_SUCH_USER;

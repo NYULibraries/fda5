@@ -84,10 +84,10 @@ public class BrowseListTag extends TagSupport
     private boolean disableCrossLinks = false;
 
     /** The default fields to be displayed when listing items */
-    private static final String DEFAULT_LIST_FIELDS;
+    //private static final String DEFAULT_LIST_FIELDS;
 
     /** The default widths for the columns */
-    private static final String DEFAULT_LIST_WIDTHS;
+    //private static final String DEFAULT_LIST_WIDTHS;
 
     /** The default field which is bound to the browse by date */
     private static String dateField = "dc.date.issued";
@@ -105,18 +105,7 @@ public class BrowseListTag extends TagSupport
 
     static
     {
-        //getThumbSettings();
-
-        if (showThumbs)
-        {
-            DEFAULT_LIST_FIELDS = "thumbnail, dc.date.issued(date), dc.title, dc.contributor.*";
-            DEFAULT_LIST_WIDTHS = "*, 130, 60%, 40%";
-        }
-        else
-        {
-            DEFAULT_LIST_FIELDS = "dc.date.issued(date), dc.title, dc.contributor.*";
-            DEFAULT_LIST_WIDTHS = "130, 60%, 40%";
-        }
+        getThumbSettings();
 
         // get the date and title fields
         String dateLine = ConfigurationManager.getProperty("webui.browse.index.date");
@@ -184,6 +173,7 @@ public class BrowseListTag extends TagSupport
                     browseWidthLine = ConfigurationManager.getProperty("webui.itemlist.browse." + bix.getName() + ".sort." + so.getName() + ".widths");
                 }
 
+                log.error("we have sort options index"+browseWidthLine+so.getName());
                 // We haven't got a sort option defined, so get one for the index
                 // - it may be required later
                 if (so == null)
@@ -199,6 +189,8 @@ public class BrowseListTag extends TagSupport
                 browseWidthLine = ConfigurationManager.getProperty("webui.itemlist.sort." + so.getName() + ".widths");
             }
 
+            log.error("we have browse options index"+browseWidthLine+so.getName());
+
             // If no config found, attempt to get one for this browse index
             if (bix != null && browseListLine == null)
             {
@@ -212,6 +204,7 @@ public class BrowseListTag extends TagSupport
                 browseListLine  = ConfigurationManager.getProperty("webui.itemlist." + so.getName() + ".columns");
                 browseWidthLine = ConfigurationManager.getProperty("webui.itemlist." + so.getName() + ".widths");
             }
+            log.error("we have general options for sort index"+browseWidthLine+so.getName());
 
             // If no config found, attempt to get a general one, using the index name
             if (bix != null && browseListLine == null)
@@ -219,12 +212,14 @@ public class BrowseListTag extends TagSupport
                 browseListLine  = ConfigurationManager.getProperty("webui.itemlist." + bix.getName() + ".columns");
                 browseWidthLine = ConfigurationManager.getProperty("webui.itemlist." + bix.getName() + ".widths");
             }
+            log.error("we have general options for broswe index"+browseWidthLine+bix.getName());
         }
 
         if (browseListLine == null)
         {
             browseListLine  = ConfigurationManager.getProperty("webui.itemlist.columns");
             browseWidthLine = ConfigurationManager.getProperty("webui.itemlist.widths");
+            log.error("we have general options "+browseWidthLine);
         }
 
         // Have we read a field configration from dspace.cfg?
@@ -277,12 +272,22 @@ public class BrowseListTag extends TagSupport
                 // Use the newly built configuration file
                 browseListLine  = newBLLine.toString();
                 browseWidthLine = newBWLine.toString();
+                log.error("we are almost done"+browseWidthLine);
             }
         }
         else
         {
-            browseListLine  = DEFAULT_LIST_FIELDS;
-            browseWidthLine = DEFAULT_LIST_WIDTHS;
+            if (getShowThumbsCollection())
+            {
+                browseListLine = "thumbnail, dc.date.issued(date), dc.title, dc.contributor.*";
+                browseWidthLine = "80, 50, 60%, 40%";
+            }
+            else
+            {
+                browseListLine = "dc.date.issued(date), dc.title, dc.contributor.*";
+                browseWidthLine = "130, 60%, 40%";
+            }
+            log.error("we shouldn't be here"+browseWidthLine);
         }
 
         // Arrays used to hold the information we will require when outputting each row
@@ -752,14 +757,11 @@ public class BrowseListTag extends TagSupport
     }
 
     /* get the required thumbnail config items */
-    private  void getThumbSettings()
+    private static void getThumbSettings()
     {
                 showThumbs = ConfigurationManager
                     .getBooleanProperty("webui.browse.thumbnail.show");
 
-
-        if (showThumbs||getShowThumbsCollection())
-        {
 
             thumbItemListMaxHeight = ConfigurationManager
                     .getIntProperty("webui.browse.thumbnail.maxheight");
@@ -778,7 +780,7 @@ public class BrowseListTag extends TagSupport
                 thumbItemListMaxWidth = ConfigurationManager
                         .getIntProperty("thumbnail.maxwidth");
             }
-        }
+
 
         String linkBehaviour = ConfigurationManager
                 .getProperty("webui.browse.thumbnail.linkbehaviour");
