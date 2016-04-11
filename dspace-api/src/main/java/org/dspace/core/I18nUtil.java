@@ -60,6 +60,7 @@ public class I18nUtil
         if (!StringUtils.isEmpty(ConfigurationManager.getProperty("default.locale")))
         {
             defaultLocale = makeLocale(ConfigurationManager.getProperty("default.locale"));
+            log.error("loc"+defaultLocale);
         }
 
         // Finally, get the Locale of the JVM
@@ -93,7 +94,7 @@ public class I18nUtil
 
     /**
      * Get the Locale for a specified EPerson. If the language is missing,
-     * return the default Locale for the repository.
+     * return the default Loc;ale for the repository.
      *
      * @param ep
      */

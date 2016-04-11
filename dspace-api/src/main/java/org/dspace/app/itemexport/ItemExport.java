@@ -1376,7 +1376,7 @@ public class ItemExport
     {
         try
         {
-            Locale supportedLocale = I18nUtil.getEPersonLocale(eperson);
+            Locale supportedLocale = I18nUtil.getDefaultLocale();
             Email email = Email.getEmail(I18nUtil.getEmailFilename(supportedLocale, "export_success"));
             email.addRecipient(eperson.getEmail());
             email.addArgument(ConfigurationManager.getProperty("dspace.url") + "/exportdownload/" + fileName);

@@ -731,6 +731,7 @@ public class ShibAuthentication implements AuthenticationMethod
 		// Commit the new eperson
 		AuthenticationManager.initEPerson(context, request, eperson);
 		eperson.update();
+		//eperson.setLanguage("en");
 		context.commit();
 
 		// Turn authorizations back on.

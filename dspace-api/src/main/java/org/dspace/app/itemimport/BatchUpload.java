@@ -75,6 +75,11 @@ public class BatchUpload {
 		}
 		
 		this.successful = this.totalItems == this.itemsImported;
+
+		//added by Kate to accomodate case of bad import file where number of total items is 0
+		if(this.totalItems==0) {
+			this.successful= false;
+		}
 		
 		//Parse possible error message
 		

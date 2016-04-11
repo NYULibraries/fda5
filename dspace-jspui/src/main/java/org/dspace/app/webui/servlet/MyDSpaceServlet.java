@@ -716,30 +716,35 @@ public class MyDSpaceServlet extends DSpaceServlet
 				showMainPage(context, request, response);
 				return;
 			}
-    		
+
     		File file = new File(mapFilePath);
-    		int length   = 0;
-    		ServletOutputStream outStream = response.getOutputStream();
-    		String mimetype ="application/octet-stream";
+            if(file.exists()) {
+    		  int length   = 0;
+    		  ServletOutputStream outStream = response.getOutputStream();
+    		  String mimetype ="application/octet-stream";
     		
-    		response.setContentType(mimetype);
-    		response.setContentLength((int)file.length());
-    		String fileName = file.getName();
+    		  response.setContentType(mimetype);
+    		  response.setContentLength((int)file.length());
+    		  String fileName = file.getName();
 
-    		// sets HTTP header
-    		response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
+    		  // sets HTTP header
+    		  response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
 
-    		byte[] byteBuffer = new byte[1024];
-    		DataInputStream in = new DataInputStream(new FileInputStream(file));
+    		  byte[] byteBuffer = new byte[1024];
 
-    		// reads the file's bytes and writes them to the response stream
-    		while ((in != null) && ((length = in.read(byteBuffer)) != -1))
-    		{
-    			outStream.write(byteBuffer,0,length);
-    		}
+                DataInputStream in = new DataInputStream(new FileInputStream(file));
 
-    		in.close();
-    		outStream.close();
+                // reads the file's bytes and writes them to the response stream
+                while ((in != null) && ((length = in.read(byteBuffer)) != -1)) {
+                    outStream.write(byteBuffer, 0, length);
+                }
+
+                in.close();
+                outStream.close();
+            } else {
+                showMainPage(context, request, response);
+                return;
+            }
     	}
     	else if (buttonPressed.equals("submit_delete")){
     		ItemImport itemImport = new ItemImport();
