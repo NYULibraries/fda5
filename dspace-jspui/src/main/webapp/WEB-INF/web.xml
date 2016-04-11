@@ -506,13 +506,31 @@
     <servlet-name>request-item</servlet-name>
     <servlet-class>org.dspace.app.webui.servlet.RequestItemServlet</servlet-class>
   </servlet>
-    	
+
+    <servlet>
+        <servlet-name>about</servlet-name>
+        <jsp-file>/about.jsp</jsp-file>
+    </servlet>
+    <servlet>
+        <servlet-name>contact</servlet-name>
+        <jsp-file>/contact.jsp</jsp-file>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>contact</servlet-name>
+        <url-pattern>/contact</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>about</servlet-name>
+        <url-pattern>/about</url-pattern>
+    </servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>shibboleth-login</servlet-name>
     <url-pattern>/shibboleth-login</url-pattern>
   </servlet-mapping>
- 
-  <!-- Servlet Mappings -->
+
 
   <servlet-mapping>
     <servlet-name>authorize</servlet-name>

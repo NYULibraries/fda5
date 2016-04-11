@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sun.jersey.api.json.JSONWithPadding;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -1045,6 +1047,74 @@ public class ItemsResource extends Resource
         }
 
         return items.toArray(new Item[0]);
+    }
+
+    @GET
+    @Path("/find-by-field/{field}")
+    @Produces({"application/javascript"})
+    public JSONWithPadding getFindByMetadataField(@PathParam("field") String field, @QueryParam("expand") String expand, @QueryParam("callback") String callback, @QueryParam("value") String value, @QueryParam("userIP") String user_ip, @QueryParam("userAgent") String user_agent, @QueryParam("xforwarderfor") String xforwarderfor, @javax.ws.rs.core.Context HttpHeaders headers, @javax.ws.rs.core.Context HttpServletRequest request)
+            throws WebApplicationException
+    {
+        log.info("Reading items for field=" + field);
+        org.dspace.core.Context context = null;
+        List items = null;
+        try
+        {
+            context = createContext(getUser(headers));
+            ItemIterator dspaceItems = null;
+
+            String delims = "[.]";
+            String[] metadata = field.split(delims, -1);
+
+            if (metadata.length == 3) {
+                dspaceItems = org.dspace.content.Item.findByMetadataField(context, metadata[0], metadata[1], metadata[2], value);
+            }
+            else if (metadata.length == 2) {
+                dspaceItems = org.dspace.content.Item.findByMetadataField(context, metadata[0], metadata[1], null, value);
+            }
+            else {
+                context.abort();
+                log.error("Finding failed, bad metadata key.");
+                throw new WebApplicationException(Response.Status.NOT_FOUND);
+            }
+
+            items = new ArrayList();
+
+            for (int i = 0; dspaceItems.hasNext(); i++)
+            {
+                org.dspace.content.Item dspaceItem = dspaceItems.next();
+                if (dspaceItem.isDiscoverable())
+                {
+                    items.add(new org.dspace.rest.common.Item(dspaceItem, expand, context));
+                    writeStats(dspaceItem, UsageEvent.Action.VIEW, user_ip, user_agent, xforwarderfor, headers, request, context);
+                }
+            }
+
+            context.complete();
+        }
+        catch (SQLException e)
+        {
+            processException("Something went wrong while reading items from database. Message: " + e, context);
+        }
+        catch (ContextException e)
+        {
+            processException("Something went wrong while reading items, ContextException. Message: " + e.getMessage(), context);
+        }
+        catch (AuthorizeException e)
+        {
+            processException("Something went wrong with authorization  Message: " + e.getMessage(), context);
+        }
+        catch (IOException e)
+        {
+            processException("Something went wrong with reading items Message: " + e.getMessage(), context);
+        }
+        finally
+        {
+            processFinally(context);
+        }
+
+        log.trace("Items were successfully read.");
+        return new JSONWithPadding(items.toArray(new org.dspace.rest.common.Item[0]), callback);
     }
 
     /**
