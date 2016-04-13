@@ -63,6 +63,9 @@ public class BrowseListTag extends TagSupport
     /** Column to emphasise, identified by metadata field */
     private String emphColumn;
 
+    /** Column to emphasise, identified by metadata field */
+    private boolean showThumbsCollection;
+
     /** Config value of thumbnail view toggle */
     private static boolean showThumbs;
 
@@ -81,10 +84,10 @@ public class BrowseListTag extends TagSupport
     private boolean disableCrossLinks = false;
 
     /** The default fields to be displayed when listing items */
-    private static final String DEFAULT_LIST_FIELDS;
+    //private static final String DEFAULT_LIST_FIELDS;
 
     /** The default widths for the columns */
-    private static final String DEFAULT_LIST_WIDTHS;
+    //private static final String DEFAULT_LIST_WIDTHS;
 
     /** The default field which is bound to the browse by date */
     private static String dateField = "dc.date.issued";
@@ -103,17 +106,6 @@ public class BrowseListTag extends TagSupport
     static
     {
         getThumbSettings();
-
-        if (showThumbs)
-        {
-            DEFAULT_LIST_FIELDS = "thumbnail, dc.date.issued(date), dc.title, dc.contributor.*";
-            DEFAULT_LIST_WIDTHS = "*, 130, 60%, 40%";
-        }
-        else
-        {
-            DEFAULT_LIST_FIELDS = "dc.date.issued(date), dc.title, dc.contributor.*";
-            DEFAULT_LIST_WIDTHS = "130, 60%, 40%";
-        }
 
         // get the date and title fields
         String dateLine = ConfigurationManager.getProperty("webui.browse.index.date");
@@ -157,6 +149,9 @@ public class BrowseListTag extends TagSupport
         }
         */
 
+
+        log.error(""+getShowThumbsCollection());
+
         // get the elements to display
         String browseListLine  = null;
         String browseWidthLine = null;
@@ -178,6 +173,7 @@ public class BrowseListTag extends TagSupport
                     browseWidthLine = ConfigurationManager.getProperty("webui.itemlist.browse." + bix.getName() + ".sort." + so.getName() + ".widths");
                 }
 
+                log.error("we have sort options index"+browseWidthLine+so.getName());
                 // We haven't got a sort option defined, so get one for the index
                 // - it may be required later
                 if (so == null)
@@ -193,6 +189,8 @@ public class BrowseListTag extends TagSupport
                 browseWidthLine = ConfigurationManager.getProperty("webui.itemlist.sort." + so.getName() + ".widths");
             }
 
+            log.error("we have browse options index"+browseWidthLine+so.getName());
+
             // If no config found, attempt to get one for this browse index
             if (bix != null && browseListLine == null)
             {
@@ -206,6 +204,7 @@ public class BrowseListTag extends TagSupport
                 browseListLine  = ConfigurationManager.getProperty("webui.itemlist." + so.getName() + ".columns");
                 browseWidthLine = ConfigurationManager.getProperty("webui.itemlist." + so.getName() + ".widths");
             }
+            log.error("we have general options for sort index"+browseWidthLine+so.getName());
 
             // If no config found, attempt to get a general one, using the index name
             if (bix != null && browseListLine == null)
@@ -213,19 +212,22 @@ public class BrowseListTag extends TagSupport
                 browseListLine  = ConfigurationManager.getProperty("webui.itemlist." + bix.getName() + ".columns");
                 browseWidthLine = ConfigurationManager.getProperty("webui.itemlist." + bix.getName() + ".widths");
             }
+            log.error("we have general options for broswe index"+browseWidthLine+bix.getName());
         }
 
         if (browseListLine == null)
         {
             browseListLine  = ConfigurationManager.getProperty("webui.itemlist.columns");
             browseWidthLine = ConfigurationManager.getProperty("webui.itemlist.widths");
+            log.error("we have general options "+browseWidthLine);
         }
 
         // Have we read a field configration from dspace.cfg?
         if (browseListLine != null)
         {
+            log.error("show"+getShowThumbsCollection());
             // If thumbnails are disabled, strip out any thumbnail column from the configuration
-            if (!showThumbs && browseListLine.contains("thumbnail"))
+            if (!showThumbs&&!getShowThumbsCollection() && browseListLine.contains("thumbnail"))
             {
                 // Ensure we haven't got any nulls
                 browseListLine  = browseListLine  == null ? "" : browseListLine;
@@ -270,12 +272,22 @@ public class BrowseListTag extends TagSupport
                 // Use the newly built configuration file
                 browseListLine  = newBLLine.toString();
                 browseWidthLine = newBWLine.toString();
+                log.error("we are almost done"+browseWidthLine);
             }
         }
         else
         {
-            browseListLine  = DEFAULT_LIST_FIELDS;
-            browseWidthLine = DEFAULT_LIST_WIDTHS;
+            if (getShowThumbsCollection())
+            {
+                browseListLine = "thumbnail, dc.date.issued(date), dc.title, dc.contributor.*";
+                browseWidthLine = "80, 50, 60%, 40%";
+            }
+            else
+            {
+                browseListLine = "dc.date.issued(date), dc.title, dc.contributor.*";
+                browseWidthLine = "130, 60%, 40%";
+            }
+            log.error("we shouldn't be here"+browseWidthLine);
         }
 
         // Arrays used to hold the information we will require when outputting each row
@@ -714,21 +726,43 @@ public class BrowseListTag extends TagSupport
         emphColumn = emphColumnIn;
     }
 
+    /**
+     * Set the showThumb parameter -addec by Kate to be able to vary
+     * the settings per collections
+     *
+     * @return weather we will show thumnails or not
+     */
+    public boolean getShowThumbsCollection()
+    {
+        return showThumbsCollection;
+    }
+
+    /**
+     * Set the column to emphasise - "title", "date" or null
+     *
+     * @param showThumbsCollectionIn true if we want to show thumbnails
+     *
+     */
+    public void setShowThumbsCollection(boolean showThumbsCollectionIn)
+    {
+        this.showThumbsCollection = showThumbsCollectionIn;
+    }
+
     public void release()
     {
         highlightRow = -1;
         emphColumn = null;
         items = null;
+        showThumbsCollection=false;
     }
 
     /* get the required thumbnail config items */
     private static void getThumbSettings()
     {
-        showThumbs = ConfigurationManager
-                .getBooleanProperty("webui.browse.thumbnail.show");
+                showThumbs = ConfigurationManager
+                    .getBooleanProperty("webui.browse.thumbnail.show");
 
-        if (showThumbs)
-        {
+
             thumbItemListMaxHeight = ConfigurationManager
                     .getIntProperty("webui.browse.thumbnail.maxheight");
 
@@ -746,7 +780,7 @@ public class BrowseListTag extends TagSupport
                 thumbItemListMaxWidth = ConfigurationManager
                         .getIntProperty("thumbnail.maxwidth");
             }
-        }
+
 
         String linkBehaviour = ConfigurationManager
                 .getProperty("webui.browse.thumbnail.linkbehaviour");
@@ -773,6 +807,8 @@ public class BrowseListTag extends TagSupport
         {
             Context c = UIUtil.obtainContext(hrq);
 
+            try
+            {
             InputStream is = BitstreamStorageManager.retrieve(c, bitstream
                     .getID());
 
@@ -780,6 +816,11 @@ public class BrowseListTag extends TagSupport
             // 	read in bitstream's image
             buf = ImageIO.read(is);
             is.close();
+            }
+            //if for some reasons assetstore is not available still show collection page- added by Kate
+            catch (java.io.FileNotFoundException iof) {
+                return "width=\"0\" height=\"0\"";
+            }
         }
         catch (SQLException sqle)
         {

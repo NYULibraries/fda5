@@ -17,6 +17,7 @@ import com.google.gson.*;
 import java.net.URLConnection;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.*;
@@ -99,17 +100,23 @@ public class MostDownloadedManager {
 
             facetFields = dr.getFacetResult("owningItem");
 
+            List<Item> itemsList = new ArrayList<Item>();
+
             if (facetFields!=null&&facetFields.size()>0) {
-                int i=0;
-                Item[] items = new Item[facetFields.size()];
                 for (DiscoverResult.FacetResult facetField : facetFields) {
                     int itemID=new Integer(facetField.getSortValue());
                     Item item=Item.find(context, itemID);
-                    if(item!=null) items[i]=item;
-                    i++;
+                    if(item!=null)  {
+                        itemsList.add(item);
+                    }
                 }
-
-                return new MostDownloaded(items);
+                if(itemsList!=null) {
+                    Item[] items=new Item[itemsList.size()];
+                    items =  itemsList.toArray(items);
+                    return new MostDownloaded(items);
+                } else {
+                    return null;
+                }
             }
             else
             {

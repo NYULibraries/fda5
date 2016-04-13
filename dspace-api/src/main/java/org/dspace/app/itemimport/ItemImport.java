@@ -2431,11 +2431,12 @@ public class ItemImport
 
 		uploadDir = ItemImport.getImportUploadableDirectory(c.getCurrentUser().getID()) + File.separator + uploadId;
 		mapFilePath = uploadDir + File.separator + "mapfile";
-	
-		this.deleteItems(c, mapFilePath);
-		// complete all transactions
-        c.commit();
-        
+        if(new File(mapFilePath).exists()) {
+
+            this.deleteItems(c, mapFilePath);
+            // complete all transactions
+            c.commit();
+        }
 		FileDeleteStrategy.FORCE.delete(new File(uploadDir));
     }
 

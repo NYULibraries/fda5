@@ -65,6 +65,13 @@
     Boolean submit_b      = (Boolean)request.getAttribute("can_submit_button");
     boolean submit_button = (submit_b == null ? false : submit_b.booleanValue());
 
+    //Added by Kate to show thumbnails for Schechener
+    Boolean show_thumbnails=(Boolean)request.getAttribute("show_thumbnails");
+
+    //Added by Kate to hide search box for private collection
+    Boolean  search_f   = (Boolean)request.getAttribute("can_read");
+    boolean  search_form = (search_f  == null ? false : search_f.booleanValue());
+
   // get the browse indices
     BrowseIndex[] bis = BrowseIndex.getBrowseIndices();
 
@@ -131,7 +138,9 @@
   <%@ include file="discovery/static-tagcloud-facet.jsp" %>
 
   <section class="search-area">
-  <form method="get" action="/jspui/simple-search" class="simplest-search">
+  <% if (collection.isPublic()||show_thumbnails)
+    { %>
+  <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
       <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
@@ -141,6 +150,11 @@
     </div>
     </div>
   </form>
+  <%  } else { %>
+     <div class="simplest-search" >
+          <p> <fmt:message  key="jsp.collection-home.private.warning"/></p>
+     </div>
+  <%  } %>
   </section>
 <section class="collectionlist">
 
@@ -242,7 +256,7 @@
 
 <div class ="discovery-result-results">
 <%-- output the results using the browselist tag --%>
-   <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" />
+   <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" showThumbsCollection="<%=show_thumbnails %>" />
   <%-- give us the bottom repaort on what we are looking at --%>
 </div>
 

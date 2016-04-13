@@ -19,9 +19,12 @@
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://www.dspace.org/dspace-tags.tld" prefix="dspace" %>
+<%@ page import="org.dspace.core.ConfigurationManager" %>
 
 <%
-    boolean problem = (request.getParameter("feedback.problem") != null);
+    Boolean problem_f = (Boolean)request.getAttribute("feedback.problem");
+    boolean problem = (problem_f == null ? false : problem_f.booleanValue());
+
     String email = request.getParameter("email");
 
     if (email == null || email.equals(""))
@@ -64,7 +67,7 @@
 <%
     }
 %>
-    <form action="<%= request.getContextPath() %>/feedback" method="post">
+    <form action="feedback" method="post">
         <center>
             <table>
                 <tr>

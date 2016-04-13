@@ -31,6 +31,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.dspace.authorize.AuthorizeException;
 
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.MetadataField;
 import org.dspace.content.MetadataSchema;
 import org.dspace.content.NonUniqueMetadataException;
@@ -204,6 +205,7 @@ public class ShibAuthentication implements AuthenticationMethod
 
 		// Should we auto register new users.
 		boolean autoRegister = ConfigurationManager.getBooleanProperty("authentication-shibboleth","autoregister", true);
+		String nyu_group_name = ConfigurationManager.getProperty("authentication-shibboleth","role.member");
 
 		// Four steps to authenticate a user
 		try {
@@ -213,6 +215,10 @@ public class ShibAuthentication implements AuthenticationMethod
 			// Step 2: Register New User, if necessary
 			if (eperson == null && autoRegister)
 				eperson = registerNewEPerson(context, request);
+			    Group nyu_only=Group.findByName(context,nyu_group_name);
+			    nyu_only.addMember(eperson);
+			    nyu_only.update();
+			    context.commit();
 
 			if (eperson == null) 
 				return AuthenticationMethod.NO_SUCH_USER;
@@ -505,7 +511,10 @@ public class ShibAuthentication implements AuthenticationMethod
 			//Modified by Kate to accomodate apache/tomcat/ProxyPass
 			if (!(port == 443 || port == 80 || port==8080))
 				returnURL += ":" + port;
-			returnURL += "/" + contextPath + "/shibboleth-login";
+			//returnURL += "/" + contextPath + "/shibboleth-login";
+			returnURL += contextPath + "/shibboleth-login";
+
+
 
 			try {
 				shibURL += "?target="+URLEncoder.encode(returnURL, "UTF-8");
@@ -677,7 +686,7 @@ public class ShibAuthentication implements AuthenticationMethod
 		String lnameHeader = ConfigurationManager.getProperty("authentication-shibboleth","lastname-header");
 
 		// Header values
-		String netid = findSingleAttribute(request,netidHeader);
+		String netid = findSingleAttribute(request,netidHeader).split("@")[0];
 		String email = findSingleAttribute(request,emailHeader);
 		String fname = findSingleAttribute(request,fnameHeader);
 		String lname = findSingleAttribute(request,lnameHeader);
@@ -722,6 +731,7 @@ public class ShibAuthentication implements AuthenticationMethod
 		// Commit the new eperson
 		AuthenticationManager.initEPerson(context, request, eperson);
 		eperson.update();
+		//eperson.setLanguage("en");
 		context.commit();
 
 		// Turn authorizations back on.
@@ -765,7 +775,7 @@ public class ShibAuthentication implements AuthenticationMethod
 		String fnameHeader = ConfigurationManager.getProperty("authentication-shibboleth","firstname-header");
 		String lnameHeader = ConfigurationManager.getProperty("authentication-shibboleth","lastname-header");
 
-		String netid = findSingleAttribute(request,netidHeader);
+		String netid = findSingleAttribute(request,netidHeader).split("@")[0];
 		String email = findSingleAttribute(request,emailHeader);
 		String fname = findSingleAttribute(request,fnameHeader);
 		String lname = findSingleAttribute(request,lnameHeader);

@@ -71,7 +71,7 @@
 
 		<div class="panel panel-primary"><div class="panel-heading"><fmt:message key="jsp.submit.access.access_setting.heading"/></div>
 		<div class="panel-body">
-        <h3 class="access-setting"><fmt:message key="jsp.submit.access.private_setting.heading"/></h3>
+        <h5 class="access-setting"><fmt:message key="jsp.submit.access.private_setting.heading"/></h5>
 
 		<div class="row">
             	<label class="col-md-2" for="private_option"><fmt:message key="jsp.submit.access.private_setting.label"/></label>

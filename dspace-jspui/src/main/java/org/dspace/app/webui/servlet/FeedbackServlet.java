@@ -48,6 +48,7 @@ public class FeedbackServlet extends DSpaceServlet
         // The page where the user came from
         String fromPage = request.getHeader("Referer");
 
+
         // Prevent spammers and splogbots from poisoning the feedback page
         String host = ConfigurationManager.getProperty("dspace.hostname");
 
@@ -66,6 +67,7 @@ public class FeedbackServlet extends DSpaceServlet
         }
 
         if (fromPage == null || fromPage.indexOf(basicHost) == -1)
+
         {
             throw new AuthorizeException();
         }
@@ -93,6 +95,7 @@ public class FeedbackServlet extends DSpaceServlet
         {
             EmailValidator ev = EmailValidator.getInstance();
             String feedback = request.getParameter("feedback");
+
 
             // Check all data is there
             if ((formEmail == null) || formEmail.equals("")
@@ -122,9 +125,9 @@ public class FeedbackServlet extends DSpaceServlet
                 email.addArgument(feedback); // The feedback itself
 
                 // Replying to feedback will reply to email on form
-                email.setReplyTo(formEmail);
+                //email.setReplyTo(formEmail);
 
-                email.send();
+                //email.send();
 
                 log.info(LogManager.getHeader(context, "sent_feedback", "from="
                         + formEmail));
@@ -132,7 +135,8 @@ public class FeedbackServlet extends DSpaceServlet
                 JSPManager.showJSP(request, response,
                         "/feedback/acknowledge.jsp");
             }
-            catch (MessagingException me)
+            //catch (Messaging)Exception me)
+            catch (Exception me)
             {
                 log.warn(LogManager.getHeader(context,
                         "error_mailing_feedback", ""), me);

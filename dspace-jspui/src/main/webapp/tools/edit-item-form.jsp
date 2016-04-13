@@ -38,6 +38,7 @@
 <%@ page import="org.dspace.app.webui.servlet.admin.EditItemServlet" %>
 <%@ page import="org.dspace.content.Bitstream" %>
 <%@ page import="org.dspace.content.BitstreamFormat" %>
+<%@ page import="org.dspace.content.Bitstream.BitstreamComparator" %>
 <%@ page import="org.dspace.content.Bundle" %>
 <%@ page import="org.dspace.content.Collection" %>
 <%@ page import="org.dspace.content.DCDate" %>
@@ -52,6 +53,7 @@
 <%@ page import="org.dspace.content.authority.Choices" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="org.dspace.core.I18nUtil" %>
@@ -103,7 +105,7 @@
     Boolean publicize = (Boolean)request.getAttribute("publicize_button");
     boolean bPublicize = (publicize == null ? false : publicize.booleanValue());
 
-    Boolean reOrderBitstreams = (Boolean)request.getAttribute("reorder_bitstreams_button");
+    Boolean reOrderBitstreams = false; //(Boolean)request.getAttribute("reorder_bitstreams_button");
     boolean breOrderBitstreams = (reOrderBitstreams != null && reOrderBitstreams);
 %>
 
@@ -1544,7 +1546,7 @@
         DCInputSet inputSet =
                 (DCInputSet) request.getAttribute("submission.inputs");
 
-        DCInput[] inputs = inputSet.getPageRows(0, true, false );
+        DCInput[] inputs = inputSet.getPageRows(0, true, true );
 
         for (int z = 0; z < inputs.length; z++)
         {
@@ -1674,6 +1676,7 @@
     for (int i = 0; i < bundles.length; i++)
     {
         Bitstream[] bitstreams = bundles[i].getBitstreams();
+        Arrays.sort(bitstreams, new BitstreamComparator());
         for (int j = 0; j < bitstreams.length; j++)
         {
             ArrayList<Integer> bitstreamIdOrder = new ArrayList<Integer>();
