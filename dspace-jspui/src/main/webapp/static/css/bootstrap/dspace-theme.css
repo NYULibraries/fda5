@@ -927,11 +927,11 @@ header div.navbar-right {
 
 /* line 53, ../../sass/partials/_mostdownloaded.scss */
 .most-downloaded article h1 {
-  color: #8A7D6E;
   color: #7e6e5c;
   margin: 0;
-  font-size: 1rem;
+  font-size: .8rem;
   margin: 0.1rem 0;
+  font-weight: bold;
 }
 
 /* line 61, ../../sass/partials/_mostdownloaded.scss */
