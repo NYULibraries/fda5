@@ -144,6 +144,7 @@
         if (admin_button)  // admin edit button
         { %>
         <dspace:sidebar>
+         <aside class="sidebar">
             <div class="panel panel-admin-tools">
             	<div class="panel-heading"><fmt:message key="jsp.admintools"/></div>
             	<div class="panel-body">
@@ -172,6 +173,7 @@
 					<% } %>
              </div>
           </div>
+        </aside>
         </dspace:sidebar>
 <%      } %>
 
@@ -182,6 +184,7 @@
 %>
 
   <!-- Here's the item itself -->
+    <section class="fda-individual-item">
     <dspace:item-preview item="<%= item %>" />
     <dspace:item item="<%= item %>" collections="<%= collections %>" style="<%= displayStyle %>" />
 
@@ -277,7 +280,9 @@
     }
 %>
 </div>
-<br/>
+
+</section>
+<br >
     <%-- Versioning table --%>
 <%
     if (versioningEnabled && hasVersionHistory)
@@ -289,7 +294,7 @@
 	<div id="versionHistory" class="panel panel-info">
 	<div class="panel-heading"><fmt:message key="jsp.version.history.head2" /></div>
 	
-	<table class="table panel-body">
+	<table class="table panel-body fda-version-table">
 		<tr>
 			<th id="tt1" class="oddRowEvenCol"><fmt:message key="jsp.version.history.column1"/></th>
 			<th 			
