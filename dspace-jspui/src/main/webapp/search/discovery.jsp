@@ -205,10 +205,10 @@
     <%-- Controls for a repeat search --%>
 	<section class="discovery-query panel-body">
     <form action="simple-search" method="get">
-    	<div class="form-group-flex">
-    		<div class="form-flex-item">
+    	<div class="form-group-flex community-choose">
+    		<div class="form-flex-item ">
         	<label for="tlocation"><fmt:message key="jsp.search.results.searchin"/></label></div>
-         	<div class="form-flex-item">
+         	<div class="form-flex-item community-choose">
          		<select name="location" id="tlocation" class="form-control">
 <%
     if (scope == null)
@@ -233,15 +233,9 @@
     }
 %>              </select></div></div>
 
-			<div class="form-group-flex">
+			<div class="form-group-flex keyword-contain-group">
       		<div class="form-flex-item"><label for="query"><fmt:message key="jsp.search.results.searchfor"/></label></div>
-     			<div class="form-flex-item"><input type="text" size="50" id="query" class="form-control" name="query" value="<%= (query==null ? "" : StringEscapeUtils.escapeHtml(query)) %>"/></div>
-      		<div class="form-flex-item">
-      			<button id="main-query-submit" type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
-						<input type="hidden" value="<%= rpp %>" name="rpp" />
-						<input type="hidden" value="<%= sortedBy %>" name="sort_by" />
-						<input type="hidden" value="<%= order %>" name="order" />
-					</div>
+     			<div class="form-flex-item keyword-contain"><input type="text"  id="query" class="form-control" name="query" value="<%= (query==null ? "" : StringEscapeUtils.escapeHtml(query)) %>"/></div>
 	
 					<% if (StringUtils.isNotBlank(spellCheckQuery)) {%>
 						<p class="lead"><fmt:message key="jsp.search.didyoumean"><fmt:param><a id="spellCheckQuery" data-spell="<%= StringEscapeUtils.escapeHtml(spellCheckQuery) %>" href="#"><%= spellCheckQuery %></a></fmt:param></fmt:message></p>
@@ -268,7 +262,7 @@
 				<label>and </label> 
 					<%  }  %>  
 				</div>
-				<div class="form-flex-item" >	
+				<div class="form-flex-item fname" >	
 			    <select id="filter_field_<%=idx %>" name="filter_field_<%=idx %>" class="form-control">
 				<%
 					for (DiscoverySearchFilter searchFilter : availableFilters)
@@ -288,7 +282,8 @@
 					    %><option value="<%= filter[0] %>" selected="selected"><fmt:message key="<%= fkey %>"/></option><%
 					}
 				%>
-				</select>
+				</select></div>
+				<div class="form-flex-item ftype" >	
 				<select id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" class="form-control">
 				<%
 					for (String opt : options)
@@ -297,10 +292,12 @@
 					    %><option value="<%= opt %>"<%= opt.equals(filter[1])?" selected=\"selected\"":"" %>><fmt:message key="<%= fkey %>"/></option><%
 					}
 				%>
-				</select>
-				<input type="text" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[2]) %>" size="45"  class="form-control" />
-				<input class="btn btn-default" type="submit" id="submit_filter_remove_<%=idx %>" name="submit_filter_remove_<%=idx %>" value="X" />
-			</div>
+				</select></div>
+				<div class="form-flex-item fvalue" >	
+				<input type="text" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[2]) %>"  class="form-control" /></div>
+				<div class="form-flex-item fbutton" >	
+				<input class="btn btn-default" type="submit" id="submit_filter_remove_<%=idx %>" name="submit_filter_remove_<%=idx %>" value="X" /></div>
+			
 </div>
 				<%
 				idx++;
@@ -308,24 +305,32 @@
 		%>    
 	
 <% } %>
+
+  	<div class="submit-contain">
+      			<button id="main-query-submit" type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+						<input type="hidden" value="<%= rpp %>" name="rpp" />
+						<input type="hidden" value="<%= sortedBy %>" name="sort_by" />
+						<input type="hidden" value="<%= order %>" name="order" />
+		</div>
+	
+					<% if (StringUtils.isNotBlank(spellCheckQuery)) {%>
+						<p class="lead"><fmt:message key="jsp.search.didyoumean"><fmt:param><a id="spellCheckQuery" data-spell="<%= StringEscapeUtils.escapeHtml(spellCheckQuery) %>" href="#"><%= spellCheckQuery %></a></fmt:param></fmt:message></p>
+<% } %>
   
 		</form>
 
-	<!--	<a id="startnewsearch-link" class="interface-link" href="<%= request.getContextPath()+"/simple-search" %>"><fmt:message key="jsp.search.general.new-search" /></a>	-->
 
 
 		<a id="addafilter-link" class="interface-link" href="#">+ Add a filter</a>
 		</section>
 <% if (availableFilters.size() > 0) { %>
 		<div class="discovery-search-filters panel-body">
-
-
 			<form action="simple-search" method="get">
-				<div class="form-group-flex">
-			  	<div class="form-flex-item">
+				<div class="form-group-flex filter-group">
+			  	<div class="form-flex-item flabel">
             <label>Where</label>
         	</div>
-        	<div class="form-flex-item">
+        	<div class="form-flex-item fname">
 						<input type="hidden" value="<%= StringEscapeUtils.escapeHtml(searchScope) %>" name="location" />
 						<input type="hidden" value="<%= StringEscapeUtils.escapeHtml(query) %>" name="query" />
 		<% if (appliedFilterQueries.size() > 0 ) { 
@@ -341,7 +346,7 @@
 					idx++;
 				}
 		} %>
-		<select id="filtername" name="filtername" class="form-control">
+		<select id="filtername" name="filtername" class="form-control fname">
 		<%
 			for (DiscoverySearchFilter searchFilter : availableFilters)
 			{
@@ -351,8 +356,8 @@
 		%>
 		</select> 
 		</div>
-    <div class="form-flex-item">
-			<select id="filtertype" name="filtertype" class="form-control">
+    <div class="form-flex-item  ftype">
+			<select id="filtertype" name="filtertype" class="form-control ftype">
 		<%
 			for (String opt : options)
 			{
@@ -362,11 +367,12 @@
 		%>
 		</select>
 		</div>
-    <div class="form-flex-item">
+    <div class="form-flex-item fvalue">
 		<input type="text" id="filterquery" name="filterquery" class="form-control" 	required="required" />
 		<input type="hidden" value="<%= rpp %>" name="rpp" />
 		<input type="hidden" value="<%= sortedBy %>" name="sort_by" />
-		<input type="hidden" value="<%= order %>" name="order" />
+		<input type="hidden" value="<%= order %>" name="order" /></div>
+		 <div class="form-flex-item fbutton">
 		<input class="btn btn-default" type="submit" value="<fmt:message key="jsp.search.filter.add"/>" onclick="return validateFilters()" />
 		</div></div>
 		</form>
@@ -616,6 +622,7 @@ else
 
 <% } %>
 <dspace:sidebar>
+<aside class="sidebar">
 <%
 	boolean brefine = false;
 	
@@ -739,6 +746,7 @@ else
 	</div>
 </div>
 <% } %>
+</aside>
 </dspace:sidebar>
 </dspace:layout>
 
