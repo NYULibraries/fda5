@@ -151,7 +151,7 @@ for (int i = 0; i < communities.length; i++)
 if (mostdownloaded != null && mostdownloaded.count() > 0)
 {
 %>
-       <div class="col-md-4">
+       <div class="col-md-4 sidebar">
                      <div class="panel panel-primary most-downloaded">
                        <div class="panel-heading"><h1>Most downloaded</h1></div>
                        <div class="panel-body">
