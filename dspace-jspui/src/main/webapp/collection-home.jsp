@@ -137,9 +137,10 @@
 
   <%@ include file="discovery/static-tagcloud-facet.jsp" %>
 
-  <section class="search-area">
+ 
   <% if (collection.isPublic()||show_thumbnails)
     { %>
+ <section class="search-area">
   <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
@@ -150,12 +151,13 @@
     </div>
     </div>
   </form>
+   </section>
   <%  } else { %>
-     <div class="simplest-search" >
+   <section class="private-collection">
           <p> <fmt:message  key="jsp.collection-home.private.warning"/></p>
-     </div>
-  <%  } %>
   </section>
+  <%  } %>
+ 
 <section class="collectionlist">
 
 <% if (show_items)
