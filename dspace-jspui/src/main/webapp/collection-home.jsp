@@ -138,7 +138,7 @@
   <%@ include file="discovery/static-tagcloud-facet.jsp" %>
 
  
-  <% if (collection.isPublic()||show_thumbnails)
+  <% if (collection.isPublic()||search_form)
     { %>
  <section class="search-area">
   <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
