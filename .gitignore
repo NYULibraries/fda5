@@ -2,4 +2,6 @@
 
 /*/
 
-!/dspace-jspui/src/main/webapp
+build.properties
+dspace/target
+.idea
