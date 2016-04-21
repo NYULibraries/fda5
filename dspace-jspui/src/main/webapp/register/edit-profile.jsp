@@ -41,7 +41,7 @@
     boolean passwordProblem = (attr != null && attr.booleanValue());
 
     boolean ldap_enabled = ConfigurationManager.getBooleanProperty("authentication-ldap", "enable");
-    boolean ldap_eperson = (ldap_enabled && (eperson.getNetid() != null) && (eperson.getNetid().equals("") == false));
+    boolean ldap_eperson =  (eperson.getNetid() != null) && (eperson.getNetid().equals("") == false);
 %>
 
 <dspace:layout style="submission" titlekey="jsp.register.edit-profile.title" nocache="true">
@@ -79,7 +79,7 @@
 <%
     // Only show password update section if the user doesn't use
     // certificates
-    if ((eperson.getRequireCertificate() == false) && (ldap_eperson == false))
+    if ((eperson.getRequireCertificate() == false) && (ldap_eperson == false) && )
     {
 %>
         <%-- <p><strong>Optionally</strong>, you can choose a new password and enter it into the box below, and confirm it by typing it
