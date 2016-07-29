@@ -21,6 +21,7 @@ import org.apache.commons.fileupload.FileUploadBase.IOFileUploadException;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.dspace.core.ConfigurationManager;
 
 /**
@@ -46,6 +47,9 @@ public class FileUploadRequest extends HttpServletRequestWrapper
 
     /** Original request */
     private HttpServletRequest original = null;
+
+    /** Logger */
+    private static Logger log = Logger.getLogger(FileUploadRequest.class);
 
     /**
      * Parse a multipart request and extracts the files
@@ -87,11 +91,13 @@ public class FileUploadRequest extends HttpServletRequestWrapper
         {
             upload.setSizeMax(maxSize);
             List<FileItem> items = upload.parseRequest(req);
+            log.info("size"+items.size());
             for (FileItem item : items)
             {
                 if (item.isFormField())
                 {
                     parameters.put(item.getFieldName(), item.getString("UTF-8"));
+                    log.info("parameter name"+item.getFieldName());
                 }
                 else
                 {
@@ -112,8 +118,10 @@ public class FileUploadRequest extends HttpServletRequestWrapper
                     }
                     else
                     {
+                        log.info("parameter name file"+item.getName());
                         parameters.put(item.getFieldName(), item.getName());
-                        fileitems.put(item.getFieldName(), item);
+                        //fileitems.put(item.getFieldName(), item);
+                        fileitems.put(item.getName(), item);
                         filenames.add(item.getName());
 
                         String filename = getFilename(item.getName());
@@ -201,6 +209,7 @@ public class FileUploadRequest extends HttpServletRequestWrapper
     public File getFile(String name)
     {
         FileItem temp = fileitems.get(name);
+        log.info(fileitems.values().toArray().length);
         String tempName = temp.getName();
         String filename = getFilename(tempName);
         if ("".equals(filename.trim()))
