@@ -27,6 +27,7 @@
 
 <%
 	boolean brefine = false;
+	boolean showSemester = false;
 	
 	Map<String, List<FacetResult>> mapFacetes = (Map<String, List<FacetResult>>) request.getAttribute("discovery.fresults");
 	List<DiscoverySearchFilterFacet> facetsConf = (List<DiscoverySearchFilterFacet>) request.getAttribute("facetsConfig");
@@ -35,7 +36,13 @@
 	{
 	    searchScope = "";
 	}
-	
+
+	 if(searchScope.lastIndexOf("34481")!=-1||searchScope.lastIndexOf("34516")!=-1)
+	 {
+	    showSemester = true;
+	 }
+
+
 	if (mapFacetes != null)
 	{
 	    for (DiscoverySearchFilterFacet facetConf : facetsConf)
@@ -82,7 +89,20 @@
 	    String fkey = "jsp.search.facet.refine."+f;
 	    int limit = facetConf.getFacetLimit()+1;
 	    %><div id="facet_<%= f %>">
+	    <% if(showSemester) {
+	    if(fkey.lastIndexOf("author")!=-1) { %>
+	    <span class="facetName">Instructor</span>
+	    <%}
+	    if(fkey.lastIndexOf("date")!=-1) { %>
+        	    <span class="facetName">Term</span>
+        	    <%}
+        	    if(fkey.lastIndexOf("subject")!=-1) { %>
+        	     <span class="facetName">Keyword</span>
+        	     <%} %>
+
+	    <%} else { %>
 	    <span class="facetName"><fmt:message key="<%= fkey %>" /></span>
+	    <% } %>
 	    <ul class="list-group"><%
 	    int idx = 1;
 	    int currFp = UIUtil.getIntParameter(request, f+"_page");

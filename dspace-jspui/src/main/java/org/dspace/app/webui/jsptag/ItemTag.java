@@ -485,8 +485,15 @@ public class ItemTag extends TagSupport
                     label = LocaleSupport.getLocalizedMessage(pageContext,
                             "metadata." + field);
                 }
-                
-                out.print(label);
+                if(label.indexOf("Date")!=-1&&item.getOwningCollection().getMetadata("name").indexOf("Syllab")!=-1) {
+                    out.print("Term");
+                } else {
+                    if (label.indexOf("Authors") != -1 && item.getOwningCollection().getMetadata("name").indexOf("Syllab") != -1) {
+                        out.print("Instructors");
+                    } else {
+                        out.print(label);
+                    }
+                }
                 out.print(":&nbsp;</td><td class=\"metadataFieldValue\">");
                 
                 //If the values are in controlled vocabulary and the display value should be shown
@@ -538,9 +545,30 @@ public class ItemTag extends TagSupport
                         else if (isDate)
                         {
                             DCDate dd = new DCDate(values[j].value);
+                            String metadata=null;
+                            if(item.getOwningCollection().getMetadata("name").indexOf("Syllab")!=-1)
+                            {
+                                int year=dd.getYear();
+                                int month=dd.getMonth();
+                                String semester="";
+                                switch (month) {
+                                    case 9: semester="Fall";
+                                        break;
+                                    case 1: semester="Winter";
+                                        break;
+                                    case 3: semester="Spring";
+                                        break;
+                                    case 7: semester="Summer";
+                                        break;
+                                }
+                                metadata = year+" "+semester;
+                                out.print(metadata);
+                            }
+                            else {
 
-                            // Parse the date
-                            out.print(UIUtil.displayDate(dd, false, false, (HttpServletRequest)pageContext.getRequest()));
+                                // Parse the date
+                                out.print(UIUtil.displayDate(dd, false, false, (HttpServletRequest) pageContext.getRequest()));
+                            }
                         }
                         else if (isResolver)
                         {

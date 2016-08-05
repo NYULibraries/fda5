@@ -108,7 +108,13 @@ public class CollectionItemList implements CollectionHomeProcessor
             if(number>0&&(number-1)<names.length)
               bi=BrowseIndex.getBrowseIndex(names[number-1]);
             else
-                bi=BrowseIndex.getBrowseIndex(name);
+               if(collection.getMetadata("name").indexOf("Syllabus")!=-1)
+               {
+                   bi = BrowseIndex.getBrowseIndex(names[1]);
+                   data_order="desc";
+               } else {
+                   bi = BrowseIndex.getBrowseIndex(name);
+               }
 
             if (bi == null || !"item".equals(bi.getDisplayType()))
             {
@@ -129,6 +135,12 @@ public class CollectionItemList implements CollectionHomeProcessor
                 else
                     scope.setOrder(SortOption.ASCENDING);
 
+            } else {
+                if(collection.getMetadata("name").indexOf("Syllabus")!=-1)
+                {
+                    scope.setSortBy(2);
+                    scope.setOrder(SortOption.DESCENDING);
+                }
             }
             BrowseEngine be = new BrowseEngine(context);
             BrowseInfo binfo = be.browse(scope);

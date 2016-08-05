@@ -544,7 +544,11 @@ else if( qResults != null)
     <% if ((communities.length > 0) || (collections.length > 0 ) ) { %>
     <h3><fmt:message key="jsp.search.results.itemhits"/></h3>
     <% } %>
-    <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" />
+    <% if(scope.getMetadata("name").indexOf("Syllab")!=-1) { %>
+    <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" linkToEdit="true" />
+    <% } else { %>
+      <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" />
+    <% } %>
     </div>
 <% } %>
 </div>

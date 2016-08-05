@@ -144,7 +144,11 @@
   <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
+     <% if(name.lastIndexOf("Syllabus")==-1) { %>
       <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
+      <% } else { %>
+        <input type="text" class="form-control" placeholder="Search terms,titles, instructors, keywords..." name="query" id="tequery">
+      <% } %>
     </div>
     <div class="button-hold">
       <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
@@ -230,11 +234,18 @@
 
 
     <select id="sort_by" name="value" class="form-control">
-    <option data-order="asc" value="1" <%= titleAscSelected %>>Title A-Z</option>
-    <option data-order="desc" value="1" <%= titleDescSelected %>>Title Z-A</option>
-    <option data-order="desc" value="2" <%= dateIDescSelected %>>Newest</option>
-    <option data-order="asc" value="2" <%= dateIAscSelected %>>Oldest</option>
-    
+  <% if(name.lastIndexOf("Syllabus")==-1) { %>
+  <option data-order="desc" value="2" <%= dateIDescSelected %>>Newest</option>
+       <option data-order="asc" value="2" <%= dateIAscSelected %>>Oldest</option>
+       <option data-order="asc" value="1" <%= titleAscSelected %>>Title A-Z</option>
+       <option data-order="desc" value="1" <%= titleDescSelected %>>Title Z-A</option>
+
+   <% } else { %>
+      <option data-order="asc" value="1" <%= titleAscSelected %>>Title A-Z</option>
+         <option data-order="desc" value="1" <%= titleDescSelected %>>Title Z-A</option>
+         <option data-order="desc" value="2" <%= dateIDescSelected %>>Newest</option>
+         <option data-order="asc" value="2" <%= dateIAscSelected %>>Oldest</option>
+   <% }  %>
     </select>
     <input type="hidden" value="<%= order %>" name="data-order">
     <input style="display:none"  type="submit" name="submit_search" value="go">
@@ -259,7 +270,7 @@
 <div class ="discovery-result-results">
 <%-- output the results using the browselist tag --%>
    <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" showThumbsCollection="<%=show_thumbnails %>" />
-  <%-- give us the bottom repaort on what we are looking at --%>
+  <%-- give us the bottom report on what we are looking at --%>
 </div>
 
   <%--  do the bottom previous and next page links --%>
@@ -441,7 +452,7 @@
 
 
 
-
+<% if(name.lastIndexOf("Syllabus")==-1) { %>
 <div class = "panel panel-default ">
   <div class = "panel-heading">Email subscription</div>
   <div class = "panel-body">
@@ -462,6 +473,7 @@
 %>
     </form></div>
 </div>
+<% } %>
 </aside>
 </dspace:sidebar>
 
