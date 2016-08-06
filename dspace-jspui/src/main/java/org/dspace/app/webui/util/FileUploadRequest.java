@@ -29,14 +29,14 @@ import org.dspace.core.ConfigurationManager;
  * request wrapper for multi-part (MIME) POSTs. It uses DSpace configuration
  * properties to determine the temporary directory to use and the maximum
  * allowable upload size.
- * 
+ *
  * @author Robert Tansley
  * @version $Revision$
  */
 public class FileUploadRequest extends HttpServletRequestWrapper
 {
     public static final String FILE_UPLOAD_LISTNER = "file-upload-listner";
-    
+
     private Map<String, String> parameters = new HashMap<String, String>();
 
     private Map<String, FileItem> fileitems = new HashMap<String, FileItem>();
@@ -53,7 +53,7 @@ public class FileUploadRequest extends HttpServletRequestWrapper
 
     /**
      * Parse a multipart request and extracts the files
-     * 
+     *
      * @param req
      *            the original request
      */
@@ -64,7 +64,7 @@ public class FileUploadRequest extends HttpServletRequestWrapper
         original = req;
 
         tempDir = (ConfigurationManager.getProperty("upload.temp.dir") != null)
-            ? ConfigurationManager.getProperty("upload.temp.dir") : System.getProperty("java.io.tmpdir"); 
+            ? ConfigurationManager.getProperty("upload.temp.dir") : System.getProperty("java.io.tmpdir");
         long maxSize = ConfigurationManager.getLongProperty("upload.max");
 
         // Create a factory for disk-based file items
@@ -75,18 +75,18 @@ public class FileUploadRequest extends HttpServletRequestWrapper
         ServletFileUpload upload = new ServletFileUpload(factory);
 
         HttpSession session = req.getSession();
-        
+
         if (ConfigurationManager.getBooleanProperty("webui.submit.upload.progressbar", true))
         {
             // set file upload progress listener
             FileUploadListener listener = new FileUploadListener();
-    
+
             session.setAttribute(FILE_UPLOAD_LISTNER, listener);
-    
+
             // upload servlet allows to set upload listener
             upload.setProgressListener(listener);
         }
-        
+
         try
         {
             upload.setSizeMax(maxSize);
@@ -101,15 +101,15 @@ public class FileUploadRequest extends HttpServletRequestWrapper
                 }
                 else
                 {
-                    if (parameters.containsKey("resumableIdentifier")) 
+                    if (parameters.containsKey("resumableIdentifier"))
                     {
                         String filename = getFilename(parameters.get("resumableFilename"));
-                        if (!StringUtils.isEmpty(filename)) 
+                        if (!StringUtils.isEmpty(filename))
                         {
                             String chunkDirPath = tempDir + File.separator + parameters.get("resumableIdentifier");
                             String chunkPath = chunkDirPath + File.separator + "part" + parameters.get("resumableChunkNumber");
                             File fileDir = new File(chunkDirPath);
-                            
+
                             if(fileDir.exists())
                             {
                                 item.write(new File(chunkPath));
@@ -121,6 +121,7 @@ public class FileUploadRequest extends HttpServletRequestWrapper
                         log.info("parameter name file"+item.getName());
                         parameters.put(item.getFieldName(), item.getName());
                         //fileitems.put(item.getFieldName(), item);
+                        //Modified by Kate to allow multifiles upload
                         fileitems.put(item.getName(), item);
                         filenames.add(item.getName());
 
@@ -196,19 +197,49 @@ public class FileUploadRequest extends HttpServletRequestWrapper
 
     public String getFilesystemName(String name)
     {
-        String filename = getFilename((fileitems.get(name))
-                .getName());
+        //added by Kate as a part of multi upload
+        String filename=null;
+        if(name.equals("file"))
+        {
+            filename = getFilename(fileitems.values().iterator()
+                    .next().getName());
+        }
+        else
+        {
+            filename = getFilename((fileitems.get(name))
+                    .getName());
+        }
         return tempDir + File.separator + filename;
+
     }
 
     public String getContentType(String name)
     {
-        return (fileitems.get(name)).getContentType();
+        if(name.equals("file"))
+        {
+           return fileitems.values().iterator().next()
+                   .getContentType();
+        }
+        else
+        {
+            return (fileitems.get(name)).getContentType();
+        }
     }
 
     public File getFile(String name)
     {
-        FileItem temp = fileitems.get(name);
+        //added by Kate as usually in DSpace only single files are uploaded
+        //so they are reffered not by name but by input name which is always
+        //file (it is hardcoded)
+        FileItem temp=null;
+        if(name.equals("file"))
+        {
+            temp=fileitems.values().iterator().next();
+        }
+        else
+        {
+            temp = fileitems.get(name);
+        }
         log.info(fileitems.values().toArray().length);
         String tempName = temp.getName();
         String filename = getFilename(tempName);
