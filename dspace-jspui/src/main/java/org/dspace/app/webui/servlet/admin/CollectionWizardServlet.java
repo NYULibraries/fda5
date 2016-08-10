@@ -448,7 +448,6 @@ public class CollectionWizardServlet extends DSpaceServlet
      * @param context
      * @param request
      * @param response
-     * @param collection
      * @throws SQLException
      * @throws ServletException
      * @throws IOException
@@ -555,6 +554,8 @@ public class CollectionWizardServlet extends DSpaceServlet
             IOException, AuthorizeException
     {
         Item item = collection.getTemplateItem();
+        //Added by Kate to make sure template item knows it collection
+        item.setOwningCollection(collection);
 
         for (int i = 0; i < 10; i++)
         {

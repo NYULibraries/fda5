@@ -241,9 +241,9 @@ public class MetadataImportServlet extends DSpaceServlet
 
         //Authorize. added by Kate
         if(handle==null) {
-            if (!AuthorizeManager.isAdmin(context)) throw new AuthorizeException("hyi vam");
+            if (!AuthorizeManager.isAdmin(context)) throw new AuthorizeException("Not Authorized");
         } else {
-            if (!AuthorizeManager.isAdmin(context,thing)) throw new AuthorizeException("hyi1");
+            if (!AuthorizeManager.isAdmin(context,thing)) throw new AuthorizeException("Not Authorized");
         }
         File f = wrapper.getFile("file");
 

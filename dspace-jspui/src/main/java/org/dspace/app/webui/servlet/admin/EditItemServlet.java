@@ -90,7 +90,7 @@ public class EditItemServlet extends DSpaceServlet
     public static final int PUBLICIZE = 11;
 
     /** Logger */
-    private static Logger log = Logger.getLogger(EditCommunitiesServlet.class);
+    private static Logger log = Logger.getLogger(EditItemServlet.class);
 
     public static final String LANGUAGE_QUALIFIER = getDefaultLanguageQualifier();
 
@@ -1498,74 +1498,73 @@ public class EditItemServlet extends DSpaceServlet
             AuthorizeException
     {
         try {
+
             // Wrap multipart request to get the submission info
             FileUploadRequest wrapper = new FileUploadRequest(request);
             Bitstream b = null;
             Item item = Item.find(context, UIUtil.getIntParameter(wrapper, "item_id"));
-            File temp = wrapper.getFile("file");
+            // loop added by Kate- to get multiple files not one
+            Enumeration filenames = wrapper.getFileNames();
 
-            // Read the temp file as logo
-            InputStream is = new BufferedInputStream(new FileInputStream(temp));
+            while (filenames.hasMoreElements()) {
+                String filename = (String) filenames.nextElement();
+                log.info("" + filename);
+                File temp = wrapper.getFile(filename);
 
-            // now check to see if person can edit item
-            checkEditAuthorization(context, item);
+                // Read the temp file as logo
+                InputStream is = new BufferedInputStream(new FileInputStream(temp));
 
-            // do we already have an ORIGINAL bundle?
-            Bundle[] bundles = item.getBundles("ORIGINAL");
+                // now check to see if person can edit item
+                checkEditAuthorization(context, item);
 
-            if (bundles.length < 1)
-            {
-                // set bundle's name to ORIGINAL
-                b = item.createSingleBitstream(is, "ORIGINAL");
+                // do we already have an ORIGINAL bundle?
+                Bundle[] bundles = item.getBundles("ORIGINAL");
 
-                // set the permission as defined in the owning collection
-                Collection owningCollection = item.getOwningCollection();
-                if (owningCollection != null)
-                {
-                    Bundle bnd = b.getBundles()[0];
-                    bnd.inheritCollectionDefaultPolicies(owningCollection);
+                if (bundles.length < 1) {
+                    // set bundle's name to ORIGINAL
+                    b = item.createSingleBitstream(is, "ORIGINAL");
+
+                    // set the permission as defined in the owning collection
+                    Collection owningCollection = item.getOwningCollection();
+                    if (owningCollection != null) {
+                        Bundle bnd = b.getBundles()[0];
+                        bnd.inheritCollectionDefaultPolicies(owningCollection);
+                    }
+                } else {
+                    // we have a bundle already, just add bitstream
+                    b = bundles[0].createBitstream(is);
                 }
-            } 
-            else
-            {
-                // we have a bundle already, just add bitstream
-                b = bundles[0].createBitstream(is);
+
+                // Strip all but the last filename. It would be nice
+                // to know which OS the file came from.
+                String noPath = wrapper.getFilesystemName(filename);
+
+                while (noPath.indexOf('/') > -1) {
+                    noPath = noPath.substring(noPath.indexOf('/') + 1);
+                }
+
+                while (noPath.indexOf('\\') > -1) {
+                    noPath = noPath.substring(noPath.indexOf('\\') + 1);
+                }
+
+                b.setName(noPath);
+                b.setSource(wrapper.getFilesystemName(filename));
+
+                // Identify the format
+                BitstreamFormat bf = FormatIdentifier.guessFormat(context, b);
+                b.setFormat(bf);
+                b.update();
+
+                item.update();
+
+                // Remove temp file
+                if (!temp.delete()) {
+                    log.error("Unable to delete temporary file");
+                }
             }
-
-            // Strip all but the last filename. It would be nice
-            // to know which OS the file came from.
-            String noPath = wrapper.getFilesystemName("file");
-
-            while (noPath.indexOf('/') > -1)
-            {
-                noPath = noPath.substring(noPath.indexOf('/') + 1);
-            }
-
-            while (noPath.indexOf('\\') > -1)
-            {
-                noPath = noPath.substring(noPath.indexOf('\\') + 1);
-            }
-
-            b.setName(noPath);
-            b.setSource(wrapper.getFilesystemName("file"));
-
-            // Identify the format
-            BitstreamFormat bf = FormatIdentifier.guessFormat(context, b);
-            b.setFormat(bf);
-            b.update();
-
-            item.update();
-
+            // Update DB
             // Back to edit form
             showEditForm(context, request, response, item);
-
-            // Remove temp file
-            if (!temp.delete())
-            {
-                log.error("Unable to delete temporary file");
-            }
-
-            // Update DB
             context.complete();
         } catch (FileSizeLimitExceededException ex)
         {

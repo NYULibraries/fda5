@@ -333,7 +333,7 @@ public class EditCommunitiesServlet extends DSpaceServlet
      * 
      * @param context
      * @param request
-     * @param community
+     * @param collection
      * @throws SQLException
      */
     static void storeAuthorizeAttributeCollectionEdit(Context context,
@@ -867,11 +867,16 @@ public class EditCommunitiesServlet extends DSpaceServlet
             // Create a template item
             collection.createTemplateItem();
 
+
             // Forward to edit page for new template item
-            Item i = collection.getTemplateItem();            
+            Item i = collection.getTemplateItem();
+
+            // Added by Kate to make sure template can have collection specific view
+            i.setOwningCollection(collection);
 
             // save the changes
             collection.update();
+            i.update();
             context.complete();
             response.sendRedirect(response.encodeRedirectURL(request
                     .getContextPath()
