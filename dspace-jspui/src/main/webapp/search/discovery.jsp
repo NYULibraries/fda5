@@ -46,6 +46,7 @@
 <%@page import="org.dspace.discovery.DiscoverResult.FacetResult"%>
 <%@page import="org.dspace.discovery.DiscoverResult"%>
 <%@page import="org.dspace.content.DSpaceObject"%>
+<%@page import="org.dspace.core.ConfigurationManager"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
@@ -112,6 +113,17 @@
     // Admin user or not
     Boolean admin_b = (Boolean)request.getAttribute("admin_button");
     boolean admin_button = (admin_b == null ? false : admin_b.booleanValue());
+    String scopeHome="";
+    String scopeName = "";
+    //added by Kate to return to collection
+    if(searchScope != "")
+         {
+           //normalize
+           String site=UIUtil.normalizePath(request.getContextPath());
+
+           scopeHome= site+"/handle/"+searchScope;
+           scopeName = scope.getMetadata("name");
+        }
 %>
 
 <c:set var="dspace.layout.head.last" scope="request">
@@ -192,7 +204,7 @@
 </script>		
 </c:set>
 
-<dspace:layout titlekey="jsp.search.title">
+<dspace:layout titlekey="jsp.search.title" locbar="Link" parenttitle="<%= scopeName %>" parentlink="<%=scopeHome %>">
 
     <%-- <h1>Search Results</h1> --%>
 
@@ -425,6 +437,13 @@ else if( qResults != null)
                     + "&amp;etal=" + etAl
                     + "&amp;start=";
 
+
+     if(searchScope != "")
+     {
+       scopeHome= request.getContextPath()+"/handle/"+searchScope;
+       scopeName = scope.getMetadata("name");
+    }
+
     String nextURL = baseURL;
     String firstURL = baseURL;
     String lastURL = baseURL;
@@ -544,7 +563,7 @@ else if( qResults != null)
     <% if ((communities.length > 0) || (collections.length > 0 ) ) { %>
     <h3><fmt:message key="jsp.search.results.itemhits"/></h3>
     <% } %>
-    <% if(scope.getMetadata("name").indexOf("Syllab")!=-1) { %>
+    <% if(ConfigurationManager.getProperty("webui.collectionhome.browse."+searchScope)!=null) { %>
     <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" linkToEdit="true" />
     <% } else { %>
       <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" />

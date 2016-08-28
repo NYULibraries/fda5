@@ -811,4 +811,34 @@ public final class BrowseIndex
 		return ConfigurationManager.getBooleanProperty("webui.browse.index.tagcloud." + number);
 		 
 	}
+
+    /* Added by Kate.
+     This class is final and has only private constructors so I can't write an extention or wrapper
+    The only way to create collection specific index is by modifing the code
+     */
+    /**
+     * Get an array of all the browse indices for the current configuration
+     *
+     * @return	an array of all the current browse indices
+     * @throws BrowseException
+     */
+    public static BrowseIndex getCollectionBrowseIndex(String name)
+            throws BrowseException
+    {
+        String definition;
+        int idx=-1;
+
+        if(ConfigurationManager.getProperty("webui.browse.index." + name) != null)
+        {
+            definition=ConfigurationManager.getProperty("webui.browse.index." + name);
+            BrowseIndex bi = new BrowseIndex(definition, idx);
+            bi.displayFrequencies = Boolean.valueOf(ConfigurationManager
+                    .getBooleanProperty("webui.browse.metadata.show-freq."
+                            + idx, true));
+            return bi;
+
+
+        }
+        return null;
+    }
 }

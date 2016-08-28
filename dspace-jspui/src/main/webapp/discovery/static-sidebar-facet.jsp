@@ -24,11 +24,11 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="org.apache.commons.lang.StringUtils"%>
+<%@ page import="org.dspace.app.webui.util.UIUtil" %>
 
 <%
 	boolean brefine = false;
-	boolean showSemester = false;
-	
+
 	Map<String, List<FacetResult>> mapFacetes = (Map<String, List<FacetResult>>) request.getAttribute("discovery.fresults");
 	List<DiscoverySearchFilterFacet> facetsConf = (List<DiscoverySearchFilterFacet>) request.getAttribute("facetsConfig");
 	String searchScope = (String) request.getAttribute("discovery.searchScope");
@@ -37,10 +37,6 @@
 	    searchScope = "";
 	}
 
-	 if(searchScope.lastIndexOf("34481")!=-1||searchScope.lastIndexOf("34516")!=-1)
-	 {
-	    showSemester = true;
-	 }
 
 
 	if (mapFacetes != null)
@@ -89,20 +85,7 @@
 	    String fkey = "jsp.search.facet.refine."+f;
 	    int limit = facetConf.getFacetLimit()+1;
 	    %><div id="facet_<%= f %>">
-	    <% if(showSemester) {
-	    if(fkey.lastIndexOf("author")!=-1) { %>
-	    <span class="facetName">Instructor</span>
-	    <%}
-	    if(fkey.lastIndexOf("date")!=-1) { %>
-        	    <span class="facetName">Term</span>
-        	    <%}
-        	    if(fkey.lastIndexOf("subject")!=-1) { %>
-        	     <span class="facetName">Keyword</span>
-        	     <%} %>
-
-	    <%} else { %>
 	    <span class="facetName"><fmt:message key="<%= fkey %>" /></span>
-	    <% } %>
 	    <ul class="list-group"><%
 	    int idx = 1;
 	    int currFp = UIUtil.getIntParameter(request, f+"_page");
@@ -114,6 +97,12 @@
 	    {
 		    for (FacetResult fvalue : facet)
 		    { 
+		        //added by Kate to display date issued as term
+		        String displayValue=fvalue.getDisplayedValue();
+		        if(f.equals("term"))
+		        {
+		          displayValue=UIUtil.returnSemester(displayValue);
+		        }
 		        if (idx != limit)
 		        {
 		        %><li class="list-group-item"><a href="<%= request.getContextPath()
@@ -123,7 +112,7 @@
 	                + "&amp;filtertype="+URLEncoder.encode(fvalue.getFilterType(),"UTF-8") %>"
 	                title="<fmt:message key="jsp.search.facet.narrow"><fmt:param><%=fvalue.getDisplayedValue() %></fmt:param></fmt:message>">
 	                <span class="badge"><%= fvalue.getCount() %></span> 
-	                <%= StringUtils.abbreviate(fvalue.getDisplayedValue(),36) %></a></li><%
+	                <%= StringUtils.abbreviate(displayValue,36) %></a></li><%
 		        }
 		        idx++;
 		    }

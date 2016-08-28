@@ -72,6 +72,12 @@
     Boolean  search_f   = (Boolean)request.getAttribute("can_read");
     boolean  search_form = (search_f  == null ? false : search_f.booleanValue());
 
+    //Added by kate to hide subscription
+    boolean subscribe_hide=false;
+    String subscribe_hide_str=ConfigurationManager.getProperty("webui.collectionhome.subscribe.hide");
+    if ((subscribe_hide_str!=null)&&(subscribe_hide_str.indexOf(collection.getHandle())!=-1))
+      subscribe_hide=true;
+
   // get the browse indices
     BrowseIndex[] bis = BrowseIndex.getBrowseIndices();
 
@@ -144,7 +150,7 @@
   <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
-     <% if(name.lastIndexOf("Syllabus")==-1) { %>
+     <% if(!subscribe_hide) { %>
       <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
       <% } else { %>
         <input type="text" class="form-control" placeholder="Search terms,titles, instructors, keywords..." name="query" id="tequery">
@@ -161,6 +167,15 @@
           <p> <fmt:message  key="jsp.collection-home.private.warning"/></p>
   </section>
   <%  } %>
+  <% if (ConfigurationManager.getProperty("webui.collectionhome.browse.metadata."+collection.getHandle())!=null)
+     { %>
+  <section class="private-collection">
+ <div><a href="/jspui/handle/<%= collection.getHandle() %>/browse?type=keyword">Browse by Keywords</a>
+  </div>
+<div><a href="/jspui/handle/<%= collection.getHandle() %>/browse?type=term">Browse by Term</a>
+  </div>
+   <%  } %>
+  </section>
  
 <section class="collectionlist">
 
@@ -234,18 +249,10 @@
 
 
     <select id="sort_by" name="value" class="form-control">
-  <% if(name.lastIndexOf("Syllabus")==-1) { %>
-  <option data-order="desc" value="2" <%= dateIDescSelected %>>Newest</option>
-       <option data-order="asc" value="2" <%= dateIAscSelected %>>Oldest</option>
-       <option data-order="asc" value="1" <%= titleAscSelected %>>Title A-Z</option>
-       <option data-order="desc" value="1" <%= titleDescSelected %>>Title Z-A</option>
-
-   <% } else { %>
       <option data-order="asc" value="1" <%= titleAscSelected %>>Title A-Z</option>
          <option data-order="desc" value="1" <%= titleDescSelected %>>Title Z-A</option>
          <option data-order="desc" value="2" <%= dateIDescSelected %>>Newest</option>
          <option data-order="asc" value="2" <%= dateIAscSelected %>>Oldest</option>
-   <% }  %>
     </select>
     <input type="hidden" value="<%= order %>" name="data-order">
     <input style="display:none"  type="submit" name="submit_search" value="go">
@@ -452,7 +459,8 @@
 
 
 
-<% if(name.lastIndexOf("Syllabus")==-1) { %>
+ <%
+ if (!subscribe_hide) { %>
 <div class = "panel panel-default ">
   <div class = "panel-heading">Email subscription</div>
   <div class = "panel-body">

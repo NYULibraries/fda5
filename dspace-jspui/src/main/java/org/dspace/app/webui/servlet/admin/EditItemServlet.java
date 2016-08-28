@@ -669,6 +669,11 @@ public class EditItemServlet extends DSpaceServlet
             } else if (inputType.equals("date")) {
                 readDate(request, item, schema, element, qualifier);
             }
+            //added by Kate. The rigfht way will be to write an extention. Will do later
+            else if (inputType.equals("semester"))
+            {
+                readSemester(request, item, schema, element, qualifier);
+            }
             // choice-controlled input with "select" presentation type is
             // always rendered as a dropdown menu
             else if (inputType.equals("dropdown") || inputType.equals("list") ||
@@ -1274,6 +1279,43 @@ public class EditItemServlet extends DSpaceServlet
         {
             // Only put in date if there is one!
             item.addMetadata(schema, element, qualifier, null, d.toString());
+        }
+    }
+    //added by Kate to process special input type. Better to make it an extention
+    protected void readSemester(HttpServletRequest request, Item item, String schema,
+                                String element, String qualifier) throws SQLException
+    {
+        String metadataField = MetadataField
+                .formKey(schema, element, qualifier);
+
+        int year = Util.getIntParameter(request, metadataField + "_year");
+        String semester = request.getParameter(metadataField + "_semester");
+
+        int month=0;
+        switch (semester) {
+            case "Fall": month=9;
+                break;
+            case "Winter": month=1;
+                break;
+            case "Spring": month=3;
+                break;
+            case "Summer": month=7;
+                break;
+        }
+        // FIXME: Probably should be some more validation
+        // Make a standard format date
+        DCDate d = new DCDate(year, month, -1, -1, -1, -1);
+        String s = year+" "+semester;
+
+        // already done in doProcessing see also bug DS-203
+        // item.clearMetadata(schema, element, qualifier, Item.ANY);
+        item.clearMetadata(schema, "date", "issued",Item.ANY);
+
+        if (year > 0)
+        {
+            // Only put in date if there is one!
+            item.addMetadata(schema, element, qualifier, null, s);
+            item.addMetadata(schema, "date", "issued", null, d.toString());
         }
     }
 

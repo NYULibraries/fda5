@@ -190,9 +190,11 @@ public class BrowserServlet extends AbstractBrowserServlet
             scope.setOffset(0);
             scope.setResultsPerPage(Integer.MAX_VALUE);
 
+
             // Export a browse view
             BrowseEngine be = new BrowseEngine(context);
             BrowseInfo binfo = be.browse(scope);
+
             List<Integer> iids = new ArrayList<Integer>();
             for (BrowseItem bi : binfo.getBrowseItemResults())
             {

@@ -171,7 +171,7 @@ public class LayoutTag extends BodyTagSupport
             {
                 // "link" mode - next thing in location bar is taken from
                 // parameters of tag, with a link
-                if (parentTitle != null)
+                if (parentTitle != null&&!parentTitle.equals(""))
                 {
                     parents.add(parentTitle);
                     parentLinks.add(parentLink);
@@ -182,7 +182,7 @@ public class LayoutTag extends BodyTagSupport
                             parentTitleKey));
                     parentLinks.add(parentLink);
                 }
-                if (title != null)
+                if (title != null &&!parentTitle.equals(""))
                 {
                     parents.add(title);
                     parentLinks.add("");

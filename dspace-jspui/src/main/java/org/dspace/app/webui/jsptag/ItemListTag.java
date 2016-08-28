@@ -444,20 +444,7 @@ public class ItemListTag extends TagSupport
                                 DCDate dd = new DCDate(metadataArray[0].value);
                                 if(linkToEdit)
                                 {
-                                    int year=dd.getYear();
-                                    int month=dd.getMonth();
-                                    String semester="";
-                                    switch (month) {
-                                        case 9: semester="Fall";
-                                            break;
-                                        case 1: semester="Winter";
-                                            break;
-                                        case 3: semester="Spring";
-                                            break;
-                                        case 7: semester="Summer";
-                                            break;
-                                    }
-                                    metadata = year+" "+semester;
+                                    metadata = UIUtil.returnSemester(dd);
                                 }
                                 else {
                                     metadata = UIUtil.displayDate(dd, false, false, hrq);

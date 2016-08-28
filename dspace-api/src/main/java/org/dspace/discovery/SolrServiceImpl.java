@@ -1093,6 +1093,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
                 if ((searchFilters.get(field) != null || searchFilters.get(unqualifiedField + "." + Item.ANY) != null))
                 {
                     List<DiscoverySearchFilter> searchFilterConfigs = searchFilters.get(field);
+
                     if(searchFilterConfigs == null)
                     {
                         searchFilterConfigs = searchFilters.get(unqualifiedField + "." + Item.ANY);
@@ -1100,6 +1101,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
 
                     for (DiscoverySearchFilter searchFilter : searchFilterConfigs)
                     {
+
                         Date date = null;
                         String separator = new DSpace().getConfigurationService().getProperty("discovery.solr.facets.split.char");
                         if(separator == null)
@@ -1181,6 +1183,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
 
                         if(searchFilter.getFilterType().equals(DiscoverySearchFilterFacet.FILTER_TYPE_FACET))
                         {
+
                             if(searchFilter.getType().equals(DiscoveryConfigurationParameters.TYPE_TEXT))
                             {
                             	//Add a special filter
@@ -1266,6 +1269,11 @@ public class SolrServiceImpl implements SearchService, IndexingService {
                                         doc.addField(searchFilter.getIndexFieldName() + "_keyword", indexValue);
                                     }
                                 }
+                            }else
+                            //added by Kate to accomodate new facet type "semester"
+                            if(searchFilter.getType().equals(DiscoveryConfigurationParameters.TYPE_SEMESTER))
+                            {
+                                doc.addField(searchFilter.getIndexFieldName() + "_filter", value.toLowerCase() + separator + value);
                             }
                         }
                     }
@@ -1865,6 +1873,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
 
             //Resolve our facet field values
             List<FacetField> facetFields = solrQueryResponse.getFacetFields();
+            log.error("facetFields:"+ facetFields);
             if(facetFields != null)
             {
                 for (int i = 0; i <  facetFields.size(); i++)
@@ -1872,10 +1881,13 @@ public class SolrServiceImpl implements SearchService, IndexingService {
                     FacetField facetField = facetFields.get(i);
                     DiscoverFacetField facetFieldConfig = query.getFacetFields().get(i);
                     List<FacetField.Count> facetValues = facetField.getValues();
+                    log.error(facetField.getName()+" :"+ facetFieldConfig);
                     if (facetValues != null)
                     {
-                        if(facetFieldConfig.getType().equals(DiscoveryConfigurationParameters.TYPE_DATE) && facetFieldConfig.getSortOrder().equals(DiscoveryConfigurationParameters.SORT.VALUE))
+                        if((facetFieldConfig.getType().equals(DiscoveryConfigurationParameters.TYPE_DATE) || facetFieldConfig.getType().equals(DiscoveryConfigurationParameters.TYPE_SEMESTER))
+                                && facetFieldConfig.getSortOrder().equals(DiscoveryConfigurationParameters.SORT.VALUE))
                         {
+
                             //If we have a date & are sorting by value, ensure that the results are flipped for a proper result
                            Collections.reverse(facetValues);
                         }
@@ -2175,6 +2187,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
 
     protected String transformFacetField(DiscoverFacetField facetFieldConfig, String field, boolean removePostfix)
     {
+
         if(facetFieldConfig.getType().equals(DiscoveryConfigurationParameters.TYPE_TEXT))
         {
             if(removePostfix)
@@ -2216,9 +2229,9 @@ public class SolrServiceImpl implements SearchService, IndexingService {
             }else{
                 return field + "_acid";
             }
-        }else if(facetFieldConfig.getType().equals(DiscoveryConfigurationParameters.TYPE_STANDARD))
-        {
+        }else if(facetFieldConfig.getType().equals(DiscoveryConfigurationParameters.TYPE_STANDARD)) {
             return field;
+        } else iffacetFieldConfig.getType().equals(DiscoveryConfigurationParameters.TYPE_SEMESTER)
         }else{
             return field;
         }

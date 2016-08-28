@@ -20,6 +20,8 @@ public class DiscoveryConfigurationParameters {
     public static final String TYPE_AC = "ac";
     public static final String TYPE_AUTHORITY = "authority";
     public static final String TYPE_STANDARD = "standard";
+    //added by Kate to use semester category
+    public static final String TYPE_SEMESTER = "semester";
 
     public enum SORT {VALUE, COUNT}
 

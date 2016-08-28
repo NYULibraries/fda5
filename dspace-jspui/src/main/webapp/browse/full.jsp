@@ -139,9 +139,12 @@
 	
 	// prepare a url for use by form actions
 	String formaction = request.getContextPath() + "/";
+	String collectionHome = request.getContextPath() + "/";
+
 	if (collection != null)
 	{
 		formaction = formaction + "handle/" + collection.getHandle() + "/";
+		collectionHome = collectionHome +  "handle/" + collection.getHandle();
 	}
 	if (community != null)
 	{
@@ -177,12 +180,16 @@
     // Admin user or not
     Boolean admin_b = (Boolean)request.getAttribute("admin_button");
     boolean admin_button = (admin_b == null ? false : admin_b.booleanValue());
+
+    if (bix.isMetadataIndex()&&bix.getDataType().equals("semester"))
+      value=UIUtil.returnSemester(value);
+
 %>
 
 <%-- OK, so here we start to develop the various components we will use in the UI --%>
 
 <%@page import="java.util.Set"%>
-<dspace:layout locbar="Link" titlekey="browse.page-title" navbar="<%=layoutNavbar %>">
+<dspace:layout locbar="Link" titlekey="browse.page-title" parenttitle="<%= scope %>" parentlink="<%= collectionHome %>" navbar="<%=layoutNavbar %>">
 
 	<%-- Build the header (careful use of spacing) --%>
 	<header class="browseheader">

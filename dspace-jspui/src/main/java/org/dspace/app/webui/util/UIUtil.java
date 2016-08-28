@@ -127,13 +127,13 @@ public class UIUtil extends Util
             }
 
             // Set any special groups - invoke the authentication mgr.
-            int[] groupIDs = AuthenticationManager.getSpecialGroups(c, request);
+            //int[] groupIDs = AuthenticationManager.getSpecialGroups(c, request);
 
-            for (int i = 0; i < groupIDs.length; i++)
-            {
-                c.setSpecialGroup(groupIDs[i]);
-                log.debug("Adding Special Group id="+String.valueOf(groupIDs[i]));
-            }
+            //for (int i = 0; i < groupIDs.length; i++)
+            //{
+              //  c.setSpecialGroup(groupIDs[i]);
+                //log.debug("Adding Special Group id="+String.valueOf(groupIDs[i]));
+            //}
 
             // Set the session ID and IP address
             String ip = request.getRemoteAddr();
@@ -587,4 +587,51 @@ public class UIUtil extends Util
         	throw new JspException(sqle.getMessage(), sqle);
         }
     }
+
+    //added by Kate to be used in FlexibleCollectionItem list
+    public static String getProperty(String property, String defaultValue)
+    {
+        String stringValue = ConfigurationManager.getProperty(null,property);
+
+        if (stringValue == null)
+        {
+            stringValue=defaultValue;
+        }
+
+        return stringValue;
+    }
+
+    //added by Kate to normalize date issued to look like semester
+
+    public static String returnSemester(String date) { return returnSemester(new DCDate(date)); }
+
+    public static String returnSemester(DCDate dd) {
+        int year = dd.getYear();
+        int month = dd.getMonth();
+        String semester = "";
+        switch (month) {
+            case 9:
+                semester = "Fall";
+                break;
+            case 1:
+                semester = "Winter";
+                break;
+            case 3:
+                semester = "Spring";
+                break;
+            case 7:
+                semester = "Summer";
+                break;
+        }
+        return  year+" "+semester;
+    }
+
+    public static String normalizePath(String path) {
+        if(path.lastIndexOf("jspui")>0) {
+            return path.substring(0, path.length() - 6);
+        } else {
+            return path;
+        }
+    }
+
 }
