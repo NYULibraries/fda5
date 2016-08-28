@@ -625,6 +625,29 @@ public class UIUtil extends Util
         }
         return  year+" "+semester;
     }
+    public static String returnSemesterDate(String semester)
+    {
+        String year = semester.substring(0,4);
+        //String separator=semester.substring(4,1);
+       log.error(semester);
+        String semesterPart = semester.split(" ")[1];
+        String month="";
+        switch (semesterPart) {
+            case "Fall":
+                month = "09";
+                break;
+            case "Winter":
+                month = "01";
+                break;
+            case "Spring":
+                month = "03";
+                break;
+            case "Summer":
+                month = "07";
+                break;
+        }
+        return  year+"-"+month;
+    }
 
     public static String normalizePath(String path) {
         if(path.lastIndexOf("jspui")>0) {

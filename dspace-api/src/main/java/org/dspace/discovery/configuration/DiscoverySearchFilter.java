@@ -52,6 +52,10 @@ public class DiscoverySearchFilter {
         {
             this.type = DiscoveryConfigurationParameters.TYPE_DATE;
         } else
+        if(type.equalsIgnoreCase(DiscoveryConfigurationParameters.TYPE_SEMESTER))
+        {
+            this.type = DiscoveryConfigurationParameters.TYPE_SEMESTER;
+        } else
         if(type.equalsIgnoreCase(DiscoveryConfigurationParameters.TYPE_HIERARCHICAL))
         {
             throw new DiscoveryConfigurationException("The " + type + " can't be used with a default side bar facet use the \"HierarchicalSidebarFacetConfiguration\" class instead.");

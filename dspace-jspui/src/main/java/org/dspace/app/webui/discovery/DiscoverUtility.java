@@ -223,6 +223,7 @@ public class DiscoverUtility
     {
         // Get the query
         String query = request.getParameter("query");
+
         if (StringUtils.isNotBlank(query))
         {
             // Escape any special characters in this user-entered query
@@ -243,6 +244,10 @@ public class DiscoverUtility
         List<String> userFilters = new ArrayList<String>();
         for (String[] f : filters)
         {
+            //added by Kate to accomodate semester field. There must be a way to do it through solr
+            if(f[0]!=null&&f[0].equals("term")){
+                f[2]=UIUtil.returnSemesterDate(f[2]);
+            }
             try
             {
             String newFilterQuery = SearchUtils.getSearchService()
@@ -251,6 +256,7 @@ public class DiscoverUtility
             if (newFilterQuery != null)
             {
                 queryArgs.addFilterQueries(newFilterQuery);
+                log.error("query:"+f[0]+" "+f[1]+" "+f[2]);
                 userFilters.add(newFilterQuery);
             }
             }
@@ -664,10 +670,16 @@ public class DiscoverUtility
                     }
                     else 
                     	limit = facetLimit;
-                    
+                    //added by Kate to use semester facet type
+                    String facetType= DiscoveryConfigurationParameters.TYPE_TEXT;
+                    if(facet.getType().equals(DiscoveryConfigurationParameters.TYPE_SEMESTER))
+                    {
+                        facetType= DiscoveryConfigurationParameters.TYPE_SEMESTER;
+                    }
+
                     queryArgs.addFacetField(new DiscoverFacetField(facet
                             .getIndexFieldName(),
-                            DiscoveryConfigurationParameters.TYPE_TEXT,
+                            facetType,
                            limit, facet
                                     .getSortOrder(), facetPage * facetLimit));
                 }

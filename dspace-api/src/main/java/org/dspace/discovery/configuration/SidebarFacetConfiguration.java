@@ -64,6 +64,9 @@ public class  SidebarFacetConfiguration {
         } else
         if(type.equalsIgnoreCase(DiscoveryConfigurationParameters.TYPE_DATE)){
             this.type = DiscoveryConfigurationParameters.TYPE_DATE;
+        } else
+        if(type.equalsIgnoreCase(DiscoveryConfigurationParameters.TYPE_SEMESTER)){
+            this.type = DiscoveryConfigurationParameters.TYPE_SEMESTER;
         }else{
             this.type = type;
         }

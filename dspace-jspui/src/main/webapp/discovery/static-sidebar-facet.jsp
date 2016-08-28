@@ -96,23 +96,24 @@
 	    if (facet != null)
 	    {
 		    for (FacetResult fvalue : facet)
-		    { 
+		    {
 		        //added by Kate to display date issued as term
-		        String displayValue=fvalue.getDisplayedValue();
-		        if(f.equals("term"))
+		        //alter I will do it on solr side
+		        String filterValue=fvalue.getAsFilterQuery();
+		        if(f.contains("term"))
 		        {
-		          displayValue=UIUtil.returnSemester(displayValue);
+		          filterValue=UIUtil.returnSemesterDate(filterValue);
 		        }
 		        if (idx != limit)
 		        {
 		        %><li class="list-group-item"><a href="<%= request.getContextPath()
 		            + searchScope
-	                + "/simple-search?filterquery="+URLEncoder.encode(fvalue.getAsFilterQuery(),"UTF-8")
+	                + "/simple-search?filterquery="+URLEncoder.encode(fvalue.getDisplayedValue(),"UTF-8")
 	                + "&amp;filtername="+URLEncoder.encode(f,"UTF-8")
 	                + "&amp;filtertype="+URLEncoder.encode(fvalue.getFilterType(),"UTF-8") %>"
 	                title="<fmt:message key="jsp.search.facet.narrow"><fmt:param><%=fvalue.getDisplayedValue() %></fmt:param></fmt:message>">
-	                <span class="badge"><%= fvalue.getCount() %></span> 
-	                <%= StringUtils.abbreviate(displayValue,36) %></a></li><%
+	                <span class="badge"><%= fvalue.getCount() %></span>
+	                <%= StringUtils.abbreviate(fvalue.getDisplayedValue(),36) %></a></li><%
 		        }
 		        idx++;
 		    }
