@@ -139,7 +139,9 @@
 	
 	// prepare a url for use by form actions
 	String formaction = request.getContextPath() + "/";
-	String collectionHome = request.getContextPath() + "/";
+	// added by Kate to return to the collection page. There is something wrong with contextpath so has
+    // to normilize
+    String collectionHome = UIUtil.normalizePath(formaction);
 
 	if (collection != null)
 	{

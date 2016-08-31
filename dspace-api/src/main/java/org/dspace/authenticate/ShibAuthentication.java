@@ -213,71 +213,81 @@ public class ShibAuthentication implements AuthenticationMethod
 			// Step 1: Identify User
 			EPerson eperson = findEPerson(context, request);
 
+			//create list of special groups from user headers
+			String[] group_membership_strs = null;
+			if(request.getHeader("ismemberof")!=null&&!request.getHeader("ismemberof").equals("")) {
+				group_membership_strs = request.getHeader("ismemberof").split(";");
+			}
+
+			ArrayList<String> group_membership = new ArrayList();
+			if (group_membership_strs != null&&group_membership_strs.length>0) {
+				for (String group_membership_str : group_membership_strs) {
+					//header returned by shibboleth looks like
+					//'cn=administrator,ou=regular,ou=Gallatin_School_of_Individualized_Study,ou=NYU_Washington_Square,ou=employee,ou=current,ou=affiliations,ou=inst,ou=nyu,ou=groups,o=nyu.edu,o=nyu'
+					//so we are parsing it here to get the group name
+					group_membership.add(group_membership_str.split(",")[2].split("=")[1]);
+				}
+
+			}
+
 			// Step 2: Register New User, if necessary and add all special groups
 			if (eperson == null && autoRegister) {
 				eperson = registerNewEPerson(context, request);
 				//add to NYU only Group
 				if (nyu_group_name != null) {
 					Group nyu_only = Group.findByName(context, nyu_group_name);
-					nyu_only.addMember(eperson);
-					nyu_only.update();
-					context.commit();
+					if(nyu_only!=null) {
+						nyu_only.addMember(eperson);
+						nyu_only.update();
+						context.commit();
+					}
+					else
+					{
+						log.error("there is no NYU ONLY group in the db");
+					}
 				}
-				//create list of special groups from user headers
-				String[] group_membership_strs = null;
-				if(request.getHeader("ismemberof")!=null) {
-					group_membership_strs = request.getHeader("ismemberof").split(";");
-				}
+			}
 
+			//create list of special groups from config files
+			List<List<String>> special_groups = new ArrayList<List<String>>();
+			special_groups.add((List<String>) Arrays.asList(special_groups_str.split(",")));
 
-				ArrayList<String> group_membership = new ArrayList();
-				if (group_membership_strs != null) {
-					for (String group_membership_str : group_membership_strs) {
-						//header returned by shibboleth looks like
-						//'cn=administrator,ou=regular,ou=Gallatin_School_of_Individualized_Study,ou=NYU_Washington_Square,ou=employee,ou=current,ou=affiliations,ou=inst,ou=nyu,ou=groups,o=nyu.edu,o=nyu'
-						//so we are parsing it here to get the group name
-						group_membership.add(group_membership_str.split(",")[2].split("=")[1]);
+			//delete person from special groups to which she no longer belongs
+			if(special_groups!=null&&special_groups.size()>0) {
+				Group[] eperson_special_groups = Group.allMemberGroups(context, eperson);
+
+				for (Group eperson_special_group : eperson_special_groups) {
+					String group_name = eperson_special_group.getName();
+					if (!group_membership.contains(group_name) && (special_groups==null|| special_groups.contains(group_name))) {
+						eperson_special_group.delete();
+						context.commit();
 					}
 
 				}
-				log.info("number of groups: "+group_membership.size());
-				log.info("first group: "+group_membership.get(0));
+			}
 
-				//create list of special groups from config files
-				ArrayList<String> special_groups = (ArrayList<String>) Arrays.asList(special_groups_str.split(","));
+			//add person to special groups to which it should belong
+			//We need to make sure the appropriate group has been created in the dspace database through dspace UI. For example for Galatin we need to create group named
+			// Gallatin_School_of_Individualized_Study
+			if (special_groups!= null&&special_groups.size()>0) {
 
-				//delete person from special groups to which she no longer belongs
-				if(special_groups!=null) {
-					Group[] eperson_special_groups = Group.allMemberGroups(context, eperson);
-
-					for (Group eperson_special_group : eperson_special_groups) {
-						String group_name = eperson_special_group.getName();
-						if (!group_membership.contains(group_name) && (special_groups==null|| special_groups.contains(group_name))) {
-							eperson_special_group.delete();
+				if (group_membership != null&&group_membership.size()>0) {
+					for (String special_group_name : group_membership) {
+						Group special_group = Group.findByName(context, special_group_name);
+						if(special_group!=null) {
+							special_group.addMember(eperson);
+							special_group.update();
 							context.commit();
 						}
-
-					}
-				}
-
-				//add person to special groups to which it should belong
-				//We need to make sure the appropriate group has been created in the dspace database through dspace UI. For example for Galatin we need to create group named
-				// Gallatin_School_of_Individualized_Study
-				if (special_groups!= null) {
-
-					if (group_membership != null) {
-						for (String special_group_name : group_membership) {
-							Group special_group = Group.findByName(context, special_group_name);
-							if(special_group!=null) {
-								special_group.addMember(eperson);
-								special_group.update();
-								context.commit();
-							}
+						else
+						{
+							log.error("there is no "+special_group_name+"in the db");
 						}
 					}
 				}
-
 			}
+
+
 
 
 			if (eperson == null) 

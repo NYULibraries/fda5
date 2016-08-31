@@ -244,7 +244,7 @@ public class DiscoverUtility
         List<String> userFilters = new ArrayList<String>();
         for (String[] f : filters)
         {
-            //added by Kate to accomodate semester field. There must be a way to do it through solr
+            //added by Kate to accomodate semester field. There are must be a way to do it through solr
             if(f[0]!=null&&f[0].equals("term")){
                 f[2]=UIUtil.returnSemesterDate(f[2]);
             }
@@ -256,7 +256,7 @@ public class DiscoverUtility
             if (newFilterQuery != null)
             {
                 queryArgs.addFilterQueries(newFilterQuery);
-                log.error("query:"+f[0]+" "+f[1]+" "+f[2]);
+
                 userFilters.add(newFilterQuery);
             }
             }

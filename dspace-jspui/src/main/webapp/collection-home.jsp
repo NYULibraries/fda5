@@ -115,6 +115,10 @@
 
     Boolean showItems = (Boolean)request.getAttribute("show.items");
     boolean show_items = showItems != null ? showItems.booleanValue() : false;
+
+    //get the list of indexes added by Kate
+    String browseIndexesStr=ConfigurationManager.getProperty("webui.collectionhome.browse.metadata."+collection.getHandle());
+
 %>
 
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
@@ -150,10 +154,10 @@
   <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
-     <% if(!subscribe_hide) { %>
-      <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
+     <% if(ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())!=null) { %>
+      <input type="text" class="form-control" placeholder="<%=ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())%>" name="query" id="tequery">
       <% } else { %>
-        <input type="text" class="form-control" placeholder="Search terms,titles, instructors, keywords..." name="query" id="tequery">
+        <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
       <% } %>
     </div>
     <div class="button-hold">
@@ -167,15 +171,15 @@
           <p> <fmt:message  key="jsp.collection-home.private.warning"/></p>
   </section>
   <%  } %>
-  <% if (ConfigurationManager.getProperty("webui.collectionhome.browse.metadata."+collection.getHandle())!=null)
-     { %>
-  <section class="private-collection">
- <div><a href="/jspui/handle/<%= collection.getHandle() %>/browse?type=keyword">Browse by Keywords</a>
-  </div>
-<div><a href="/jspui/handle/<%= collection.getHandle() %>/browse?type=term">Browse by Term</a>
-  </div>
+  <% if(browseIndexesStr!=null) {
+       String[] browseIndexes=browseIndexesStr.split(",");
+       for(int i=0; i<browseIndexes.length; i++)  { %>
+         <section class="private-collection">
+         <div><a href="/jspui/handle/<%= collection.getHandle() %>/browse?type=<%=browseIndexes[i]%>">Browse by <%=browseIndexes[i] %></a></div>
+         </section>
+          <%  } %>
    <%  } %>
-  </section>
+
  
 <section class="collectionlist">
 

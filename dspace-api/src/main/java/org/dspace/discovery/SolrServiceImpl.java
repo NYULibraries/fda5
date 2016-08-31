@@ -1875,7 +1875,7 @@ public class SolrServiceImpl implements SearchService, IndexingService {
                     FacetField facetField = facetFields.get(i);
                     DiscoverFacetField facetFieldConfig = query.getFacetFields().get(i);
                     List<FacetField.Count> facetValues = facetField.getValues();
-                    log.error(facetField.getName()+" type:"+ facetFieldConfig.getType());
+
                     if (facetValues != null)
                     {
                         if((facetFieldConfig.getType().equals(DiscoveryConfigurationParameters.TYPE_DATE) || facetFieldConfig.getType().equals(DiscoveryConfigurationParameters.TYPE_SEMESTER))

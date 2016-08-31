@@ -150,8 +150,6 @@ public class BrowseListTag extends TagSupport
         */
 
 
-        log.error(""+getShowThumbsCollection());
-
         // get the elements to display
         String browseListLine  = null;
         String browseWidthLine = null;
@@ -203,7 +201,7 @@ public class BrowseListTag extends TagSupport
                 browseListLine  = ConfigurationManager.getProperty("webui.itemlist." + so.getName() + ".columns");
                 browseWidthLine = ConfigurationManager.getProperty("webui.itemlist." + so.getName() + ".widths");
             }
-            log.error("we have general options for sort index"+browseWidthLine+so.getName());
+
 
             // If no config found, attempt to get a general one, using the index name
             if (bix != null && browseListLine == null)
@@ -211,20 +209,20 @@ public class BrowseListTag extends TagSupport
                 browseListLine  = ConfigurationManager.getProperty("webui.itemlist." + bix.getName() + ".columns");
                 browseWidthLine = ConfigurationManager.getProperty("webui.itemlist." + bix.getName() + ".widths");
             }
-            log.error("we have general options for broswe index"+browseWidthLine+bix.getName());
+
         }
 
         if (browseListLine == null)
         {
             browseListLine  = ConfigurationManager.getProperty("webui.itemlist.columns");
             browseWidthLine = ConfigurationManager.getProperty("webui.itemlist.widths");
-            log.error("we have general options "+browseWidthLine);
+
         }
 
         // Have we read a field configration from dspace.cfg?
         if (browseListLine != null)
         {
-            log.error("show"+getShowThumbsCollection());
+
             // If thumbnails are disabled, strip out any thumbnail column from the configuration
             if (!showThumbs&&!getShowThumbsCollection() && browseListLine.contains("thumbnail"))
             {
@@ -271,7 +269,7 @@ public class BrowseListTag extends TagSupport
                 // Use the newly built configuration file
                 browseListLine  = newBLLine.toString();
                 browseWidthLine = newBWLine.toString();
-                log.error("we are almost done"+browseWidthLine);
+
             }
         }
         else
@@ -286,7 +284,6 @@ public class BrowseListTag extends TagSupport
                 browseListLine = "dc.date.issued(date), dc.title, dc.contributor.*";
                 browseWidthLine = "130, 60%, 40%";
             }
-            log.error("we shouldn't be here"+browseWidthLine);
         }
 
         // Arrays used to hold the information we will require when outputting each row

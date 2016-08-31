@@ -13,6 +13,7 @@ import org.apache.solr.common.SolrInputDocument;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.authorize.ResourcePolicy;
 import org.dspace.content.DSpaceObject;
+import org.dspace.content.Item;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
@@ -52,6 +53,30 @@ public class SolrServiceResourceRestrictionPlugin implements SolrServiceIndexPlu
 
                 document.addField("read", fieldValue);
             }
+
+            //added by Kate to be able to show items to admins
+            List<ResourcePolicy> policies_admin = AuthorizeManager.getPoliciesActionFilter(context, dso, Constants.ADMIN);
+            for (ResourcePolicy resourcePolicy : policies_admin) {
+                String fieldValue;
+                if(resourcePolicy.getGroupID() != -1){
+                    //We have a group add it to the value
+                    fieldValue = "g" + resourcePolicy.getGroupID();
+                }else{
+                    //We have an eperson add it to the value
+                    fieldValue = "e" + resourcePolicy.getEPersonID();
+
+                }
+                document.addField("read", fieldValue);
+            }
+            //added by Kate to include submitters
+              if(dso instanceof Item)
+              {
+                  Item item= (Item) dso;
+                  if(item.getSubmitter()!=null) {
+                      document.addField("read", "e" + item.getSubmitter().getID());
+                  }
+              }
+
         } catch (SQLException e) {
             log.error(LogManager.getHeader(context, "Error while indexing resource policies", "DSpace object: (id " + dso.getID() + " type " + dso.getType() + ")"));
         }
