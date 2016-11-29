@@ -1718,7 +1718,9 @@ public class Collection extends DSpaceObject
     @Override
     public DSpaceObject getParentObject() throws SQLException
     {
+
         Community[] communities = this.getCommunities();
+
         if (communities != null && (communities.length > 0 && communities[0] != null))
         {
             return communities[0];

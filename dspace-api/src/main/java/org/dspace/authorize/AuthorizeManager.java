@@ -22,6 +22,7 @@ import org.dspace.storage.rdbms.TableRow;
 import org.dspace.storage.rdbms.TableRowIterator;
 import org.dspace.workflow.WorkflowItem;
 
+
 /**
  * AuthorizeManager handles all authorization checks for DSpace. For better
  * security, DSpace assumes that you do not have the right to do something
@@ -57,6 +58,9 @@ public class AuthorizeManager
      * @throws SQLException
      *         if there's a database problem
      */
+
+    /** log4j category */
+
     public static void authorizeAnyOf(Context c, DSpaceObject o, int[] actions)
             throws AuthorizeException, SQLException
     {
@@ -268,6 +272,8 @@ public class AuthorizeManager
     private static boolean authorize(Context c, DSpaceObject o, int action,
                                      EPerson e, boolean useInheritance) throws SQLException
     {
+
+
         // return FALSE if there is no DSpaceObject
         if (o == null)
         {
@@ -282,13 +288,13 @@ public class AuthorizeManager
 
         // is eperson set? if not, userid = 0 (anonymous)
         int userid = 0;
-        if (e != null)
-        {
+        if (e != null) {
             userid = e.getID();
 
             // perform isAdmin check to see
             // if user is an Admin on this object
-            DSpaceObject testObject = useInheritance ? o.getAdminObject(action) : null;
+            Collection c_o = null;
+            DSpaceObject  testObject = useInheritance ? o.getAdminObject(action) : null;
 
             if (isAdmin(c, testObject))
             {
@@ -419,12 +425,14 @@ public class AuthorizeManager
         //
         List<ResourcePolicy> policies = getPoliciesActionFilter(c, o, Constants.ADMIN);
 
+
         for (ResourcePolicy rp : policies)
         {
             // check policies for date validity
             if (rp.isDateValid())
             {
                 if ((rp.getEPersonID() != -1) && (rp.getEPersonID() == userid))
+
                 {
                     return true; // match
                 }
@@ -443,7 +451,9 @@ public class AuthorizeManager
         // check the *parent* objects of this object.  This allows Admin
         // permissions to be inherited automatically (e.g. Admin on Community
         // is also an Admin of all Collections/Items in that Community)
-        DSpaceObject parent = o.getParentObject();
+
+        DSpaceObject parent =o.getParentObject();
+
         if (parent != null)
         {
             return isAdmin(c, parent);

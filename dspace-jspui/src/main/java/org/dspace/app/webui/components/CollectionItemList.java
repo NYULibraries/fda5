@@ -108,7 +108,8 @@ public class CollectionItemList implements CollectionHomeProcessor
             if(number>0&&(number-1)<names.length)
               bi=BrowseIndex.getBrowseIndex(names[number-1]);
             else
-                bi=BrowseIndex.getBrowseIndex(name);
+
+                   bi = BrowseIndex.getBrowseIndex(name);
 
             if (bi == null || !"item".equals(bi.getDisplayType()))
             {

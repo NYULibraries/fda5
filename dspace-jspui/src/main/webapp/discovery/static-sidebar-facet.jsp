@@ -24,10 +24,11 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.net.URLEncoder"%>
 <%@ page import="org.apache.commons.lang.StringUtils"%>
+<%@ page import="org.dspace.app.webui.util.UIUtil" %>
 
 <%
 	boolean brefine = false;
-	
+
 	Map<String, List<FacetResult>> mapFacetes = (Map<String, List<FacetResult>>) request.getAttribute("discovery.fresults");
 	List<DiscoverySearchFilterFacet> facetsConf = (List<DiscoverySearchFilterFacet>) request.getAttribute("facetsConfig");
 	String searchScope = (String) request.getAttribute("discovery.searchScope");
@@ -35,7 +36,9 @@
 	{
 	    searchScope = "";
 	}
-	
+
+
+
 	if (mapFacetes != null)
 	{
 	    for (DiscoverySearchFilterFacet facetConf : facetsConf)
@@ -93,16 +96,23 @@
 	    if (facet != null)
 	    {
 		    for (FacetResult fvalue : facet)
-		    { 
+		    {
+		        //added by Kate to display date issued as term
+		        //alter I will do it on solr side
+		        String filterValue=fvalue.getAsFilterQuery();
+		        if(f.contains("term"))
+		        {
+		          filterValue=UIUtil.returnSemesterDate(filterValue);
+		        }
 		        if (idx != limit)
 		        {
 		        %><li class="list-group-item"><a href="<%= request.getContextPath()
 		            + searchScope
-	                + "/simple-search?filterquery="+URLEncoder.encode(fvalue.getAsFilterQuery(),"UTF-8")
+	                + "/simple-search?filterquery="+URLEncoder.encode(fvalue.getDisplayedValue(),"UTF-8")
 	                + "&amp;filtername="+URLEncoder.encode(f,"UTF-8")
 	                + "&amp;filtertype="+URLEncoder.encode(fvalue.getFilterType(),"UTF-8") %>"
 	                title="<fmt:message key="jsp.search.facet.narrow"><fmt:param><%=fvalue.getDisplayedValue() %></fmt:param></fmt:message>">
-	                <span class="badge"><%= fvalue.getCount() %></span> 
+	                <span class="badge"><%= fvalue.getCount() %></span>
 	                <%= StringUtils.abbreviate(fvalue.getDisplayedValue(),36) %></a></li><%
 		        }
 		        idx++;

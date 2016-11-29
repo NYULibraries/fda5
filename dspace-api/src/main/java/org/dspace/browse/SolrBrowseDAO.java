@@ -194,6 +194,7 @@ public class SolrBrowseDAO implements BrowseDAO
             }
             catch (SearchServiceException e)
             {
+                log.error("error:"+e.getMessage());
                 throw new BrowseException(e);
             }
         }

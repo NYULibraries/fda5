@@ -136,6 +136,13 @@ public abstract class AbstractBrowserServlet extends DSpaceServlet
                 bi = BrowseIndex.getBrowseIndex(type);
             }
 
+            // added by Kate to accomodate for collection specific indexes
+
+            if (bi == null)
+            {
+                bi = BrowseIndex.getCollectionBrowseIndex(type);
+            }
+
             // don't override a requested index, if no index is set,
             // try to find it on a possibly specified sort option.
             if (type == null && bi == null)

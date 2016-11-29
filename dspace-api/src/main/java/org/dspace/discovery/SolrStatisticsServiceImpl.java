@@ -70,7 +70,7 @@ public class SolrStatisticsServiceImpl  extends SolrServiceImpl {
 
         if (solr == null) {
             String solrService = new DSpace().getConfigurationService().getProperty("solr-statistics.server");
-            log.error("url:"+solrService);
+
             UrlValidator urlValidator = new UrlValidator(UrlValidator.ALLOW_LOCAL_URLS);
             if (urlValidator.isValid(solrService) || ConfigurationManager.getBooleanProperty("discovery", "solr.url.validation.enabled", true)) {
                 try {
@@ -144,11 +144,11 @@ public class SolrStatisticsServiceImpl  extends SolrServiceImpl {
         List<DiscoverFacetField> facetFields = discoveryQuery.getFacetFields();
         if (0 < facetFields.size()) {
             //Only add facet information if there are any facets
-            log.error("field:"+facetFields.get(0));
+
             for (DiscoverFacetField facetFieldConfig : facetFields) {
                 String field = transformFacetField(facetFieldConfig, facetFieldConfig.getField(), false);
                 solrQuery.addFacetField(field);
-                log.error("field:"+solrQuery.getFacetFields()[0]);
+
                 // Setting the facet limit in this fashion ensures that each facet can have its own max
                 solrQuery.add("f." + field + "." + FacetParams.FACET_LIMIT, String.valueOf(facetFieldConfig.getLimit()));
                 String facetSort;

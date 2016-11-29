@@ -1104,6 +1104,8 @@ public class Community extends DSpaceObject
             // and just remove that single parent/child mapping
             if (numParents == 1)
             {
+                //that will not work if delegated admin will try to delete collection.
+                //Kate added ignore authorization button
                 c.delete();
             }
         

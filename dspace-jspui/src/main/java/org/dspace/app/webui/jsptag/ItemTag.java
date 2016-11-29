@@ -485,8 +485,9 @@ public class ItemTag extends TagSupport
                     label = LocaleSupport.getLocalizedMessage(pageContext,
                             "metadata." + field);
                 }
-                
-                out.print(label);
+
+                        out.print(label);
+
                 out.print(":&nbsp;</td><td class=\"metadataFieldValue\">");
                 
                 //If the values are in controlled vocabulary and the display value should be shown
@@ -538,9 +539,12 @@ public class ItemTag extends TagSupport
                         else if (isDate)
                         {
                             DCDate dd = new DCDate(values[j].value);
+                            String metadata=null;
 
-                            // Parse the date
-                            out.print(UIUtil.displayDate(dd, false, false, (HttpServletRequest)pageContext.getRequest()));
+
+                                // Parse the date
+                                out.print(UIUtil.displayDate(dd, false, false, (HttpServletRequest) pageContext.getRequest()));
+
                         }
                         else if (isResolver)
                         {

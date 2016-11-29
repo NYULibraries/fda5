@@ -150,8 +150,6 @@ public class BrowseListTag extends TagSupport
         */
 
 
-        log.error(""+getShowThumbsCollection());
-
         // get the elements to display
         String browseListLine  = null;
         String browseWidthLine = null;
@@ -163,6 +161,7 @@ public class BrowseListTag extends TagSupport
             SortOption so = browseInfo.getSortOption();
             BrowseIndex bix = browseInfo.getBrowseIndex();
 
+
             // We have obtained the index that was used for this browse
             if (bix != null)
             {
@@ -173,7 +172,6 @@ public class BrowseListTag extends TagSupport
                     browseWidthLine = ConfigurationManager.getProperty("webui.itemlist.browse." + bix.getName() + ".sort." + so.getName() + ".widths");
                 }
 
-                log.error("we have sort options index"+browseWidthLine+so.getName());
                 // We haven't got a sort option defined, so get one for the index
                 // - it may be required later
                 if (so == null)
@@ -189,7 +187,6 @@ public class BrowseListTag extends TagSupport
                 browseWidthLine = ConfigurationManager.getProperty("webui.itemlist.sort." + so.getName() + ".widths");
             }
 
-            log.error("we have browse options index"+browseWidthLine+so.getName());
 
             // If no config found, attempt to get one for this browse index
             if (bix != null && browseListLine == null)
@@ -204,7 +201,7 @@ public class BrowseListTag extends TagSupport
                 browseListLine  = ConfigurationManager.getProperty("webui.itemlist." + so.getName() + ".columns");
                 browseWidthLine = ConfigurationManager.getProperty("webui.itemlist." + so.getName() + ".widths");
             }
-            log.error("we have general options for sort index"+browseWidthLine+so.getName());
+
 
             // If no config found, attempt to get a general one, using the index name
             if (bix != null && browseListLine == null)
@@ -212,20 +209,20 @@ public class BrowseListTag extends TagSupport
                 browseListLine  = ConfigurationManager.getProperty("webui.itemlist." + bix.getName() + ".columns");
                 browseWidthLine = ConfigurationManager.getProperty("webui.itemlist." + bix.getName() + ".widths");
             }
-            log.error("we have general options for broswe index"+browseWidthLine+bix.getName());
+
         }
 
         if (browseListLine == null)
         {
             browseListLine  = ConfigurationManager.getProperty("webui.itemlist.columns");
             browseWidthLine = ConfigurationManager.getProperty("webui.itemlist.widths");
-            log.error("we have general options "+browseWidthLine);
+
         }
 
         // Have we read a field configration from dspace.cfg?
         if (browseListLine != null)
         {
-            log.error("show"+getShowThumbsCollection());
+
             // If thumbnails are disabled, strip out any thumbnail column from the configuration
             if (!showThumbs&&!getShowThumbsCollection() && browseListLine.contains("thumbnail"))
             {
@@ -272,7 +269,7 @@ public class BrowseListTag extends TagSupport
                 // Use the newly built configuration file
                 browseListLine  = newBLLine.toString();
                 browseWidthLine = newBWLine.toString();
-                log.error("we are almost done"+browseWidthLine);
+
             }
         }
         else
@@ -287,13 +284,13 @@ public class BrowseListTag extends TagSupport
                 browseListLine = "dc.date.issued(date), dc.title, dc.contributor.*";
                 browseWidthLine = "130, 60%, 40%";
             }
-            log.error("we shouldn't be here"+browseWidthLine);
         }
 
         // Arrays used to hold the information we will require when outputting each row
         String[] fieldArr  = browseListLine == null  ? new String[0] : browseListLine.split("\\s*,\\s*");
         String[] widthArr  = browseWidthLine == null ? new String[0] : browseWidthLine.split("\\s*,\\s*");
         boolean isDate[]   = new boolean[fieldArr.length];
+        boolean isSemester[]   = new boolean[fieldArr.length];
         boolean emph[]     = new boolean[fieldArr.length];
         boolean isAuthor[] = new boolean[fieldArr.length];
         boolean viewFull[] = new boolean[fieldArr.length];
@@ -321,6 +318,13 @@ public class BrowseListTag extends TagSupport
                 {
                     field = field.replaceAll("\\(date\\)", "");
                     isDate[colIdx] = true;
+                }
+
+                // find out if the field is a semester
+                if (field.indexOf("(semester)") > 0)
+                {
+                    field = field.replaceAll("\\(semester\\)", "");
+                    isSemester[colIdx] = true;
                 }
 
                 // Cache any modifications to field
@@ -355,7 +359,13 @@ public class BrowseListTag extends TagSupport
                 // prepare the strings for the header
                 String id = "t" + Integer.toString(colIdx + 1);
                 String css = "oddRow" + cOddOrEven[colIdx] + "Col";
+                //added by Kate - to accomodate semester field
                 String message = "itemlist." + field;
+
+                if(isSemester[colIdx])
+                {
+                    message = "itemlist.dc.description.semester";
+                }
 
                 String markClass = "";
                 if (field.startsWith("mark_"))
@@ -460,6 +470,13 @@ public class BrowseListTag extends TagSupport
                         {
                             DCDate dd = new DCDate(metadataArray[0].value);
                             metadata = UIUtil.displayDate(dd, false, false, hrq);
+                        }
+                        // format the semester field correctly - added by Kate. Better make new ItemListTage
+                        // will do in next iteration
+                        else if (isSemester[colIdx])
+                        {
+                            DCDate dd = new DCDate(metadataArray[0].value);
+                            metadata =UIUtil.returnSemester(dd);
                         }
                         // format the title field correctly for withdrawn and private items (ie. don't link)
                         else if (field.equals(titleField) && items[i].isWithdrawn())

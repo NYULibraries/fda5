@@ -201,6 +201,7 @@ public class BrowseEngine
         throws BrowseException
     {
         log.info(LogManager.getHeader(context, "browse_by_item", ""));
+
         try
         {
             // get the table name that we are going to be getting our data from
@@ -508,6 +509,7 @@ public class BrowseEngine
                 // No records, so make an empty list
                 results = new ArrayList<String[]>();
             }
+
 
             // construct the BrowseInfo object to pass back
             BrowseInfo browseInfo = new BrowseInfo(results, offset, total, offset);

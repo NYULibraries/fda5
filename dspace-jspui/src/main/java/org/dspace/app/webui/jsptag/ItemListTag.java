@@ -89,6 +89,9 @@ public class ItemListTag extends TagSupport
     /** Config to disable cross links */
     private boolean disableCrossLinks = false;
 
+    /** Config to include an edit link */
+    private boolean showSemester = false;
+
     /** The default fields to be displayed when listing items */
     private static final String DEFAULT_LIST_FIELDS;
 
@@ -183,9 +186,16 @@ public class ItemListTag extends TagSupport
         }
 
         if (configLine == null)
+
         {
-            configLine = ConfigurationManager.getProperty("webui.itemlist.columns");
-            widthLine  = ConfigurationManager.getProperty("webui.itemlist.widths");
+            if (linkToEdit)
+            {
+                configLine = "dc.identifier.coursenumber, dc.date.issued(date), dc.title, dc.contributor.*";
+                widthLine = "80, 50, 60%, 40%";
+            } else {
+                configLine = ConfigurationManager.getProperty("webui.itemlist.columns");
+                widthLine = ConfigurationManager.getProperty("webui.itemlist.widths");
+            }
         }
 
         // Have we read a field configration from dspace.cfg?
@@ -321,10 +331,25 @@ public class ItemListTag extends TagSupport
                 }
 
                 // output the header
-                out.print("<th id=\"" + id +  "\" class=\"" + css + markClass +"\">"
-                        + (emph[colIdx] ? "<strong>" : "")
-                        + LocaleSupport.getLocalizedMessage(pageContext, message)
-                        + (emph[colIdx] ? "</strong>" : "") + "</th>");
+                if(linkToEdit&&isDate[colIdx]) {
+                    out.print("<th id=\"" + id + "\" class=\"" + css + markClass + "\">"
+                            + (emph[colIdx] ? "<strong>" : "")
+                            + "Term"
+                            + (emph[colIdx] ? "</strong>" : "") + "</th>");
+                }
+                else {
+                    if(linkToEdit&&isAuthor[colIdx]) {
+                        out.print("<th id=\"" + id + "\" class=\"" + css + markClass + "\">"
+                                + (emph[colIdx] ? "<strong>" : "")
+                                + "Instructor(s)"
+                                + (emph[colIdx] ? "</strong>" : "") + "</th>");
+                    } else {
+                        out.print("<th id=\"" + id + "\" class=\"" + css + markClass + "\">"
+                                + (emph[colIdx] ? "<strong>" : "")
+                                + LocaleSupport.getLocalizedMessage(pageContext, message)
+                                + (emph[colIdx] ? "</strong>" : "") + "</th>");
+                    }
+                }
             }
 
             if (linkToEdit)
@@ -413,10 +438,17 @@ public class ItemListTag extends TagSupport
                     if (metadataArray.length > 0)
                     {
                         // format the date field correctly
-                        if (isDate[colIdx])
-                        {
-                            DCDate dd = new DCDate(metadataArray[0].value);
-                            metadata = UIUtil.displayDate(dd, false, false, hrq);
+
+                            if (isDate[colIdx])
+                            {
+                                DCDate dd = new DCDate(metadataArray[0].value);
+                                if(linkToEdit)
+                                {
+                                    metadata = UIUtil.returnSemester(dd);
+                                }
+                                else {
+                                    metadata = UIUtil.displayDate(dd, false, false, hrq);
+                                }
                         }
                         // format the title field correctly for withdrawn items (ie. don't link)
                         else if (field.equals(titleField) && items[i].isWithdrawn())
@@ -546,7 +578,7 @@ public class ItemListTag extends TagSupport
                 }
 
                 // Add column for 'edit item' links
-                if (linkToEdit)
+               /* if (linkToEdit)
                 {
                     String id = "t" + Integer.toString(cOddOrEven.length + 1);
 
@@ -558,7 +590,7 @@ public class ItemListTag extends TagSupport
                             + "</td>");
                     }
 
-                out.println("</tr>");
+                out.println("</tr>");*/
             }
 
             // close the table
@@ -642,6 +674,34 @@ public class ItemListTag extends TagSupport
      *
      * @return the row to highlight
      */
+
+    /**
+     * Get the items to list
+     *
+     * @return showSemester
+     */
+    public boolean getShowSemester()
+    {
+        return showSemester;
+    }
+
+    /**
+     * Set the items to list
+     *
+     * @param
+     *
+     */
+    public void setShowSemester(boolean showSemesterIn)
+    {
+       showSemester=showSemesterIn;
+    }
+
+    /**
+     * Get the row to highlight - null or -1 for no row
+     *
+     * @return the row to highlight
+     */
+
     public String getHighlightrow()
     {
         return String.valueOf(highlightRow);

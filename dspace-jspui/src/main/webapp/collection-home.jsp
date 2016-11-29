@@ -72,6 +72,12 @@
     Boolean  search_f   = (Boolean)request.getAttribute("can_read");
     boolean  search_form = (search_f  == null ? false : search_f.booleanValue());
 
+    //Added by kate to hide subscription
+    boolean subscribe_hide=false;
+    String subscribe_hide_str=ConfigurationManager.getProperty("webui.collectionhome.subscribe.hide");
+    if ((subscribe_hide_str!=null)&&(subscribe_hide_str.indexOf(collection.getHandle())!=-1))
+      subscribe_hide=true;
+
   // get the browse indices
     BrowseIndex[] bis = BrowseIndex.getBrowseIndices();
 
@@ -109,6 +115,10 @@
 
     Boolean showItems = (Boolean)request.getAttribute("show.items");
     boolean show_items = showItems != null ? showItems.booleanValue() : false;
+
+    //get the list of indexes added by Kate
+    String browseIndexesStr=ConfigurationManager.getProperty("webui.collectionhome.browse.metadata."+collection.getHandle());
+
 %>
 
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
@@ -144,7 +154,11 @@
   <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
-      <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
+     <% if(ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())!=null) { %>
+      <input type="text" class="form-control" placeholder="<%=ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())%>" name="query" id="tequery">
+      <% } else { %>
+        <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
+      <% } %>
     </div>
     <div class="button-hold">
       <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
@@ -157,6 +171,15 @@
           <p> <fmt:message  key="jsp.collection-home.private.warning"/></p>
   </section>
   <%  } %>
+  <% if(browseIndexesStr!=null) {
+       String[] browseIndexes=browseIndexesStr.split(",");
+       for(int i=0; i<browseIndexes.length; i++)  { %>
+         <section class="private-collection">
+         <div><a href="/jspui/handle/<%= collection.getHandle() %>/browse?type=<%=browseIndexes[i]%>">Browse by <%=browseIndexes[i] %></a></div>
+         </section>
+          <%  } %>
+   <%  } %>
+
  
 <section class="collectionlist">
 
@@ -230,11 +253,10 @@
 
 
     <select id="sort_by" name="value" class="form-control">
-    <option data-order="asc" value="1" <%= titleAscSelected %>>Title A-Z</option>
-    <option data-order="desc" value="1" <%= titleDescSelected %>>Title Z-A</option>
-    <option data-order="desc" value="2" <%= dateIDescSelected %>>Newest</option>
-    <option data-order="asc" value="2" <%= dateIAscSelected %>>Oldest</option>
-    
+      <option data-order="asc" value="1" <%= titleAscSelected %>>Title A-Z</option>
+         <option data-order="desc" value="1" <%= titleDescSelected %>>Title Z-A</option>
+         <option data-order="desc" value="2" <%= dateIDescSelected %>>Newest</option>
+         <option data-order="asc" value="2" <%= dateIAscSelected %>>Oldest</option>
     </select>
     <input type="hidden" value="<%= order %>" name="data-order">
     <input style="display:none"  type="submit" name="submit_search" value="go">
@@ -259,7 +281,7 @@
 <div class ="discovery-result-results">
 <%-- output the results using the browselist tag --%>
    <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" showThumbsCollection="<%=show_thumbnails %>" />
-  <%-- give us the bottom repaort on what we are looking at --%>
+  <%-- give us the bottom report on what we are looking at --%>
 </div>
 
   <%--  do the bottom previous and next page links --%>
@@ -441,7 +463,8 @@
 
 
 
-
+ <%
+ if (!subscribe_hide) { %>
 <div class = "panel panel-default ">
   <div class = "panel-heading">Email subscription</div>
   <div class = "panel-body">
@@ -462,6 +485,7 @@
 %>
     </form></div>
 </div>
+<% } %>
 </aside>
 </dspace:sidebar>
 

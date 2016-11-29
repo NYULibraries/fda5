@@ -99,9 +99,16 @@
 
 	// prepare a url for use by form actions
 	String formaction = request.getContextPath() + "/";
+
+	// added by Kate to return to the collection page. There is something wrong with contextpath so has
+	// to normilize
+	String collectionHome = UIUtil.normalizePath(formaction);
+
+
 	if (collection != null)
 	{
 		formaction = formaction + "handle/" + collection.getHandle() + "/";
+		collectionHome = collectionHome + "handle/" + collection.getHandle();
 	}
 	if (community != null)
 	{
@@ -115,9 +122,11 @@
 	
 //	 the message key for the type
 	String typeKey = "browse.type.metadata." + bix.getName();
+
+
 %>
 
-<dspace:layout locbar="Link" titlekey="browse.page-title">
+<dspace:layout locbar="Link" titlekey="browse.page-title"  parenttitle="<%= scope %>" parentlink="<%= collectionHome %>" >
 
 	<%-- Build the header (careful use of spacing) --%>
 	<header class="browseheader">
@@ -206,8 +215,14 @@
     {
 %>
       <li >
-              <a href="<%= sharedLink %><% if (results[i][1] != null) { %>&amp;authority=<%= URLEncoder.encode(results[i][1], "UTF-8") %>" class="authority <%= bix.getName() %>"><%= Utils.addEntities(results[i][0]) %></a> <% } else { %>&amp;value=<%= URLEncoder.encode(results[i][0], "UTF-8") %>"><%= Utils.addEntities(results[i][0]) %>	<%= StringUtils.isNotBlank(results[i][2])?" <span class=\"badge\">"+results[i][2]+"</span>":""%></a> <% } %>
-				
+            <% if(bi.getBrowseIndex().getDataType().equals("semester"))
+              { %>
+              <a href="<%= sharedLink %><% if (results[i][1] != null) { %>&amp;authority=<%= URLEncoder.encode(results[i][1], "UTF-8") %>" class="authority <%= bix.getName() %>"><%= UIUtil.returnSemester(Utils.addEntities(results[i][0])) %></a> <% } else { %>&amp;value=<%= URLEncoder.encode(results[i][0], "UTF-8") %>"><%= UIUtil.returnSemester(Utils.addEntities(results[i][0])) %>	<%= StringUtils.isNotBlank(results[i][2])?" <span class=\"badge\">"+results[i][2]+" </span>":""%></a> <% } %>
+              <% }
+              else
+               { %>
+               <a href="<%= sharedLink %><% if (results[i][1] != null) { %>&amp;authority=<%= URLEncoder.encode(results[i][1], "UTF-8") %>" class="authority <%= bix.getName() %>"><%= Utils.addEntities(results[i][0]) %></a> <% } else { %>&amp;value=<%= URLEncoder.encode(results[i][0], "UTF-8") %>"><%= Utils.addEntities(results[i][0]) %>	<%= StringUtils.isNotBlank(results[i][2])?" <span class=\"badge\">"+results[i][2]+"</span>":""%></a> <% } %>
+               <%}%>
       </li>
 <%
     }

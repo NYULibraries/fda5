@@ -135,9 +135,13 @@
  <form-map>
    <name-map collection-handle="2451/34304" form-name="therapy" />
  </form-map>
+  <form-map>
+    <name-map collection-handle="123456789/34481" form-name="gallatin" />
+  </form-map>
 
 
- <!-- The form-definitions map lays out the detailed definition of all the -->
+
+  <!-- The form-definitions map lays out the detailed definition of all the -->
  <!-- submission forms.Each separate form set has a unique name as an      -->
 
  <!-- attribute. This name matches one of the names in the form-map. One   -->
@@ -166,9 +170,8 @@
          <repeatable>true</repeatable>
          <label>Authors</label>
                  <input-type>name</input-type>
-
-         <hint>Enter the names of the authors of this item below.</hint>
-         <required>You need to add at least one author</required>
+ <hint>&lt;em class="submitFormHelpRequired"&gt;Enter at least one author. *Required*&lt;/em&gt;</hint>
+         <required>You must  add at least one author</required>
        </field>
 
        <field>
@@ -204,9 +207,9 @@
          <repeatable>false</repeatable>
          <label>Date of Issue</label>
          <input-type>date</input-type>
-         <hint>Please give the date of previous publication or public distribution
+         <hint>&lt;em class="submitFormHelpRequired"&gt;Please give the date of previous publication or public distribution
                         below.  You can leave out the day and/or month if they aren't
-                        applicable.</hint>
+                        applicable. *Required*&lt;/em&gt;</hint>
 
          <required>You must enter at least the year.</required>
        </field>
@@ -494,6 +497,71 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <label>Rights</label>
          <input-type>textarea</input-type>
          <hint> Enter information on item's rights in this box. </hint>
+         <required></required>
+       </field>
+     </page>
+   </form>
+   <form name="gallatin">
+     <page number="1">
+       <field>
+
+         <dc-schema>dc</dc-schema>
+         <dc-element>contributor</dc-element>
+         <dc-qualifier>instructor</dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Instructor</label>
+         <input-type>name</input-type>
+
+         <hint>&lt;em class="submitFormHelpRequired"&gt;Enter the names of the instructor of this course.*Required*&lt;/em&gt;</hint>
+         <required>You must enter an instructor name for this course.</required>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>title</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Course Title</label>
+         <input-type>onebox</input-type>
+         <hint>&lt;em class="submitFormHelpRequired"&gt;Enter the  title of the course. *Required*&lt;/em&gt;</hint>
+         <required>You must enter a title for this course.</required>
+
+       </field>
+
+          <field>
+         <dc-schema>dc</dc-schema>
+
+         <dc-element>identifier</dc-element>
+         <dc-qualifier>coursenumber</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Course Number</label>
+         <input-type>onebox</input-type>
+         <hint>&lt;em class="submitFormHelpRequired"&gt;Enter the number of this course.*Required*&lt;/em&gt;</hint>
+         <required>You must enter the course number</required>
+       </field>
+
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>description</dc-element>
+         <dc-qualifier>semester</dc-qualifier>
+
+         <repeatable>false</repeatable>
+         <label>Term</label>
+         <input-type>semester</input-type>
+         <hint>&lt;em class="submitFormHelpRequired"&gt;Enter the semester of this course.*Required*&lt;/em&gt;</hint>
+         <required>You must enter the semester</required>
+       </field>
+
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>subject</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Keywords</label>
+         <input-type>onebox</input-type>
+
+         <hint></hint>
          <required></required>
        </field>
      </page>
@@ -899,7 +967,7 @@ ase select 'N/A'.</hint>
                  <input-type>name</input-type>
 
          <hint>Enter the names of the authors of this item below.</hint>
-         <required></required>
+         <required>You need to add at least one author</required>
        </field>
        <field>
 		 <dc-schema>dc</dc-schema>
