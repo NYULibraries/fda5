@@ -300,6 +300,7 @@ public class AuthorizeManager
             {
                 return true;
             }
+
         }
 
         // In case the dso is an bundle or bitstream we must ignore custom 
@@ -419,6 +420,19 @@ public class AuthorizeManager
         {
             userid = e.getID();
         }
+
+        //for all items submitters==admins - added by Kate
+
+        if(userid != 0 && o instanceof Item)
+        {
+
+           if (((Item) o).getSubmitter().getID() == userid)
+            {
+                return true;
+            }
+
+        }
+
 
         //
         // First, check all Resource Policies directly on this object
