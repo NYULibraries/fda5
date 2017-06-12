@@ -813,13 +813,13 @@ public final class BrowseIndex
 	}
 
     /* Added by Kate.
-     This class is final and has only private constructors so I can't write an extention or wrapper
-    The only way to create collection specific index is by modifing the code
+     This class is final and has only private constructors so I can't write an extension or wrapper
+    The only way to create collection specific index is by modifying the code
      */
     /**
-     * Get an array of all the browse indices for the current configuration
+     * Get index with specific name
      *
-     * @return	an array of all the current browse indices
+     * @return	 browse index
      * @throws BrowseException
      */
     public static BrowseIndex getCollectionBrowseIndex(String name)

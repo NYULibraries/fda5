@@ -251,12 +251,15 @@
 %>
        </select> 
 
-
+<% //do not show sort options if they are fixed
+  if (ConfigurationManager.getProperty("dspace.collection.home.spesialsort."+collection.getID())==null)
+     { %>
     <select id="sort_by" name="value" class="form-control">
       <option data-order="asc" value="1" <%= titleAscSelected %>>Title A-Z</option>
          <option data-order="desc" value="1" <%= titleDescSelected %>>Title Z-A</option>
          <option data-order="desc" value="2" <%= dateIDescSelected %>>Newest</option>
          <option data-order="asc" value="2" <%= dateIAscSelected %>>Oldest</option>
+
     </select>
     <input type="hidden" value="<%= order %>" name="data-order">
     <input style="display:none"  type="submit" name="submit_search" value="go">
@@ -277,7 +280,9 @@
   });
   });
 </script> 
-
+<%
+    }
+%>
 <div class ="discovery-result-results">
 <%-- output the results using the browselist tag --%>
    <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" showThumbsCollection="<%=show_thumbnails %>" />

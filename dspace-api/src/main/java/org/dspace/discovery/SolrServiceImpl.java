@@ -1683,13 +1683,22 @@ public class SolrServiceImpl implements SearchService, IndexingService {
             solrQuery.setRows(discoveryQuery.getMaxResults());
         }
 
+        //terrible hack just for test
+
         if(discoveryQuery.getSortField() != null)
         {
-            SolrQuery.ORDER order = SolrQuery.ORDER.asc;
-            if(discoveryQuery.getSortOrder().equals(DiscoverQuery.SORT_ORDER.desc))
-                order = SolrQuery.ORDER.desc;
+            if(discoveryQuery.getSortOrder()!=null)
+            {
+                SolrQuery.ORDER order = SolrQuery.ORDER.asc;
+                if (discoveryQuery.getSortOrder().equals(DiscoverQuery.SORT_ORDER.desc))
+                    order = SolrQuery.ORDER.desc;
 
-            solrQuery.addSortField(discoveryQuery.getSortField(), order);
+                solrQuery.addSortField(discoveryQuery.getSortField(), order);
+            }
+            else
+            {
+                solrQuery.add("sort", discoveryQuery.getSortField());
+            }
         }
 
         for(String property : discoveryQuery.getProperties().keySet())
