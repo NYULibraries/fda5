@@ -252,7 +252,7 @@
        </select> 
 
 <% //do not show sort options if they are fixed
-  if (ConfigurationManager.getProperty("dspace.collection.home.spesialsort."+collection.getID())==null)
+  if (ConfigurationManager.getProperty("webui.collection.home.specialsort."+collection.getID())==null)
      { %>
     <select id="sort_by" name="value" class="form-control">
       <option data-order="asc" value="1" <%= titleAscSelected %>>Title A-Z</option>

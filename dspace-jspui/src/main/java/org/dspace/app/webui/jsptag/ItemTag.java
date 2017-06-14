@@ -767,10 +767,16 @@ public class ItemTag extends TagSupport
                 .getRequest();
 
         out.print("<div class=\"panel panel-info\">");
-        out.println("<div class=\"panel-heading\">"
-                + LocaleSupport.getLocalizedMessage(pageContext,
-                        "org.dspace.app.webui.jsptag.ItemTag.files")
-                + "</div>");
+        if(ConfigurationManager.getProperty("webui.collection.home.specialsort."+collections[0].getID())==null) {
+            out.println("<div class=\"panel-heading\">"
+                    + LocaleSupport.getLocalizedMessage(pageContext,
+                    "org.dspace.app.webui.jsptag.ItemTag.files")
+                    + "</div>");
+        }
+        else
+        {
+            out.println("<div class=\"panel-heading\"> Syllabos </div>");
+        }
 
         try
         {

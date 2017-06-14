@@ -183,7 +183,7 @@ public class SolrBrowseDAO implements BrowseDAO
                 // indexed in the Discovery Search core
                 query.addFilterQueries("search.resourcetype:" + Constants.ITEM);
                 //hack, will re-write later using discovery configs-Kate
-                String specialSort= ConfigurationManager.getProperty("dspace.collection.home.spesialsort."+containerID);
+                String specialSort= ConfigurationManager.getProperty("webui.collection.home.specialsort."+containerID);
 
                 if ( specialSort!=null )
                 {

@@ -564,6 +564,20 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <hint></hint>
          <required></required>
        </field>
+
+         <field>
+             <dc-schema>dc</dc-schema>
+             <dc-element>topic</dc-element>
+             <dc-qualifier></dc-qualifier>
+             <repeatable>true</repeatable>
+             <label>Subject Area</label>
+             <input-type value-pairs-name="gallatin_subjects">dropdown</input-type>
+
+             <hint></hint>
+             <required></required>
+         </field>
+
+
      </page>
    </form>
    <form name="DataS">
@@ -4115,6 +4129,45 @@ it, please enter the types and the actual numbers or codes below.</hint>
        <displayed-value>Day31</displayed-value>
        <stored-value>Day31</stored-value>
      </pair>
+    <value-pairs value-pairs-name="gallatin_subjects" dc-term="topic">
+        <pair>
+            <displayed-value>ARTS-UG</displayed-value>
+            <stored-value>ARTS-UG</stored-value>
+        </pair>
+        <pair>
+            <displayed-value>CORE-GG</displayed-value>
+            <stored-value>CORE-GG</stored-value>
+        </pair>
+        <pair>
+            <displayed-value>ELEC-GG</displayed-value>
+            <stored-value>ELEC-GG</stored-value>
+        </pair>
+        <pair>
+            <displayed-value>FIRST-UG</displayed-value>
+            <stored-value>FIRST-UG</stored-value>
+        </pair>
+        <pair>
+            <displayed-value>IDSEM-UG</displayed-value>
+            <stored-value>IDSEM-UG</stored-value>
+        </pair>
+        <pair>
+            <displayed-value>PRACT-UG</displayed-value>
+            <stored-value>PRACT-UG</stored-value>
+        </pair>
+        <pair>
+            <displayed-value>TRAVL-UG</displayed-value>
+            <stored-value>TRAVL-UG</stored-value>
+        </pair>
+        <pair>
+            <displayed-value>TRAVL-GG</displayed-value>
+            <stored-value>TRAVL-GG</stored-value>
+        </pair>
+        <pair>
+            <displayed-value>WRTNG-UG</displayed-value>
+            <stored-value>WRTNG-UG</stored-value>
+        </pair>
+
+    </value-pairs>
 </value-pairs>
 </form-value-pairs>
 </input-forms>
