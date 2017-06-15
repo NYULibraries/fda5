@@ -1095,17 +1095,17 @@ public class Community extends DSpaceObject
 
             // Remove the parent/child mapping with this collection
             // We do this before deletion, so that the deletion doesn't throw database integrity violations
-            DatabaseManager.updateQuery(ourContext,
-                    "DELETE FROM community2collection WHERE community_id= ? "+
-                    "AND collection_id= ? ", getID(), c.getID());
+            //DatabaseManager.updateQuery(ourContext,
+            //      "DELETE FROM community2collection WHERE community_id= ? "+
+            //    "AND collection_id= ? ", getID(), c.getID());
 
             // As long as this Collection only had one parent, delete it
             // NOTE: if it had multiple parents, we will keep it around,
             // and just remove that single parent/child mapping
             if (numParents == 1)
             {
-                //that will not work if delegated admin will try to delete collection.
-                //Kate added ignore authorization button
+                //that will not work if delegated community admin will try to delete collection.
+                //Kate moved delete relashionship community2collection to delete collection methodd
                 c.delete();
             }
         
