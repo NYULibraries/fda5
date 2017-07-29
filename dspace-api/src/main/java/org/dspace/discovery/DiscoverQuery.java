@@ -27,6 +27,7 @@ public class DiscoverQuery {
     private int start = 0;
     private int maxResults = -1;
 
+
     /** Attributes used for sorting of results **/
     public enum SORT_ORDER {
         desc,
@@ -82,6 +83,11 @@ public class DiscoverQuery {
     public void setSortField(String sortField, SORT_ORDER sortOrder){
         this.sortField = sortField;
         this.sortOrder = sortOrder;
+    }
+
+    //hack for Gallatin - added  by Kate will fix
+    public void setSortField(String sortField ){
+        this.sortField = sortField;
     }
 
     public String getSortField() {

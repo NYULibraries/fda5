@@ -514,7 +514,9 @@ else if( qResults != null)
             <!--   <label for="sort_by">   sorted by <fmt:message key="search.results.sort-by"/></label> -->
          
 							<select name="sort_by" id="sort_by" class="form-control">
+							       <% if((scope==null)||(ConfigurationManager.getProperty("webui.collection.home.specialsort."+scope.getID())==null)) { %>
 									<option value="score"><fmt:message key="search.sort-by.relevance"/></option>
+								    <% } %>
 									<option data-order="ASC" value="dc.title_sort" <%= titleAscSelected %>>Title A-Z</option>
 									<option data-order="DESC" value="dc.title_sort" <%= titleDescSelected %>>Title Z-A</option>
  									<option data-order="DESC" value="dc.date.issued_dt" <%=dateIDescSelected%>  >Newest</option>
