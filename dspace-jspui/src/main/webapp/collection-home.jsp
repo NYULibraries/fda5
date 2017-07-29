@@ -263,7 +263,6 @@
     </select>
     <input type="hidden" value="<%= order %>" name="data-order">
     <input style="display:none"  type="submit" name="submit_search" value="go">
-  </form>
   </div>
 </div>
 <script type="text/javascript">
@@ -283,6 +282,7 @@
 <%
     }
 %>
+ </form>
 <div class ="discovery-result-results">
 <%-- output the results using the browselist tag --%>
    <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" showThumbsCollection="<%=show_thumbnails %>" />
