@@ -425,11 +425,8 @@ public class AuthorizeManager
 
         if(userid != 0 && o instanceof Item) {
 
-            EPerson[] submitters = ((Item) o).getOwningCollection().getSubmitters().getMembers();
-            for (EPerson submitter : submitters) {
-                if (submitter.getID() == userid) {
-                    return true;
-                }
+            if (((Item) o).getSubmitter().getID() == userid) {
+                return true;
             }
 
         }
