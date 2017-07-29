@@ -261,10 +261,12 @@
          <option data-order="asc" value="2" <%= dateIAscSelected %>>Oldest</option>
 
     </select>
+    <%
+        }
+    %>
     <input type="hidden" value="<%= order %>" name="data-order">
     <input style="display:none"  type="submit" name="submit_search" value="go">
-  </div>
-</div>
+
 <script type="text/javascript">
   var jQ = jQuery.noConflict();
   jQ(document).ready(function() {
@@ -278,11 +280,10 @@
      jQ(this).closest('form').trigger('submit');
   });
   });
-</script> 
-<%
-    }
-%>
+</script>
  </form>
+ </div>
+ </div>
 <div class ="discovery-result-results">
 <%-- output the results using the browselist tag --%>
    <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" showThumbsCollection="<%=show_thumbnails %>" />
