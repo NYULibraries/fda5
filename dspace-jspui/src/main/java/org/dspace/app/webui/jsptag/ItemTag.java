@@ -767,7 +767,7 @@ public class ItemTag extends TagSupport
                 .getRequest();
 
         out.print("<div class=\"panel panel-info\">");
-        if(ConfigurationManager.getProperty("webui.collection.home.specialsort."+collections[0].getID())==null) {
+        if (collections != null && ConfigurationManager.getProperty("webui.collection.home.specialsort." + collections[0].getID()) == null) {
             out.println("<div class=\"panel-heading\">"
                     + LocaleSupport.getLocalizedMessage(pageContext,
                     "org.dspace.app.webui.jsptag.ItemTag.files")
@@ -775,7 +775,7 @@ public class ItemTag extends TagSupport
         }
         else
         {
-            out.println("<div class=\"panel-heading\"> Syllabos </div>");
+            out.println("<div class=\"panel-heading\"> Syllabus </div>");
         }
 
         try
