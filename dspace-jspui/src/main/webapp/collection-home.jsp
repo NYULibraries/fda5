@@ -172,10 +172,11 @@
   </section>
   <%  } %>
   <% if(browseIndexesStr!=null) {
+       String indexBase=request.getContextPath() + "/handle/" + collection.getHandle();
        String[] browseIndexes=browseIndexesStr.split(",");
        for(int i=0; i<browseIndexes.length; i++)  { %>
          <section class="private-collection">
-         <div><a href="/jspui/handle/<%= collection.getHandle() %>/browse?type=<%=browseIndexes[i]%>">Browse by <%=browseIndexes[i] %></a></div>
+         <div><a href="<%= indexBase%>/browse?type=<%=browseIndexes[i]%>">Browse by <%=browseIndexes[i] %></a></div>
          </section>
           <%  } %>
    <%  } %>
