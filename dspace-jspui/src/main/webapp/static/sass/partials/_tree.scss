@@ -1,0 +1,78 @@
+.collections-list h3 {
+  color: $text-color;
+  margin: 10px 0;
+  color: #816B56;
+  text-transform: uppercase;
+  font-size: 16px;
+}
+
+.fda-tree {
+  max-width: 44rem;
+  a {
+    display: block;
+    height: auto;
+  }
+
+  .t1 {
+    font-size: 1.2rem;
+    margin: 0;
+    display:inline-block;
+    a:link, a:visited {
+      color: $text-color;
+      padding: 7px 0;
+      font-weight: 500;
+    }
+  }
+
+
+   ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+  }
+
+  li {
+    clear: left;
+  }
+
+  ul > li > ul {
+    margin-left: 30px;
+
+    background-color: lighten($taupe-light, 29%);
+    padding-top: 10px;
+    padding-bottom: 10px;
+
+    li {
+      margin-left: 30px;
+      clear: left;
+    }
+
+    > li > ul {
+      background-color: lighten($taupe-light, 25%);
+    }
+
+    .t1 {
+      font-size: 1rem;
+      font-weight: 400;
+    }
+  }
+
+  a.arrow {
+    display: inline-block;
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding-left: 0;
+    text-align: left;
+    margin-right: 0;
+    width: 30px;
+    color: shade($nyu-red, 5%);
+
+    &:hover, &:active, &:focus {
+      text-decoration: none;
+    }
+
+    &:hover {
+      color: tint($nyu-red, 15%);
+    }
+  }
+}
