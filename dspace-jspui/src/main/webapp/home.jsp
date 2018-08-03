@@ -72,9 +72,9 @@
 <%!
  void showCommunity(Community c, JspWriter out, HttpServletRequest request, ItemCounter ic, Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
     {
-        out.println( "<li>" );
-        out.println( "<h4><a href=\"" + request.getContextPath() + "/handle/"
-                + c.getHandle() + "\">" + c.getMetadata("name") + "</a></h4>");
+        out.println( "<li role=\"treeitem\" >" );
+        out.println( "<span  class=\"t1\"><a href=\"" + request.getContextPath() + "/handle/"
+                + c.getHandle() + "\">" + c.getMetadata("name") + "</a></span>");
 
          // Get the sub-communities in this community
         Community[] comms = (Community[]) subcommunityMap.get(c.getID());
@@ -84,7 +84,7 @@
 
         if ((comms != null && comms.length > 0) || (cols != null && cols.length > 0) )
            {
-           out.println( "<ul style=\"display:none \">" );
+           out.println( "<ul role=\"group\" style=\"display:none \">" );
             }
         if (comms != null && comms.length > 0)
         {
@@ -102,8 +102,8 @@
 
             for (int j = 0; j < cols.length; j++)
             {
-                out.println("<li>");
-                out.println("<h4><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a></h4>");
+                out.println("<li role=\"treeitem\" >");
+                out.println("<span  class=\"t1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a></span>");
                 out.println("</li>");
             }
 
@@ -120,7 +120,7 @@
             <div class="col-md-8 ">
               <div class="brand">
              
-                The Faculty Digital Archive (FDA) is a highly visible repository of NYU scholarship, allowing digital works—text, audio, video, data, and more—to be reliably shared and securely stored. Collections may be made freely available worldwide, offered to NYU only, or restricted to a specific group.</p>
+                <h1 class="page-title">The Faculty Digital Archive</h1> (FDA) is a highly visible repository of NYU scholarship, allowing digital works—text, audio, video, data, and more—to be reliably shared and securely stored. Collections may be made freely available worldwide, offered to NYU only, or restricted to a specific group.</p>
                 Full-time faculty may contribute their research—unpublished and, in many cases, published—in the FDA. Departments, centers, or institutes may use the FDA to distribute their working papers, technical reports, or other research material. <a href="/about" class="readmore">Read more...</a></p>
               </div>
 
@@ -134,12 +134,12 @@
   </form>
  </section>
 
-
+<h1>Communities and Collections</h1>
 <div class="fda-tree">
 <%
 for (int i = 0; i < communities.length; i++)
         {%>
-        <ul>
+        <ul role="tree">
           <%  showCommunity(communities[i], out, request, ic, collectionMap, subcommunityMap);%>
         </ul>
         <% }
@@ -153,7 +153,7 @@ if (mostdownloaded != null && mostdownloaded.count() > 0)
 %>
        <div class="col-md-4 sidebar">
                      <div class="panel panel-primary most-downloaded">
-                       <div class="panel-heading"><h1>Most downloaded</h1></div>
+                       <div class="panel-heading"><h2>Most downloaded</h2></div>
                        <div class="panel-body">
 
                     <%
@@ -176,7 +176,7 @@ if (mostdownloaded != null && mostdownloaded.count() > 0)
                     <article >
                     <div class="communityflag"><span>Collection:</span>
                         <a href="<%= request.getContextPath() %>/handle/<%=col.getHandle() %>" ><%= col.getName()  %></a></div>
-                        <h1><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h1>
+                        <h3><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h3>
                         <% if (dcv!=null&&dcv.length>0)
                             {
                              for(int i=0;i<authors.length;i++)
