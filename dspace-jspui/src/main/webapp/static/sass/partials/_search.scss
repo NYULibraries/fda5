@@ -57,14 +57,28 @@ form#results-pp {
   border-bottom: 4px double tint($taupe-light, 40%);
 }
 
-.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
-  z-index: 2;
-  color: #fff;
-  cursor: default;
-  background-color: $taupe-light;
-  border-color: $taupe-light;
+.pagination {
+    > li > a {
+        border-color: tint($taupe-light, 40%);
+    }
+    > .active {
+     > a,  > span,   > a:hover,   > span:hover,   > a:focus,  > span:focus {
+        z-index: 2;
+        color: #fff;
+        cursor: default;
+        background-color: darken($taupe-dark, 15%);
+        border-color: darken($taupe-dark, 15%);
+     }
+    }
+   >.disabled {
+    > a,  > span,   > a:hover,   > span:hover,   > a:focus,  > span:focus {
+        color:  #717171;
+        cursor: not-allowed;
+        background-color: #fff;
+        border-color: tint($taupe-light, 40%);
+    }
+   }
 }
-
 .simplest-search {
   .input-hold {
     display: block;
@@ -131,7 +145,7 @@ form#results-pp {
   }
 
   .interface-link {
-    color: darken($taupe-dark, 20%);
+    color: darken($taupe-dark, 30%);
     text-decoration: underline;
     display: inline-block;
     margin-top: 10px;

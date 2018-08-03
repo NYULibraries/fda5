@@ -1,7 +1,6 @@
 // from NYU style guides
 
 $violet: #57068C;
-$taupe-dark: #A49483;
 $taupe-light: #B5ADA6;
 $nyu-red: #D11255;
 $green: #799A05;
@@ -16,7 +15,7 @@ $taupe-dark: #A49483;
 $taupe-darker: #756756;
 
 $nyu-red-light: tint($nyu-red, 20%);
-$taupe-header: darken($taupe-dark, 15%);
+$taupe-header: $taupe-darker;
 $text-color2: darken($taupe-dark, 25%);
 $text-color: darken($taupe-dark, 31%);
 $taupe-super-light: #F6F5F4;
@@ -76,6 +75,7 @@ a:focus {
     outline: 0;
     box-shadow: 0px 0px 0px 3px $teal;
     z-index: 1000;
+    position:relative;
 }
 .brand {
   font-size: 1rem;

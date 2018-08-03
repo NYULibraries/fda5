@@ -1,12 +1,13 @@
 .badge {
-  background-color: rgba($taupe-light, 0.9);
+  background-color: $taupe-darker;
+  color: #ffffff;
   margin: 0;
   position: relative;
   float: right;
 }
 
 .most-downloaded {
-  // margin-top: 20px;
+
   line-height: 1.35;
 
   .panel-heading h1 {
