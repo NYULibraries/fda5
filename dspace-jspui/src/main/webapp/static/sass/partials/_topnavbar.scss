@@ -1,0 +1,111 @@
+.navbar-form {
+  padding: 0;
+}
+
+.navbar {
+  border-radius: 0;
+  margin-bottom: 0;
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+  color: #fff;
+  background-color: $teal;
+}
+
+@media (min-width: 1200px) {
+  .admin-special-nav {
+    float: right;
+    margin: 0;
+    margin-right: -25px;
+    margin-bottom: -20px;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 1199px) {
+  .admin-special-nav {
+    float: left;
+    clear: left;
+    margin: 0;
+    margin-left: -30px;
+  }
+}
+
+/*******************/
+.navbar-inverse {
+  background-image: none;
+  background-color: $violet;
+  border-color: $violet;
+
+  .navbar-nav > li > a,
+  .navbar-bottom a {
+    color: #ddd;
+  }
+
+  @media (max-width: 767px) {
+    .navbar-collapse.in {
+      overflow-y: hidden;
+    }
+
+    .navbar-nav .open .dropdown-menu {
+      margin-left: 4em;
+
+      > li > a, .dropdown-header {
+        padding: 5px;
+        color: #ddd;
+      }
+
+      .divider {
+        border-top: 1px solid $violet-dark;
+        box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
+      }
+    }
+  }
+}
+
+header div.navbar-right {
+  margin-top: 10px;
+}
+
+@media (max-width: 991px) {
+  .container > .navbar-header, .container > .navbar-collapse {
+    margin-right: 0px;
+    margin-left: 0px;
+  }
+
+  .navbar-collapse {
+    max-height: none;
+  }
+
+  .navbar-brand {
+    /* to override some bootstrap */
+    padding: 15px 5px;
+  }
+
+  .navbar-inverse .navbar-toggle:hover, .navbar-inverse .navbar-toggle:focus {
+    background-color: $violet-dark;
+    border-color: $violet-dark;
+  }
+
+  .navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: #fff;
+    background-color: $violet-dark;
+  }
+
+  .navbar-header {
+    background: transparent url("../../../image/nyu_fda_logo_concise.svg") no-repeat 0px center;
+  }
+
+  .navbar-header img {
+    opacity: 0.0;
+    width: 200px;
+  }
+
+  .navbar-toggle {
+    margin-top: 15px;
+  }
+
+  header div.navbar-right {
+    margin-left: 0;
+  }
+}

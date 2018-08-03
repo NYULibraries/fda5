@@ -1,0 +1,132 @@
+.browseheader {
+  width: auto;
+  overflow: auto;
+
+  // padding-bottom: 2em;
+  h2 {
+    font-weight: normal;
+    font-weight: 300;
+
+    //  float: left;
+    margin-bottom: 0;
+    line-height: 1.5;
+  }
+
+  #browse_controls {
+    //float: right;
+    margin-top: 24px;
+  }
+}
+
+.browselist-heading {
+  // background-color: tint($taupe-light, 90%);
+  padding: 0 0 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+
+  // margin-top: -10px;
+  justify-content: space-between;
+
+  .flexset {
+    flex: auto;
+  }
+
+  .f1 {
+    //margin-top: 15px;
+    flex: 1 0 auto;
+    white-space: nowrap;
+  }
+
+  .start-to-finish-info {
+    // text-align: center;
+    font-size: 1rem;
+    line-height: 1;
+    flex: 1 0 auto;
+
+    //align-self: flex-start;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 650px) {
+    -webkit-flex-flow: column nowrap;
+    flex-flow: column wrap;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    .flexset {
+      margin: 10px 0 0;
+    }
+  }
+}
+
+.browse-list-list {
+  margin-top: 0;
+
+  .table td:nth-child(1) {
+    padding-right: 30px;
+  }
+
+  .table td:nth-child(2) {
+    width: 63%;
+    padding-right: 30px;
+  }
+
+  th {
+    padding-top: 20px !important;
+
+    &#t1 strong {
+      font-weight: bold;
+    }
+  }
+
+  td[headers="t1"] strong {
+    // background-color: red;
+    font-weight: normal;
+  }
+}
+
+/*    */
+
+.taxonomy-browse {
+  .browselist-heading {
+    margin-bottom: 15px;
+    border-bottom: 4px double #d2cdc9;
+  }
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: flex-start;
+    justify-content: flex-start;
+    margin-top: 5px;
+
+    li {
+      flex: 1 1 400px;
+      display: block;
+      margin-bottom: -1px;
+      margin-right: -1px;
+      background-color: #fff;
+      border: 1px solid rgba($taupe-light, 0.5);
+
+      a {
+        &:link {
+          font-size: 1rem;
+          display: block;
+        }
+
+        &:hover {
+          // background: red;
+       
+        }
+
+        .badge {
+          margin-left: 15px;
+          margin-top: 2px;
+          float: none;
+          vertical-align: top;
+        }
+      }
+    }
+  }
+}

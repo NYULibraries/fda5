@@ -698,64 +698,61 @@ input#query {
   font-size: 16px;
 }
 
-/* line 10, ../../sass/partials/_tree.scss */
+/* line 9, ../../sass/partials/_tree.scss */
 .fda-tree {
   max-width: 44rem;
 }
-/* line 13, ../../sass/partials/_tree.scss */
+/* line 11, ../../sass/partials/_tree.scss */
 .fda-tree a {
   display: block;
   height: auto;
 }
-/* line 18, ../../sass/partials/_tree.scss */
-.fda-tree h2 {
-  color: #7e6e5c;
-  font-size: 1.3rem;
-}
-/* line 23, ../../sass/partials/_tree.scss */
-.fda-tree h4 {
+/* line 16, ../../sass/partials/_tree.scss */
+.fda-tree .t1 {
   font-size: 1.2rem;
   margin: 0;
+  display: inline-block;
 }
-/* line 27, ../../sass/partials/_tree.scss */
-.fda-tree h4 a:link, .fda-tree h4 a:visited {
+/* line 20, ../../sass/partials/_tree.scss */
+.fda-tree .t1 a:link, .fda-tree .t1 a:visited {
   color: #4f453a;
   padding: 7px 0;
+  font-weight: 500;
 }
-/* line 33, ../../sass/partials/_tree.scss */
+/* line 28, ../../sass/partials/_tree.scss */
 .fda-tree ul {
   list-style: none;
   padding-left: 0;
   margin: 0;
 }
-/* line 39, ../../sass/partials/_tree.scss */
+/* line 34, ../../sass/partials/_tree.scss */
 .fda-tree li {
   clear: left;
 }
-/* line 43, ../../sass/partials/_tree.scss */
+/* line 38, ../../sass/partials/_tree.scss */
 .fda-tree ul > li > ul {
   margin-left: 30px;
   background-color: #f8f7f7;
   padding-top: 10px;
   padding-bottom: 10px;
 }
-/* line 51, ../../sass/partials/_tree.scss */
+/* line 45, ../../sass/partials/_tree.scss */
 .fda-tree ul > li > ul li {
   margin-left: 30px;
   clear: left;
 }
-/* line 56, ../../sass/partials/_tree.scss */
+/* line 50, ../../sass/partials/_tree.scss */
 .fda-tree ul > li > ul > li > ul {
   background-color: #efedec;
 }
-/* line 60, ../../sass/partials/_tree.scss */
-.fda-tree ul > li > ul h4 {
+/* line 54, ../../sass/partials/_tree.scss */
+.fda-tree ul > li > ul .t1 {
   font-size: 1rem;
   font-weight: 400;
 }
-/* line 66, ../../sass/partials/_tree.scss */
+/* line 60, ../../sass/partials/_tree.scss */
 .fda-tree a.arrow {
-  float: left;
+  display: inline-block;
   font-size: 1.3rem;
   font-weight: bold;
   padding-left: 0;
@@ -764,11 +761,11 @@ input#query {
   width: 30px;
   color: #c71151;
 }
-/* line 78, ../../sass/partials/_tree.scss */
+/* line 70, ../../sass/partials/_tree.scss */
 .fda-tree a.arrow:hover, .fda-tree a.arrow:active, .fda-tree a.arrow:focus {
   text-decoration: none;
 }
-/* line 82, ../../sass/partials/_tree.scss */
+/* line 74, ../../sass/partials/_tree.scss */
 .fda-tree a.arrow:hover {
   color: #d8366f;
 }
@@ -1412,23 +1409,37 @@ a:visited {
   color: #008996;
 }
 
-/* line 76, ../../sass/dspace-theme.scss */
+/* line 75, ../../sass/dspace-theme.scss */
+a:focus {
+  outline: 0;
+  box-shadow: 0px 0px 0px 3px #008996;
+  z-index: 1000;
+}
+
+/* line 80, ../../sass/dspace-theme.scss */
 .brand {
   font-size: 1rem;
   max-width: 44em;
 }
-/* line 80, ../../sass/dspace-theme.scss */
+/* line 83, ../../sass/dspace-theme.scss */
+.brand .page-title {
+  display: inline-block;
+  font-size: inherit;
+  font-weight: normal;
+  margin: 0;
+}
+/* line 89, ../../sass/dspace-theme.scss */
 .brand h4 {
   color: #A49483;
 }
 
-/* line 85, ../../sass/dspace-theme.scss */
+/* line 94, ../../sass/dspace-theme.scss */
 h2, .h2, h1, .h1 {
   font-weight: normal;
   font-weight: 300;
 }
 
-/* line 90, ../../sass/dspace-theme.scss */
+/* line 99, ../../sass/dspace-theme.scss */
 code {
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -1436,7 +1447,7 @@ code {
   word-break: break-word;
 }
 
-/* line 94, ../../sass/dspace-theme.scss */
+/* line 103, ../../sass/dspace-theme.scss */
 .table td {
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -1444,16 +1455,16 @@ code {
   word-break: break-word;
 }
 
-/* line 98, ../../sass/dspace-theme.scss */
+/* line 107, ../../sass/dspace-theme.scss */
 .readmore {
   white-space: nowrap;
 }
 
-/* line 102, ../../sass/dspace-theme.scss */
+/* line 111, ../../sass/dspace-theme.scss */
 .info-page {
   padding-bottom: 5rem;
 }
-/* line 105, ../../sass/dspace-theme.scss */
+/* line 114, ../../sass/dspace-theme.scss */
 .info-page h3 {
   font-size: 1.25rem;
   font-weight: normal;

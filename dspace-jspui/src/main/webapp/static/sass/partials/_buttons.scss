@@ -1,0 +1,104 @@
+.btn-default {
+    background-color: #eee;
+
+    @include background-image(linear-gradient($taupe-super-light, tint($taupe-light, 60%)));
+
+    background-repeat: repeat-x;
+    border-color: tint($taupe-light, 50%);
+
+    &:hover, &:focus {
+        background-color: #ebebeb;
+
+        @include background-image(linear-gradient(tint($taupe-light, 60%), $taupe-super-light));
+
+        background-repeat: repeat-x;
+        border-color: tint($taupe-light, 30%);
+    }
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: $taupe-dark;
+
+    @include background-image(linear-gradient($taupe-dark, #8A7D6E));
+
+    background-repeat: repeat-x;
+    border-color: #8A7D6E;
+
+    &[disabled] {
+        border-color: #8A7D6E;
+    }
+
+    &:hover, &:focus {
+        @include background-image(linear-gradient(#8A7D6E, $taupe-dark));
+
+        border-color: #8A7D6E;
+    }
+
+    &:active {
+        @include background-image(linear-gradient($taupe-dark, $taupe-dark));
+
+        border-color: shade($taupe-dark, 4%);
+    }
+}
+
+.btn-info {
+    color: #fff !important;
+
+    @include background-image(linear-gradient($tertiary-light, $tertiary));
+
+    background-repeat: repeat-x;
+    border-color: shade($tertiary, 4%);
+
+    &:hover, &:focus {
+        color: #fff;
+
+        @include background-image(linear-gradient($tertiary, $tertiary-light));
+
+        border-color: shade($tertiary, 14%);
+    }
+}
+
+.btn-danger {
+    // filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de',endColorstr='#ff31b0d5',GradientType=0);
+    @include background-image(linear-gradient($nyu-red-light, $nyu-red));
+
+    border-color: shade($nyu-red, 4%);
+
+    &:hover {
+        @include background-image(linear-gradient($nyu-red, $nyu-red-light));
+    }
+
+    &:focus, &:active {
+        @include background-image(linear-gradient($nyu-red, scale-saturation($nyu-red, 30%)));
+    }
+}
+
+.btn-success {
+    color: #fff;
+
+    // @include background-image(linear-gradient($tertiary-light, $tertiary));
+
+    // background-repeat: repeat-x;
+    // border-color: shade($tertiary, 4%);
+
+    // &:hover, &:focus {
+    //     color: #fff;
+
+    //     @include background-image(linear-gradient($tertiary, $tertiary-light));
+
+    //     border-color: shade($tertiary, 14%);
+    // }
+}
+
+.license-accept-reject .btn-warning {
+    background-image: linear-gradient(to bottom, #8A7D6E 0, $taupe-dark 100%);
+    background-repeat: repeat-x;
+    border-color: #8A7D6E;
+}
+
+a.btn-primary {
+    &:link, &:hover, &:focus, &:visited, &:active {
+        color: white;
+    }
+}
