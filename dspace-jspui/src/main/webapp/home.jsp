@@ -120,16 +120,16 @@
             <div class="col-md-8 ">
               <div class="brand">
              
-                <h1 class="page-title">The Faculty Digital Archive</h1> (FDA) is a highly visible repository of NYU scholarship, allowing digital works—text, audio, video, data, and more—to be reliably shared and securely stored. Collections may be made freely available worldwide, offered to NYU only, or restricted to a specific group.</p>
-                Full-time faculty may contribute their research—unpublished and, in many cases, published—in the FDA. Departments, centers, or institutes may use the FDA to distribute their working papers, technical reports, or other research material. <a href="/about" class="readmore">Read more...</a></p>
+                <p>The Faculty Digital Archive</h1> (FDA) is a highly visible repository of NYU scholarship, allowing digital works—text, audio, video, data, and more—to be reliably shared and securely stored. Collections may be made freely available worldwide, offered to NYU only, or restricted to a specific group.</p>
+                <p>Full-time faculty may contribute their research—unpublished and, in many cases, published—in the FDA. Departments, centers, or institutes may use the FDA to distribute their working papers, technical reports, or other research material. <a href="/about" class="readmore" aria-label="Read More about the NYU Faculty Digital Archive">Read more...</a></p>
               </div>
 
 <section class="search-area">
   <form method="get" action="simple-search" class="simplest-search">
     <div class="form-group-flex">
       <div class="input-hold">
-      <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
-      <div class="button-hold">   <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>
+      <input type="text" aria-label="search" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
+      <div class="button-hold">   <button type="submit" aria-label="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>
     </div>
   </form>
  </section>
