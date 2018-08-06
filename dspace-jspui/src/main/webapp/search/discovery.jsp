@@ -59,6 +59,7 @@
 <%@ page import="java.net.URLEncoder"            %>
 <%@ page import="org.dspace.content.Community"   %>
 <%@ page import="org.dspace.content.Collection"  %>
+<%@ page import="org.dspace.core.ConfigurationManager" %>
 <%@ page import="org.dspace.content.Item"        %>
 <%@ page import="org.dspace.search.QueryResults" %>
 <%@ page import="org.dspace.sort.SortOption" %>
@@ -112,8 +113,17 @@
     // Admin user or not
     Boolean admin_b = (Boolean)request.getAttribute("admin_button");
     boolean admin_button = (admin_b == null ? false : admin_b.booleanValue());
+    String scopeHome="";
+    String scopeName = "";
+    //added by Kate to return to collection
+    if(searchScope != "")
+         {
+           //normalize
+           String site=UIUtil.normalizePath(request.getContextPath());
+            scopeHome= site+"/handle/"+searchScope;
+           scopeName = scope.getMetadata("name");
+        }
 %>
-
 <c:set var="dspace.layout.head.last" scope="request">
 <script type="text/javascript">
 	var jQ = jQuery.noConflict();
@@ -192,7 +202,7 @@
 </script>		
 </c:set>
 
-<dspace:layout titlekey="jsp.search.title">
+<dspace:layout titlekey="jsp.search.title"  locbar="Link" parenttitle="<%= scopeName %>" parentlink="<%=scopeHome %>" >
 
     <%-- <h1>Search Results</h1> --%>
 
@@ -421,6 +431,11 @@ else if( qResults != null)
                     + "&amp;rpp=" + rpp
                     + "&amp;etal=" + etAl
                     + "&amp;start=";
+         if(searchScope != "")
+     {
+       scopeHome= request.getContextPath()+"/handle/"+searchScope;
+       scopeName = scope.getMetadata("name");
+    }
 
     String nextURL = baseURL;
     String firstURL = baseURL;
@@ -492,7 +507,9 @@ else if( qResults != null)
             <!--   <label for="sort_by">   sorted by <fmt:message key="search.results.sort-by"/></label> -->
          
 							<select name="sort_by" id="sort_by" class="form-control" aria-label="Sorting">
+                                                                  <% if((scope==null)||(ConfigurationManager.getProperty("webui.collection.home.specialsort."+scope.getID())==null)) { %>    
 									<option value="score"><fmt:message key="search.sort-by.relevance"/></option>
+                                                                  <% } %>
 									<option data-order="ASC" value="dc.title_sort" <%= titleAscSelected %>>Title A-Z</option>
 									<option data-order="DESC" value="dc.title_sort" <%= titleDescSelected %>>Title Z-A</option>
  									<option data-order="DESC" value="dc.date.issued_dt" <%=dateIDescSelected%>  >Newest</option>
@@ -541,7 +558,11 @@ else if( qResults != null)
     <% if ((communities.length > 0) || (collections.length > 0 ) ) { %>
     <h3><fmt:message key="jsp.search.results.itemhits"/></h3>
     <% } %>
-    <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" />
+    <% if(ConfigurationManager.getProperty("webui.collectionhome.browse."+searchScope)!=null) { %>
+    <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" linkToEdit="true" />
+    <% } else { %>
+      <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" />
+    <% } %>
     </div>
 <% } %>
 </div>
