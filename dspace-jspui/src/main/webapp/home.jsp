@@ -119,22 +119,23 @@
           <div class="row">
             <div class="col-md-8 ">
               <div class="brand">
-             
-                <h1 class="page-title">The Faculty Digital Archive</h1> (FDA) is a highly visible repository of NYU scholarship, allowing digital works—text, audio, video, data, and more—to be reliably shared and securely stored. Collections may be made freely available worldwide, offered to NYU only, or restricted to a specific group.</p>
-                Full-time faculty may contribute their research—unpublished and, in many cases, published—in the FDA. Departments, centers, or institutes may use the FDA to distribute their working papers, technical reports, or other research material. <a href="/about" class="readmore">Read more...</a></p>
+             <h1 class="sr-only" id="page-title">NYU Faculty Digital Archive Homepage</h1>
+                <p>The Faculty Digital Archive (FDA) is a highly visible repository of NYU scholarship, allowing digital works—text, audio, video, data, and more—to be reliably shared and securely stored. Collections may be made freely available worldwide, offered to NYU only, or restricted to a specific group.</p>
+                <p>Full-time faculty may contribute their research—unpublished and, in many cases, published—in the FDA. Departments, centers, or institutes may use the FDA to distribute their working papers, technical reports, or other research material. <a href="/about" class="readmore" aria-label="Read more about the NYU Faculty Digital Archive">Read more...</a></p>
               </div>
 
-<section class="search-area">
+<section class="search-area" role="search">
+  <h2 class="sr-only">Search the archive</h2>
   <form method="get" action="simple-search" class="simplest-search">
     <div class="form-group-flex">
       <div class="input-hold">
-      <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
-      <div class="button-hold">   <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>
+      <input type="text" aria-label="search" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
+      <div class="button-hold">   <button type="submit" aria-label="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>
     </div>
   </form>
  </section>
 
-<h1>Communities and Collections</h1>
+<h2>Communities and Collections</h2>
 <div class="fda-tree">
 <%
 for (int i = 0; i < communities.length; i++)
@@ -151,9 +152,10 @@ for (int i = 0; i < communities.length; i++)
 if (mostdownloaded != null && mostdownloaded.count() > 0)
 {
 %>
-       <div class="col-md-4 sidebar">
+       <section class="col-md-4 sidebar">
                      <div class="panel panel-primary most-downloaded">
-                       <div class="panel-heading"><h2>Most downloaded</h2></div>
+                       <div class="panel-heading">
+                        <h2 class="panel-title">Most downloaded</h2></div>
                        <div class="panel-body">
 
                     <%
@@ -176,7 +178,7 @@ if (mostdownloaded != null && mostdownloaded.count() > 0)
                     <article >
                     <div class="communityflag"><span>Collection:</span>
                         <a href="<%= request.getContextPath() %>/handle/<%=col.getHandle() %>" ><%= col.getName()  %></a></div>
-                        <h3><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h3>
+                        <h3 class="article-title"><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h3>
                         <% if (dcv!=null&&dcv.length>0)
                             {
                              for(int i=0;i<authors.length;i++)
@@ -199,7 +201,7 @@ if (mostdownloaded != null && mostdownloaded.count() > 0)
 
 %>     </div>
         </div>
-            </div> <!-- end col 4 -->
+            </section> <!-- end col 4 -->
           </div> <!-- end col row  -->
 <% } %>
      

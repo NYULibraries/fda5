@@ -72,12 +72,6 @@
     Boolean  search_f   = (Boolean)request.getAttribute("can_read");
     boolean  search_form = (search_f  == null ? false : search_f.booleanValue());
 
-    //Added by kate to hide subscription
-    boolean subscribe_hide=false;
-    String subscribe_hide_str=ConfigurationManager.getProperty("webui.collectionhome.subscribe.hide");
-    if ((subscribe_hide_str!=null)&&(subscribe_hide_str.indexOf(collection.getHandle())!=-1))
-      subscribe_hide=true;
-
   // get the browse indices
     BrowseIndex[] bis = BrowseIndex.getBrowseIndices();
 
@@ -115,10 +109,6 @@
 
     Boolean showItems = (Boolean)request.getAttribute("show.items");
     boolean show_items = showItems != null ? showItems.booleanValue() : false;
-
-    //get the list of indexes added by Kate
-    String browseIndexesStr=ConfigurationManager.getProperty("webui.collectionhome.browse.metadata."+collection.getHandle());
-
 %>
 
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
@@ -130,7 +120,7 @@
         <img class="img-responsive" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
       </div>
     <%  } %>
-    <h2><%= name %></h2>
+    <h1 class="page-title"> <%= name %></h1>
   </header>
 
 <%
@@ -148,17 +138,13 @@
   <%@ include file="discovery/static-tagcloud-facet.jsp" %>
 
  
-  <% if (collection.isPublic()||search_form)
+  <% if (collection.isPublic()||show_thumbnails)
     { %>
- <section class="search-area">
-  <form method="get" action="/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
+ <section class="search-area" role="search">
+  <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
-     <% if(ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())!=null) { %>
-      <input type="text" class="form-control" placeholder="<%=ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())%>" name="query" id="tequery">
-      <% } else { %>
-        <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
-      <% } %>
+      <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
     </div>
     <div class="button-hold">
       <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
@@ -171,15 +157,6 @@
           <p> <fmt:message  key="jsp.collection-home.private.warning"/></p>
   </section>
   <%  } %>
-  <% if(browseIndexesStr!=null) {
-       String[] browseIndexes=browseIndexesStr.split(",");
-       for(int i=0; i<browseIndexes.length; i++)  { %>
-         <section class="private-collection">
-         <div><a href="/jspui/handle/<%= collection.getHandle() %>/browse?type=<%=browseIndexes[i]%>">Browse by <%=browseIndexes[i] %></a></div>
-         </section>
-          <%  } %>
-   <%  } %>
-
  
 <section class="collectionlist">
 
@@ -227,7 +204,7 @@
   <%-- give us the top report on what we are looking at --%>
   <fmt:message var="bi_name" key="<%= bi_name_key %>"/>
   <fmt:message var="so_name" key="<%= so_name_key %>"/>
-  <h3 class="browse_range resultsnum">
+  <h2 class="browse_range resultsnum section-title">
     <fmt:message key="jsp.collection-home.content.range">
       <fmt:param value="${bi_name}"/>
       <fmt:param value="${so_name}"/>
@@ -235,11 +212,11 @@
       <fmt:param value="<%= Integer.toString(bi.getFinish()) %>"/>
       <fmt:param value="<%= Integer.toString(bi.getTotal()) %>"/>
     </fmt:message>
-  </h3>
+  </h2>
 
  <div class="discovery-pagination-controls">
   <form action="" method="get" id="results-sorting">
-    <select name="rpp" class="form-control" id="rpp_select">
+    <select name="rpp" class="form-control" id="rpp_select" aria-label="Number of Results Per Page">
 <%
          for (int i = 5; i <= 100 ; i += 5)
          {
@@ -251,22 +228,19 @@
 %>
        </select> 
 
-<% //do not show sort options if they are fixed
-  if (ConfigurationManager.getProperty("webui.collection.home.specialsort."+collection.getID())==null)
-     { %>
-    <select id="sort_by" name="value" class="form-control">
-      <option data-order="asc" value="1" <%= titleAscSelected %>>Title A-Z</option>
-         <option data-order="desc" value="1" <%= titleDescSelected %>>Title Z-A</option>
-         <option data-order="desc" value="2" <%= dateIDescSelected %>>Newest</option>
-         <option data-order="asc" value="2" <%= dateIAscSelected %>>Oldest</option>
 
+    <select id="sort_by" name="value" class="form-control" aria-label="Sorting Criteria">
+    <option data-order="asc" value="1" <%= titleAscSelected %>>Title A-Z</option>
+    <option data-order="desc" value="1" <%= titleDescSelected %>>Title Z-A</option>
+    <option data-order="desc" value="2" <%= dateIDescSelected %>>Newest</option>
+    <option data-order="asc" value="2" <%= dateIAscSelected %>>Oldest</option>
+    
     </select>
-    <%
-        }
-    %>
     <input type="hidden" value="<%= order %>" name="data-order">
     <input style="display:none"  type="submit" name="submit_search" value="go">
-
+  </form>
+  </div>
+</div>
 <script type="text/javascript">
   var jQ = jQuery.noConflict();
   jQ(document).ready(function() {
@@ -280,14 +254,12 @@
      jQ(this).closest('form').trigger('submit');
   });
   });
-</script>
- </form>
- </div>
- </div>
+</script> 
+
 <div class ="discovery-result-results">
 <%-- output the results using the browselist tag --%>
-   <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" showThumbsCollection="<%=show_thumbnails %>" />
-  <%-- give us the bottom report on what we are looking at --%>
+   <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>"   />
+  <%-- give us the bottom repaort on what we are looking at --%>
 </div>
 
   <%--  do the bottom previous and next page links --%>
@@ -332,7 +304,7 @@
    <%if (mostdownloaded != null && mostdownloaded.count() > 0) { %>
 
   <div class="panel panel-primary most-downloaded">
-               <div class="panel-heading"><h1>Most downloaded</h1></div>
+               <div class="panel-heading"><h2 class="panel-title">Most downloaded</h2></div>
                <div class="panel-body">
 
               <%
@@ -355,7 +327,7 @@
               <article >
               <div class="communityflag"><span>Collection:</span>
                 <a href="<%= request.getContextPath() %>/handle/<%=col.getHandle() %>" ><%= col.getName()  %></a></div>
-                <h1><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h1>
+                <h3 class="article-title"><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h3>
                 <% if (dcv!=null&&dcv.length>0)
                   {
                    for(int i=0;i<authors.length;i++)
@@ -469,8 +441,7 @@
 
 
 
- <%
- if (!subscribe_hide) { %>
+
 <div class = "panel panel-default ">
   <div class = "panel-heading">Email subscription</div>
   <div class = "panel-body">
@@ -491,7 +462,6 @@
 %>
     </form></div>
 </div>
-<% } %>
 </aside>
 </dspace:sidebar>
 

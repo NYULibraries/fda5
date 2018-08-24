@@ -35,9 +35,6 @@
 	// Is anyone logged in?
 	EPerson user = (EPerson) request.getAttribute("dspace.current.user");
 
-	//added by Kate to make sure we are not using collection specific indexes in the general browse
-	int index_limit=ConfigurationManager.getIntProperty("browse.indexes.general.size",4);
-
 	// Is the logged in user an admin
 	Boolean admin = (Boolean)request.getAttribute("is.admin");
 	boolean isAdmin = (admin == null ? false : admin.booleanValue());
@@ -79,7 +76,7 @@
 		Locale sessionLocale = UIUtil.getSessionLocale(request);
 %>
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+			<button aria-label="Toggle Menu" type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
 			<a class="navbar-brand" href="/"><img height="35" width="432" src="<%= request.getContextPath() %>/image/nyu_fda_logo.png" alt="FDA" /> </a> </div>
 			<nav class="collapse navbar-collapse bs-navbar-collapse" >
 			<div class="nav navbar-nav navbar-right">
@@ -95,10 +92,7 @@
 																<%-- Insert the dynamic browse indices here --%>
 																
 																<%
-																				//for (int i = 0; i < bis.length; i++)- Modified by Kate to exclude
-																				//collection specific indexes, probably better make an array but will
-																				//leave for now
-																				for (int i = 0; i < index_limit; i++)
+																				for (int i = 0; i < bis.length; i++)
 																				{
 																								BrowseIndex bix = bis[i];
 																								String key = "browse.menu." + bix.getName();
