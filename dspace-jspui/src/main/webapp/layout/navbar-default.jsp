@@ -35,6 +35,9 @@
 	// Is anyone logged in?
 	EPerson user = (EPerson) request.getAttribute("dspace.current.user");
 
+	//added by Kate to make sure we are not using collection specific indexes in the general browse
+    int index_limit=ConfigurationManager.getIntProperty("browse.indexes.general.size",4);
+
 	// Is the logged in user an admin
 	Boolean admin = (Boolean)request.getAttribute("is.admin");
 	boolean isAdmin = (admin == null ? false : admin.booleanValue());
@@ -92,7 +95,7 @@
 																<%-- Insert the dynamic browse indices here --%>
 																
 																<%
-																				for (int i = 0; i < bis.length; i++)
+																				for (int i = 0; i < 4; i++)
 																				{
 																								BrowseIndex bix = bis[i];
 																								String key = "browse.menu." + bix.getName();
