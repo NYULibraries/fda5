@@ -1,13 +1,15 @@
-.collections-list h3 {
+.collections-list .section-title {
   color: $text-color;
   margin: 10px 0;
   color: #816B56;
   text-transform: uppercase;
   font-size: 16px;
+  font-weight: bold;
 }
 
 .fda-tree {
   max-width: 44rem;
+
   a {
     display: block;
     height: auto;
@@ -16,7 +18,9 @@
   .t1 {
     font-size: 1.2rem;
     margin: 0;
-    display:inline-block;
+    display: inline-block;
+    font-weight: bold;
+
     a:link, a:visited {
       color: $text-color;
       padding: 7px 0;
@@ -24,8 +28,7 @@
     }
   }
 
-
-   ul {
+  ul {
     list-style: none;
     padding-left: 0;
     margin: 0;
@@ -37,7 +40,6 @@
 
   ul > li > ul {
     margin-left: 30px;
-
     background-color: lighten($taupe-light, 29%);
     padding-top: 10px;
     padding-bottom: 10px;

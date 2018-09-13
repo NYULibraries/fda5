@@ -1,22 +1,27 @@
 .facets {
   a {
     padding: 10px 15px;
+
     &:link, &:visited {
-      color: shade($taupe-dark, 5%);
+      color: $taupe-darker;
       display: block;
     }
+
     &:hover {
       background-color: lighten($taupe-super-light, 1%);
     }
+
     .pull-right {
       float: none !important;
       display: block;
       text-align: right;
     }
   }
+
   .list-group-item {
     font-size: .8rem;
   }
+
   .list-group-nextlink {
     a {
       &:hover {
@@ -24,6 +29,7 @@
       }
     }
   }
+
   li {
     padding: 0;
   }
@@ -31,10 +37,11 @@
 
 .facetName {
   display: block;
-  color: $taupe-dark;
+  color: $taupe-darker;
   text-transform: uppercase;
   font-size: .85rem;
-  // color: $taupe-header;
+
+  //color: $taupe-header;
   font-weight: 500;
   padding: 0 0 3px 5px;
   text-shadow: 1px 1px 1px white;

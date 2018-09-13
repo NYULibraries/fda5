@@ -1,104 +1,105 @@
 .btn-default {
-    background-color: #eee;
+  background-color: #eee;
 
-    @include background-image(linear-gradient($taupe-super-light, tint($taupe-light, 60%)));
+  @include background-image(linear-gradient(tint($taupe-super-light, 5%), tint($taupe-light, 90%)));
+
+  background-repeat: repeat-x;
+  border-color: tint($taupe-light, 50%);
+
+  &:hover, &:focus {
+    background-color: #ebebeb;
+
+    @include background-image(linear-gradient(tint($taupe-light, 90%), $taupe-super-light));
 
     background-repeat: repeat-x;
-    border-color: tint($taupe-light, 50%);
-
-    &:hover, &:focus {
-        background-color: #ebebeb;
-
-        @include background-image(linear-gradient(tint($taupe-light, 60%), $taupe-super-light));
-
-        background-repeat: repeat-x;
-        border-color: tint($taupe-light, 30%);
-    }
+    border-color: $taupe-light;
+    color: $teal;
+  }
 }
 
 .btn-primary {
-    color: #fff;
-    background-color: $taupe-dark;
+  color: #fff;
+  background-color: $taupe-darker;
 
-    @include background-image(linear-gradient($taupe-dark, #8A7D6E));
+  @include background-image(linear-gradient($taupe-darker, $taupe-darker2));
 
-    background-repeat: repeat-x;
-    border-color: #8A7D6E;
+  background-repeat: repeat-x;
+  border-color: $taupe-darker;
 
-    &[disabled] {
-        border-color: #8A7D6E;
-    }
+  &[disabled] {
+    border-color: $taupe-darker;
+  }
 
-    &:hover, &:focus {
-        @include background-image(linear-gradient(#8A7D6E, $taupe-dark));
+  &:hover, &:focus {
+    @include background-image(linear-gradient($taupe-darker2, $taupe-darker));
 
-        border-color: #8A7D6E;
-    }
+    border-color: $taupe-darker;
+  }
 
-    &:active {
-        @include background-image(linear-gradient($taupe-dark, $taupe-dark));
+  &:active {
+    @include background-image(linear-gradient($taupe-dark, $taupe-dark));
 
-        border-color: shade($taupe-dark, 4%);
-    }
+    border-color: shade($taupe-darker, 4%);
+  }
 }
 
 .btn-info {
-    color: #fff !important;
+  color: #fff !important;
 
-    @include background-image(linear-gradient($tertiary-light, $tertiary));
+  @include background-image(linear-gradient($tertiary-light, $tertiary));
 
-    background-repeat: repeat-x;
-    border-color: shade($tertiary, 4%);
+  background-repeat: repeat-x;
+  border-color: shade($tertiary, 4%);
 
-    &:hover, &:focus {
-        color: #fff;
+  &:hover, &:focus {
+    color: #fff;
 
-        @include background-image(linear-gradient($tertiary, $tertiary-light));
+    @include background-image(linear-gradient($tertiary, $tertiary-light));
 
-        border-color: shade($tertiary, 14%);
-    }
+    border-color: shade($tertiary, 14%);
+  }
 }
 
 .btn-danger {
-    // filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de',endColorstr='#ff31b0d5',GradientType=0);
-    @include background-image(linear-gradient($nyu-red-light, $nyu-red));
+  // filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff5bc0de',endColorstr='#ff31b0d5',GradientType=0);
+  @include background-image(linear-gradient($nyu-red-light, $nyu-red));
 
-    border-color: shade($nyu-red, 4%);
+  border-color: shade($nyu-red, 4%);
 
-    &:hover {
-        @include background-image(linear-gradient($nyu-red, $nyu-red-light));
-    }
+  &:hover {
+    @include background-image(linear-gradient($nyu-red, $nyu-red-light));
+  }
 
-    &:focus, &:active {
-        @include background-image(linear-gradient($nyu-red, scale-saturation($nyu-red, 30%)));
-    }
+  &:focus, &:active {
+    @include background-image(linear-gradient($nyu-red, scale-saturation($nyu-red, 30%)));
+  }
 }
 
 .btn-success {
-    color: #fff;
+  color: #fff;
 
-    // @include background-image(linear-gradient($tertiary-light, $tertiary));
+  // @include background-image(linear-gradient($tertiary-light, $tertiary));
 
-    // background-repeat: repeat-x;
-    // border-color: shade($tertiary, 4%);
+  // background-repeat: repeat-x;
+  // border-color: shade($tertiary, 4%);
 
-    // &:hover, &:focus {
-    //     color: #fff;
+  // &:hover, &:focus {
+  //     color: #fff;
 
-    //     @include background-image(linear-gradient($tertiary, $tertiary-light));
+  //     @include background-image(linear-gradient($tertiary, $tertiary-light));
 
-    //     border-color: shade($tertiary, 14%);
-    // }
+  //     border-color: shade($tertiary, 14%);
+  // }
 }
 
 .license-accept-reject .btn-warning {
-    background-image: linear-gradient(to bottom, #8A7D6E 0, $taupe-dark 100%);
-    background-repeat: repeat-x;
-    border-color: #8A7D6E;
+  background-image: linear-gradient(to bottom, #8A7D6E 0, $taupe-dark 100%);
+  background-repeat: repeat-x;
+  border-color: #8A7D6E;
 }
 
 a.btn-primary {
-    &:link, &:hover, &:focus, &:visited, &:active {
-        color: white;
-    }
+  &:link, &:hover, &:focus, &:visited, &:active {
+    color: white;
+  }
 }
