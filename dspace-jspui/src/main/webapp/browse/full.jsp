@@ -139,14 +139,9 @@
 	
 	// prepare a url for use by form actions
 	String formaction = request.getContextPath() + "/";
-	// added by Kate to return to the collection page. There is something wrong with contextpath so has
-    // to normilize
-    String collectionHome = UIUtil.normalizePath(formaction);
-
 	if (collection != null)
 	{
 		formaction = formaction + "handle/" + collection.getHandle() + "/";
-		collectionHome = collectionHome +  "handle/" + collection.getHandle();
 	}
 	if (community != null)
 	{
@@ -182,20 +177,16 @@
     // Admin user or not
     Boolean admin_b = (Boolean)request.getAttribute("admin_button");
     boolean admin_button = (admin_b == null ? false : admin_b.booleanValue());
-
-    if (bix.isMetadataIndex()&&bix.getDataType().equals("semester"))
-      value=UIUtil.returnSemester(value);
-
 %>
 
 <%-- OK, so here we start to develop the various components we will use in the UI --%>
 
 <%@page import="java.util.Set"%>
-<dspace:layout locbar="Link" titlekey="browse.page-title" parenttitle="<%= scope %>" parentlink="<%= collectionHome %>" navbar="<%=layoutNavbar %>">
+<dspace:layout locbar="Link" titlekey="browse.page-title" navbar="<%=layoutNavbar %>">
 
 	<%-- Build the header (careful use of spacing) --%>
 	<header class="browseheader">
-	<h2><fmt:message key="browse.full.header"><fmt:param value="<%= scope %>"/></fmt:message> <fmt:message key="<%= typeKey %>"/> <%= value %></h2>
+	<h1><fmt:message key="browse.full.header"><fmt:param value="<%= scope %>"/></fmt:message> <fmt:message key="<%= typeKey %>"/> <%= value %></h1>
 
 	<%-- Include the main navigation for all the browse pages --%>
 	<%-- This first part is where we render the standard bits required by both possibly navigations --%>
@@ -253,7 +244,7 @@
 
 	%>
 
-		<select name="sort_by" id="sort_by" class="form-control">
+		<select name="sort_by" id="sort_by" class="form-control" aria-label="Sort">
  				<option value="1" data-order="ASC"  <%= titleAscSelected %>>Sorting by Title A-Z</option>
  				<option value="1" data-order="DESC" <%= titleDescSelected %>>Sorting by Title Z-A</option>
  				<option value="2" data-order="DESC" <%= dateIDescSelected %>>Issue date newest</option>
@@ -267,7 +258,7 @@
 	}
 %>
 	
-	<select name="rpp" id="rpp_select" class="form-control">
+	<select name="rpp" id="rpp_select" class="form-control" aria-label="Results Per Page">
 <%
 	for (int i = 5; i <= 100 ; i += 5)
 	{
