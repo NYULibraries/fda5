@@ -139,8 +139,8 @@
 	<h2 class="sr-only">Search in this community </h2>
   	<form method="get" action="/jspui/handle/<%= community.getHandle() %>/simple-search " class="simplest-search">
 	<div class="form-group-flex">
-	  <div class="input-hold"><input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
-	  <div class="button-hold">   <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>
+	  <div class="input-hold"><input aria-label="search"  type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
+	  <div class="button-hold">   <button aria-label="submit" type="submit" class="btn btn-primary"><span aria-hidden="true" class="glyphicon glyphicon-search"></span></button></div>
 	</div>
   </form>
 </section>
