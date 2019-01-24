@@ -13,7 +13,6 @@ $violet_bright2: darken($violet_bright, 7%);
 $violet-dark: darken($violet, 8%);
 $taupe-dark: #A49483;
 $taupe-darker: #675949;
-$taupe-darker2: darken(#675949, 5%);
 
 $nyu-red-light: tint($nyu-red, 20%);
 $taupe-header: $taupe-darker;
@@ -21,8 +20,8 @@ $text-color2: darken($taupe-dark, 25%);
 $text-color: darken($taupe-dark, 31%);
 $taupe-super-light: #F6F5F4;
 $green_light: tint($green, 10%);
-$tertiary: darken($teal, 8%);
-$tertiary-light: tint($tertiary, 15%);
+$tertiary: $teal;
+$tertiary-light: tint($tertiary, 10%);
 
 @import "compass/css3/images";
 
@@ -57,10 +56,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   line-height: 1.25;
 }
 
-h1, .h1 {
-  font-size: 30px;
-}
-
 a, a:active, a:focus {
   outline: none;
   outline: 0;
@@ -85,10 +80,6 @@ a:focus {
   box-shadow: 0px 0px 0px 3px $teal;
   z-index: 1000;
   position: relative;
-}
-
-.alert-warning {
-  color: #846530;
 }
 
 .brand {
@@ -118,10 +109,6 @@ code {
 
 .table td {
   @include breakword(1);
-
-  a {
-    font-weight: bold;
-  }
 }
 
 .readmore {

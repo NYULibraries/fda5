@@ -43,7 +43,7 @@
     
     <form method="post" enctype="multipart/form-data" action="">
         <div class="container row">        	
-            <input class="form-control" type="file" size="40" name="file" multiple="multiple"/>
+            <input class="form-control" type="file" size="40" name="file"/>
         </div>
         
         <input type="hidden" name="item_id" value="<%= item.getID() %>"/>

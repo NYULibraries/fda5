@@ -46,7 +46,6 @@
 <%@page import="org.dspace.discovery.DiscoverResult.FacetResult"%>
 <%@page import="org.dspace.discovery.DiscoverResult"%>
 <%@page import="org.dspace.content.DSpaceObject"%>
-<%@page import="org.dspace.core.ConfigurationManager"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 
@@ -113,17 +112,6 @@
     // Admin user or not
     Boolean admin_b = (Boolean)request.getAttribute("admin_button");
     boolean admin_button = (admin_b == null ? false : admin_b.booleanValue());
-    String scopeHome="";
-    String scopeName = "";
-    //added by Kate to return to collection
-    if(searchScope != "")
-         {
-           //normalize
-           String site=UIUtil.normalizePath(request.getContextPath());
-
-           scopeHome= site+"/handle/"+searchScope;
-           scopeName = scope.getMetadata("name");
-        }
 %>
 
 <c:set var="dspace.layout.head.last" scope="request">
@@ -204,7 +192,7 @@
 </script>		
 </c:set>
 
-<dspace:layout titlekey="jsp.search.title" locbar="Link" parenttitle="<%= scopeName %>" parentlink="<%=scopeHome %>">
+<dspace:layout titlekey="jsp.search.title">
 
     <%-- <h1>Search Results</h1> --%>
 
@@ -248,10 +236,7 @@
 			<div class="form-group-flex keyword-contain-group">
       		<div class="form-flex-item"><label for="query"><fmt:message key="jsp.search.results.searchfor"/></label></div>
      			<div class="form-flex-item keyword-contain"><input type="text"  id="query" class="form-control" name="query" value="<%= (query==null ? "" : StringEscapeUtils.escapeHtml(query)) %>"/></div>
-	
-					<% if (StringUtils.isNotBlank(spellCheckQuery)) {%>
-						<p class="lead"><fmt:message key="jsp.search.didyoumean"><fmt:param><a id="spellCheckQuery" data-spell="<%= StringEscapeUtils.escapeHtml(spellCheckQuery) %>" href="#"><%= spellCheckQuery %></a></fmt:param></fmt:message></p>
-					<% } %>                  
+      	                
 			</div>  
 
 	
@@ -266,8 +251,8 @@
 			    boolean found = false;
 			    %>
 
-			<div class="form-group-flex">
-			<div class="form-flex-item" >	
+			<div class="form-group-flex  filter-group">
+			<div class="form-flex-item flabel" >	
 				<% if (idx == 1 ) { %>  
 				<label>where </label>  
 				<%  } else { %>  
@@ -319,16 +304,16 @@
 <% } %>
 
   	<div class="submit-contain">
-      			<button id="main-query-submit" type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+      			<button id="main-query-submit" aria-label="submit" type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
 						<input type="hidden" value="<%= rpp %>" name="rpp" />
 						<input type="hidden" value="<%= sortedBy %>" name="sort_by" />
 						<input type="hidden" value="<%= order %>" name="order" />
 		</div>
-	
+
 					<% if (StringUtils.isNotBlank(spellCheckQuery)) {%>
 						<p class="lead"><fmt:message key="jsp.search.didyoumean"><fmt:param><a id="spellCheckQuery" data-spell="<%= StringEscapeUtils.escapeHtml(spellCheckQuery) %>" href="#"><%= spellCheckQuery %></a></fmt:param></fmt:message></p>
-<% } %>
-  
+					<% } %>  
+					
 		</form>
 
 
@@ -437,13 +422,6 @@ else if( qResults != null)
                     + "&amp;etal=" + etAl
                     + "&amp;start=";
 
-
-     if(searchScope != "")
-     {
-       scopeHome= request.getContextPath()+"/handle/"+searchScope;
-       scopeName = scope.getMetadata("name");
-    }
-
     String nextURL = baseURL;
     String firstURL = baseURL;
     String lastURL = baseURL;
@@ -465,13 +443,13 @@ else if( qResults != null)
 	        qResults.getStart()+qResults.getMaxResults():qResults.getTotalSearchResults();
 %>
     <%-- <p>Results <//%=qResults.getStart()+1%>-<//%=qResults.getStart()+qResults.getHitHandles().size()%> of --%>
-	<h3 class="resultsnum"><fmt:message key="jsp.search.results.results">
+	<h1 class="resultsnum h3"><fmt:message key="jsp.search.results.results">
 
         <fmt:param><%=qResults.getStart()+1%></fmt:param> 
         <fmt:param><%=lastHint%></fmt:param>
         <fmt:param><%=qResults.getTotalSearchResults()%></fmt:param>
       <fmt:param><%=(float) qResults.getSearchTime() / 1000%></fmt:param>
-    </fmt:message></h3>
+    </fmt:message></h1>
 <!-- give a content to the div -->
 	
 
@@ -495,7 +473,7 @@ else if( qResults != null)
 				}
 	} %>	
 		
-           <select name="rpp" class="form-control" id="rpp_select">
+           <select name="rpp" class="form-control" id="rpp_select" aria-label="Results Per Page">
 <%
                for (int i = 5; i <= 100 ; i += 5)
                {
@@ -513,10 +491,8 @@ else if( qResults != null)
 %>
             <!--   <label for="sort_by">   sorted by <fmt:message key="search.results.sort-by"/></label> -->
          
-							<select name="sort_by" id="sort_by" class="form-control">
-							       <% if((scope==null)||(ConfigurationManager.getProperty("webui.collection.home.specialsort."+scope.getID())==null)) { %>
+							<select name="sort_by" id="sort_by" class="form-control" aria-label="Sorting">
 									<option value="score"><fmt:message key="search.sort-by.relevance"/></option>
-								    <% } %>
 									<option data-order="ASC" value="dc.title_sort" <%= titleAscSelected %>>Title A-Z</option>
 									<option data-order="DESC" value="dc.title_sort" <%= titleDescSelected %>>Title Z-A</option>
  									<option data-order="DESC" value="dc.date.issued_dt" <%=dateIDescSelected%>  >Newest</option>
@@ -565,11 +541,7 @@ else if( qResults != null)
     <% if ((communities.length > 0) || (collections.length > 0 ) ) { %>
     <h3><fmt:message key="jsp.search.results.itemhits"/></h3>
     <% } %>
-    <% if(ConfigurationManager.getProperty("webui.collectionhome.browse."+searchScope)!=null) { %>
-    <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" linkToEdit="true" />
-    <% } else { %>
-      <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" />
-    <% } %>
+    <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" />
     </div>
 <% } %>
 </div>

@@ -27,10 +27,9 @@
 <h1><fmt:message key="jsp.mydspace.task-complete.title"/></h1>
 
     <%-- <p>The task is complete, and notification has been sent to the appropriate people.</p> --%>
-    <p><fmt:message key="jsp.mydspace.task-complete.text1.export"><fmt:param><%= request.getContextPath() %>/mydspace</fmt:param>
-                                                                   			</fmt:message></p>
+    <p><fmt:message key="jsp.mydspace.task-complete.text1"/></p>
  
     <%-- <p align="center"><a href="<%= request.getContextPath() %>/mydspace">Return to My DSpace </a></p> --%>
-    <%-- <p align="center"><a href="<%= request.getContextPath() %>/mydspace"><fmt:message key="jsp.mydspace.general.returnto-mydspace"/> </a></p>--%>
+    <p align="center"><a href="<%= request.getContextPath() %>/mydspace"><fmt:message key="jsp.mydspace.general.returnto-mydspace"/> </a></p>
  
 </dspace:layout>

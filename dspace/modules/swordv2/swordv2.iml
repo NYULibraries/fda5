@@ -130,7 +130,7 @@
     <orderEntry type="library" name="Maven: com.google.oauth-client:google-oauth-client:1.19.0" level="project" />
     <orderEntry type="library" name="Maven: joda-time:joda-time:2.3" level="project" />
     <orderEntry type="library" name="Maven: javax.inject:javax.inject:1" level="project" />
-    <orderEntry type="library" name="Maven: org.dspace:dspace-api-lang:5.0.6" level="project" />
+    <orderEntry type="library" name="Maven: org.dspace:dspace-api-lang:5.0.7" level="project" />
     <orderEntry type="library" name="Maven: ant-contrib:ant-contrib:1.0b3" level="project" />
     <orderEntry type="module" module-name="dspace-swordv2" />
     <orderEntry type="module" module-name="dspace-swordv2" />

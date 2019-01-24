@@ -52,7 +52,7 @@
 <%-- ====================================================== --%>
 <div class="col-md-10">
 	<div class="row">
-		<span class="metadataFieldLabel col-md-4"><fmt:message key="jsp.submit.access.private_setting.heading1"/></span>
+		<span class="metadataFieldLabel col-md-4"><fmt:message key="jsp.submit.access.private_setting.heading"/></span> 
 		<span
 			class="metadataFieldValue col-md-8"> <% if(isDiscoverable) { %>
 			<fmt:message

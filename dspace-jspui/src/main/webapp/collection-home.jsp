@@ -72,7 +72,13 @@
     Boolean  search_f   = (Boolean)request.getAttribute("can_read");
     boolean  search_form = (search_f  == null ? false : search_f.booleanValue());
 
-  // get the browse indices
+    //Added by kate to hide subscription
+     boolean subscribe_hide=false;
+     String subscribe_hide_str=ConfigurationManager.getProperty("webui.collectionhome.subscribe.hide");
+     if ((subscribe_hide_str!=null)&&(subscribe_hide_str.indexOf(collection.getHandle())!=-1))
+          subscribe_hide=true;
+
+    // get the browse indices
     BrowseIndex[] bis = BrowseIndex.getBrowseIndices();
 
     // Put the metadata values into guaranteed non-null variables
@@ -109,6 +115,9 @@
 
     Boolean showItems = (Boolean)request.getAttribute("show.items");
     boolean show_items = showItems != null ? showItems.booleanValue() : false;
+
+     //get the list of indexes added by Kate
+     String browseIndexesStr=ConfigurationManager.getProperty("webui.collectionhome.browse.metadata."+collection.getHandle());
 %>
 
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
@@ -138,16 +147,16 @@
   <%@ include file="discovery/static-tagcloud-facet.jsp" %>
 
  
-  <% if (collection.isPublic()||show_thumbnails)
+  <% if (collection.isPublic()||search_form)
     { %>
  <section class="search-area" role="search">
   <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
-      <input aria-label="search"  type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
+      <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
     </div>
     <div class="button-hold">
-      <button  aria-label="submit" type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+      <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
     </div>
     </div>
   </form>
@@ -157,7 +166,15 @@
           <p> <fmt:message  key="jsp.collection-home.private.warning"/></p>
   </section>
   <%  } %>
- 
+ <% if(browseIndexesStr!=null) {
+        String indexBase=request.getContextPath() + "/handle/" + collection.getHandle();
+        String[] browseIndexes=browseIndexesStr.split(",");
+        for(int i=0; i<browseIndexes.length; i++)  { %>
+          <section class="private-collection">
+          <div><a href="<%= indexBase%>/browse?type=<%=browseIndexes[i]%>">Browse by <%=browseIndexes[i] %></a></div>
+          </section>
+           <%  } %>
+    <%  } %>
 <section class="collectionlist">
 
 <% if (show_items)
@@ -228,7 +245,9 @@
 %>
        </select> 
 
-
+<% //do not show sort options if they are fixed
+  if (ConfigurationManager.getProperty("webui.collection.home.specialsort."+collection.getID())==null)
+     { %>
     <select id="sort_by" name="value" class="form-control" aria-label="Sorting Criteria">
     <option data-order="asc" value="1" <%= titleAscSelected %>>Title A-Z</option>
     <option data-order="desc" value="1" <%= titleDescSelected %>>Title Z-A</option>
@@ -236,6 +255,9 @@
     <option data-order="asc" value="2" <%= dateIAscSelected %>>Oldest</option>
     
     </select>
+    <%
+            }
+    %>
     <input type="hidden" value="<%= order %>" name="data-order">
     <input style="display:none"  type="submit" name="submit_search" value="go">
   </form>
@@ -441,7 +463,8 @@
 
 
 
-
+<%
+ if (!subscribe_hide) { %>
 <div class = "panel panel-default ">
   <div class = "panel-heading">Email subscription</div>
   <div class = "panel-body">
@@ -462,6 +485,7 @@
 %>
     </form></div>
 </div>
+<% } %>
 </aside>
 </dspace:sidebar>
 

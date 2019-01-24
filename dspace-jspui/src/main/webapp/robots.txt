@@ -1,8 +1,8 @@
 # The FULL URL to the DSpace sitemaps
-# The http://localhost:8080/jspui will be auto-filled with the value in dspace.cfg
+# The http://localhost:8083/xmlui will be auto-filled with the value in dspace.cfg
 # XML sitemap is listed first as it is preferred by most search engines
-Sitemap: http://archive.nyu.edu/sitemaps/sitemap_index.html
-Sitemap: http://archive.nyu.edu/sitemaps/sitemap_index.html
+Sitemap: http://localhost:8083/xmlui/sitemap
+Sitemap: http://localhost:8083/xmlui/htmlmap
 
 ##########################
 # Default Access Group

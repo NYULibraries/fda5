@@ -121,9 +121,9 @@
 
 	<%-- Build the header (careful use of spacing) --%>
 	<header class="browseheader">
-	<h1>
+	<h2>
 		<fmt:message key="browse.single.header"><fmt:param value="<%= scope %>"/></fmt:message> <fmt:message key="<%= typeKey %>"/>
-	</h1>
+	</h2>
 	</header>
 <%
 	if (!bix.isTagCloudEnabled())
@@ -158,14 +158,14 @@
 		}
 --%>
 	<%--	<label for="order"><fmt:message key="browse.single.order"/></label>--%>
-		<select name="order" id="order_sort" class="form-control" aria-label="Sort">
+		<select name="order" id="order_sort" class="form-control">
 		<%--		<fmt:message key="browse.order.asc" />--%>
 			<option value="ASC" <%= ascSelected %>>Sorting A-Z</option>
 			<option value="DESC" <%= descSelected %>>Sorting Z-A</option>
 		</select>
 		
 		<%--	<label for="rpp"><fmt:message key="browse.single.rpp"/></label>--%>
-		<select name="rpp" class="form-control" id="rpp_select"  aria-label="Results Per Page">
+		<select name="rpp" class="form-control" id="rpp_select">
 <%
 	for (int i = 10; i <= 100 ; i += 10)
 	{

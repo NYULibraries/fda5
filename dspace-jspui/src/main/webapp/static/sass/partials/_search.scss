@@ -55,39 +55,30 @@ form#results-pp {
   margin: 12px 0;
   border-top: 4px double tint($taupe-light, 40%);
   border-bottom: 4px double tint($taupe-light, 40%);
-
-  td em {
-    // This is to allow aXe tool to parse DOM correctly
-    display: inline-block;
-    font-style: normal;
-  }
 }
 
 .pagination {
-  > li > a {
-    border-color: tint($taupe-light, 40%);
-  }
-
-  > .active {
-    > a, > span, > a:hover, > span:hover, > a:focus, > span:focus {
-      z-index: 2;
-      color: #fff;
-      cursor: default;
-      background-color: darken($taupe-dark, 15%);
-      border-color: darken($taupe-dark, 15%);
+    > li > a {
+        border-color: tint($taupe-light, 40%);
     }
-  }
-
-  > .disabled {
-    > a, > span, > a:hover, > span:hover, > a:focus, > span:focus {
-      color: #717171;
-      cursor: not-allowed;
-      background-color: #fff;
-      border-color: tint($taupe-light, 40%);
+    > .active {
+     > a,  > span,   > a:hover,   > span:hover,   > a:focus,  > span:focus {
+        z-index: 2;
+        color: #fff;
+        cursor: default;
+        background-color: darken($taupe-dark, 15%);
+        border-color: darken($taupe-dark, 15%);
+     }
     }
-  }
+   >.disabled {
+    > a,  > span,   > a:hover,   > span:hover,   > a:focus,  > span:focus {
+        color:  #717171;
+        cursor: not-allowed;
+        background-color: #fff;
+        border-color: tint($taupe-light, 40%);
+    }
+   }
 }
-
 .simplest-search {
   .input-hold {
     display: block;

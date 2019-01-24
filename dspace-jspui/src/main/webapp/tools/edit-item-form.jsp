@@ -38,7 +38,6 @@
 <%@ page import="org.dspace.app.webui.servlet.admin.EditItemServlet" %>
 <%@ page import="org.dspace.content.Bitstream" %>
 <%@ page import="org.dspace.content.BitstreamFormat" %>
-<%@ page import="org.dspace.content.Bitstream.BitstreamComparator" %>
 <%@ page import="org.dspace.content.Bundle" %>
 <%@ page import="org.dspace.content.Collection" %>
 <%@ page import="org.dspace.content.DCDate" %>
@@ -53,7 +52,6 @@
 <%@ page import="org.dspace.content.authority.Choices" %>
 <%@ page import="org.apache.commons.lang.StringUtils" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Arrays" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Iterator" %>
 <%@ page import="org.dspace.core.I18nUtil" %>
@@ -105,7 +103,7 @@
     Boolean publicize = (Boolean)request.getAttribute("publicize_button");
     boolean bPublicize = (publicize == null ? false : publicize.booleanValue());
 
-    Boolean reOrderBitstreams = false; //(Boolean)request.getAttribute("reorder_bitstreams_button");
+    Boolean reOrderBitstreams = (Boolean)request.getAttribute("reorder_bitstreams_button");
     boolean breOrderBitstreams = (reOrderBitstreams != null && reOrderBitstreams);
 %>
 
@@ -533,122 +531,6 @@
           sb.append("</div></div><br/>");
           out.write(sb.toString());
         }
-
-        void doSemester(javax.servlet.jsp.JspWriter out, Item item,
-                  String fieldName, String schema, String element, String qualifier, boolean repeatable, boolean required,
-                  boolean readonly, int fieldCountIncr, String label, PageContext pageContext, HttpServletRequest request)
-                  throws java.io.IOException
-                {
-
-                  Metadatum[] defaults = item.getMetadata(schema, "date", "issued", Item.ANY);
-                  int fieldCount = defaults.length + fieldCountIncr;
-                  StringBuffer sb = new StringBuffer();
-                  org.dspace.content.DCDate dateIssued;
-
-                  if (fieldCount == 0)
-                     fieldCount = 1;
-
-                  sb.append("<div class=\"row\"><label class=\"col-md-2"+ (required?" label-required":"") +"\">")
-                    .append(label)
-                    .append("</label><div class=\"col-md-10\">");
-
-                  for (int i = 0; i < fieldCount; i++)
-                  {
-                     if (i < defaults.length)
-                        dateIssued = new org.dspace.content.DCDate(defaults[i].value);
-                     else
-                        dateIssued = new org.dspace.content.DCDate("");
-
-                     sb.append("<div class=\"row col-md-12\"><div class=\"input-group col-md-10\"><div class=\"row\">")
-            			.append("<span class=\"input-group col-md-6\"><span class=\"input-group-addon\">")
-                     	.append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.semester"))
-                        .append("</span><select class=\"form-control\" name=\"")
-                        .append(fieldName)
-                        .append("_semester");
-                     if (repeatable && i>0)
-                     {
-                        sb.append('_').append(i);
-                     }
-                     if (readonly)
-                     {
-                         sb.append("\" disabled=\"disabled");
-                     }
-                     sb.append("\"><option value=\"-1\"")
-                        .append((dateIssued.getMonth() == -1 ? " selected=\"selected\"" : ""))
-                        .append(">")
-                        .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.no_semester"))
-                        .append("</option>");
-
-                     String semester="";
-                     String[] semester_options={"Fall","Winter","Spring","Summer"};
-                     int month=dateIssued.getMonth();
-                     switch (month) {
-                                 case 9: semester="Fall";
-                                     break;
-                                 case 1: semester="Winter";
-                                     break;
-                                 case 3: semester="Spring";
-                                     break;
-                                 case 7: semester="Summer";
-                                     break;
-                             }
-
-                      for (int j = 0; j < semester_options.length; j++)
-                              {
-
-                        sb.append("<option value=\"")
-                          .append(semester_options[j])
-                          .append((semester_options[j].equals(semester) ? "\" selected=\"selected\"" : "\"" ))
-                          .append(">")
-                          .append(semester_options[j])
-                          .append("</option>");
-                     }
-
-                     sb.append("</select></span>")
-            	            .append("<span class=\"input-group col-md-4\"><span class=\"input-group-addon\">")
-                            .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.year"))
-                            .append("</span><input class=\"form-control\" type=\"text\" name=\"")
-                        .append(fieldName)
-                        .append("_year");
-                     if (repeatable && i>0)
-                        sb.append("_").append(i);
-                     if (readonly)
-                     {
-                         sb.append("\" disabled=\"disabled");
-                     }
-                     sb.append("\" size=\"4\" maxlength=\"4\" value=\"")
-                        .append((dateIssued.getYear() > 0 ?
-                             String.valueOf(dateIssued.getYear()) : "" ))
-                        .append("\"/></span></div></div>\n");
-
-                     if (repeatable && !readonly && i < defaults.length)
-                     {
-                        // put a remove button next to filled in values
-                        sb.append("<button class=\"btn btn-danger col-md-2\" name=\"submit_")
-                          .append(fieldName)
-                          .append("_remove_")
-                          .append(i)
-                          .append("\" value=\"")
-                          .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove"))
-                          .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove")+"</button>");
-                     }
-                     else if (repeatable && !readonly && i == fieldCount - 1)
-                     {
-                        // put a 'more' button next to the last space
-                        sb.append("<button class=\"btn btn-default col-md-2\" name=\"submit_")
-                          .append(fieldName)
-                          .append("_add\" value=\"")
-                          .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add"))
-                          .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add")+"</button>");
-                     }
-                     // put a blank if nothing else
-                     sb.append("</div>");
-                  }
-                  sb.append("</div></div><br/>");
-                  out.write(sb.toString());
-                }
-
-
 
         void doSeriesNumber(javax.servlet.jsp.JspWriter out, Item item,
           String fieldName, String schema, String element, String qualifier, boolean repeatable,
@@ -1662,7 +1544,7 @@
         DCInputSet inputSet =
                 (DCInputSet) request.getAttribute("submission.inputs");
 
-        DCInput[] inputs = inputSet.getPageRows(0, true, true );
+        DCInput[] inputs = inputSet.getPageRows(0, true, false );
 
         for (int z = 0; z < inputs.length; z++)
         {
@@ -1714,11 +1596,6 @@
               doDate(out, item, fieldName, dcSchema, dcElement, dcQualifier,
                              repeatable, required, readonly, fieldCountIncr, label, pageContext, request);
           }
-           else if (inputType.equals("semester"))
-                 {
-                      doSemester(out, item, fieldName, dcSchema, dcElement, dcQualifier,
-                                           repeatable, required, readonly, fieldCountIncr, label, pageContext, request);
-                 }
           else if (inputType.equals("series"))
           {
               doSeriesNumber(out, item, fieldName, dcSchema, dcElement, dcQualifier,
@@ -1797,7 +1674,6 @@
     for (int i = 0; i < bundles.length; i++)
     {
         Bitstream[] bitstreams = bundles[i].getBitstreams();
-        Arrays.sort(bitstreams, new BitstreamComparator());
         for (int j = 0; j < bitstreams.length; j++)
         {
             ArrayList<Integer> bitstreamIdOrder = new ArrayList<Integer>();

@@ -248,7 +248,6 @@
       Tag for displaying a list of items.  Specify highlightrow (starting
       from zero) if a row should be highlit.  Specify an emphcolumn of
       "date" or "title" to emphasise the contents of a column.
-        Add showThumbs if you want to show thumbnails for that collection
     </info>
     <attribute>
       <name>items</name>
@@ -277,11 +276,6 @@
     </attribute>
     <attribute>
         <name>disableCrossLinks</name>
-        <required>false</required>
-        <rtexprvalue>true</rtexprvalue>
-    </attribute>
-    <attribute>
-        <name>showThumbsCollection</name>
         <required>false</required>
         <rtexprvalue>true</rtexprvalue>
     </attribute>
