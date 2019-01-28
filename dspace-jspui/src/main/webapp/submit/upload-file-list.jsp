@@ -24,6 +24,7 @@
 <%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
 
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Arrays" %>
 <%@ page import="org.apache.commons.lang.time.DateFormatUtils" %>
 <%@ page import="org.dspace.core.Context" %>
 <%@ page import="org.dspace.app.webui.servlet.SubmissionController" %>
@@ -34,6 +35,7 @@
 <%@ page import="org.dspace.authorize.ResourcePolicy" %>
 <%@ page import="org.dspace.content.Bitstream" %>
 <%@ page import="org.dspace.content.BitstreamFormat" %>
+<%@ page import="org.dspace.content.Bitstream.BitstreamComparator" %>
 <%@ page import="org.dspace.content.Bundle" %>
 <%@ page import="org.dspace.core.ConfigurationManager" %>
 
@@ -129,7 +131,7 @@
         // Access Setting
         headerClass = (headerClass == "oddRowEvenCol" ? "oddRowOddCol" : "oddRowEvenCol");
 %>
-                <th id="t7" class="<%= headerClass %>"><fmt:message key="jsp.submit.upload-file-list.tableheading7"/></th>
+               <!--<th id="t7" class="<%= headerClass %>"><fmt:message key="jsp.submit.upload-file-list.tableheading7"/></th>-->
 
 <%
     }
@@ -146,6 +148,8 @@
     if (bitstreams[0] != null) {
         bundles = bitstreams[0].getBundles();
     }
+
+    Arrays.sort(bitstreams, new BitstreamComparator());
 
     for (int i = 0; i < bitstreams.length; i++)
     {
@@ -164,7 +168,7 @@
         }
 
         // Full param to dspace:popup must be single variable
-        String supportLevelLink = LocaleSupport.getLocalizedMessage(pageContext, "help.formats") +"#" + supportLevel;
+       String supportLevelLink = LocaleSupport.getLocalizedMessage(pageContext, "help.formats") +"#" + supportLevel;
 %>
             <tr>
 		<td headers="t1" class="<%= row %>RowEvenCol" align="center">
@@ -197,10 +201,10 @@
                     </button>
                 </td>
                 <td headers="t5" class="<%= row %>RowEvenCol">
-                    <%= description %> <dspace:popup page="<%= supportLevelLink %>">(<%= supportLevel %>)</dspace:popup>
-                    <button type="submit" class="btn btn-default pull-right" name="submit_format_<%= bitstreams[i].getID() %>" value="<fmt:message key="jsp.submit.upload-file-list.button1"/>">
+                    <%= description %>
+                   <!-- <button type="submit" class="btn btn-default pull-right" name="submit_format_<%= bitstreams[i].getID() %>" value="<fmt:message key="jsp.submit.upload-file-list.button1"/>">
                     <span class="glyphicon glyphicon-file"></span>&nbsp;&nbsp;<fmt:message key="jsp.submit.upload-file-list.button1"/>
-                    </button>
+                    </button>-->
                 </td>
 <%
         // Checksum
@@ -218,11 +222,11 @@
         {
             column = (showChecksums ? "Even" : "Odd");
 %>
-                <td headers="t6" class="<%= row %>Row<%= column %>Col" style="text-align:center"> 
+                <!--<td headers="t6" class="<%= row %>Row<%= column %>Col" style="text-align:center">
                     <button class="btn btn-default pull-left" type="submit" name="submit_editPolicy_<%= bitstreams[i].getID() %>" value="<fmt:message key="jsp.submit.upload-file-list.button1"/>">
                     <span class="glyphicon glyphicon-lock"></span>&nbsp;&nbsp;<fmt:message key="jsp.submit.upload-file-list.button1"/>
                     </button>
-                </td>
+                </td>-->
 <%
         }
 %>

@@ -45,7 +45,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title><%= siteName %>: <%= title %></title>
+        <title><% title %> : Faculty Digital Archive </title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="Generator" content="<%= generator %>" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">

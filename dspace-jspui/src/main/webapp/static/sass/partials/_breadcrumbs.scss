@@ -22,6 +22,11 @@
     text-decoration: none;
     box-shadow: inset 0 -1px 0px lighten($taupe-dark, 1%);
   }
+
+  &:focus {
+    text-decoration: none;
+    box-shadow: 0px 0px 0px 3px $teal, inset 0 -1px 0px lighten($taupe-dark, 1%);
+  }
 }
 
 .breadcrumb > li + li:before {

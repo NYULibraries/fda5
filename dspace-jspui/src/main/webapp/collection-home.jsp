@@ -73,12 +73,12 @@
     boolean  search_form = (search_f  == null ? false : search_f.booleanValue());
 
     //Added by kate to hide subscription
-     boolean subscribe_hide=false;
-     String subscribe_hide_str=ConfigurationManager.getProperty("webui.collectionhome.subscribe.hide");
-     if ((subscribe_hide_str!=null)&&(subscribe_hide_str.indexOf(collection.getHandle())!=-1))
-          subscribe_hide=true;
+    boolean subscribe_hide=false;
+    String subscribe_hide_str=ConfigurationManager.getProperty("webui.collectionhome.subscribe.hide");
+    if ((subscribe_hide_str!=null)&&(subscribe_hide_str.indexOf(collection.getHandle())!=-1))
+      subscribe_hide=true;
 
-    // get the browse indices
+  // get the browse indices
     BrowseIndex[] bis = BrowseIndex.getBrowseIndices();
 
     // Put the metadata values into guaranteed non-null variables
@@ -116,8 +116,9 @@
     Boolean showItems = (Boolean)request.getAttribute("show.items");
     boolean show_items = showItems != null ? showItems.booleanValue() : false;
 
-     //get the list of indexes added by Kate
-     String browseIndexesStr=ConfigurationManager.getProperty("webui.collectionhome.browse.metadata."+collection.getHandle());
+    //get the list of indexes added by Kate
+    String browseIndexesStr=ConfigurationManager.getProperty("webui.collectionhome.browse.metadata."+collection.getHandle());
+
 %>
 
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
@@ -153,7 +154,11 @@
   <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
-      <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
+     <% if(ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())!=null) { %>
+      <input type="text" class="form-control" placeholder="<%=ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())%>" name="query" id="tequery">
+      <% } else { %>
+        <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
+      <% } %>
     </div>
     <div class="button-hold">
       <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>

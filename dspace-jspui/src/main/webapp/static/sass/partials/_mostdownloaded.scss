@@ -14,6 +14,7 @@
     font-size: .9rem;
     margin: 0;
     color: $taupe-header;
+    font-weight: 500;
   }
 
   div.authors {
@@ -69,6 +70,9 @@
 
   a:link, a:visited {
     color: $text-color;
+
+    // for aXe tool to parse
+    display: inline-block;
   }
 
   // a.viewmore {
