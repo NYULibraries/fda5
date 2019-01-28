@@ -133,10 +133,10 @@
 		    }
 		%>
 
-        <div class="alert alert-warning citation-info">
+        <!--<div class="alert alert-warning citation-info">
         <fmt:message key="jsp.display-item.identifier"/>
             <code><%= HandleManager.getCanonicalForm(handle) %></code>
-        </div>
+        </div>-->
 
 
 		<!-- side bar --> 
