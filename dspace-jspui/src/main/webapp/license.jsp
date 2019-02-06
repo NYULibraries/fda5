@@ -32,13 +32,12 @@
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.dspace.core.Constants" %>
 
-<dspace:layout locbar="noLink" titlekey="License" >
+<dspace:layout locbar="noLink" titlekey="jsp.license.title" >
 
 <div class="container">
     <div class="row">
       <div class="info-page col-md-9">
-        <header class="page-title-area"><h2>NYU Faculty Digital Archive 
-Non-Exclusive Distribution License</h2>
+        <header class="page-title-area"><h2>NYU Faculty Digital Archive Non-Exclusive Distribution License</h2>
         </header>
         <p>By granting a license at the time of submission, you assert that you either hold copyright to the content you submit, have permission of the copyright holder to distribute the content according to the terms of this license, or that the content is in the public domain, and that you grant to New York University (NYU) the non-exclusive right to reproduce, translate (as defined below), and distribute your submission (including the abstract) worldwide in electronic format.</p>
         <p>You agree that NYU may, without changing the content, translate the submission to any medium or format for the purpose of preservation. You also agree that NYU may keep more than one copy of this submission for purposes of security, back-up and preservation.
