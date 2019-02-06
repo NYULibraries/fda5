@@ -47,7 +47,7 @@
       <li>NYU full-time permanent faculty</li>
       <li>NYU students and affiliated researchers with authorization from a sponsoring department or faculty member</li>
     </ul>
-    <p>The academic units or individual faculty members decide what content to put into their respective collections, provided they have the right to share it according to the terms of the <a href="#">FDA deposit license</a>. <a href="https://docs.google.com/document/d/1jRUhOoRq7Rwvsrd8b5nHYI74HhfpYJ02i-vv0OdAOqE/edit?usp=sharing">LINK TO NEW PAGE</a></p>
+    <p>The academic units or individual faculty members decide what content to put into their respective collections, provided they have the right to share it according to the terms of the <a href="license.jsp">FDA deposit license</a>.</p>
     <p>Types of content may include, but are not limited to:</p>
     <ul>
       <li>Submitted manuscripts (as sent to journals for peer review)</li>
