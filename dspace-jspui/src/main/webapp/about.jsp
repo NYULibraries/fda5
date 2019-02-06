@@ -32,7 +32,7 @@
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.dspace.core.Constants" %>
 
-<dspace:layout locbar="noLink" titlekey="jsp.home.title" >
+<dspace:layout locbar="noLink" titlekey="jsp.about.title" >
 
 <div class="row">
 <div class="info-page col-md-9">
