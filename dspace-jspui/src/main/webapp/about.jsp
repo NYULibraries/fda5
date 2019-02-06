@@ -49,7 +49,7 @@
    NYU students and affiliated researchers with authorization from a sponsoring department or faculty member
 
 </p>
-<p>The academic units or individual faculty members decide what content to put into their respective collections, provided they have the right to share it according to the terms of the FDA deposit license. LINK TO NEW PAGE
+<p>The academic units or individual faculty members decide what content to put into their respective collections, provided they have the right to share it according to the terms of the FDA deposit <a href="license.jsp>license</a>.
 </p>
 <p>Types of content may include, but are not limited to:</p>
 <p>Submitted manuscripts (as sent to journals for peer review)
