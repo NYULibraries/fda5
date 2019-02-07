@@ -285,7 +285,7 @@
 
 <div class ="discovery-result-results">
 <%-- output the results using the browselist tag --%>
-   <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" showThumbsCollection="<%=show_thumbnails %>  />
+   <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" showThumbsCollection="<%=show_thumbnails %>"  />
   <%-- give us the bottom repaort on what we are looking at --%>
 </div>
 
@@ -463,10 +463,6 @@
     int discovery_facet_cols = 12;
   %>
   <%@ include file="discovery/static-sidebar-facet.jsp" %>
-
-
-
-
 
 <%
  if (!subscribe_hide) { %>
