@@ -32,7 +32,7 @@
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="org.dspace.core.Constants" %>
 
-<dspace:layout locbar="noLink" titlekey="jsp.license.title" >
+<dspace:layout locbar="link" titlekey="jsp.license.title" >
     <div class="row">
       <div class="info-page col-md-9">
         <header class="page-title-area"><h1>NYU Faculty Digital Archive Non-Exclusive Distribution License</h1>

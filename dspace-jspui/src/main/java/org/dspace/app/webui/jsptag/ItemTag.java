@@ -413,6 +413,8 @@ public class ItemTag extends TagSupport
             boolean isResolver = false;
             boolean isNoBreakLine = false;
             boolean isDisplay = false;
+            //Added by Kate to have a separate style for title
+            boolean isTitle = false;
 
             String style = null;
             Matcher fieldStyleMatcher = fieldStylePatter.matcher(field);
@@ -440,6 +442,8 @@ public class ItemTag extends TagSupport
 				isNoBreakLine = style.contains("nobreakline");
 				isDisplay = style.equals("inputform");
                 isResolver = style.contains("resolver") || urn2baseurl.keySet().contains(style);
+                //Added by Kate to have  a separate class for title
+                isTitle = style.contains("title");
                 field = field.replaceAll("\\("+style+"\\)", "");
             } 
 
@@ -469,8 +473,14 @@ public class ItemTag extends TagSupport
             
             if (values.length > 0)
             {
-                out.print("<tr><td class=\"metadataFieldLabel\">");
-
+                if(isTitle)
+                {
+                    out.print("<tr class=\"item-title \"><td class=\"metadataFieldLabel\">");
+                }
+                else
+                {
+                    out.print("<tr><td class=\"metadataFieldLabel\">");
+                }
                 String label = null;
                 try
                 {
@@ -487,26 +497,37 @@ public class ItemTag extends TagSupport
                 }
 
                         out.print(label);
-
-                out.print(":&nbsp;</td><td class=\"metadataFieldValue\">");
+                if(isTitle)
+                {
+                    out.print(":&nbsp;</td><td class=\"metadataFieldValue\"><h1 class=\"page-title\">");
+                }
+                else
+                {
+                    out.print(":&nbsp;</td><td class=\"metadataFieldValue\">");
+                }
                 
                 //If the values are in controlled vocabulary and the display value should be shown
-                if (isDisplay){
+                if (isDisplay) {
                     List<String> displayValues = new ArrayList<String>();
-                   
+
 
                     displayValues = Util.getControlledVocabulariesDisplayValueLocalized(item, values, schema, element, qualifier, sessionLocale);
-                                
-                        if (displayValues != null && !displayValues.isEmpty())
-                        {
-                            for (int d = 0; d < displayValues.size(); d++)
-                            {
-                                out.print(displayValues.get(d));
-                                if (d<displayValues.size()-1)  out.print(" <br/>");
-                                
-                            }
+
+                    if (displayValues != null && !displayValues.isEmpty()) {
+                        for (int d = 0; d < displayValues.size(); d++) {
+                            out.print(displayValues.get(d));
+                            if (d < displayValues.size() - 1) out.print(" <br/>");
+
                         }
-                    out.print("</td>");
+                    }
+                    if (isTitle)
+                    {
+                        out.print("</h1></td>");
+                    }
+                    else
+                    {
+                        out.print("</td>");
+                    }
                     continue;
                  }   
                 for (int j = 0; j < values.length; j++)
