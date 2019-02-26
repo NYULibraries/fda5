@@ -130,7 +130,7 @@
     <div class="form-group-flex">
       <div class="input-hold">
       <input type="text" aria-label="search" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
-      <div class="button-hold">   <button type="submit" aria-label="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>
+      <div class="button-hold">   <button type="submit" aria-label="submit" class="btn btn-primary"><span role="presentation" class="glyphicon glyphicon-search"></span></button></div>
     </div>
   </form>
  </section>

@@ -203,6 +203,7 @@
 						{
 
 						  if(item.isPublic()||editor_button) {
+                                                    if(item.getCollections().length>0) {
 							Collection col=item.getCollections()[0];
 							Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
 							String displayTitle = "Untitled";
@@ -234,6 +235,7 @@
 							   } %>
 					   </article>
 					  <%
+                                            }
 					   }
 					  }
 

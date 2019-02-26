@@ -155,13 +155,13 @@
     <div class="form-group-flex">
     <div class="input-hold">
      <% if(ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())!=null) { %>
-      <input type="text" class="form-control" placeholder="<%=ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())%>" name="query" id="tequery">
+      <input aria-label="Search this collection" type="text" class="form-control" placeholder="<%=ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())%>" name="query" id="tequery">
       <% } else { %>
-        <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
+        <input  aria-label="Search this collection" type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
       <% } %>
     </div>
     <div class="button-hold">
-      <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+      <button type="submit" class="btn btn-primary" aria-label="Submit Search"><span role="presentation" class="glyphicon glyphicon-search"></span></button>
     </div>
     </div>
   </form>
@@ -340,6 +340,7 @@
               {
 
               if(item.isPublic()||editor_button) {
+               if(item.getCollections().length>0) {
                 Collection col=item.getCollections()[0];
                 Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
                 String displayTitle = "Untitled";
@@ -370,7 +371,7 @@
                  <% }
                  } %>
              </article>
-            <%
+            <% }
              }
             }
 

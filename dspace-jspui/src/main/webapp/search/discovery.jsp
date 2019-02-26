@@ -406,16 +406,16 @@ Collection[] collections = (Collection[])request.getAttribute("collections");
 if( error )
 {
  %>
-	<p align="center" class="submitFormWarn">
+	<h1 class="submitFormWarn">
 		<fmt:message key="jsp.search.error.discovery" />
-	</p>
+	</h1>
 	<%
 }
 else if( qResults != null && qResults.getTotalSearchResults() == 0 )
 {
  %>
     <%-- <p align="center">Search produced no results.</p> --%>
-    <p align="center"><fmt:message key="jsp.search.general.noresults"/></p>
+    <h1 class="no-results"><fmt:message key="jsp.search.general.noresults"/></h1>
 <%
 }
 else if( qResults != null)
@@ -465,13 +465,13 @@ else if( qResults != null)
 	        qResults.getStart()+qResults.getMaxResults():qResults.getTotalSearchResults();
 %>
     <%-- <p>Results <//%=qResults.getStart()+1%>-<//%=qResults.getStart()+qResults.getHitHandles().size()%> of --%>
-	<h3 class="resultsnum"><fmt:message key="jsp.search.results.results">
+	<h1 class="resultsnum"><fmt:message key="jsp.search.results.results">
 
         <fmt:param><%=qResults.getStart()+1%></fmt:param> 
         <fmt:param><%=lastHint%></fmt:param>
         <fmt:param><%=qResults.getTotalSearchResults()%></fmt:param>
       <fmt:param><%=(float) qResults.getSearchTime() / 1000%></fmt:param>
-    </fmt:message></h3>
+    </fmt:message></h1>
 <!-- give a content to the div -->
 	
 
@@ -546,7 +546,7 @@ else if( qResults != null)
 <div class="discovery-result-results">
 <% if (communities.length > 0 ) { %>
    <div class="community-results">
-    <h3><fmt:message key="jsp.search.results.comhits"/></h3>
+    <h2><fmt:message key="jsp.search.results.comhits"/></h2>
     <dspace:communitylist  communities="<%= communities %>" />
   </div>
 <%  } %>
@@ -554,7 +554,7 @@ else if( qResults != null)
 
 <% if (collections.length > 0 ) { %>
     <div class="collection-results">
-    <h3><fmt:message key="jsp.search.results.colhits"/></h3>
+    <h2><fmt:message key="jsp.search.results.colhits"/></h2>
     <dspace:collectionlist collections="<%= collections %>" />
    
   </div>
@@ -563,7 +563,7 @@ else if( qResults != null)
 <% if (items.length > 0) { %>
     <div class="item-results">
     <% if ((communities.length > 0) || (collections.length > 0 ) ) { %>
-    <h3><fmt:message key="jsp.search.results.itemhits"/></h3>
+    <h2><fmt:message key="jsp.search.results.itemhits"/></h2>
     <% } %>
     <% if(ConfigurationManager.getProperty("webui.collectionhome.browse."+searchScope)!=null) { %>
     <dspace:itemlist items="<%= items %>" authorLimit="<%= etAl %>" linkToEdit="true" />
