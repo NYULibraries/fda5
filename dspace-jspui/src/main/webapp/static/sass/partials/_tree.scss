@@ -18,7 +18,7 @@
   .t1 {
     font-size: 1.2rem;
     margin: 0;
-    display: inline-block;
+    display: block;
     font-weight: bold;
 
     a:link, a:visited {
@@ -68,7 +68,8 @@
     margin-right: 0;
     width: 30px;
     color: shade($nyu-red, 5%);
-
+    float:left;
+    line-height: 1.8;
     &:hover, &:active, &:focus {
       text-decoration: none;
     }

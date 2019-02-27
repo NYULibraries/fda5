@@ -727,7 +727,7 @@ input#query {
 .fda-tree .t1 {
   font-size: 1.2rem;
   margin: 0;
-  display: inline-block;
+  display: block;
   font-weight: bold;
 }
 /* line 24, ../../sass/partials/_tree.scss */
@@ -777,12 +777,14 @@ input#query {
   margin-right: 0;
   width: 30px;
   color: #c71151;
+  float: left;
+  line-height: 1.8;
 }
-/* line 72, ../../sass/partials/_tree.scss */
+/* line 73, ../../sass/partials/_tree.scss */
 .fda-tree a.arrow:hover, .fda-tree a.arrow:active, .fda-tree a.arrow:focus {
   text-decoration: none;
 }
-/* line 76, ../../sass/partials/_tree.scss */
+/* line 77, ../../sass/partials/_tree.scss */
 .fda-tree a.arrow:hover {
   color: #d8366f;
 }
