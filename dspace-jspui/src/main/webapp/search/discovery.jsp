@@ -275,7 +275,7 @@
 					<%  }  %>  
 				</div>
 				<div class="form-flex-item fname" >	
-			    <select id="filter_field_<%=idx %>" name="filter_field_<%=idx %>" class="form-control">
+			    <select aria-label="parameter" id="filter_field_<%=idx %>" name="filter_field_<%=idx %>" class="form-control">
 				<%
 					for (DiscoverySearchFilter searchFilter : availableFilters)
 					{
@@ -296,7 +296,7 @@
 				%>
 				</select></div>
 				<div class="form-flex-item ftype" >	
-				<select id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" class="form-control">
+				<select  aria-label="operator" id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" class="form-control">
 				<%
 					for (String opt : options)
 					{
@@ -306,9 +306,9 @@
 				%>
 				</select></div>
 				<div class="form-flex-item fvalue" >	
-				<input type="text" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[2]) %>"  class="form-control" /></div>
+				<input aria-label="search term" type="text" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[2]) %>"  class="form-control" /></div>
 				<div class="form-flex-item fbutton" >	
-				<input class="btn btn-default" type="submit" id="submit_filter_remove_<%=idx %>" name="submit_filter_remove_<%=idx %>" value="X" /></div>
+				<input aria-label="remove this filter" class="btn btn-default" type="submit" id="submit_filter_remove_<%=idx %>" name="submit_filter_remove_<%=idx %>" value="X" /></div>
 			
 </div>
 				<%
@@ -358,7 +358,7 @@
 					idx++;
 				}
 		} %>
-		<select id="filtername" name="filtername" class="form-control fname">
+		<select aria-label="parameter" id="filtername" name="filtername" class="form-control fname">
 		<%
 			for (DiscoverySearchFilter searchFilter : availableFilters)
 			{
@@ -369,7 +369,7 @@
 		</select> 
 		</div>
     <div class="form-flex-item  ftype">
-			<select id="filtertype" name="filtertype" class="form-control ftype">
+			<select aria-label="operator" id="filtertype" name="filtertype" class="form-control ftype">
 		<%
 			for (String opt : options)
 			{
@@ -380,7 +380,7 @@
 		</select>
 		</div>
     <div class="form-flex-item fvalue">
-		<input type="text" id="filterquery" name="filterquery" class="form-control" 	required="required" />
+		<input aria-label="search terms" type="text" id="filterquery" name="filterquery" class="form-control" 	required="required" />
 		<input type="hidden" value="<%= rpp %>" name="rpp" />
 		<input type="hidden" value="<%= sortedBy %>" name="sort_by" />
 		<input type="hidden" value="<%= order %>" name="order" /></div>
