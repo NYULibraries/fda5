@@ -441,29 +441,31 @@ form#results-pp {
 .discovery-results-header .resultsnum {
   margin: 8px 0 0;
   float: left;
+  font-size: 24px;
+  line-height: 1.25;
 }
-/* line 303, ../../sass/partials/_search.scss */
+/* line 304, ../../sass/partials/_search.scss */
 .discovery-results-header .resultsnum span {
   font-size: 1rem;
 }
 
-/* line 309, ../../sass/partials/_search.scss */
+/* line 310, ../../sass/partials/_search.scss */
 input#query {
   width: 100%;
   padding: 6px 12px;
   font-size: 17px;
 }
 
-/* line 315, ../../sass/partials/_search.scss */
+/* line 316, ../../sass/partials/_search.scss */
 .discovery-pagination-controls {
   text-align: right;
 }
-/* line 318, ../../sass/partials/_search.scss */
+/* line 319, ../../sass/partials/_search.scss */
 .discovery-pagination-controls .form-group-flex {
   margin-bottom: 15px;
   display: none;
 }
-/* line 323, ../../sass/partials/_search.scss */
+/* line 324, ../../sass/partials/_search.scss */
 .discovery-pagination-controls .form-flex-item {
   -webkit-flex: 1 1 auto;
   flex: 1 1 auto;
@@ -476,111 +478,111 @@ input#query {
   align-items: center;
 }
 
-/* line 337, ../../sass/partials/_search.scss */
+/* line 338, ../../sass/partials/_search.scss */
 .remove-filter .btn {
   padding: 2px 0 0 0;
   height: 25px;
   width: 25px;
 }
 
-/* line 343, ../../sass/partials/_search.scss */
+/* line 344, ../../sass/partials/_search.scss */
 .small-button .btn {
   padding: 2px 5px 0 5px;
   height: 25px;
 }
 
 @media (min-width: 501px) {
-  /* line 350, ../../sass/partials/_search.scss */
+  /* line 351, ../../sass/partials/_search.scss */
   .discovery-search-form .submit-contain {
     margin-left: 78px;
   }
-  /* line 354, ../../sass/partials/_search.scss */
+  /* line 355, ../../sass/partials/_search.scss */
   .discovery-search-form .interface-link {
     margin-left: 78px;
   }
 }
 @media (max-width: 500px) {
-  /* line 362, ../../sass/partials/_search.scss */
+  /* line 363, ../../sass/partials/_search.scss */
   .discovery-search-form .submit-contain {
     width: 100%;
   }
-  /* line 366, ../../sass/partials/_search.scss */
+  /* line 367, ../../sass/partials/_search.scss */
   .discovery-search-form .form-group-flex {
     -webkit-flex-flow: row wrap;
     flex-flow: row wrap;
     -ms-flex-flow: row wrap;
     justify-content: space-between;
   }
-  /* line 372, ../../sass/partials/_search.scss */
+  /* line 373, ../../sass/partials/_search.scss */
   .discovery-search-form .form-group-flex.keyword-contain-group {
     float: none;
     margin-right: 0;
     width: 100%;
   }
-  /* line 378, ../../sass/partials/_search.scss */
+  /* line 379, ../../sass/partials/_search.scss */
   .discovery-search-form .form-group-flex.filter-group {
     display: flex;
     flex-wrap: wrap;
     -ms-flex-flow: row wrap;
     justify-content: space-between;
   }
-  /* line 386, ../../sass/partials/_search.scss */
+  /* line 387, ../../sass/partials/_search.scss */
   .discovery-search-form #main-query-submit {
     margin-top: 25px;
     width: 100%;
     display: block;
   }
-  /* line 392, ../../sass/partials/_search.scss */
+  /* line 393, ../../sass/partials/_search.scss */
   .discovery-search-form .keyword-contain {
     width: 100%;
   }
-  /* line 396, ../../sass/partials/_search.scss */
+  /* line 397, ../../sass/partials/_search.scss */
   .discovery-search-form .form-flex-item {
     margin-right: 0;
     margin-bottom: 4px;
   }
-  /* line 401, ../../sass/partials/_search.scss */
+  /* line 402, ../../sass/partials/_search.scss */
   .discovery-search-form .flabel {
     flex: 0 0 100%;
     -webkit-flex: 0 0 100%;
   }
-  /* line 406, ../../sass/partials/_search.scss */
+  /* line 407, ../../sass/partials/_search.scss */
   .discovery-search-form .fname {
     flex: 0 0 49%;
     -webkit-flex: 0 0 49%;
   }
-  /* line 410, ../../sass/partials/_search.scss */
+  /* line 411, ../../sass/partials/_search.scss */
   .discovery-search-form .fname select {
     width: 100%;
   }
-  /* line 415, ../../sass/partials/_search.scss */
+  /* line 416, ../../sass/partials/_search.scss */
   .discovery-search-form .ftype {
     flex: 0 0 49%;
     -webkit-flex: 0 0 49%;
   }
-  /* line 419, ../../sass/partials/_search.scss */
+  /* line 420, ../../sass/partials/_search.scss */
   .discovery-search-form .ftype select {
     width: 100%;
   }
-  /* line 424, ../../sass/partials/_search.scss */
+  /* line 425, ../../sass/partials/_search.scss */
   .discovery-search-form .fvalue {
     flex: 0 0 75%;
     -webkit-flex: 0 0 75%;
   }
-  /* line 428, ../../sass/partials/_search.scss */
+  /* line 429, ../../sass/partials/_search.scss */
   .discovery-search-form .fvalue input {
     width: 100%;
   }
-  /* line 434, ../../sass/partials/_search.scss */
+  /* line 435, ../../sass/partials/_search.scss */
   .discovery-search-form .keyword-contain input {
     width: 100%;
   }
-  /* line 439, ../../sass/partials/_search.scss */
+  /* line 440, ../../sass/partials/_search.scss */
   .discovery-search-form .fbutton {
     flex: 0 0 23%;
     -webkit-flex: 0 0 23%;
   }
-  /* line 443, ../../sass/partials/_search.scss */
+  /* line 444, ../../sass/partials/_search.scss */
   .discovery-search-form .fbutton input {
     width: 100%;
   }
