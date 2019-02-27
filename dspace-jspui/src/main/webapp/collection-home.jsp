@@ -151,7 +151,7 @@
   <% if (collection.isPublic()||search_form)
     { %>
  <section class="search-area" role="search">
-  <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
+  <form method="get" action="/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
      <% if(ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())!=null) { %>

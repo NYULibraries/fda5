@@ -408,6 +408,7 @@ public class DiscoverySearchRequestProcessor implements SearchRequestProcessor
             
             request.setAttribute("queryresults", qResults);
 
+
             try
             {
                 if (AuthorizeManager.isAdmin(context))
