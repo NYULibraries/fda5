@@ -151,17 +151,17 @@
   <% if (collection.isPublic()||search_form)
     { %>
  <section class="search-area" role="search">
-  <form method="get" action="/jspui/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
+  <form method="get" action="/handle/<%= collection.getHandle() %>/simple-search" class="simplest-search">
     <div class="form-group-flex">
     <div class="input-hold">
      <% if(ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())!=null) { %>
-      <input type="text" class="form-control" placeholder="<%=ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())%>" name="query" id="tequery">
+      <input aria-label="Search this collection" type="text" class="form-control" placeholder="<%=ConfigurationManager.getProperty("webui.collectionhome.search.hint."+collection.getHandle())%>" name="query" id="tequery">
       <% } else { %>
-        <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
+        <input  aria-label="Search this collection" type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery">
       <% } %>
     </div>
     <div class="button-hold">
-      <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button>
+      <button type="submit" class="btn btn-primary" aria-label="Submit Search"><span role="presentation" class="glyphicon glyphicon-search"></span></button>
     </div>
     </div>
   </form>
@@ -285,7 +285,7 @@
 
 <div class ="discovery-result-results">
 <%-- output the results using the browselist tag --%>
-   <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>"   />
+   <dspace:browselist browseInfo="<%= bi %>" emphcolumn="<%= bi.getSortOption().getMetadata() %>" showThumbsCollection="<%=show_thumbnails %>"  />
   <%-- give us the bottom repaort on what we are looking at --%>
 </div>
 
@@ -340,6 +340,7 @@
               {
 
               if(item.isPublic()||editor_button) {
+               if(item.getCollections().length>0) {
                 Collection col=item.getCollections()[0];
                 Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
                 String displayTitle = "Untitled";
@@ -370,7 +371,7 @@
                  <% }
                  } %>
              </article>
-            <%
+            <% }
              }
             }
 
@@ -463,10 +464,6 @@
     int discovery_facet_cols = 12;
   %>
   <%@ include file="discovery/static-sidebar-facet.jsp" %>
-
-
-
-
 
 <%
  if (!subscribe_hide) { %>

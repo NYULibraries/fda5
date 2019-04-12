@@ -130,11 +130,20 @@ code {
 
 .info-page {
   padding-bottom: 5rem;
+  font-size: 1rem;
 
   h3 {
     font-size: 1.25rem;
     font-weight: normal;
     margin-bottom: 0.4rem;
     margin-top: 2rem;
+  }
+  h2 {
+      font-size: 1.6rem;
+      margin-top: 2rem;
+  }
+  .info-page .page-title-area h2 {
+      font-size: 2rem;
+      margin-top: 20px;
   }
 }

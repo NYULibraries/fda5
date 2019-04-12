@@ -137,7 +137,7 @@
 
 <section class="search-area"  role="search">
 	<h2 class="sr-only">Search in this community </h2>
-  	<form method="get" action="/jspui/handle/<%= community.getHandle() %>/simple-search " class="simplest-search">
+  	<form method="get" action="/handle/<%= community.getHandle() %>/simple-search " class="simplest-search">
 	<div class="form-group-flex">
 	  <div class="input-hold"><input aria-label="search"  type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
 	  <div class="button-hold">   <button aria-label="submit" type="submit" class="btn btn-primary"><span aria-hidden="true" class="glyphicon glyphicon-search"></span></button></div>
@@ -203,6 +203,7 @@
 						{
 
 						  if(item.isPublic()||editor_button) {
+                                                    if(item.getCollections().length>0) {
 							Collection col=item.getCollections()[0];
 							Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
 							String displayTitle = "Untitled";
@@ -234,6 +235,7 @@
 							   } %>
 					   </article>
 					  <%
+                                            }
 					   }
 					  }
 

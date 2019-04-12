@@ -625,7 +625,7 @@ public class EditItemServlet extends DSpaceServlet
         }
 
 
-        DCInput[] inputs = inputSet.getPageRows(0, true, false );
+        DCInput[] inputs = inputSet.getPageRows(0, true, true );
         // Step 1:
         // clear out all item metadata defined on this page
         for (int i = 0; i < inputs.length; i++) {
