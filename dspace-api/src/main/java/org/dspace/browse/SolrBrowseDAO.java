@@ -23,6 +23,7 @@ import org.dspace.discovery.DiscoverQuery.SORT_ORDER;
 import org.dspace.discovery.DiscoverResult;
 import org.dspace.discovery.DiscoverResult.FacetResult;
 import org.dspace.discovery.DiscoverResult.SearchDocument;
+import org.dspace.core.ConfigurationManager;
 import org.dspace.discovery.SearchService;
 import org.dspace.discovery.SearchServiceException;
 import org.dspace.discovery.configuration.DiscoveryConfigurationParameters;
@@ -181,8 +182,15 @@ public class SolrBrowseDAO implements BrowseDAO
                 // filter on item to be sure to don't include any other object
                 // indexed in the Discovery Search core
                 query.addFilterQueries("search.resourcetype:" + Constants.ITEM);
-                if (orderField != null)
+                //hack, will re-write later using discovery configs-Kate
+                String specialSort= ConfigurationManager.getProperty("webui.collection.home.specialsort."+containerID);
+
+                if ( specialSort!=null )
                 {
+                    query.setSortField(specialSort);
+
+                }
+                else if (orderField != null) {
                     query.setSortField("bi_" + orderField + "_sort",
                             ascending ? SORT_ORDER.asc : SORT_ORDER.desc);
                 }

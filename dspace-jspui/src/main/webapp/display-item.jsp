@@ -133,10 +133,10 @@
 		    }
 		%>
 
-        <div class="alert alert-warning citation-info">
+        <!--<div class="alert alert-warning citation-info">
         <fmt:message key="jsp.display-item.identifier"/>
             <code><%= HandleManager.getCanonicalForm(handle) %></code>
-        </div>
+        </div>-->
 
 
 		<!-- side bar --> 
@@ -188,7 +188,7 @@
     <dspace:item-preview item="<%= item %>" />
     <dspace:item item="<%= item %>" collections="<%= collections %>" style="<%= displayStyle %>" />
 
-
+   
     <!-- show full item record button -->
 
 
@@ -262,7 +262,7 @@
 <%
         }
 %>
-    <a class="statisticsLink  btn btn-primary" href="<%= request.getContextPath() %>/handle/<%= handle %>/statistics"><fmt:message key="jsp.display-item.display-statistics"/></a>
+    <a aria-label ="View statistics for this item" class="statisticsLink  btn btn-primary" href="<%= request.getContextPath() %>/handle/<%= handle %>/statistics"><fmt:message key="jsp.display-item.display-statistics"/></a>
 
     <%-- SFX Link --%>
 <%

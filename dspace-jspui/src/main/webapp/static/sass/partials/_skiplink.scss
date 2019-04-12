@@ -1,0 +1,41 @@
+a#skip-nav {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  border: 0;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  width: 1px;
+  white-space: nowrap;
+
+  &:focus {
+    z-index: 1001;
+    clip: auto;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 10px 0;
+    background: #ffffff;
+    border: 2px solid $teal;
+    border-left: none;
+    border-right: none;
+    text-align: center;
+    font-weight: bold;
+    color: $teal;
+
+    // &::after {
+    //   content: "";
+    //   position: fixed;
+    //   width: 100%;
+    //   height: 100%;
+    //   background: rgba(0,0,0,0.5);
+    //   left: 0;
+    //   top: 0;
+    //   z-index: 0;
+    // }
+ 
+  }
+}

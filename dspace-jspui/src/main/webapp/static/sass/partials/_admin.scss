@@ -1,0 +1,22 @@
+.help-block {
+    margin-top: 15px;
+}
+
+form.edit_metadata {
+    max-width: 900px;
+}
+
+.btn-group .row {
+    /* http://localhost:8083/jspui/tools/authorize */
+    margin-bottom: 5px;
+}
+
+.panel .resumable-list {
+    margin: 0;
+}
+
+.label-required:after {
+    color: $nyu-red;
+    content: " *";
+    font-size: 1.2em;
+}

@@ -29,16 +29,8 @@
       The location of the main DSpace configuration file
     </description>
     <param-name>dspace-config</param-name>
-    <param-value>${dspace.dir}/config/dspace.cfg</param-value>
+    <param-value>/home/vagrant/dspace/config/dspace.cfg</param-value>
   </context-param>
-    <context-param>
-        <description>
-            The location of the oaicat.properties file containing
-            datapairs used to initialize the OAI repository software.
-        </description>
-        <param-name>properties</param-name>
-        <param-value>${dspace.dir}/config/oaicat.properties</param-value>
-    </context-param>
 
   <!-- new ConfigurationService initialization for dspace.dir -->
   <context-param>
@@ -46,7 +38,7 @@
       The location of the main DSpace configuration file
     </description>
     <param-name>dspace.dir</param-name>
-    <param-value>${dspace.dir}</param-value>
+    <param-value>/home/vagrant/dspace</param-value>
   </context-param>
   
   <context-param>
@@ -205,17 +197,7 @@
     <servlet-class>org.dspace.app.webui.servlet.admin.CollectionWizardServlet</servlet-class>
   </servlet>
 
-    <servlet>
-        <servlet-name>oai-handler</servlet-name>
-        <servlet-class>ORG.oclc.oai.server.OAIHandler</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>oai-wrapper</servlet-name>
-        <servlet-class>org.dspace.app.webui.servlet.OAIRequestWrapper</servlet-class>
-    </servlet>
-
-
-    <servlet>
+  <servlet>
     <servlet-name>community-list</servlet-name>
     <servlet-class>org.dspace.app.webui.servlet.CommunityListServlet</servlet-class>
   </servlet>
@@ -506,31 +488,13 @@
     <servlet-name>request-item</servlet-name>
     <servlet-class>org.dspace.app.webui.servlet.RequestItemServlet</servlet-class>
   </servlet>
-
-    <servlet>
-        <servlet-name>about</servlet-name>
-        <jsp-file>/about.jsp</jsp-file>
-    </servlet>
-    <servlet>
-        <servlet-name>contact</servlet-name>
-        <jsp-file>/contact.jsp</jsp-file>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>contact</servlet-name>
-        <url-pattern>/contact</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>about</servlet-name>
-        <url-pattern>/about</url-pattern>
-    </servlet-mapping>
-
+    	
   <servlet-mapping>
     <servlet-name>shibboleth-login</servlet-name>
     <url-pattern>/shibboleth-login</url-pattern>
   </servlet-mapping>
-
+ 
+  <!-- Servlet Mappings -->
 
   <servlet-mapping>
     <servlet-name>authorize</servlet-name>
@@ -866,18 +830,8 @@
     <servlet-name>request-item</servlet-name>
     <url-pattern>/request-item</url-pattern>
   </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>oai-handler</servlet-name>
-        <url-pattern>/requestHandler</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>oai-wrapper</servlet-name>
-        <url-pattern>/request</url-pattern>
-    </servlet-mapping>
-
-
-
-    <!-- Icon MIME type -->
+  
+  <!-- Icon MIME type -->
   <mime-mapping>
     <extension>ico</extension>
     <mime-type>image/x-icon</mime-type>

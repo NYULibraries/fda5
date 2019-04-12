@@ -92,18 +92,18 @@
 <%!
 	void showCommunity(Community c, JspWriter out, HttpServletRequest request, ItemCounter ic, Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
 	{
-		out.println( "<li>" );
-		out.println( "<h4><a href=\"" + request.getContextPath() + "/handle/"
-				+ c.getHandle() + "\">" + c.getMetadata("name") + "</a></h4>");
+		out.println( "<li role=\"treeitem\" >" );
+		out.println( "<span  class=\"t1\"><a href=\"" + request.getContextPath() + "/handle/"
+				+ c.getHandle() + "\">" + c.getMetadata("name") + "</a></span>");
 		// Get the collections in this community
 		Collection[] cols = (Collection[]) collectionMap.get(c.getID());
 		if (cols != null && cols.length > 0)
 		{
-		out.println( "<ul>" );
+		out.println( "<ul role=\"group\" >" );
 			for (int j = 0; j < cols.length; j++)
 			{
 				out.println("<li>");
-				out.println("<h4><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a></h4>");
+				out.println("<span  class=\"t1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a></span>");
 				out.println("</li>");
 			}
 		out.println( "</ul>" );
@@ -112,7 +112,7 @@
 		Community[] comms = (Community[]) subcommunityMap.get(c.getID());
 		if (comms != null && comms.length > 0)
 		{
-		out.println( "<ul>" );
+			out.println( "<ul role=\"group\" >" );
 			for (int k = 0; k < comms.length; k++)
 			{
 			   showCommunity(comms[k], out, request, ic, collectionMap, subcommunityMap);
@@ -133,13 +133,14 @@
 	  <img class="img-responsive" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
   </div> 
   <% } %>
- <h2><%= name %></h2></header>
+ <h1  id="page-title"><%= name %></h1></header>
 
-<section class="search-area">
-  <form method="get" action="/handle/<%= community.getHandle() %>/simple-search " class="simplest-search">
+<section class="search-area"  role="search">
+	<h2 class="sr-only">Search in this community </h2>
+  	<form method="get" action="/handle/<%= community.getHandle() %>/simple-search " class="simplest-search">
 	<div class="form-group-flex">
-	  <div class="input-hold"><input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
-	  <div class="button-hold">   <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>
+	  <div class="input-hold"><input aria-label="search"  type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
+	  <div class="button-hold">   <button aria-label="submit" type="submit" class="btn btn-primary"><span aria-hidden="true" class="glyphicon glyphicon-search"></span></button></div>
 	</div>
   </form>
 </section>
@@ -153,12 +154,12 @@
   if (subcommunities.length != 0)
 	{
 %>
-	<h3>Collections and sub-communities</h3>
+	<h2 class="section-title">Collections and sub-communities</h2>
 <%
 		for (int j = 0; j < subcommunities.length; j++)
 		{
 %>
-		<ul>
+		<ul role="tree">
 		  <%  showCommunity(subcommunities[j], out, request, ic, collectionMap, subcommunityMap);%>
 		</ul>
 		<% }
@@ -173,8 +174,8 @@
 			<%for (int j = 0; j < collections.length; j++)
 			{%>
 				<li>
-				 <h4><a href="<%= request.getContextPath() %>/handle/<%= collections[j].getHandle() %>">
-			  <%= collections[j].getMetadata("name") %></a></h4>
+				 <span class="t1"><a href="<%= request.getContextPath() %>/handle/<%= collections[j].getHandle() %>">
+			  <%= collections[j].getMetadata("name") %></a></span>
 				</li>
 	
 		<%} %>
@@ -191,7 +192,9 @@
 	{
 	%>
 						 <div class="panel panel-primary most-downloaded">
-						   <div class="panel-heading"><h1>Most downloaded</h1></div>
+						   <div class="panel-heading">
+                        	<h2 class="panel-title">Most downloaded</h2>
+                      		</div>
 						   <div class="panel-body">
 
 						<%
@@ -200,6 +203,7 @@
 						{
 
 						  if(item.isPublic()||editor_button) {
+                                                    if(item.getCollections().length>0) {
 							Collection col=item.getCollections()[0];
 							Metadatum[] dcv = item.getMetadata("dc", "title", null, Item.ANY);
 							String displayTitle = "Untitled";
@@ -214,7 +218,7 @@
 						<article >
 						  <div class="communityflag"><span>Collection:</span>
 							<a href="<%= request.getContextPath() %>/handle/<%=col.getHandle() %>" ><%= col.getName()  %></a></div>
-							<h1><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h1>
+							<h3 class="article-title"><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h3>
 							<% if (dcv!=null&&dcv.length>0)
 								{
 								 for(int i=0;i<authors.length;i++)
@@ -231,6 +235,7 @@
 							   } %>
 					   </article>
 					  <%
+                                            }
 					   }
 					  }
 

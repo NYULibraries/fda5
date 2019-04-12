@@ -79,7 +79,7 @@
 		Locale sessionLocale = UIUtil.getSessionLocale(request);
 %>
 		<div class="navbar-header">
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
+			<button aria-label="Toggle Menu" type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
 			<a class="navbar-brand" href="/"><img height="35" width="432" src="<%= request.getContextPath() %>/image/nyu_fda_logo.png" alt="FDA" /> </a> </div>
 			<nav class="collapse navbar-collapse bs-navbar-collapse" >
 			<div class="nav navbar-nav navbar-right">

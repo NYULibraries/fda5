@@ -374,7 +374,7 @@ public class BrowseListTag extends TagSupport
                 }
                 
                 // output the header
-                out.print("<th id=\"" + id +  "\" class=\"" + css + markClass +"\">"
+                out.print("<th  id=\"" + id +  "\" class=\"" + css + markClass +"\">"
                         + (emph[colIdx] ? "<strong>" : "")
                         + LocaleSupport.getLocalizedMessage(pageContext, message)
                         + (emph[colIdx] ? "</strong>" : "") + "</th>");

@@ -72,9 +72,9 @@
 <%!
  void showCommunity(Community c, JspWriter out, HttpServletRequest request, ItemCounter ic, Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
     {
-        out.println( "<li>" );
-        out.println( "<h4><a href=\"" + request.getContextPath() + "/handle/"
-                + c.getHandle() + "\">" + c.getMetadata("name") + "</a></h4>");
+        out.println( "<li role=\"treeitem\" >" );
+        out.println( "<span  class=\"t1\"><a href=\"" + request.getContextPath() + "/handle/"
+                + c.getHandle() + "\">" + c.getMetadata("name") + "</a></span>");
 
          // Get the sub-communities in this community
         Community[] comms = (Community[]) subcommunityMap.get(c.getID());
@@ -84,7 +84,7 @@
 
         if ((comms != null && comms.length > 0) || (cols != null && cols.length > 0) )
            {
-           out.println( "<ul style=\"display:none \">" );
+           out.println( "<ul role=\"group\" style=\"display:none \">" );
             }
         if (comms != null && comms.length > 0)
         {
@@ -102,8 +102,8 @@
 
             for (int j = 0; j < cols.length; j++)
             {
-                out.println("<li>");
-                out.println("<h4><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a></h4>");
+                out.println("<li role=\"treeitem\" >");
+                out.println("<span  class=\"t1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a></span>");
                 out.println("</li>");
             }
 
@@ -119,27 +119,28 @@
           <div class="row">
             <div class="col-md-8 ">
               <div class="brand">
-             
-                The Faculty Digital Archive (FDA) is a highly visible repository of NYU scholarship, allowing digital works—text, audio, video, data, and more—to be reliably shared and securely stored. Collections may be made freely available worldwide, offered to NYU only, or restricted to a specific group.</p>
-                Full-time faculty may contribute their research—unpublished and, in many cases, published—in the FDA. Departments, centers, or institutes may use the FDA to distribute their working papers, technical reports, or other research material. <a href="/about" class="readmore">Read more...</a></p>
+             <h1 class="sr-only" id="page-title">NYU Faculty Digital Archive Homepage</h1>
+                <p>The Faculty Digital Archive (FDA) is a highly visible repository of NYU scholarship, allowing digital works—text, audio, video, data, and more—to be reliably shared and securely stored. Collections may be made freely available worldwide, offered to NYU only, or restricted to a specific group.</p>
+                <p>Full-time faculty may contribute their research—unpublished and, in many cases, published—in the FDA. Departments, centers, or institutes may use the FDA to distribute their working papers, technical reports, or other research material. <a href="/about" class="readmore" aria-label="Read more about the NYU Faculty Digital Archive">Read more...</a></p>
               </div>
 
-<section class="search-area">
-  <form method="get" action="simple-search" class="simplest-search">
+<section class="search-area" role="search">
+  <h2 class="sr-only">Search the archive</h2>
+  <form method="get" action="/simple-search" class="simplest-search">
     <div class="form-group-flex">
       <div class="input-hold">
-      <input type="text" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
-      <div class="button-hold">   <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search"></span></button></div>
+      <input type="text" aria-label="search" class="form-control" placeholder="Search titles, authors, keywords..." name="query" id="tequery" ></div>
+      <div class="button-hold">   <button type="submit" aria-label="submit" class="btn btn-primary"><span role="presentation" class="glyphicon glyphicon-search"></span></button></div>
     </div>
   </form>
  </section>
 
-
+<h2>Communities and Collections</h2>
 <div class="fda-tree">
 <%
 for (int i = 0; i < communities.length; i++)
         {%>
-        <ul>
+        <ul role="tree">
           <%  showCommunity(communities[i], out, request, ic, collectionMap, subcommunityMap);%>
         </ul>
         <% }
@@ -151,9 +152,10 @@ for (int i = 0; i < communities.length; i++)
 if (mostdownloaded != null && mostdownloaded.count() > 0)
 {
 %>
-       <div class="col-md-4 sidebar">
+       <section class="col-md-4 sidebar">
                      <div class="panel panel-primary most-downloaded">
-                       <div class="panel-heading"><h1>Most downloaded</h1></div>
+                       <div class="panel-heading">
+                        <h2 class="panel-title">Most downloaded</h2></div>
                        <div class="panel-body">
 
                     <%
@@ -176,7 +178,7 @@ if (mostdownloaded != null && mostdownloaded.count() > 0)
                     <article >
                     <div class="communityflag"><span>Collection:</span>
                         <a href="<%= request.getContextPath() %>/handle/<%=col.getHandle() %>" ><%= col.getName()  %></a></div>
-                        <h1><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h1>
+                        <h3 class="article-title"><a href="<%= request.getContextPath() %>/handle/<%=item.getHandle() %>"><%= displayTitle %></a></h3>
                         <% if (dcv!=null&&dcv.length>0)
                             {
                              for(int i=0;i<authors.length;i++)
@@ -199,7 +201,7 @@ if (mostdownloaded != null && mostdownloaded.count() > 0)
 
 %>     </div>
         </div>
-            </div> <!-- end col 4 -->
+            </section> <!-- end col 4 -->
           </div> <!-- end col row  -->
 <% } %>
      

@@ -43,9 +43,9 @@
 %>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <title><%= siteName %>: <%= title %></title>
+        <title><%= title %> : <%= siteName %></title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="Generator" content="<%= generator %>" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -121,7 +121,7 @@
     <%-- HACK: leftmargin, topmargin: for non-CSS compliant Microsoft IE browser --%>
     <%-- HACK: marginwidth, marginheight: for non-CSS compliant Netscape browser --%>
     <body>
-<a class="sr-only" href="#content">Skip navigation</a>
+<a id="skip-nav" href="#content">Skip navigation</a>
 <header class="navbar navbar-inverse">    
     <%
     if (!navbar.equals("off"))
@@ -168,7 +168,7 @@
   });
   </script>
 </header>
-<main id="content">
+<main id="content" tabindex="-1">
 <%
     if (locbar)
     {

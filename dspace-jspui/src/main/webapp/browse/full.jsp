@@ -195,7 +195,7 @@
 
 	<%-- Build the header (careful use of spacing) --%>
 	<header class="browseheader">
-	<h2><fmt:message key="browse.full.header"><fmt:param value="<%= scope %>"/></fmt:message> <fmt:message key="<%= typeKey %>"/> <%= value %></h2>
+	<h1><fmt:message key="browse.full.header"><fmt:param value="<%= scope %>"/></fmt:message> <fmt:message key="<%= typeKey %>"/> <%= value %></h1>
 
 	<%-- Include the main navigation for all the browse pages --%>
 	<%-- This first part is where we render the standard bits required by both possibly navigations --%>
@@ -253,7 +253,7 @@
 
 	%>
 
-		<select name="sort_by" id="sort_by" class="form-control">
+		<select name="sort_by" id="sort_by" class="form-control" aria-label="Sort">
  				<option value="1" data-order="ASC"  <%= titleAscSelected %>>Sorting by Title A-Z</option>
  				<option value="1" data-order="DESC" <%= titleDescSelected %>>Sorting by Title Z-A</option>
  				<option value="2" data-order="DESC" <%= dateIDescSelected %>>Issue date newest</option>
@@ -267,7 +267,7 @@
 	}
 %>
 	
-	<select name="rpp" id="rpp_select" class="form-control">
+	<select name="rpp" id="rpp_select" class="form-control" aria-label="Results Per Page">
 <%
 	for (int i = 5; i <= 100 ; i += 5)
 	{

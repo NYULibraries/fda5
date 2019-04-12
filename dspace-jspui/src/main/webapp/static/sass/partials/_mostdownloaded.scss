@@ -1,0 +1,81 @@
+.badge {
+  background-color: $taupe-darker;
+  color: #ffffff;
+  margin: 0;
+  position: relative;
+  float: right;
+}
+
+.most-downloaded {
+  line-height: 1.35;
+
+  .panel-title {
+    text-transform: uppercase;
+    font-size: .9rem;
+    margin: 0;
+    color: $taupe-header;
+    font-weight: 500;
+  }
+
+  div.authors {
+    font-size: .8rem;
+    display: inline-block;
+    line-height: 1.35;
+
+    a:after {
+      content: ";";
+    }
+
+    &:last-child a:after {
+      content: "";
+    }
+  }
+
+  .communityflag {
+    // background-color: rgba($taupe-light, 0.2);
+    display: inline-block;
+
+    // margin-top: -15px;
+    // margin-left: -15px;
+    font-size: .8rem;
+    line-height: 1.35;
+
+    span {
+      display: none;
+    }
+  }
+
+  article {
+    padding: 10px 0;
+    border-bottom: 1px solid lighten($taupe-light, 15%);
+    box-shadow: 0px 1px 0px 0px white;
+
+    .article-title {
+      color: $taupe-header;
+      margin: 0;
+      font-size: .8rem;
+      margin: 0.1rem 0;
+      font-weight: bold;
+    }
+
+    &:first-child {
+      padding-top: 0;
+    }
+
+    &:last-child {
+      border-bottom: none;
+      box-shadow: none;
+    }
+  }
+
+  a:link, a:visited {
+    color: $text-color;
+
+    // for aXe tool to parse
+    display: inline-block;
+  }
+
+  // a.viewmore {
+  //   text-align: right;
+  // }
+}

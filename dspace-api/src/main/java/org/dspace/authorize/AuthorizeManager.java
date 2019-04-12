@@ -423,16 +423,13 @@ public class AuthorizeManager
 
         //for all items submitters==admins - added by Kate
 
-        if(userid != 0 && o instanceof Item)
-        {
+        if(userid != 0 && o instanceof Item) {
 
-           if (((Item) o).getSubmitter().getID() == userid)
-            {
+            if (((Item) o).getSubmitter().getID() == userid) {
                 return true;
             }
 
         }
-
 
         //
         // First, check all Resource Policies directly on this object

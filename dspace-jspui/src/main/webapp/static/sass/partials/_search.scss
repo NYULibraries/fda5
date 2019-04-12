@@ -1,0 +1,449 @@
+.form-group-flex {
+  display: flex;
+  -webkit-flex-flow: row nowrap;
+  flex-flow: row nowrap;
+  -ms-flex-flow: row nowrap;
+  -webkit-justify-content: center;
+  justify-content: center;
+}
+
+.panel-heading-simplesearch {
+  padding-left: 15px;
+}
+
+.search-area {
+  margin: 5px 0 40px 0;
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.1);
+  max-width: 35rem;
+
+  .panel-body {
+    padding: 0;
+  }
+
+  form {
+    box-shadow: 1px 1px 2px rgba(152, 137, 121, 0.46);
+    border-radius: 5px;
+  }
+}
+
+form#results-pp {
+  float: left;
+  margin-top: 20px;
+}
+
+.form-control:focus, .btn:focus {
+  border-color: $teal !important;
+  outline: 0;
+  outline-offset: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba($teal, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba($teal, 0.6);
+}
+
+.search-page-title, .resultsnum {
+  //font-family: Georgia, Times;
+  font-weight: normal;
+}
+
+.discovery-result-pagination {
+  h2 {
+    font-size: 1.5rem;
+  }
+}
+
+.discovery-result-results {
+  margin: 12px 0;
+  border-top: 4px double tint($taupe-light, 40%);
+  border-bottom: 4px double tint($taupe-light, 40%);
+
+  td em {
+    // This is to allow aXe tool to parse DOM correctly
+    display: inline-block;
+    font-style: normal;
+  }
+}
+
+.pagination {
+  > li > a {
+    border-color: tint($taupe-light, 40%);
+  }
+
+  > .active {
+    > a, > span, > a:hover, > span:hover, > a:focus, > span:focus {
+      z-index: 2;
+      color: #fff;
+      cursor: default;
+      background-color: darken($taupe-dark, 15%);
+      border-color: darken($taupe-dark, 15%);
+    }
+  }
+
+  > .disabled {
+    > a, > span, > a:hover, > span:hover, > a:focus, > span:focus {
+      color: #717171;
+      cursor: not-allowed;
+      background-color: #fff;
+      border-color: tint($taupe-light, 40%);
+    }
+  }
+}
+
+.simplest-search {
+  .input-hold {
+    display: block;
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
+
+    input#query {
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+      border-right: none;
+    }
+  }
+
+  .input-hold input {
+    width: 100%;
+    padding: 6px 12px;
+    font-size: 17px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border-right: none;
+    height: 40px;
+  }
+
+  .button-hold {
+    min-width: 15%;
+    display: block;
+    -webkit-flex: 0 0 auto;
+    flex: 0 0 auto;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background-color: $taupe-dark;
+
+    @include background-image(linear-gradient($taupe-dark, #8A7D6E));
+  }
+
+  .button-hold button {
+    width: 100%;
+    background: transparent;
+    border: transparent;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    height: 40px;
+  }
+}
+
+.form-control {
+  display: inline-block;
+  width: auto;
+}
+
+.discovery-search-form {
+  background-color: tint($taupe-light, 60%);
+  box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-color: tint($taupe-light, 40%);
+
+  .discovery-query {
+    .simple-search {
+      // max-width: 600px;
+   
+    }
+
+    // background-color: lighten($taupe-light, 20%);
+    transition: all .1s ease-in;
+  }
+
+  .interface-link {
+    color: darken($taupe-dark, 30%);
+    text-decoration: underline;
+    display: inline-block;
+    margin-top: 10px;
+  }
+
+  #main-query-submit {
+    min-width: 10%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  select {
+    max-width: 100%;
+  }
+
+  .discovery-query.open {
+    padding: 15px 15px 0;
+  }
+
+  .form-group-flex {
+    clear: both;
+    margin: 10px 0;
+    display: flex;
+    -webkit-flex-flow: row nowrap;
+    flex-flow: row nowrap;
+    -ms-flex-flow: row nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+
+    &.community-choose {
+      // background-color: pink;
+
+      select {
+        width: 100%;
+      }
+    }
+
+    &.keyword-contain-group {
+      // margin-right: 3%;
+      float: left;
+      width: 83%;
+    }
+  }
+
+  .form-flex-item {
+    display: block;
+    -webkit-flex: 0 1 auto;
+    flex: 0 1 auto;
+    -webkit-align-content: space-around;
+    -ms-flex-line-pack: distribute;
+    align-content: space-around;
+    padding-right: 10px;
+    max-width: 100%;
+
+    &.keyword-contain {
+      flex: 1 1 auto;
+      -webkit-flex: 1 1 auto;
+    }
+
+    &:last-child {
+      margin-right: 0px;
+    }
+
+    &.item-label {
+      -webkit-flex: 0 0 auto;
+      flex: 0 0 auto;
+    }
+
+    &.community-choose {
+      // flex: 1 1 auto;
+      // -webkit-flex: 1 1 auto;
+   
+    }
+
+    &.fvalue {
+      -webkit-flex: 1 0 auto;
+      flex: 1 1 auto;
+
+      input {
+        width: 100%;
+      }
+    }
+  }
+
+  label {
+    margin-bottom: 0;
+    width: 68px;
+  }
+
+  .discovery-search-filters {
+    display: none;
+    width: 100% !important;
+    background-color: lighten($taupe-light, 10%);
+  }
+}
+
+.table thead > tr > th,
+.table tbody > tr > th,
+.table tfoot > tr > th,
+.table thead > tr > td,
+.table tbody > tr > td,
+.table tfoot > tr > td {
+  padding-left: 0px;
+  text-align: left;
+}
+
+.table.panel-body {
+  td:first-child, th:first-child {
+    padding-left: 15px;
+  }
+}
+
+.item-results, .collectionlist, .browsing-by {
+  .table {
+    td:first-child {
+      padding-right: 25px;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    td:nth-child(2) {
+      /* the title column */
+      padding-right: 25px;
+      text-align: left;
+      width: 50%;
+      font-weight: bold;
+    }
+  }
+}
+
+#startnewsearch-link {
+  display: block;
+}
+
+.discovery-results-header {
+  margin-top: 3rem;
+
+  .resultsnum {
+    margin: 8px 0 0;
+    float: left;
+    font-size: 24px;
+    line-height: 1.25;
+    span {
+      font-size: 1rem;
+    }
+  }
+}
+
+input#query {
+  width: 100%;
+  padding: 6px 12px;
+  font-size: 17px;
+}
+
+.discovery-pagination-controls {
+  text-align: right;
+
+  .form-group-flex {
+    margin-bottom: 15px;
+    display: none;
+  }
+
+  .form-flex-item {
+    -webkit-flex: 1 1 auto;
+    flex: 1 1 auto;
+    -webkit-align-content: space-around;
+    -ms-flex-line-pack: distribute;
+    align-content: space-around;
+
+    /*border-right: 1px solid brown;*/
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+  }
+}
+
+.remove-filter .btn {
+  padding: 2px 0 0 0;
+  height: 25px;
+  width: 25px;
+}
+
+.small-button .btn {
+  padding: 2px 5px 0 5px;
+  height: 25px;
+}
+
+@media (min-width: 501px) {
+  .discovery-search-form {
+    .submit-contain {
+      margin-left: 78px;
+    }
+
+    .interface-link {
+      margin-left: 78px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .discovery-search-form {
+    .submit-contain {
+      width: 100%;
+    }
+
+    .form-group-flex {
+      -webkit-flex-flow: row wrap;
+      flex-flow: row wrap;
+      -ms-flex-flow: row wrap;
+      justify-content: space-between;
+
+      &.keyword-contain-group {
+        float: none;
+        margin-right: 0;
+        width: 100%;
+      }
+
+      &.filter-group {
+        display: flex;
+        flex-wrap: wrap;
+        -ms-flex-flow: row wrap;
+        justify-content: space-between;
+      }
+    }
+
+    #main-query-submit {
+      margin-top: 25px;
+      width: 100%;
+      display: block;
+    }
+
+    .keyword-contain {
+      width: 100%;
+    }
+
+    .form-flex-item {
+      margin-right: 0;
+      margin-bottom: 4px;
+    }
+
+    .flabel {
+      flex: 0 0 100%;
+      -webkit-flex: 0 0 100%;
+    }
+
+    .fname {
+      flex: 0 0 49%;
+      -webkit-flex: 0 0 49%;
+
+      select {
+        width: 100%;
+      }
+    }
+
+    .ftype {
+      flex: 0 0 49%;
+      -webkit-flex: 0 0 49%;
+
+      select {
+        width: 100%;
+      }
+    }
+
+    .fvalue {
+      flex: 0 0 75%;
+      -webkit-flex: 0 0 75%;
+
+      input {
+        width: 100%;
+      }
+    }
+
+    .keyword-contain {
+      input {
+        width: 100%;
+      }
+    }
+
+    .fbutton {
+      flex: 0 0 23%;
+      -webkit-flex: 0 0 23%;
+
+      input {
+        width: 100%;
+      }
+    }
+  }
+}

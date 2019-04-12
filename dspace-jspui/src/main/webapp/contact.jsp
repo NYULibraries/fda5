@@ -26,7 +26,7 @@
 <%@page import="org.apache.commons.lang.StringUtils"%>
 
 
-<dspace:layout locbar="noLink" titlekey="jsp.home.title" >
+<dspace:layout locbar="link" titlekey="jsp.contact.title" >
 
 <div class="row">
 <div class="info-page col-md-9">

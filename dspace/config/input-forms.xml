@@ -130,13 +130,16 @@
    <name-map collection-handle="2451/33605" form-name="Aruna1" />
  </form-map>
   <form-map>
+   <name-map collection-handle="2451/42113" form-name="Aruna1" />
+ </form-map>
+  <form-map>
    <name-map collection-handle="2451/33611" form-name="DataS" />
  </form-map>
  <form-map>
    <name-map collection-handle="2451/34304" form-name="therapy" />
  </form-map>
   <form-map>
-    <name-map collection-handle="123456789/34481" form-name="gallatin" />
+    <name-map collection-handle="2451/34841" form-name="gallatin" />
   </form-map>
 
 
@@ -391,48 +394,21 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <dc-element>date</dc-element>
          <dc-qualifier>issued</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>Date of Issue</label>
+         <label>Issue Date</label>
          <input-type>date</input-type>
          <hint> </hint>
 
          <required>You must enter at least the year.</required>
        </field>
 
-
-       <field>
-		 <dc-schema>dc</dc-schema>
-
-         <dc-element>identifier</dc-element>
-         <dc-qualifier>other</dc-qualifier>
-         <repeatable>false</repeatable>
-         <label>Identifier</label>
-         <input-type>onebox</input-type>
-         <hint></hint>
-
-         <required></required>
-       </field>
-
-
-
-       <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>type</dc-element>
-         <dc-qualifier></dc-qualifier>
-         <repeatable>false</repeatable>
-         <hint></hint>
-         <label>Type</label>
-         <input-type value-pairs-name="music_types">dropdown</input-type>
-         <required></required>
-       </field>
-
       <field>
 
 		 <dc-schema>dc</dc-schema>
-         <dc-element>language</dc-element>
-         <dc-qualifier>iso</dc-qualifier>
-         <repeatable>false</repeatable>
-         <label>Language</label>
-         <input-type value-pairs-name="music_lan">dropdown</input-type>
+         <dc-element>subject</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Subject Keywords</label>
+         <input-type>onebox</input-type>
 
          <hint></hint>
          <required></required>
@@ -440,63 +416,14 @@ it, please enter the types and the actual numbers or codes below.</hint>
 
        <field>
 		 <dc-schema>dc</dc-schema>
-         <dc-element>subject</dc-element>
+         <dc-element>category</dc-element>
 
          <dc-qualifier></dc-qualifier>
          <!-- An input-type of twobox MUST be marked as repeatable -->
-         <repeatable>false</repeatable>
-         <label>Subject Keywords</label>
+         <repeatable>true</repeatable>
+         <label>Category</label>
          <input-type value-pairs-name="music_subjects">dropdown</input-type>
-
-         <hint></hint>
-         <required></required>
-       </field>
-
-       <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>description</dc-element>
-         <dc-qualifier>abstract</dc-qualifier>
-
-         <repeatable>true</repeatable>
-         <label>Abstract</label>
-         <input-type>textarea</input-type>
-         <hint> Enter the abstract of the item below. </hint>
-         <required></required>
-       </field>
-
-       <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>description</dc-element>
-         <dc-qualifier>sponsorship</dc-qualifier>
-         <repeatable>true</repeatable>
-         <label>Sponsors</label>
-
-         <input-type>textarea</input-type>
-         <hint> Enter the names of any sponsors and/or funding codes in the box below. </hint>
-         <required></required>
-       </field>
-
-       <field>
-		 <dc-schema>dc</dc-schema>
-
-         <dc-element>description</dc-element>
-         <dc-qualifier></dc-qualifier>
-         <repeatable>true</repeatable>
-         <label>Description</label>
-         <input-type>textarea</input-type>
-         <hint> Enter any other description or comments in this box. </hint>
-
-         <required></required>
-       </field>
-       <field>
-		 <dc-schema>dc</dc-schema>
-         <dc-element>rights</dc-element>
-         <dc-qualifier></dc-qualifier>
-         <repeatable>false</repeatable>
-
-         <label>Rights</label>
-         <input-type>textarea</input-type>
-         <hint> Enter information on item's rights in this box. </hint>
+         <hint>Select the type(s) of content you are submitting. To select more than one value in the list, you may have to hold down the "CTRL" or "Shift" key</hint>
          <required></required>
        </field>
      </page>
@@ -520,6 +447,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <dc-schema>dc</dc-schema>
          <dc-element>title</dc-element>
          <dc-qualifier></dc-qualifier>
+
          <repeatable>false</repeatable>
          <label>Course Title</label>
          <input-type>onebox</input-type>
@@ -556,10 +484,23 @@ it, please enter the types and the actual numbers or codes below.</hint>
        <field>
          <dc-schema>dc</dc-schema>
          <dc-element>subject</dc-element>
+
          <dc-qualifier></dc-qualifier>
          <repeatable>true</repeatable>
          <label>Keywords</label>
          <input-type>onebox</input-type>
+
+         <hint></hint>
+         <required></required>
+       </field>
+        
+       <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>topic</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Subject Area</label>
+         <input-type value-pairs-name="gallatin_subjects">dropdown</input-type>
 
          <hint></hint>
          <required></required>
@@ -618,6 +559,17 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <label>Publisher</label>
          <input-type>onebox</input-type>
          <hint>Enter the name of the publisher of the previously issued instance of this item.</hint>
+         <required></required>
+       </field>
+       <field>
+		 <dc-schema>dc</dc-schema>
+         <dc-element>relation</dc-element>
+         <dc-qualifier>ispartofseries</dc-qualifier>
+         <repeatable>false</repeatable>
+
+         <label>Series</label>
+         <input-type>onebox</input-type>
+         <hint>Enter the title of the series this item is part of.</hint>
          <required></required>
        </field>
 
@@ -967,7 +919,7 @@ ase select 'N/A'.</hint>
                  <input-type>name</input-type>
 
          <hint>Enter the names of the authors of this item below.</hint>
-         <required>You need to add at least one author</required>
+         <required></required>
        </field>
        <field>
 		 <dc-schema>dc</dc-schema>
@@ -1001,7 +953,7 @@ ase select 'N/A'.</hint>
          <dc-element>identifier</dc-element>
          <dc-qualifier>citation</dc-qualifier>
          <repeatable>false</repeatable>
-         <label>OCLC Number</label>
+         <label>OCLC Number(Citation)</label>
          <input-type>onebox</input-type>
          <hint> link to the OCLC WorldCat page </hint>
          <required></required>
@@ -1020,7 +972,7 @@ on
 ren't
                         applicable.</hint>
 
-         <required>You must enter at least the year.</required>
+         <required></required>
        </field>
 
        <field>
@@ -4116,6 +4068,48 @@ it, please enter the types and the actual numbers or codes below.</hint>
        <stored-value>Day31</stored-value>
      </pair>
 </value-pairs>
+  <value-pairs value-pairs-name="gallatin_subjects" dc-term="topic">
+     <pair>
+       <displayed-value>ARTS-UG</displayed-value>
+       <stored-value>ARTS-UG</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>CLI-UG</displayed-value>
+       <stored-value>CLI-UG</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>CORE-GG</displayed-value>
+       <stored-value>CORE-GG</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>ELEC-GG</displayed-value>
+       <stored-value>ELEC-GG</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>FIRST-UG</displayed-value>
+       <stored-value>FIRST-UG</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>IDSEM-UG</displayed-value>
+       <stored-value>IDSEM-UG</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>PRACT-UG</displayed-value>
+       <stored-value>PRACT-UG</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>TRAVL-UG</displayed-value>
+       <stored-value>TRAVL-UG</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>TRAVL-GG</displayed-value>
+       <stored-value>TRAVL-GG</stored-value>
+     </pair>
+     <pair>
+       <displayed-value>WRTNG-UG</displayed-value>
+       <stored-value>WRTNG-UG</stored-value>
+     </pair>
+   </value-pairs>
 </form-value-pairs>
 </input-forms>
 

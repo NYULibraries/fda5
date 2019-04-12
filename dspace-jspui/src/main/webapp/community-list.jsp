@@ -52,18 +52,18 @@
 <%!
  void showCommunity(Community c, JspWriter out, HttpServletRequest request, ItemCounter ic, Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
     {
-        out.println( "<li>" );
-        out.println( "<h4><a href=\"" + request.getContextPath() + "/handle/"
-                + c.getHandle() + "\">" + c.getMetadata("name") + "</a></h4>");
+        out.println( "<li role=\"treeitem\" >" );
+        out.println( "<span  class=\"t1\"><a href=\"" + request.getContextPath() + "/handle/"
+                + c.getHandle() + "\">" + c.getMetadata("name") + "</a></span>");
         // Get the collections in this community
         Collection[] cols = (Collection[]) collectionMap.get(c.getID());
         if (cols != null && cols.length > 0)
         {
-        out.println( "<ul>" );
+        out.println( "<ul role=\"group\" >" );
             for (int j = 0; j < cols.length; j++)
             {
                 out.println("<li>");
-                out.println("<h4><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a></h4>");
+                out.println("<span  class=\"t1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a></span>");
                 out.println("</li>");
             }
         out.println( "</ul>" );
@@ -107,7 +107,7 @@
 <%
     }
 %>
-	<h1><fmt:message key="jsp.community-list.title"/></h1>
+	<h1 id="page-title"><fmt:message key="jsp.community-list.title"/></h1>
 	<p><fmt:message key="jsp.community-list.text1"/></p>
 
 <% if (communities.length != 0)
@@ -117,7 +117,7 @@
 <%
         for (int i = 0; i < communities.length; i++)
         {%>
-        <ul>
+        <ul role="tree">
         <%    showCommunity(communities[i], out, request, ic, collectionMap, subcommunityMap); %>
         </ul>
         <%}

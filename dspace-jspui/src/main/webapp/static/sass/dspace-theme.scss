@@ -1,0 +1,149 @@
+// from NYU style guides
+
+$violet: #57068C;
+$taupe-light: #B5ADA6;
+$nyu-red: #D11255;
+$green: #799A05;
+$teal: #007c88;
+
+//
+// variations
+$violet_bright: #8300D7;
+$violet_bright2: darken($violet_bright, 7%);
+$violet-dark: darken($violet, 8%);
+$taupe-dark: #A49483;
+$taupe-darker: #675949;
+$taupe-darker2: darken(#675949, 5%);
+
+$nyu-red-light: tint($nyu-red, 20%);
+$taupe-header: $taupe-darker;
+$text-color2: darken($taupe-dark, 25%);
+$text-color: darken($taupe-dark, 31%);
+$taupe-super-light: #F6F5F4;
+$green_light: tint($green, 10%);
+$tertiary: darken($teal, 8%);
+$tertiary-light: tint($tertiary, 15%);
+
+@import "compass/css3/images";
+
+@mixin breakword($anything) {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+}
+
+@import "partials/_pagelayout";
+@import "partials/_panels";
+@import "partials/_search";
+@import "partials/_browse";
+@import "partials/_tree";
+@import "partials/_collectionpage";
+@import "partials/_topnavbar";
+@import "partials/_breadcrumbs";
+@import "partials/_mostdownloaded";
+@import "partials/_footer";
+@import "partials/_buttons";
+@import "partials/_facets";
+@import "partials/_itempage";
+@import "partials/_admin";
+@import "partials/_skiplink";
+
+html {
+  font-size: 100%;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  line-height: 1.25;
+}
+
+h1, .h1 {
+  font-size: 30px;
+}
+
+a, a:active, a:focus {
+  outline: none;
+  outline: 0;
+}
+
+#content {
+  padding-bottom: 60px;
+  margin-top: 20px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+a:link,
+a:visited {
+  color: $teal;
+}
+
+a:focus {
+  outline: 0;
+  box-shadow: 0px 0px 0px 3px $teal;
+  z-index: 1000;
+  position: relative;
+}
+
+.alert-warning {
+  color: #846530;
+}
+
+.brand {
+  font-size: 1rem;
+  max-width: 44em;
+
+  .page-title {
+    display: inline-block;
+    font-size: inherit;
+    font-weight: normal;
+    margin: 0;
+  }
+
+  h4 {
+    color: $taupe-dark;
+  }
+}
+
+h2, .h2, h1, .h1 {
+  font-weight: normal;
+  font-weight: 300;
+}
+
+code {
+  @include breakword(1);
+}
+
+.table td {
+  @include breakword(1);
+
+  a {
+    font-weight: bold;
+  }
+}
+
+.readmore {
+  white-space: nowrap;
+}
+
+.info-page {
+  padding-bottom: 5rem;
+  font-size: 1rem;
+
+  h3 {
+    font-size: 1.25rem;
+    font-weight: normal;
+    margin-bottom: 0.4rem;
+    margin-top: 2rem;
+  }
+  h2 {
+      font-size: 1.6rem;
+      margin-top: 2rem;
+  }
+  .info-page .page-title-area h2 {
+      font-size: 2rem;
+      margin-top: 20px;
+  }
+}

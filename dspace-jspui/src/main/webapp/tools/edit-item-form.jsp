@@ -533,7 +533,7 @@
           sb.append("</div></div><br/>");
           out.write(sb.toString());
         }
-
+        //added by Kate
         void doSemester(javax.servlet.jsp.JspWriter out, Item item,
                   String fieldName, String schema, String element, String qualifier, boolean repeatable, boolean required,
                   boolean readonly, int fieldCountIncr, String label, PageContext pageContext, HttpServletRequest request)

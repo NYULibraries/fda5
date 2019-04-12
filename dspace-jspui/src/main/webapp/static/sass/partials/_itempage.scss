@@ -1,0 +1,127 @@
+.itemDisplayTable {
+  &.table tr:nth-child(1) td:nth-child(2) {
+    font-weight: bold;
+  }
+
+  &.table td:nth-child(1) {
+    padding-right: 25px;
+    white-space: nowrap;
+    text-align: left;
+    width: 200px;
+  }
+
+  &.table td:nth-child(2) {
+    // min-width: 50%;
+    width: auto;
+  }
+  td.metadataFieldLabel {
+      vertical-align: bottom;
+   }
+
+  .page-title {
+       font-size: 1.3rem;
+       margin-bottom: 0;
+       font-weight:normal;
+  }
+}
+
+@media (max-width: 767px) {
+  .itemDisplayTable.table {
+    tr {
+      display: block;
+      border-bottom: 1px solid lighten($taupe-light, 20%);
+      border-top: none;
+      width: 100%;
+
+      // display: flex;
+      // align-items: flex-end;
+   
+    }
+
+    td {
+      border: none;
+      line-height: 1.3rem;
+
+      @include breakword(1);
+    }
+
+    a {
+      @include breakword(1);
+    }
+
+    td.metadataFieldLabel {
+
+      width: 6rem;
+      white-space: normal;
+      padding-bottom: 0;
+      color: #333;
+      font-weight: bold;
+      text-transform: uppercase;
+      font-size: .7rem;
+
+      min-width: 8em;
+      padding: 10px 0px 5px 0;
+      line-height: 1.4;
+    }
+
+    td.metadataFieldValue {
+      // vertical-align: bottom;
+
+      // flex: 1 1 auto;
+      font-size: 1rem;
+      padding: 10px 0px 5px 10px;
+    }
+  }
+
+  // files pane
+  .fda-individual-item .panel-info .table.panel-body {
+    display: block;
+
+    th {
+      display: none;
+    }
+
+    tr {
+      display: block;
+      border-bottom: 1px solid lighten($taupe-light, 5%);
+
+      &:first-child {
+        display: none;
+      }
+
+      &:last-child {
+        border: none;
+      }
+    }
+
+    td {
+      padding-left: 0px;
+      display: inline-block;
+      border: none;
+
+      &:first-child {
+        font-weight: bold;
+        display: block;
+      }
+    }
+  }
+}
+
+@media (max-width: 460px) {
+  /* Arbitrary number based on what looks good. */
+  .itemDisplayTable.table {
+    tr {
+      display: flex;
+      flex-direction: column;
+    }
+
+    td.metadataFieldLabel {
+      padding: 10px 0  0;
+      width: auto;
+    }
+
+    td.metadataFieldValue {
+      padding: 5px 0 10px;
+    }
+  }
+}
