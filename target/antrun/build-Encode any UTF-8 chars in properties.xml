@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="maven-antrun-" default="Encode any UTF-8 chars in properties"  >
 <target name="Encode any UTF-8 chars in properties">
-  <native2ascii src="/home/vagrant/dspace-src" includes="*.properties" encoding="UTF8" dest="/home/vagrant/dspace-src/target"/>
+  <native2ascii src="/Users/katepechekhonova/vagrant-dspace/dspace-src" includes="*.properties" encoding="UTF8" dest="/Users/katepechekhonova/vagrant-dspace/dspace-src/target"/>
 </target>
 </project>
