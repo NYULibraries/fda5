@@ -95,6 +95,7 @@
     <h2>Removing items</h2>
     <p>The FDA is intended to provide persistent access to deposited material. Under certain circumstances, however, it may be necessary to remove material from the FDA. A request for removal should be directed to archive.help@nyu.edu and include the reasons for withdrawal. FDA staff may contact the requester for additional information. Since the goal of FDA is persistent long-term access, metadata records will be retained for all withdrawn content, with information about the date of removal.</p>
     <p>When leaving the university, content owners may leave their material in the FDA. FDA staff can help with exporting content and structured metadata when needed. </p>
+    <a name="rights"></a>
     <h2>Rights and intellectual ownership</h2>
     <p>Collection owners are only permitted to deposit content for which they own the rights, have permission to share in this way, or which is in the public domain. Each deposit requires that collection owners grant a nonexclusive license to NYU for the distribution of their content through the FDA platform. This nonexclusive license in no way limits the rights of the collection owner or original rights holder and is only for the purpose of ensuring access to the content through the FDA. For more information on copyright ownership and permissions, please see the <a href="http://guides.nyu.edu/copyright">NYU Libraries' Copyright Research Guide</a>.</p>
     <h2>Take-down policy</h2>
