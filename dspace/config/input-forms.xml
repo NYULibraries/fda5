@@ -141,7 +141,9 @@
   <form-map>
     <name-map collection-handle="2451/34841" form-name="gallatin" />
   </form-map>
-
+  <form-map>
+    <name-map collection-handle="2451/37860" form-name="Laefer" />
+  </form-map>
 
 
   <!-- The form-definitions map lays out the detailed definition of all the -->
@@ -1679,7 +1681,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
        </field>
      </page>
    </form>
-   <form name="laefer">
+   <form name="Laefer">
      <page number="1">
        <field>
 
@@ -1855,7 +1857,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
 
          <required></required>
        </field>
-       
+
        <field>
      <dc-schema>dc</dc-schema>
          <dc-element>type</dc-element>
