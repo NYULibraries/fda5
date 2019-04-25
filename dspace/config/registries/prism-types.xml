@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+
+<!--
+  - dcterms-types.xml
+  -
+  - Version:  $Revision$
+  -
+  - Date:     $Date$
+  -
+  - DCTerms registry contributed to eventually replace dublin-core-types.xml
+  - 
+  - <dc-type>
+  -   <schema></schema>
+  -   <element></element>
+  -   
+  -   <scope_note></scope_note>
+  - </dc-type>
+  -->
+
+<!-- start of XML -->
+
+<dspace-dc-types>
+
+  <dspace-header>
+    <title>Prism Types Registry</title>
+    <contributor.author>Kennedy</contributor.author>
+    <contributor.author>McConnell</contributor.author>
+    <contributor.editor>$Author$</contributor.editor>
+    <date.created>$Date$</date.created>
+    <description>
+      $Log$
+      Partial version of the PRISM metadata schema, added to address Google Scholar needs.
+    </description>
+    <description.version>$Revision$</description.version>
+  </dspace-header>
+
+  <dc-schema>
+          <name>prism</name>
+          <namespace>http://prismstandard.org/namespaces/basic/3.0/</namespace>
+  </dc-schema>
+
+  <dc-type>
+	<schema>prism</schema>
+    <element>publicationName</element>
+    <scope_note>Title of the magazine, or other publication, in which a resource was/will be published.</scope_note>
+  </dc-type>
+
+  <dc-type>
+  <schema>prism</schema>
+    <element>volume</element>
+    <scope_note>Indication of the magazine issue within a volume.</scope_note>
+  </dc-type>
+
+  <dc-type>
+  <schema>prism</schema>
+    <element>issueIdentifier</element>
+    <scope_note>A system generated unique publisher identifier for the issue of a serial publication. The issue identifies should not be confused with the "special" issue name element, prism:issueName.</scope_note>
+  </dc-type>
+
+  <dc-type>
+  <schema>prism</schema>
+    <element>startingPage</element>
+    <scope_note>Identifies the first page number for the published version of the resource.</scope_note>
+  </dc-type>
+
+  <dc-type>
+  <schema>prism</schema>
+    <element>endingPage</element>
+    <scope_note>Identifies the last page number for the printed resource.</scope_note>
+  </dc-type>
+</dspace-dc-types>
