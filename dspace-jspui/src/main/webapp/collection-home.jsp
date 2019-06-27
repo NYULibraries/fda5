@@ -171,15 +171,15 @@
           <p> <fmt:message  key="jsp.collection-home.private.warning"/></p>
   </section>
   <%  } %>
- <% if(browseIndexesStr!=null) {
-        String indexBase=request.getContextPath() + "/handle/" + collection.getHandle();
-        String[] browseIndexes=browseIndexesStr.split(",");
-        for(int i=0; i<browseIndexes.length; i++)  { %>
-          <section class="private-collection">
-          <div><a href="<%= indexBase%>/browse?type=<%=browseIndexes[i]%>">Browse by <%=browseIndexes[i] %></a></div>
-          </section>
-           <%  } %>
-    <%  } %>
+  <% if(browseIndexesStr!=null) {
+       String indexBase=request.getContextPath() + "/handle/" + collection.getHandle();
+       String[] browseIndexes=browseIndexesStr.split(",");
+       for(int i=0; i<browseIndexes.length; i++)  { %>
+         <section class="private-collection">
+         <div><a href="<%= indexBase%>/browse?type=<%=browseIndexes[i]%>">Browse by <%=browseIndexes[i] %></a></div>
+         </section>
+          <%  } %>
+   <%  } %>
 <section class="collectionlist">
 
 <% if (show_items)
