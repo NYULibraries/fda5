@@ -434,6 +434,17 @@ it, please enter the types and the actual numbers or codes below.</hint>
                  <hint> Enter the type of the resource </hint>
                  <required></required>
              </field>
+             <field>
+                 <dc-schema>dc</dc-schema>
+                 <dc-element>description</dc-element>
+                 <dc-qualifier></dc-qualifier>
+
+                 <repeatable>false</repeatable>
+                 <label>Description</label>
+                 <input-type>textarea</input-type>
+                 <hint> Enter description of the item below. </hint>
+                 <required></required>
+             </field>
 
 
              <field>
@@ -459,6 +470,18 @@ it, please enter the types and the actual numbers or codes below.</hint>
                  <hint> Enter the names of the source </hint>
                  <required></required>
              </field>
+             <field>
+                 <dc-schema>dc</dc-schema>
+                 <dc-element>rights</dc-element>
+                 <dc-qualifier></dc-qualifier>
+                 <repeatable>false</repeatable>
+
+                 <label>Rights</label>
+                 <input-type>textarea</input-type>
+                 <hint> Enter information on item's rights in this box. </hint>
+                 <required></required>
+             </field>
+
          </page>
      </form>
    <form name="therapy">
