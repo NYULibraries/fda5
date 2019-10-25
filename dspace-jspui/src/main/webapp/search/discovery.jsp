@@ -249,10 +249,10 @@
 
 			<div class="form-group-flex keyword-contain-group">
       		<div class="form-flex-item"><label for="query"><fmt:message key="jsp.search.results.searchfor"/></label></div>
-     			<div class="form-flex-item keyword-contain"><input type="text"  id="query" class="form-control" name="query" value="<%= (query==null ? "" : StringEscapeUtils.escapeHtml(query)) %>"/></div>
+     			<div class="form-flex-item keyword-contain"><input type="text"  id="query" class="form-control" name="query" value="<%= (query==null ? "" : Utils.addEntities((query)) %>"/></div>
 
 					<% if (StringUtils.isNotBlank(spellCheckQuery)) {%>
-						<p class="lead"><fmt:message key="jsp.search.didyoumean"><fmt:param><a id="spellCheckQuery" data-spell="<%= StringEscapeUtils.escapeHtml(spellCheckQuery) %>" href="#"><%= spellCheckQuery %></a></fmt:param></fmt:message></p>
+						<p class="lead"><fmt:message key="jsp.search.didyoumean"><fmt:param><a id="spellCheckQuery" data-spell="<%= Utils.addEntities((spellCheckQuery) %>" href="#"><%= spellCheckQuery %></a></fmt:param></fmt:message></p>
 					<% } %>
 			</div>  
 
@@ -345,17 +345,17 @@
             <label>Where</label>
         	</div>
         	<div class="form-flex-item fname">
-						<input type="hidden" value="<%= StringEscapeUtils.escapeHtml(searchScope) %>" name="location" />
-						<input type="hidden" value="<%= StringEscapeUtils.escapeHtml(query) %>" name="query" />
+						<input type="hidden" value="<%= Utils.addEntities(searchScope) %>" name="location" />
+						<input type="hidden" value="<%= Utils.addEntities(query) %>" name="query" />
 		<% if (appliedFilterQueries.size() > 0 ) { 
 				int idx = 1;
 				for (String[] filter : appliedFilters)
 				{
 				    boolean found = false;
 				    %>
-				  <input type="hidden" id="filter_field_<%=idx %>" name="filter_field_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[0]) %>" />
-					<input type="hidden" id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[1]) %>" />
-					<input type="hidden" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[2]) %>" />
+				  <input type="hidden" id="filter_field_<%=idx %>" name="filter_field_<%=idx %>" value="<%= Utils.addEntities(filter[0]) %>" />
+					<input type="hidden" id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" value="<%= Utils.addEntities(filter[1]) %>" />
+					<input type="hidden" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= Utils.addEntities(filter[2]) %>" />
 					<%
 					idx++;
 				}
@@ -481,17 +481,17 @@ else if( qResults != null)
 
 
    <form action="simple-search" method="get" id="results-sorting">
-   <input type="hidden" value="<%= StringEscapeUtils.escapeHtml(searchScope) %>" name="location" />
-   <input type="hidden" value="<%= StringEscapeUtils.escapeHtml(query) %>" name="query" />
+   <input type="hidden" value="<%= Utils.addEntities(searchScope) %>" name="location" />
+   <input type="hidden" value="<%= Utils.addEntities(query) %>" name="query" />
 	<% if (appliedFilterQueries.size() > 0 ) { 
 				int idx = 1;
 				for (String[] filter : appliedFilters)
 				{
 				    boolean found = false;
 				    %>
-				    <input type="hidden" id="filter_field_<%=idx %>" name="filter_field_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[0]) %>" />
-					<input type="hidden" id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[1]) %>" />
-					<input type="hidden" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[2]) %>" />
+				    <input type="hidden" id="filter_field_<%=idx %>" name="filter_field_<%=idx %>" value="<%= Utils.addEntities(filter[0]) %>" />
+					<input type="hidden" id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" value="<%= Utils.addEntities(filter[1]) %>" />
+					<input type="hidden" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= Utils.addEntities(filter[2]) %>" />
 					<%
 					idx++;
 				}
