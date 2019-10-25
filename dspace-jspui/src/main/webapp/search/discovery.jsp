@@ -33,7 +33,9 @@
   -   admin_button     - If the user is an admin
   --%>
 
+<%@page import="org.dspace.core.Utils"%>
 <%@page import="org.dspace.discovery.configuration.DiscoverySearchFilterFacet"%>
+<%@page import="com.coverity.security.Escape"%>
 <%@page import="org.dspace.app.webui.util.UIUtil"%>
 <%@page import="java.util.HashMap"%>
 <%@page import="java.util.ArrayList"%>
@@ -279,8 +281,8 @@
 				<%
 					for (DiscoverySearchFilter searchFilter : availableFilters)
 					{
-					    String fkey = "jsp.search.filter."+searchFilter.getIndexFieldName();
-					    %><option value="<%= searchFilter.getIndexFieldName() %>"<% 
+					    String fkey = "jsp.search.filter."+Escape.uriParam(searchFilter.getIndexFieldName());
+					    %><option value="<%= Utils.addEntities(searchFilter.getIndexFieldName()) %>"<%
 					            if (filter[0].equals(searchFilter.getIndexFieldName()))
 					            {
 					                %> selected="selected"<%
@@ -290,8 +292,8 @@
 					}
 					if (!found)
 					{
-					    String fkey = "jsp.search.filter."+filter[0];
-					    %><option value="<%= filter[0] %>" selected="selected"><fmt:message key="<%= fkey %>"/></option><%
+					    String fkey = "jsp.search.filter."+Escape.uriParam(filter[0]);
+					    %><option value="<%= Utils.addEntities(filter[0]) %>" selected="selected"><fmt:message key="<%= fkey %>"/></option><%
 					}
 				%>
 				</select></div>
@@ -300,8 +302,8 @@
 				<%
 					for (String opt : options)
 					{
-					    String fkey = "jsp.search.filter.op."+opt;
-					    %><option value="<%= opt %>"<%= opt.equals(filter[1])?" selected=\"selected\"":"" %>><fmt:message key="<%= fkey %>"/></option><%
+					    String fkey = "jsp.search.filter.op."+Escape.uriParam(opt);
+					    %><option value="<%= Utils.addEntities(opt) %>"<%= opt.equals(filter[1])?" selected=\"selected\"":"" %>><fmt:message key="<%= fkey %>"/></option><%
 					}
 				%>
 				</select></div>
@@ -351,8 +353,8 @@
 				{
 				    boolean found = false;
 				    %>
-				  <input type="hidden" id="filter_field_<%=idx %>" name="filter_field_<%=idx %>" value="<%= filter[0] %>" />
-					<input type="hidden" id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" value="<%= filter[1] %>" />
+				  <input type="hidden" id="filter_field_<%=idx %>" name="filter_field_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[0]) %>" />
+					<input type="hidden" id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[1]) %>" />
 					<input type="hidden" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[2]) %>" />
 					<%
 					idx++;
@@ -362,7 +364,7 @@
 		<%
 			for (DiscoverySearchFilter searchFilter : availableFilters)
 			{
-			    String fkey = "jsp.search.filter."+searchFilter.getIndexFieldName();
+			    String fkey = "jsp.search.filter."+Escape.uriParam(searchFilter.getIndexFieldName());
 			    %><option value="<%= searchFilter.getIndexFieldName() %>"><fmt:message key="<%= fkey %>"/></option><%
 			}
 		%>
@@ -373,8 +375,8 @@
 		<%
 			for (String opt : options)
 			{
-			    String fkey = "jsp.search.filter.op."+opt;
-			    %><option value="<%= opt %>"><fmt:message key="<%= fkey %>"/></option><%
+			    String fkey = "jsp.search.filter.op."+ Escape.uriParam(opt);
+			    %><option value="<%= Utils.addEntities(opt) %>"><fmt:message key="<%= fkey %>"/></option><%
 			}
 		%>
 		</select>
@@ -487,8 +489,8 @@ else if( qResults != null)
 				{
 				    boolean found = false;
 				    %>
-				    <input type="hidden" id="filter_field_<%=idx %>" name="filter_field_<%=idx %>" value="<%= filter[0] %>" />
-					<input type="hidden" id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" value="<%= filter[1] %>" />
+				    <input type="hidden" id="filter_field_<%=idx %>" name="filter_field_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[0]) %>" />
+					<input type="hidden" id="filter_type_<%=idx %>" name="filter_type_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[1]) %>" />
 					<input type="hidden" id="filter_value_<%=idx %>" name="filter_value_<%=idx %>" value="<%= StringEscapeUtils.escapeHtml(filter[2]) %>" />
 					<%
 					idx++;
@@ -721,10 +723,10 @@ else
                 + "&amp;rpp=" + rpp
                 + httpFilters
                 + "&amp;etal=" + etAl
-                + "&amp;filtername="+URLEncoder.encode(f,"UTF-8")
-                + "&amp;filterquery="+URLEncoder.encode(fvalue.getAsFilterQuery(),"UTF-8")
-                + "&amp;filtertype="+URLEncoder.encode(fvalue.getFilterType(),"UTF-8") %>"
-                title="<fmt:message key="jsp.search.facet.narrow"><fmt:param><%=fvalue.getDisplayedValue() %></fmt:param></fmt:message>">
+                + "&amp;filtername="+URLEncoder.encode(Escape.uriParam(f),"UTF-8")
+                + "&amp;filterquery="+URLEncoder.encode(Escape.uriParam(fvalue.getAsFilterQuery()),"UTF-8")
+                + "&amp;filtertype="+URLEncoder.encode(Escape.uriParam(fvalue.getFilterType()),"UTF-8") %>"
+                title="<fmt:message key="jsp.search.facet.narrow"><fmt:param><%=Escape.uriParam(fvalue.getDisplayedValue()) %></fmt:param></fmt:message>">
                 <span class="badge"><%= fvalue.getCount() %></span> 
                 <%= StringUtils.abbreviate(fvalue.getDisplayedValue(),36) %></a></li><%
                 idx++;
