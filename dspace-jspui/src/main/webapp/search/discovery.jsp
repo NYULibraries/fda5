@@ -74,7 +74,7 @@
     List<DSpaceObject> scopes = (List<DSpaceObject>) request.getAttribute("scopes");
     List<String> sortOptions = (List<String>) request.getAttribute("sortOptions");
 
-    String query = (String) request.getAttribute("query");
+    String query = Escape.uriParam((String) request.getAttribute("query"));
 		if (query == null)
 		{
 	    query = "";
@@ -249,10 +249,10 @@
 
 			<div class="form-group-flex keyword-contain-group">
       		<div class="form-flex-item"><label for="query"><fmt:message key="jsp.search.results.searchfor"/></label></div>
-     			<div class="form-flex-item keyword-contain"><input type="text"  id="query" class="form-control" name="query" value="<%= (query==null ? "" : Utils.addEntities((query)) %>"/></div>
+     			<div class="form-flex-item keyword-contain"><input type="text"  id="query" class="form-control" name="query" value="<%= (query==null ? "" : Utils.addEntities(query)) %>"/></div>
 
 					<% if (StringUtils.isNotBlank(spellCheckQuery)) {%>
-						<p class="lead"><fmt:message key="jsp.search.didyoumean"><fmt:param><a id="spellCheckQuery" data-spell="<%= Utils.addEntities((spellCheckQuery) %>" href="#"><%= spellCheckQuery %></a></fmt:param></fmt:message></p>
+						<p class="lead"><fmt:message key="jsp.search.didyoumean"><fmt:param><a id="spellCheckQuery" data-spell="<%= Utils.addEntities(spellCheckQuery) %>" href="#"><%= spellCheckQuery %></a></fmt:param></fmt:message></p>
 					<% } %>
 			</div>  
 
