@@ -23,8 +23,8 @@
 <%@ taglib uri="http://www.dspace.org/dspace-tags.tld" prefix="dspace" %>
 
 <dspace:layout titlekey="jsp.error.internal.title">
-    <%-- <h1>Internal System Error</h1> --%>
-    <h1><fmt:message key="jsp.error.internal.title"/></h1>
+    <h1>An Error has occured</h1>
+    <%-- <h1><fmt:message key="jsp.error.internal.title"/></h1> --%>
     <%-- <p>Oops!  The system has experienced an internal error.  This is our fault,
     please pardon our dust during these early stages of the DSpace system!</p> --%>
     <p><fmt:message key="jsp.error.internal.text1"/></p>
@@ -38,19 +38,5 @@
         <%-- <a href="<%= request.getContextPath() %>/">Go to the DSpace home page</a> --%>
         <a href="<%= request.getContextPath() %>/"><fmt:message key="jsp.general.gohome"/></a>
     </p>
-        <!--
-    <%
-    Throwable ex = (Throwable) request.getAttribute("javax.servlet.error.exception");
-    if(ex == null) out.println("No stack trace available<br/>");
-    else {
-                for(Throwable t = ex ; t!=null; t = t.getCause())
-                {
-                    out.println(t.getMessage());
-                    out.println("=============================================");
-                    t.printStackTrace(new PrintWriter(out));
-                    out.println("\n\n\n");
-                }
-        }
-        %>
-      -->
+
 </dspace:layout>

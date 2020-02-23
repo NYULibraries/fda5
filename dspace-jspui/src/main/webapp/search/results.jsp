@@ -37,6 +37,7 @@
     prefix="fmt" %>
 
 <%@ taglib uri="http://www.dspace.org/dspace-tags.tld" prefix="dspace" %>
+<%@page import="org.dspace.core.Utils"%>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils" %>
 <%@ page import="java.net.URLEncoder"            %>
 <%@ page import="org.dspace.content.Community"   %>
@@ -396,7 +397,7 @@ if (pageTotal > pageCurrent)
 </p>
 
 <form id="dso-display" action="<%=request.getContextPath()%>/dso-display" method="post">
-    <input type="hidden" name="query"   value="<%=query%>"/>
+    <input type="hidden" name="query"   value="<%=StringEscapeUtils.escapeHtml(query)%>"/>
     <input type="hidden" name="rpp"     value="<%=rpp%>"/>
     <input type="hidden" name="page"   value="<%=pageCurrent%>"/>
     <input type="hidden" name="sort_by" value="<%=(so != null ? so.getNumber() : 0)%>"/>
