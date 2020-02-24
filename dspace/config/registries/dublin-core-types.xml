@@ -487,6 +487,7 @@
     <scope_note>Conference name if available. Added for Debra Laefer collection</scope_note>
   </dc-type>
 
+
   <dc-type>
 	<schema>dc</schema>
     <element>rights</element>

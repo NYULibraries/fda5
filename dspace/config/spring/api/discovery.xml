@@ -45,7 +45,7 @@
 
                <!--Use site to override the default configuration for the home page & default discovery page-->
                <entry key="site" value-ref="homepageConfiguration" />
-               <entry key="123456789/34481" value-ref="gallatinConfiguration"/>
+               <entry key="2451/34841" value-ref="gallatinConfiguration"/>
             </map>
         </property>
         <property name="toIgnoreMetadataFields">
@@ -527,8 +527,7 @@
         <property name="facetLimit" value="10"/>
         <property name="sortOrder" value="VALUE"/>
     </bean>
-
-    <bean id="searchFilterSubjectArea" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
+     <bean id="searchFilterSubjectArea" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
         <property name="indexFieldName" value="area"/>
         <property name="metadataFields">
             <list>

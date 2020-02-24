@@ -1,6 +1,6 @@
 <oai-identifier xmlns="http://www.openarchives.org/OAI/2.0/oai-identifier" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.openarchives.org/OAI/2.0/oai-identifier http://www.openarchives.org/OAI/2.0/oai-identifier.xsd">
 <scheme>oai</scheme>
-<repositoryIdentifier>${dspace.hostname}</repositoryIdentifier>
+<repositoryIdentifier>http://archivefda.dlib.nyu.edu </repositoryIdentifier>
 <delimiter>:</delimiter>
-<sampleIdentifier>oai:${dspace.hostname}:${handle.prefix}/1234</sampleIdentifier>
+<sampleIdentifier>oai:http://archivefda.dlib.nyu.edu :123456789/1234</sampleIdentifier>
 </oai-identifier>
