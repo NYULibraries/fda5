@@ -133,7 +133,11 @@
 	  <img class="img-responsive" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
   </div> 
   <% } %>
- <h1  id="page-title"><%= name %></h1></header>
+ <h1  id="page-title"><%= name %></h1>
+ 
+ <div class="community-intro"><%= intro %></div>
+
+</header>
 
 <section class="search-area"  role="search">
 	<h2 class="sr-only">Search in this community </h2>
