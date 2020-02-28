@@ -19,6 +19,20 @@
  <submission-map>
    <name-map collection-handle="default"    submission-name="traditional" />
    <name-map collection-handle="2451/34841" submission-name="gallatin"    />
+
+   <name-map collection-handle="2451/28318" submission-name="rights-entry-on-dmd-form" />
+   <name-map collection-handle="2451/28320" submission-name="rights-entry-on-dmd-form" />
+   <name-map collection-handle="2451/29655" submission-name="rights-entry-on-dmd-form" />
+   <name-map collection-handle="2451/29656" submission-name="rights-entry-on-dmd-form" />
+   <name-map collection-handle="2451/29658" submission-name="rights-entry-on-dmd-form" />
+   <name-map collection-handle="2451/29659" submission-name="rights-entry-on-dmd-form" />
+   <name-map collection-handle="2451/29676" submission-name="rights-entry-on-dmd-form" />
+   <name-map collection-handle="2451/29898" submission-name="rights-entry-on-dmd-form" />
+   <name-map collection-handle="2451/29947" submission-name="rights-entry-on-dmd-form" />
+   <name-map collection-handle="2451/33605" submission-name="rights-entry-on-dmd-form" />
+   <name-map collection-handle="2451/34304" submission-name="rights-entry-on-dmd-form" />
+   <name-map collection-handle="2451/34305" submission-name="rights-entry-on-dmd-form" />
+   <name-map collection-handle="2451/42113" submission-name="rights-entry-on-dmd-form" />
  </submission-map>
 
 
@@ -178,6 +192,49 @@
 
      <!--This "traditional" process defines the DEFAULT item submission process-->
      <submission-process name="traditional">
+         <step>
+             <processing-class>org.dspace.submit.step.SkipInitialQuestionsStep</processing-class>
+         </step>
+         <step>
+             <heading>submit.progressbar.license</heading>
+             <processing-class>org.dspace.submit.step.LicenseStep</processing-class>
+             <jspui-binding>org.dspace.app.webui.submit.step.JSPLicenseStep</jspui-binding>
+             <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.LicenseStep</xmlui-binding>
+             <workflow-editable>false</workflow-editable>
+         </step>
+         <step>
+             <heading>submit.progressbar.upload</heading>
+             <processing-class>org.dspace.submit.step.UploadWithEmbargoStep</processing-class>
+             <jspui-binding>org.dspace.app.webui.submit.step.JSPUploadWithEmbargoStep</jspui-binding>
+             <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.UploadWithEmbargoStep</xmlui-binding>
+             <workflow-editable>true</workflow-editable>
+         </step>
+         <step>
+             <heading>submit.progressbar.describe</heading>
+             <processing-class>org.dspace.submit.step.DescribeStep</processing-class>
+             <jspui-binding>org.dspace.app.webui.submit.step.JSPDescribeStep</jspui-binding>
+             <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.DescribeStep</xmlui-binding>
+             <workflow-editable>true</workflow-editable>
+         </step>
+         <step>
+             <heading>submit.progressbar.access</heading>
+             <processing-class>org.dspace.submit.step.AccessStep</processing-class>
+             <jspui-binding>org.dspace.app.webui.submit.step.JSPAccessStep</jspui-binding>
+             <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.AccessStep</xmlui-binding>
+             <workflow-editable>true</workflow-editable>
+         </step>
+         <step>
+             <heading>submit.progressbar.verify</heading>
+             <processing-class>org.dspace.submit.step.VerifyStep</processing-class>
+             <jspui-binding>org.dspace.app.webui.submit.step.JSPVerifyStep</jspui-binding>
+             <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.ReviewStep</xmlui-binding>
+             <workflow-editable>true</workflow-editable>
+         </step>
+     </submission-process>
+
+     <!-- This submission process uses a DMD form that includes rights entry   -->
+     <!-- instead of having rights entry as a separate step          -->
+     <submission-process name="rights-entry-on-dmd-form">
          <step>
              <processing-class>org.dspace.submit.step.SkipInitialQuestionsStep</processing-class>
          </step>
