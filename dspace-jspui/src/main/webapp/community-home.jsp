@@ -133,7 +133,15 @@
 	  <img class="img-responsive" alt="Logo" src="<%= request.getContextPath() %>/retrieve/<%= logo.getID() %>" />
   </div> 
   <% } %>
- <h1  id="page-title"><%= name %></h1></header>
+ <h1  id="page-title"><%= name %></h1>
+
+ <%
+ if (StringUtils.isNotBlank(intro)) { %>
+
+	<div class="community-intro"><%= intro %></div>
+ 
+ <%  } %>	
+</header>
 
 <section class="search-area"  role="search">
 	<h2 class="sr-only">Search in this community </h2>
@@ -154,7 +162,7 @@
   if (subcommunities.length != 0)
 	{
 %>
-	<h2 class="section-title">Collections and sub-communities</h2>
+	<h2 class="section-title">Subcommunities</h2>
 <%
 		for (int j = 0; j < subcommunities.length; j++)
 		{
@@ -170,12 +178,26 @@
 <%
 	if (collections.length != 0)
 	{ %>
+		<h2 class="section-title">Collections</h2>
   <ul>
 			<%for (int j = 0; j < collections.length; j++)
 			{%>
 				<li>
 				 <span class="t1"><a href="<%= request.getContextPath() %>/handle/<%= collections[j].getHandle() %>">
 			  <%= collections[j].getMetadata("name") %></a></span>
+			 
+			  <%
+			  if (StringUtils.isNotBlank(collections[j].getMetadata("short_description")))  	
+			  { %>
+			  <span class="collection-short-description"><%= collections[j].getMetadata("short_description") %></span>
+
+			  <%
+				} else {
+			  %>
+			  <span class="collection-short-description collection-short-description-none">No description available</span>
+			  <%
+				}  
+			  %>
 				</li>
 	
 		<%} %>
