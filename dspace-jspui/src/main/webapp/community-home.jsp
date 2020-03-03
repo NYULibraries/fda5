@@ -184,17 +184,40 @@
 			{%>
 				<li>
 				 <span class="t1"><a href="<%= request.getContextPath() %>/handle/<%= collections[j].getHandle() %>">
-			  <%= collections[j].getMetadata("name") %></a></span>
+			  <%= collections[j].getMetadata("name") %> </a>
+			  
+			  <span class="nyu-only-svg">
+			
+				<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+				viewBox="0 0 100.69 13.76" style="enable-background:new 0 0 100.69 13.76;" xml:space="preserve">
+		   <style type="text/css">
+			   .st0{fill:#57068C;}
+		   </style>
+		   <g>
+			   <path class="st0" d="M0,0.23h2.17l7.12,9.19V0.23h2.3v13.3H9.63L2.3,4.07v9.46H0C0,13.53,0,0.23,0,0.23z"/>
+			   <path class="st0" d="M18.92,8.29l-5.28-8.05h2.77l3.7,5.87l3.76-5.87h2.68l-5.28,8v5.3h-2.36V8.29H18.92z"/>
+			   <path class="st0" d="M28.4,7.89V0.23h2.34v7.56c0,2.47,1.27,3.78,3.36,3.78c2.07,0,3.34-1.23,3.34-3.69V0.22h2.34v7.54
+				   c0,3.97-2.24,5.97-5.72,5.97C30.61,13.74,28.4,11.74,28.4,7.89z"/>
+			   <path class="st0" d="M48.11,6.92V6.88C48.11,3.14,51,0,55.08,0s6.93,3.1,6.93,6.84v0.04c0,3.74-2.89,6.88-6.97,6.88
+				   S48.11,10.66,48.11,6.92z M59.56,6.92V6.88c0-2.58-1.88-4.73-4.52-4.73s-4.48,2.11-4.48,4.69v0.04c0,2.58,1.88,4.71,4.52,4.71
+				   S59.56,9.5,59.56,6.92z"/>
+			   <path class="st0" d="M64,0.23h2.17l7.12,9.19V0.23h2.3v13.3h-1.96L66.3,4.07v9.46H64V0.23z"/>
+			   <path class="st0" d="M79,0.23h2.34V11.4h6.99v2.13H79C79,13.53,79,0.23,79,0.23z"/>
+			   <path class="st0" d="M92.21,8.29l-5.28-8.05h2.77l3.7,5.87l3.76-5.87h2.68l-5.28,8v5.3H92.2V8.29H92.21z"/>
+		   </g>
+		   		</svg>
+			</span>
+		</span>
 			 
 			  <%
 			  if (StringUtils.isNotBlank(collections[j].getMetadata("short_description")))  	
 			  { %>
-			  <span class="collection-short-description"><%= collections[j].getMetadata("short_description") %></span>
+			  <div class="collection-short-description"><%= collections[j].getMetadata("short_description") %></div>
 
 			  <%
 				} else {
 			  %>
-			  <span class="collection-short-description collection-short-description-none">No description available</span>
+			  <div class="collection-short-description collection-short-description-none">No description available</div>
 			  <%
 				}  
 			  %>
