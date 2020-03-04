@@ -8,3 +8,4 @@ build.properties
 # ignore all directories named 'target/", regardless of where they are
 # in the directory hierarchy.
 target/
+*~
