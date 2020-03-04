@@ -1,7 +1,6 @@
 .collections-list .section-title {
   color: $text-color;
-  margin: 10px 0;
-  color: #816B56;
+  margin: 50px 0 10px 0;
   text-transform: uppercase;
   font-size: 16px;
   font-weight: bold;
@@ -18,12 +17,13 @@
   .t1 {
     font-size: 1.2rem;
     margin: 0;
-    display: block;
+    display: inline-block;
     font-weight: bold;
 
     a:link, a:visited {
       color: $text-color;
-      padding: 15px 0 0px;
+      padding: 0;
+      margin: 15px 0 0px;
       font-weight: 500;
     }
   }
@@ -40,7 +40,6 @@
 
   ul > li > ul {
     margin-left: 30px;
-    background-color: lighten($taupe-light, 29%);
     padding-top: 10px;
     padding-bottom: 10px;
 
@@ -49,9 +48,6 @@
       clear: left;
     }
 
-    > li > ul {
-      background-color: lighten($taupe-light, 25%);
-    }
 
     .t1 {
       font-size: 1rem;
@@ -68,8 +64,8 @@
     margin-right: 0;
     width: 30px;
     color: shade($nyu-red, 5%);
-    float:left;
-    line-height: 1.8;
+    line-height: 1.4rem;
+    vertical-align: text-bottom;
     &:hover, &:active, &:focus {
       text-decoration: none;
     }
