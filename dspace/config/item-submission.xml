@@ -217,12 +217,19 @@
         <workflow-editable>true</workflow-editable>
       </step>
       <step>
-        <heading>submit.progressbar.access</heading>
-        <processing-class>org.dspace.submit.step.AccessStep</processing-class>
-        <jspui-binding>org.dspace.app.webui.submit.step.JSPAccessStep</jspui-binding>
+        <heading>submit.progressbar.rights</heading>
+        <processing-class>org.dspace.submit.step.RightsStep</processing-class>
+        <jspui-binding>org.dspace.app.webui.submit.step.JSPRightsStep</jspui-binding>
         <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.AccessStep</xmlui-binding>
         <workflow-editable>true</workflow-editable>
       </step>
+      <!-- <step> -->
+      <!--   <heading>submit.progressbar.access</heading> -->
+      <!--   <processing-class>org.dspace.submit.step.AccessStep</processing-class> -->
+      <!--   <jspui-binding>org.dspace.app.webui.submit.step.JSPAccessStep</jspui-binding> -->
+      <!--   <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.AccessStep</xmlui-binding> -->
+      <!--   <workflow-editable>true</workflow-editable> -->
+      <!-- </step> -->
       <step>
         <heading>submit.progressbar.verify</heading>
         <processing-class>org.dspace.submit.step.VerifyStep</processing-class>
