@@ -223,13 +223,6 @@
         <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.AccessStep</xmlui-binding>
         <workflow-editable>true</workflow-editable>
       </step>
-      <!-- <step> -->
-      <!--   <heading>submit.progressbar.access</heading> -->
-      <!--   <processing-class>org.dspace.submit.step.AccessStep</processing-class> -->
-      <!--   <jspui-binding>org.dspace.app.webui.submit.step.JSPAccessStep</jspui-binding> -->
-      <!--   <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.AccessStep</xmlui-binding> -->
-      <!--   <workflow-editable>true</workflow-editable> -->
-      <!-- </step> -->
       <step>
         <heading>submit.progressbar.verify</heading>
         <processing-class>org.dspace.submit.step.VerifyStep</processing-class>
@@ -264,13 +257,6 @@
         <processing-class>org.dspace.submit.step.DescribeStep</processing-class>
         <jspui-binding>org.dspace.app.webui.submit.step.JSPDescribeStep</jspui-binding>
         <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.DescribeStep</xmlui-binding>
-        <workflow-editable>true</workflow-editable>
-      </step>
-      <step>
-        <heading>submit.progressbar.access</heading>
-        <processing-class>org.dspace.submit.step.AccessStep</processing-class>
-        <jspui-binding>org.dspace.app.webui.submit.step.JSPAccessStep</jspui-binding>
-        <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.AccessStep</xmlui-binding>
         <workflow-editable>true</workflow-editable>
       </step>
       <step>
