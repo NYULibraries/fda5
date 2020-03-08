@@ -87,7 +87,7 @@
                                 contextPath + "/controlledvocabulary/controlledvocabulary.jsp?ID=" +
                                 fieldName + "&amp;vocabulary=" + vocabulary + "\")'>" +
                                         "<span class='controlledVocabularyLink'>" +
-                                                LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.controlledvocabulary") +
+                                                LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.controlledvocabulary") +
                                         "</span>" +
                         "</a>";
                 }
@@ -308,7 +308,7 @@
          }
          
          sb.append("<span class=\"col-md-5\"><input placeholder=\"")
-           .append(Utils.addEntities(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.lastname")))
+           .append(Utils.addEntities(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.lastname")))
            .append("\" class=\"form-control\" type=\"text\" name=\"")
            .append(last.toString())
            .append("\" size=\"23\" ");
@@ -319,7 +319,7 @@
          sb.append("value=\"")
            .append(dpn.getLastName().replaceAll("\"", "&quot;")) // Encode "
                    .append("\"/></span><span class=\"col-md-5\"><input placeholder=\"")
-                   .append(Utils.addEntities(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.firstname")))
+                   .append(Utils.addEntities(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.firstname")))
                    .append("\" class=\"form-control\" type=\"text\" name=\"")
                    .append(first.toString())
            .append("\" size=\"23\" ");
@@ -350,8 +350,8 @@
               .append("_remove_")
               .append(i)
               .append("\" value=\"")
-              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove"))
-              .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove")+"</button>");
+              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove"))
+              .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove")+"</button>");
          }
          else if (repeatable && !readonly && i == fieldCount - 1)
          {
@@ -359,8 +359,8 @@
             sb.append("<button class=\"btn btn-default pull-right col-md-2\" name=\"submit_")
               .append(fieldName)
               .append("_add\" value=\"")
-              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add"))
-              .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add")+"</button>");
+              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add"))
+              .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add")+"</button>");
          }         
          sb.append("</div>");   
       }
@@ -395,7 +395,7 @@
     
          sb.append("<div class=\"row col-md-12\"><div class=\"input-group col-md-10\"><div class=\"row\">")
 			.append("<span class=\"input-group col-md-6\"><span class=\"input-group-addon\">")
-         	.append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.month"))
+         	.append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.month"))
             .append("</span><select class=\"form-control\" name=\"")
             .append(fieldName)
             .append("_month");
@@ -411,7 +411,7 @@
             .append((dateIssued.getMonth() == -1 ? " selected=\"selected\"" : ""))
 //          .append(">(No month)</option>");
             .append(">")
-            .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.no_month"))
+            .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.no_month"))
             .append("</option>");
             
          for (int j = 1; j < 13; j++)
@@ -426,7 +426,7 @@
     
          sb.append("</select></span>")
 	            .append("<span class=\"input-group col-md-2\"><span class=\"input-group-addon\">")
-                .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.day"))
+                .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.day"))
                 .append("</span><input class=\"form-control\" type=\"text\" name=\"")
             .append(fieldName)
             .append("_day");
@@ -440,7 +440,7 @@
             .append((dateIssued.getDay() > 0 ?
                      String.valueOf(dateIssued.getDay()) : "" ))
                 .append("\"/></span><span class=\"input-group col-md-4\"><span class=\"input-group-addon\">")
-                .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.year"))
+                .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.year"))
                 .append("</span><input class=\"form-control\" type=\"text\" name=\"")
             .append(fieldName)
             .append("_year");
@@ -463,8 +463,8 @@
               .append("_remove_")
               .append(i)
               .append("\" value=\"")
-              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove"))
-              .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove")+"</button>");
+              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove"))
+              .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove")+"</button>");
          }
          else if (repeatable && !readonly && i == fieldCount - 1)
          {
@@ -472,8 +472,8 @@
             sb.append("<button class=\"btn btn-default col-md-2\" name=\"submit_")
               .append(fieldName)
               .append("_add\" value=\"")
-              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add"))
-              .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add")+"</button>");
+              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add"))
+              .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add")+"</button>");
          }
          // put a blank if nothing else
          sb.append("</div>");
@@ -518,7 +518,7 @@
              sb.append("\" disabled=\"disabled");
          }
          sb.append("\" placeholder=\"")
-           .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.seriesname").replaceAll("\"", "&quot;"));
+           .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.seriesname").replaceAll("\"", "&quot;"));
          sb.append("\" size=\"23\" value=\"")
            .append(sn.getSeries().replaceAll("\"", "&quot;"))
            .append("\"/></span><span class=\"col-md-5\"><input class=\"form-control\" type=\"text\" name=\"")
@@ -531,7 +531,7 @@
              sb.append("\" disabled=\"disabled");
          }
          sb.append("\" placeholder=\"")
-           .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.paperno").replaceAll("\"", "&quot;"));
+           .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.paperno").replaceAll("\"", "&quot;"));
          sb.append("\" size=\"23\" value=\"")
            .append(sn.getNumber().replaceAll("\"", "&quot;"))
            .append("\"/></span>\n");
@@ -544,8 +544,8 @@
               .append("_remove_")
               .append(i)
               .append("\" value=\"")
-              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove"))
-              .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove")+"</button>");
+              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove"))
+              .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove")+"</button>");
          }
          else if (repeatable && !readonly && i == fieldCount - 1)
          {
@@ -553,8 +553,8 @@
             sb.append("<button class=\"btn btn-default col-md-2\" name=\"submit_")
               .append(fieldName)
               .append("_add\" value=\"")
-              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add"))
-              .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add")+"</button>");
+              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add"))
+              .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add")+"</button>");
          }
 
          // put a blank if nothing else
@@ -632,8 +632,8 @@
               .append("_remove_")
               .append(i)
               .append("\" value=\"")
-              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove"))
-              .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove")+"</button>");
+              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove"))
+              .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove")+"</button>");
          }
          else if (repeatable && !readonly && i == fieldCount - 1)
          {
@@ -641,8 +641,8 @@
             sb.append("<button class=\"btn btn-default col-md-2\" name=\"submit_")
               .append(fieldName)
               .append("_add\" value=\"")
-              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add"))
-              .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add")+"</button>");
+              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add"))
+              .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add")+"</button>");
          }
 
          // put a blank if nothing else
@@ -722,8 +722,8 @@
                .append("_remove_")
                .append(i)
                .append("\" value=\"")
-               .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove"))
-               .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove")+"</button>");
+               .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove"))
+               .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove")+"</button>");
           }
           else if (repeatable && !readonly && i == fieldCount - 1)
           {
@@ -731,8 +731,8 @@
              sb.append("<button class=\"btn btn-default col-md-2\" name=\"submit_")
                .append(fieldName)
                .append("_add\" value=\"")
-               .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add"))
-               .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add")+"</button>");
+               .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add"))
+               .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add")+"</button>");
           }
 
           sb.append("</div>");
@@ -796,8 +796,8 @@
                              .append("_remove_")
                              .append(i)
                              .append("\" value=\"")
-                             .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove2"))
-                             .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove")+"</button>");
+                             .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove2"))
+                             .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove")+"</button>");
           }
           else {
         	  sb.append("<span class=\"col-md-2\">&nbsp;</span>");
@@ -846,8 +846,8 @@
                                      .append("_remove_")
                                      .append(i)
                                      .append("\" value=\"")
-                                     .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove2"))
-                                     .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove")+"</button>");
+                                     .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove2"))
+                                     .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove")+"</button>");
                    }
                    else {
                  	  sb.append("<span class=\"col-md-2\">&nbsp;</span>");
@@ -867,8 +867,8 @@
                      sb.append(" <button class=\"btn btn-default col-md-2\" name=\"submit_")
                        .append(fieldName)
                        .append("_add\" value=\"")
-                       .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add"))
-                       .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add")+"</button>\n");
+                       .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add"))
+                       .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add")+"</button>\n");
                    }
                  }
        sb.append("</div>");          
@@ -972,8 +972,8 @@
               .append("_remove_")
               .append(j)
               .append("\" value=\"")
-              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove"))
-              .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.remove")+"</button>");
+              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove"))
+              .append("\"><span class=\"glyphicon glyphicon-trash\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.remove")+"</button>");
          }
          else if (repeatable && !readonly && j == fieldCount - 1)
          {
@@ -982,8 +982,8 @@
               .append(fieldName)
 //            .append("_add\" value=\"Add More\"/> </td></tr>");
               .append("_add\" value=\"")
-              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add"))
-              .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-metadata.button.add")+"</button>");
+              .append(LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add"))
+              .append("\"><span class=\"glyphicon glyphicon-plus\"></span>&nbsp;&nbsp;"+LocaleSupport.getLocalizedMessage(pageContext, "jsp.submit.edit-rights.button.add")+"</button>");
          }
 
          // put a blank if nothing else
@@ -1200,7 +1200,7 @@
 	<script type="text/javascript" src="<%= request.getContextPath() %>/static/js/scriptaculous/effects.js"></script>
 	<script type="text/javascript" src="<%= request.getContextPath() %>/static/js/scriptaculous/controls.js"></script>
 </c:set>
-<dspace:layout style="submission" locbar="off" navbar="off" titlekey="jsp.submit.edit-metadata.title">
+<dspace:layout style="submission" locbar="off" navbar="off" titlekey="jsp.submit.edit-rights.title">
 
 <%
         contextPath = request.getContextPath();
@@ -1212,19 +1212,19 @@
 
         <jsp:include page="/submit/progressbar.jsp"></jsp:include>
 
-    <h1><fmt:message key="jsp.submit.edit-metadata.heading"/>
+    <h1><fmt:message key="jsp.submit.edit-rights.heading"/>
 <%
      //figure out which help page to display
      if (pageNum <= 1)
      {
 %>
-        <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#describe2\"%>"><fmt:message key="jsp.submit.edit-metadata.help"/></dspace:popup>
+        <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#describe2\"%>"><fmt:message key="jsp.submit.edit-rights.help"/></dspace:popup>
 <%
      }
      else
      {
 %>
-        <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#describe3\"%>"><fmt:message key="jsp.submit.edit-metadata.help"/></dspace:popup>
+        <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.index\") + \"#describe3\"%>"><fmt:message key="jsp.submit.edit-rights.help"/></dspace:popup>
 <%
      }
 %>
@@ -1235,13 +1235,13 @@
      if (pageNum <= 1)
      {
 %>
-        <p><fmt:message key="jsp.submit.edit-metadata.info1"/></p>
+        <p><fmt:message key="jsp.submit.edit-rights.info1"/></p>
 <%
      }
      else
      {
 %>
-        <p><fmt:message key="jsp.submit.edit-metadata.info2"/></p>
+        <p><fmt:message key="jsp.submit.edit-rights.info2"/></p>
     
 <%
      }
@@ -1405,13 +1405,13 @@
 		if(!(SubmissionController.isFirstStep(request, si) && pageNum<=1))
 		{ %>
 			<div class="col-md-6 pull-right btn-group">
-				<input class="btn btn-default col-md-4" type="submit" name="<%=AbstractProcessingStep.PREVIOUS_BUTTON%>" value="<fmt:message key="jsp.submit.edit-metadata.previous"/>" />
-				<input class="btn btn-default col-md-4" type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>" value="<fmt:message key="jsp.submit.edit-metadata.cancelsave"/>"/>
-				<input class="btn btn-primary col-md-4" type="submit" name="<%=AbstractProcessingStep.NEXT_BUTTON%>" value="<fmt:message key="jsp.submit.edit-metadata.next"/>"/>
+				<input class="btn btn-default col-md-4" type="submit" name="<%=AbstractProcessingStep.PREVIOUS_BUTTON%>" value="<fmt:message key="jsp.submit.edit-rights.previous"/>" />
+				<input class="btn btn-default col-md-4" type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>" value="<fmt:message key="jsp.submit.edit-rights.cancelsave"/>"/>
+				<input class="btn btn-primary col-md-4" type="submit" name="<%=AbstractProcessingStep.NEXT_BUTTON%>" value="<fmt:message key="jsp.submit.edit-rights.next"/>"/>
     <%  } else { %>
     		<div class="col-md-4 pull-right btn-group">
-                <input class="btn btn-default col-md-6" type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>" value="<fmt:message key="jsp.submit.edit-metadata.cancelsave"/>"/>
-				<input class="btn btn-primary col-md-6" type="submit" name="<%=AbstractProcessingStep.NEXT_BUTTON%>" value="<fmt:message key="jsp.submit.edit-metadata.next"/>"/>
+                <input class="btn btn-default col-md-6" type="submit" name="<%=AbstractProcessingStep.CANCEL_BUTTON%>" value="<fmt:message key="jsp.submit.edit-rights.cancelsave"/>"/>
+				<input class="btn btn-primary col-md-6" type="submit" name="<%=AbstractProcessingStep.NEXT_BUTTON%>" value="<fmt:message key="jsp.submit.edit-rights.next"/>"/>
     <%  }  %>
     		</div><br/>
 </div>    		
