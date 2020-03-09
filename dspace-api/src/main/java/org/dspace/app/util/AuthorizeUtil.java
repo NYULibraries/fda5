@@ -8,6 +8,7 @@
 package org.dspace.app.util;
 
 import java.sql.SQLException;
+import java.util.List;
 
 import org.dspace.authorize.AuthorizeConfiguration;
 import org.dspace.authorize.AuthorizeException;
@@ -18,8 +19,11 @@ import org.dspace.content.Bundle;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.content.Item;
+import org.dspace.content.DSpaceObject;
+import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
+import org.dspace.eperson.Group;
 
 /**
  * This class is an addition to the AuthorizeManager that perform authorization
@@ -115,7 +119,7 @@ public class AuthorizeUtil
     /**
      * Is allowed manage (create, remove, edit) collection's policies in the
      * current context?
-     * 
+     *
      * @param context
      *            the DSpace Context Object
      * @param collection
@@ -127,7 +131,7 @@ public class AuthorizeUtil
      *             if a db error occur
      */
     public static void authorizeManageCollectionPolicy(Context context,
-            Collection collection) throws AuthorizeException, SQLException
+                                                       Collection collection) throws AuthorizeException, SQLException
     {
         if (AuthorizeConfiguration.canCollectionAdminManagePolicies())
         {
@@ -145,6 +149,46 @@ public class AuthorizeUtil
             throw new AuthorizeException(
                     "Only system admin are allowed to manage collection policies");
         }
+    }
+
+    /**
+     * From now(see FDA-192) we  only allow site admins to create private collections
+     * To achieve that we only allow to remove READ policy for anonymous group when we have read policy for NYU only group
+     * or school specific group (we only have one school specific group now - gallatin)
+     * This method is used to check if those policies are present or if the user is site admin
+     * @param context
+     *            the DSpace Context Object
+     * @param dso
+     *            the dspace object(item, collection, community) we want to delete READ policy
+     * @throws AuthorizeException
+     *             if the current context (current user) is not allowed to
+     *            remove READ policy
+     * @throws SQLException
+     *             if a db error occur
+     */
+    public static void authorizeManageDSOREADPolicy(Context context, DSpaceObject dso)
+            throws AuthorizeException, SQLException
+    {
+        //we get IDs of special groups
+        int nyu_group = Group.findByName(context, ConfigurationManager.getProperty("nyu")).getID();
+        int gallatin_group = Group.findByName(context, ConfigurationManager.getProperty("gallatin")).getID();
+
+        List<ResourcePolicy> policies = AuthorizeManager.getPoliciesActionFilter(context, dso, Constants.READ);
+
+        for (ResourcePolicy policy:policies ) {
+            if ( policy.getAction() == Constants.READ &&
+                    (policy.getGroupID()==nyu_group || policy.getGroupID() == gallatin_group)) {
+                //it DSpace's way to check authorization - return nothing if authorized or through exception if not
+                return;
+            }
+        }
+
+        if (!AuthorizeManager.isAdmin(context))
+        {
+            throw new AuthorizeException(
+                    "Only system admin are allowed to make collection private");
+        }
+
     }
 
     /**

@@ -264,6 +264,12 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             ResourcePolicy policy = ResourcePolicy.find(c, UIUtil
                     .getIntParameter(request, "policy_id"));
 
+            //do not allow non-admins to create private items FDA-192 added by Kate
+            if(policy.getAction() == Constants.READ)
+            {
+                AuthorizeUtil.authorizeManageDSOREADPolicy(c,item);
+            }
+
             // do the remove
             policy.delete();
 
@@ -318,11 +324,16 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             // delete a permission from a collection
             Collection collection = Collection.find(c, UIUtil.getIntParameter(
                     request, "collection_id"));
-            
+
             AuthorizeUtil.authorizeManageCollectionPolicy(c, collection);
             ResourcePolicy policy = ResourcePolicy.find(c, UIUtil
                     .getIntParameter(request, "policy_id"));
 
+            //Added by Kate for FDA-192- do not allow non site admin users make collections private
+            if(policy.getAction() == Constants.READ)
+            {
+                AuthorizeUtil.authorizeManageDSOREADPolicy(c,collection);
+            }
             // do the remove
             policy.delete();
 
@@ -344,6 +355,12 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             AuthorizeUtil.authorizeManageCommunityPolicy(c, community);
             ResourcePolicy policy = ResourcePolicy.find(c, UIUtil
                     .getIntParameter(request, "policy_id"));
+
+            //do not allow non-admins to create private items FDA-192 added by Kate
+            if(policy.getAction() == Constants.READ)
+            {
+                AuthorizeUtil.authorizeManageDSOREADPolicy(c,community);
+            }
 
             // do the remove
             policy.delete();
