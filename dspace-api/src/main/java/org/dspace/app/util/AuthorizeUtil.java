@@ -170,8 +170,8 @@ public class AuthorizeUtil
             throws AuthorizeException, SQLException
     {
         //we get IDs of special groups
-        int nyu_group = Group.findByName(context, ConfigurationManager.getProperty("nyu")).getID();
-        int gallatin_group = Group.findByName(context, ConfigurationManager.getProperty("gallatin")).getID();
+        int nyu_group = Group.findByName(context, ConfigurationManager.getProperty("webui.submission.special.groups.nyu")).getID();
+        int gallatin_group = Group.findByName(context, ConfigurationManager.getProperty("webui.submission.special.groups.gallatin")).getID();
 
         List<ResourcePolicy> policies = AuthorizeManager.getPoliciesActionFilter(context, dso, Constants.READ);
 
@@ -190,7 +190,7 @@ public class AuthorizeUtil
         }
 
     }
-
+    
     /**
      * Is allowed manage (create, remove, edit) community's policies in the
      * current context?
