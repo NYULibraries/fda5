@@ -22,6 +22,7 @@ import org.dspace.content.authority.ChoiceAuthorityManager;
 import org.dspace.content.authority.Choices;
 import org.dspace.content.authority.MetadataAuthorityManager;
 import org.dspace.core.Constants;
+import org.dspace.core.ConfigurationManager;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
 import org.dspace.eperson.EPerson;
@@ -829,6 +830,20 @@ public abstract class DSpaceObject
             }
         }
         return isPublic;
+    }
+
+    /* Added by Kate to flag NYU Only collections */
+    public boolean isNYUOnly() throws SQLException
+    {
+        boolean isNYUOnly=false;
+        for(ResourcePolicy policy: AuthorizeManager.getPolicies(ourContext,this)) {
+            if (policy.getGroupID() == Group.findByName(ourContext,
+                    ConfigurationManager.getProperty("webui.submission.special.groups.nyu")).getID() && policy.getAction() == Constants.READ) {
+                isNYUOnly = true;
+                break;
+            }
+        }
+        return isNYUOnly;
     }
 
     /**

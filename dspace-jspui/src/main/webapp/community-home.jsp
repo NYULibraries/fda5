@@ -181,11 +181,12 @@
 		<h2 class="section-title">Collections</h2>
   <ul>
 			<%for (int j = 0; j < collections.length; j++)
+			<% if (collections[j].countItems()>0) { %>
 			{%>
 				<li>
 				 <span class="t1"><a href="<%= request.getContextPath() %>/handle/<%= collections[j].getHandle() %>">
 			  <%= collections[j].getMetadata("name") %> </a>
-			  
+			  <% if (collections[j].isNYUOnly()) { %>
 			  <span class="nyu-only-svg">
 			
 				<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -207,6 +208,7 @@
 		   </g>
 		   		</svg>
 			</span>
+			<% }  %>
 		</span>
 			 
 			  <%
@@ -222,7 +224,7 @@
 				}  
 			  %>
 				</li>
-	
+            <% } %>
 		<%} %>
   </ul>
 <%
