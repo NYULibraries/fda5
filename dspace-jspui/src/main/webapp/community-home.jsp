@@ -182,7 +182,7 @@
   <ul>
 			<%for (int j = 0; j < collections.length; j++)
 			{
-			 if (collections[j].countItems()>0) %>
+			 if (collections[j].countItems()>0) 
 			{ %>
 				<li>
 				 <span class="t1"><a href="<%= request.getContextPath() %>/handle/<%= collections[j].getHandle() %>">
@@ -226,7 +226,7 @@
 				}  
 			  %>
 				</li>
-            <% } %>
+		<%} %>
 		<%} %>
   </ul>
 <%
