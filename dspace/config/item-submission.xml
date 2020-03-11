@@ -18,21 +18,55 @@
   <!-- for handle "default".                                                  -->
   <submission-map>
     <name-map collection-handle="default"    submission-name="traditional" />
-    <name-map collection-handle="2451/34841" submission-name="gallatin"    />
+    <name-map collection-handle="2451/34841" submission-name="gallatin" />
 
-    <name-map collection-handle="2451/28318" submission-name="rights-entry-on-dmd-form" />
-    <name-map collection-handle="2451/28320" submission-name="rights-entry-on-dmd-form" />
-    <name-map collection-handle="2451/29655" submission-name="rights-entry-on-dmd-form" />
-    <name-map collection-handle="2451/29656" submission-name="rights-entry-on-dmd-form" />
-    <name-map collection-handle="2451/29658" submission-name="rights-entry-on-dmd-form" />
-    <name-map collection-handle="2451/29659" submission-name="rights-entry-on-dmd-form" />
-    <name-map collection-handle="2451/29676" submission-name="rights-entry-on-dmd-form" />
-    <name-map collection-handle="2451/29898" submission-name="rights-entry-on-dmd-form" />
-    <name-map collection-handle="2451/29947" submission-name="rights-entry-on-dmd-form" />
-    <name-map collection-handle="2451/33605" submission-name="rights-entry-on-dmd-form" />
-    <name-map collection-handle="2451/34304" submission-name="rights-entry-on-dmd-form" />
-    <name-map collection-handle="2451/34305" submission-name="rights-entry-on-dmd-form" />
-    <name-map collection-handle="2451/42113" submission-name="rights-entry-on-dmd-form" />
+    <!-- List of collections using non-default input forms.        -->
+    <!-- Rights entry is handled on the input forms,               -->
+    <!-- so these collections should use a submission-process that --> 
+    <!-- DOES NOT have a separate rights entry step.               -->
+    <name-map collection-handle="2451/14090" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/14093" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/14094" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/14813" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/14942" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/17597" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25921" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25922" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25923" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25924" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25925" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25926" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25928" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25929" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25930" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25931" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25932" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25933" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/25934" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/26402" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/27738" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/28318" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/28320" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/29653" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/29655" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/29656" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/29658" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/29659" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/29676" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/29898" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/29947" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/33560" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/33605" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/33611" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/34304" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/34305" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/37860" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/42113" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/44191" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/44193" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/44428" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/44466" submission-name="no-rights-entry-step" />
+    <name-map collection-handle="2451/60387" submission-name="no-rights-entry-step" />
   </submission-map>
 
 
@@ -191,6 +225,7 @@
   <submission-definitions>
 
     <!--This "traditional" process defines the DEFAULT item submission process-->
+    <!--This submission-process includes a mandatory RightsStep.              -->
     <submission-process name="traditional">
       <step>
         <processing-class>org.dspace.submit.step.SkipInitialQuestionsStep</processing-class>
@@ -232,9 +267,10 @@
       </step>
     </submission-process>
 
-    <!-- This submission process uses a DMD form that includes rights entry   -->
-    <!-- instead of having rights entry as a separate step          -->
-    <submission-process name="rights-entry-on-dmd-form">
+    <!-- This submission-process DOES NOT include the RightsStep                         -->
+    <!-- This submission-process should be used with collections                         --> 
+    <!-- that have a Rights field on the DMD form, or do not require rights information  -->
+    <submission-process name="no-rights-entry-step">
       <step>
         <processing-class>org.dspace.submit.step.SkipInitialQuestionsStep</processing-class>
       </step>
@@ -267,41 +303,39 @@
         <workflow-editable>true</workflow-editable>
       </step>
     </submission-process>
-
+    <!-- the gallatin submission-process uses the DescribeStepNYU -->
     <submission-process name="gallatin">
       <step>
-        <processing-class>org.dspace.submit.step.SkipInitialQuestionsStep</processing-class>
+	<processing-class>org.dspace.submit.step.SkipInitialQuestionsStep</processing-class>
       </step>
       <step>
-        <heading>submit.progressbar.license</heading>
-        <processing-class>org.dspace.submit.step.LicenseStep</processing-class>
-        <jspui-binding>org.dspace.app.webui.submit.step.JSPLicenseStep</jspui-binding>
-        <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.LicenseStep</xmlui-binding>
-        <workflow-editable>false</workflow-editable>
+	<heading>submit.progressbar.license</heading>
+	<processing-class>org.dspace.submit.step.LicenseStep</processing-class>
+	<jspui-binding>org.dspace.app.webui.submit.step.JSPLicenseStep</jspui-binding>
+	<xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.LicenseStep</xmlui-binding>
+	<workflow-editable>false</workflow-editable>
       </step>
       <step>
-        <heading>submit.progressbar.upload</heading>
-        <processing-class>org.dspace.submit.step.UploadWithEmbargoStep</processing-class>
-        <jspui-binding>org.dspace.app.webui.submit.step.JSPUploadWithEmbargoStep</jspui-binding>
-        <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.UploadWithEmbargoStep</xmlui-binding>
-        <workflow-editable>true</workflow-editable>
+	<heading>submit.progressbar.upload</heading>
+	<processing-class>org.dspace.submit.step.UploadWithEmbargoStep</processing-class>
+	<jspui-binding>org.dspace.app.webui.submit.step.JSPUploadWithEmbargoStep</jspui-binding>
+	<xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.UploadWithEmbargoStep</xmlui-binding>
+	<workflow-editable>true</workflow-editable>
       </step>
       <step>
-        <heading>submit.progressbar.describe</heading>
-        <processing-class>org.dspace.submit.step.DescribeStepNYU</processing-class>
-        <jspui-binding>org.dspace.app.webui.submit.step.JSPDescribeNYUStep</jspui-binding>
-        <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.DescribeStep</xmlui-binding>
-        <workflow-editable>true</workflow-editable>
+	<heading>submit.progressbar.describe</heading>
+	<processing-class>org.dspace.submit.step.DescribeStepNYU</processing-class>
+	<jspui-binding>org.dspace.app.webui.submit.step.JSPDescribeNYUStep</jspui-binding>
+	<xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.DescribeStep</xmlui-binding>
+	<workflow-editable>true</workflow-editable>
       </step>
       <step>
-        <heading>submit.progressbar.verify</heading>
-        <processing-class>org.dspace.submit.step.VerifyStep</processing-class>
-        <jspui-binding>org.dspace.app.webui.submit.step.JSPVerifyStep</jspui-binding>
-        <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.ReviewStep</xmlui-binding>
-        <workflow-editable>true</workflow-editable>
+	<heading>submit.progressbar.verify</heading>
+	<processing-class>org.dspace.submit.step.VerifyStep</processing-class>
+	<jspui-binding>org.dspace.app.webui.submit.step.JSPVerifyStep</jspui-binding>
+	<xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.ReviewStep</xmlui-binding>
+	<workflow-editable>true</workflow-editable>
       </step>
     </submission-process>
-
   </submission-definitions>
-
 </item-submission>
