@@ -1,62 +1,56 @@
-.collections-list .section-title {
-  color: $text-color;
-  margin: 50px 0 10px 0;
-  text-transform: uppercase;
-  font-size: 16px;
-  font-weight: bold;
+.collections-list {
+  margin-bottom: 10em;
+  .section-title {
+    color: $text-color;
+    color: #816B56;
+    margin: 50px 0 10px 0;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: bold;
+  }
 }
 
 .fda-tree {
   max-width: 44rem;
-
   a {
-    display: inline-block;
+    display: block;
     height: auto;
   }
-
   .t1 {
     font-size: 1.2rem;
     margin: 0;
-    display: inline-block;
+    display: block;
     font-weight: bold;
-
-    a:link, a:visited {
+    a:link,
+    a:visited {
       color: $text-color;
-      padding: 0;
-      margin: 15px 0 0px;
+      padding: 7px 0;
       font-weight: 500;
     }
   }
-
   ul {
     list-style: none;
     padding-left: 0;
     margin: 0;
   }
-
   li {
     clear: left;
   }
-
-  ul > li > ul {
+  ul>li>ul {
     margin-left: 30px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-
+    // padding-top: 10px;
+    //padding-bottom: 10px;
     li {
       margin-left: 30px;
       clear: left;
     }
-
-
-    .t1 {
-      font-size: 1rem;
-      font-weight: 400;
-    }
+    // .t1,
+    // .ct1 {
+    //   font-size: 1rem;
+    //   font-weight: 400;
+    // }
   }
-
   a.arrow {
-    display: inline-block;
     font-size: 1.3rem;
     font-weight: bold;
     padding-left: 0;
@@ -64,14 +58,36 @@
     margin-right: 0;
     width: 30px;
     color: shade($nyu-red, 5%);
-    line-height: 1.4rem;
-    vertical-align: text-bottom;
-    &:hover, &:active, &:focus {
+    line-height: 1.8;
+    float: left;
+    &:hover,
+    &:active,
+    &:focus {
       text-decoration: none;
     }
-
     &:hover {
       color: tint($nyu-red, 15%);
     }
+  }
+  .tree-collections-list {
+    .t1.ct1 {
+      font-size: 1rem;
+      //   margin-bottom: 1px;
+      display: inline-block;
+    }
+  }
+  .tree-communities-list {
+    .t1 {
+      font-size: 1rem;
+    }
+  }
+  .collection-short-description {
+    font-size: .9rem;
+    margin-top: -7px;
+    line-height: 1.4;
+    margin-bottom: 7px;
+  }
+  .collection-short-description-none {
+    display: none;
   }
 }

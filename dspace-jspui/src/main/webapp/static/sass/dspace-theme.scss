@@ -1,11 +1,9 @@
 // from NYU style guides
-
 $violet: #57068C;
 $taupe-light: #B5ADA6;
 $nyu-red: #D11255;
 $green: #799A05;
 $teal: #007c88;
-
 //
 // variations
 $violet_bright: #8300D7;
@@ -14,7 +12,6 @@ $violet-dark: darken($violet, 8%);
 $taupe-dark: #A49483;
 $taupe-darker: #675949;
 $taupe-darker2: darken(#675949, 5%);
-
 $nyu-red-light: tint($nyu-red, 20%);
 $taupe-header: $taupe-darker;
 $text-color2: darken($taupe-dark, 25%);
@@ -23,9 +20,7 @@ $taupe-super-light: #F6F5F4;
 $green_light: tint($green, 10%);
 $tertiary: darken($teal, 8%);
 $tertiary-light: tint($tertiary, 15%);
-
 @import "compass/css3/images";
-
 @mixin breakword($anything) {
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -48,20 +43,34 @@ $tertiary-light: tint($tertiary, 15%);
 @import "partials/_itempage";
 @import "partials/_admin";
 @import "partials/_skiplink";
-
+@import "partials/_statisticspage";
 html {
   font-size: 100%;
 }
 
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
   line-height: 1.25;
 }
 
-h1, .h1 {
+h1,
+.h1 {
   font-size: 30px;
 }
 
-a, a:active, a:focus {
+a,
+a:active,
+a:focus {
   outline: none;
   outline: 0;
 }
@@ -69,7 +78,6 @@ a, a:active, a:focus {
 #content {
   padding-bottom: 60px;
   margin-top: 20px;
-
   &:focus {
     outline: none;
   }
@@ -94,20 +102,21 @@ a:focus {
 .brand {
   font-size: 1rem;
   max-width: 44em;
-
   .page-title {
     display: inline-block;
     font-size: inherit;
     font-weight: normal;
     margin: 0;
   }
-
   h4 {
     color: $taupe-dark;
   }
 }
 
-h2, .h2, h1, .h1 {
+h2,
+.h2,
+h1,
+.h1 {
   font-weight: normal;
   font-weight: 300;
 }
@@ -118,7 +127,6 @@ code {
 
 .table td {
   @include breakword(1);
-
   a {
     font-weight: bold;
   }
@@ -131,7 +139,6 @@ code {
 .info-page {
   padding-bottom: 5rem;
   font-size: 1rem;
-
   h3 {
     font-size: 1.25rem;
     font-weight: normal;
@@ -139,14 +146,15 @@ code {
     margin-top: 2rem;
   }
   h2 {
-      font-size: 1.6rem;
-      margin-top: 2rem;
+    font-size: 1.6rem;
+    margin-top: 2rem;
   }
   .info-page .page-title-area h2 {
-      font-size: 2rem;
-      margin-top: 20px;
+    font-size: 2rem;
+    margin-top: 20px;
   }
 }
+
 .nyu-only {
   font-size: .85rem;
   color: #57068c;
@@ -155,13 +163,11 @@ code {
 }
 
 .nyu-only-svg {
-display: inline-block;
-width: 75px;
-margin-left: 8px;
+  display: inline-block;
+  width: 75px;
+  margin-left: 8px;
 }
 
-
-.nyu-only-svg svg{
- 
+.nyu-only-svg svg {
   width: 100%;
-  }
+}
