@@ -729,7 +729,7 @@ input#query {
 }
 /* line 19, ../../sass/partials/_tree.scss */
 .fda-tree .t1 {
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin: 0;
   display: block;
   font-weight: bold;
@@ -751,52 +751,59 @@ input#query {
 .fda-tree li {
   clear: left;
 }
-/* line 39, ../../sass/partials/_tree.scss */
-.fda-tree ul > li > ul {
+/* line 42, ../../sass/partials/_tree.scss */
+.fda-tree > ul > li > a.arrow {
+  line-height: 1.8;
+  padding: 0;
+}
+/* line 46, ../../sass/partials/_tree.scss */
+.fda-tree > ul > li > .t1 {
+  font-size: 1.2rem;
+}
+/* line 51, ../../sass/partials/_tree.scss */
+.fda-tree > ul li > ul {
   margin-left: 30px;
 }
-/* line 43, ../../sass/partials/_tree.scss */
-.fda-tree ul > li > ul li {
+/* line 55, ../../sass/partials/_tree.scss */
+.fda-tree > ul li > ul li {
   margin-left: 30px;
   clear: left;
 }
-/* line 53, ../../sass/partials/_tree.scss */
+/* line 61, ../../sass/partials/_tree.scss */
 .fda-tree a.arrow {
   font-size: 1.3rem;
   font-weight: bold;
   padding-left: 0;
   text-align: left;
-  margin-right: 0;
-  width: 30px;
+  margin-right: 10px;
+  width: 20px;
   color: #c61150;
-  line-height: 1.8;
+  line-height: 1;
+  height: 28px;
   float: left;
+  padding: 7px 0 0;
 }
-/* line 63, ../../sass/partials/_tree.scss */
+/* line 74, ../../sass/partials/_tree.scss */
 .fda-tree a.arrow:hover, .fda-tree a.arrow:active, .fda-tree a.arrow:focus {
   text-decoration: none;
 }
-/* line 68, ../../sass/partials/_tree.scss */
+/* line 79, ../../sass/partials/_tree.scss */
 .fda-tree a.arrow:hover {
   color: #d7356e;
 }
-/* line 73, ../../sass/partials/_tree.scss */
+/* line 84, ../../sass/partials/_tree.scss */
 .fda-tree .tree-collections-list .t1.ct1 {
   font-size: 1rem;
   display: inline-block;
 }
-/* line 80, ../../sass/partials/_tree.scss */
-.fda-tree .tree-communities-list .t1 {
-  font-size: 1rem;
-}
-/* line 84, ../../sass/partials/_tree.scss */
+/* line 90, ../../sass/partials/_tree.scss */
 .fda-tree .collection-short-description {
   font-size: .9rem;
   margin-top: -7px;
   line-height: 1.4;
   margin-bottom: 7px;
 }
-/* line 90, ../../sass/partials/_tree.scss */
+/* line 96, ../../sass/partials/_tree.scss */
 .fda-tree .collection-short-description-none {
   display: none;
 }

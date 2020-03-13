@@ -17,7 +17,8 @@
     height: auto;
   }
   .t1 {
-    font-size: 1.2rem;
+    // All community names except top level are 1rem 
+    font-size: 1rem;
     margin: 0;
     display: block;
     font-weight: bold;
@@ -36,30 +37,39 @@
   li {
     clear: left;
   }
-  ul>li>ul {
-    margin-left: 30px;
-    // padding-top: 10px;
-    //padding-bottom: 10px;
-    li {
-      margin-left: 30px;
-      clear: left;
+  &>ul {
+    // Top level list only
+    &>li {
+      &>a.arrow {
+        line-height: 1.8;
+        padding: 0;
+      }
+      &>.t1 {
+        // Top level community name only
+        font-size: 1.2rem;
+      }
     }
-    // .t1,
-    // .ct1 {
-    //   font-size: 1rem;
-    //   font-weight: 400;
-    // }
+    li>ul {
+      margin-left: 30px;
+      li {
+        margin-left: 30px;
+        clear: left;
+      }
+    }
   }
   a.arrow {
     font-size: 1.3rem;
     font-weight: bold;
     padding-left: 0;
     text-align: left;
-    margin-right: 0;
-    width: 30px;
+    // Adding margin to improve look of "focus" state
+    margin-right: 10px;
+    width: 20px;
     color: shade($nyu-red, 5%);
-    line-height: 1.8;
+    line-height: 1;
+    height: 28px;
     float: left;
+    padding: 7px 0 0;
     &:hover,
     &:active,
     &:focus {
@@ -74,11 +84,6 @@
       font-size: 1rem;
       //   margin-bottom: 1px;
       display: inline-block;
-    }
-  }
-  .tree-communities-list {
-    .t1 {
-      font-size: 1rem;
     }
   }
   .collection-short-description {
