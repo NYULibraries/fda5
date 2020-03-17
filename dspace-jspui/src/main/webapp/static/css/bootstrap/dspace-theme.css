@@ -734,42 +734,42 @@ input#query {
   display: block;
   font-weight: bold;
 }
-/* line 24, ../../sass/partials/_tree.scss */
+/* line 25, ../../sass/partials/_tree.scss */
 .fda-tree .t1 a:link,
 .fda-tree .t1 a:visited {
   color: #4f453a;
   padding: 7px 0;
   font-weight: 500;
 }
-/* line 31, ../../sass/partials/_tree.scss */
+/* line 32, ../../sass/partials/_tree.scss */
 .fda-tree ul {
   list-style: none;
   padding-left: 0;
   margin: 0;
 }
-/* line 36, ../../sass/partials/_tree.scss */
+/* line 37, ../../sass/partials/_tree.scss */
 .fda-tree li {
   clear: left;
 }
-/* line 42, ../../sass/partials/_tree.scss */
+/* line 43, ../../sass/partials/_tree.scss */
 .fda-tree > ul > li > a.arrow {
   line-height: 1.8;
   padding: 0;
 }
-/* line 46, ../../sass/partials/_tree.scss */
+/* line 47, ../../sass/partials/_tree.scss */
 .fda-tree > ul > li > .t1 {
   font-size: 1.2rem;
 }
-/* line 51, ../../sass/partials/_tree.scss */
+/* line 52, ../../sass/partials/_tree.scss */
 .fda-tree > ul li > ul {
   margin-left: 30px;
 }
-/* line 55, ../../sass/partials/_tree.scss */
+/* line 54, ../../sass/partials/_tree.scss */
 .fda-tree > ul li > ul li {
   margin-left: 30px;
   clear: left;
 }
-/* line 61, ../../sass/partials/_tree.scss */
+/* line 60, ../../sass/partials/_tree.scss */
 .fda-tree a.arrow {
   font-size: 1.3rem;
   font-weight: bold;
@@ -783,27 +783,27 @@ input#query {
   float: left;
   padding: 7px 0 0;
 }
-/* line 74, ../../sass/partials/_tree.scss */
+/* line 73, ../../sass/partials/_tree.scss */
 .fda-tree a.arrow:hover, .fda-tree a.arrow:active, .fda-tree a.arrow:focus {
   text-decoration: none;
 }
-/* line 79, ../../sass/partials/_tree.scss */
+/* line 78, ../../sass/partials/_tree.scss */
 .fda-tree a.arrow:hover {
   color: #d7356e;
 }
-/* line 84, ../../sass/partials/_tree.scss */
+/* line 83, ../../sass/partials/_tree.scss */
 .fda-tree .tree-collections-list .t1.ct1 {
   font-size: 1rem;
   display: inline-block;
 }
-/* line 90, ../../sass/partials/_tree.scss */
+/* line 89, ../../sass/partials/_tree.scss */
 .fda-tree .collection-short-description {
   font-size: .9rem;
   margin-top: -7px;
   line-height: 1.4;
   margin-bottom: 7px;
 }
-/* line 96, ../../sass/partials/_tree.scss */
+/* line 95, ../../sass/partials/_tree.scss */
 .fda-tree .collection-short-description-none {
   display: none;
 }
@@ -998,7 +998,7 @@ header div.navbar-right {
 .most-downloaded {
   line-height: 1.35;
 }
-/* line 12, ../../sass/partials/_mostdownloaded.scss */
+/* line 11, ../../sass/partials/_mostdownloaded.scss */
 .most-downloaded .panel-title {
   text-transform: uppercase;
   font-size: .9rem;
@@ -1006,37 +1006,37 @@ header div.navbar-right {
   color: #675949;
   font-weight: 500;
 }
-/* line 20, ../../sass/partials/_mostdownloaded.scss */
+/* line 18, ../../sass/partials/_mostdownloaded.scss */
 .most-downloaded div.authors {
   font-size: .8rem;
   display: inline-block;
   line-height: 1.35;
 }
-/* line 25, ../../sass/partials/_mostdownloaded.scss */
+/* line 22, ../../sass/partials/_mostdownloaded.scss */
 .most-downloaded div.authors a:after {
   content: ";";
 }
-/* line 29, ../../sass/partials/_mostdownloaded.scss */
+/* line 25, ../../sass/partials/_mostdownloaded.scss */
 .most-downloaded div.authors:last-child a:after {
   content: "";
 }
-/* line 34, ../../sass/partials/_mostdownloaded.scss */
+/* line 29, ../../sass/partials/_mostdownloaded.scss */
 .most-downloaded .communityflag {
   display: inline-block;
   font-size: .8rem;
   line-height: 1.35;
 }
-/* line 43, ../../sass/partials/_mostdownloaded.scss */
+/* line 36, ../../sass/partials/_mostdownloaded.scss */
 .most-downloaded .communityflag span {
   display: none;
 }
-/* line 48, ../../sass/partials/_mostdownloaded.scss */
+/* line 40, ../../sass/partials/_mostdownloaded.scss */
 .most-downloaded article {
   padding: 10px 0;
   border-bottom: 1px solid #d8d3d0;
   box-shadow: 0px 1px 0px 0px white;
 }
-/* line 53, ../../sass/partials/_mostdownloaded.scss */
+/* line 44, ../../sass/partials/_mostdownloaded.scss */
 .most-downloaded article .article-title {
   color: #675949;
   margin: 0;
@@ -1044,19 +1044,28 @@ header div.navbar-right {
   margin: 0.1rem 0;
   font-weight: bold;
 }
-/* line 61, ../../sass/partials/_mostdownloaded.scss */
+/* line 51, ../../sass/partials/_mostdownloaded.scss */
 .most-downloaded article:first-child {
   padding-top: 0;
 }
-/* line 65, ../../sass/partials/_mostdownloaded.scss */
+/* line 54, ../../sass/partials/_mostdownloaded.scss */
 .most-downloaded article:last-child {
   border-bottom: none;
   box-shadow: none;
 }
-/* line 71, ../../sass/partials/_mostdownloaded.scss */
-.most-downloaded a:link, .most-downloaded a:visited {
+/* line 59, ../../sass/partials/_mostdownloaded.scss */
+.most-downloaded a:link,
+.most-downloaded a:visited {
   color: #4f453a;
   display: inline-block;
+}
+
+/* line 70, ../../sass/partials/_mostdownloaded.scss */
+.panel-body a {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
 }
 
 /* line 1, ../../sass/partials/_footer.scss */
@@ -1469,93 +1478,160 @@ a#skip-nav:focus {
   color: #007c88;
 }
 
-/* line 5, ../../sass/partials/_statisticspage.scss */
+/* line 4, ../../sass/partials/_statisticspage.scss */
 .mainStats {
-  border-top: 4px solid #4f453a;
-  border-top: 4px solid #330662;
-  border-top: 10px solid #dcd8d3;
-  margin: 40px 0;
-  border-bottom: 10px solid #dcd8d3;
-  border-left: 2px solid #dcd8d3;
-  border-right: 2px solid #dcd8d3;
+  border-top: 1px solid #dddddd;
+  margin: 80px 0;
 }
-/* line 13, ../../sass/partials/_statisticspage.scss */
+/* line 7, ../../sass/partials/_statisticspage.scss */
 .mainStats .statsGroup {
   display: flex;
   flex-wrap: wrap;
 }
 
-/* line 19, ../../sass/partials/_statisticspage.scss */
+/* line 13, ../../sass/partials/_statisticspage.scss */
 .statsPageTitle {
   font-size: 2rem;
   line-height: 1.5;
 }
-/* line 22, ../../sass/partials/_statisticspage.scss */
+/* line 16, ../../sass/partials/_statisticspage.scss */
+.statsPageTitle .statisticsLabel {
+  font-size: 1.3rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+/* line 21, ../../sass/partials/_statisticspage.scss */
 .statsPageTitle .itemTitle {
   display: block;
   font-size: 2rem;
 }
 
-/* line 28, ../../sass/partials/_statisticspage.scss */
-.statsSection {
-  border-bottom: 2px solid #dcd8d3;
-  padding: 30px 30px 30px 30px;
+/* line 27, ../../sass/partials/_statisticspage.scss */
+.statsTimePeriod {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: .8rem;
 }
-/* line 32, ../../sass/partials/_statisticspage.scss */
+
+/* line 34, ../../sass/partials/_statisticspage.scss */
+.statsSection {
+  border-bottom: 1px solid #dddddd;
+  padding: 30px 10px;
+}
+/* line 37, ../../sass/partials/_statisticspage.scss */
 .statsSection h2 {
   font-size: 1.5rem;
   margin-top: 0;
   margin-bottom: 17px;
 }
-/* line 37, ../../sass/partials/_statisticspage.scss */
+/* line 42, ../../sass/partials/_statisticspage.scss */
 .statsSection td,
 .statsSection th {
   padding-right: 20px;
 }
-/* line 41, ../../sass/partials/_statisticspage.scss */
+/* line 46, ../../sass/partials/_statisticspage.scss */
 .statsSection th {
   word-spacing: 9999px;
   font-weight: normal;
 }
-/* line 45, ../../sass/partials/_statisticspage.scss */
+/* line 50, ../../sass/partials/_statisticspage.scss */
 .statsSection td {
   font-weight: bold;
+  font-size: 1.25rem;
 }
 
-/* line 50, ../../sass/partials/_statisticspage.scss */
+/* line 56, ../../sass/partials/_statisticspage.scss */
 .statsSectionTotal {
-  flex: 1 1 45%;
-  min-width: 400px;
+  flex: 1 1 100%;
 }
-/* line 53, ../../sass/partials/_statisticspage.scss */
+@media (min-width: 991px) {
+  /* line 56, ../../sass/partials/_statisticspage.scss */
+  .statsSectionTotal {
+    flex: 1 1 50%;
+  }
+}
+/* line 61, ../../sass/partials/_statisticspage.scss */
 .statsSectionTotal th {
   display: none;
 }
 
-/* line 58, ../../sass/partials/_statisticspage.scss */
+/* line 66, ../../sass/partials/_statisticspage.scss */
 .statsSectionDownloads {
-  flex: 1 1 50%;
-  padding-left: 30px;
-  border-left: 1px solid #dcd8d3;
-  min-width: 400px;
+  flex: 1 1 100%;
 }
-/* line 63, ../../sass/partials/_statisticspage.scss */
+@media (min-width: 991px) {
+  /* line 66, ../../sass/partials/_statisticspage.scss */
+  .statsSectionDownloads {
+    flex: 1 1 50%;
+    padding-left: 30px;
+    border-left: 1px solid #dddddd;
+  }
+}
+/* line 73, ../../sass/partials/_statisticspage.scss */
 .statsSectionDownloads th {
   display: none;
 }
 
-/* line 68, ../../sass/partials/_statisticspage.scss */
+/* line 78, ../../sass/partials/_statisticspage.scss */
 .statsSectionCountryVisits {
-  flex: 1 1 45%;
-  min-width: 400px;
+  flex: 1 1 100%;
+}
+@media (min-width: 991px) {
+  /* line 78, ../../sass/partials/_statisticspage.scss */
+  .statsSectionCountryVisits {
+    flex: 1 1 50%;
+  }
 }
 
-/* line 73, ../../sass/partials/_statisticspage.scss */
+/* line 85, ../../sass/partials/_statisticspage.scss */
 .statsSectionCityVisits {
-  flex: 1 1 50%;
-  min-width: 400px;
-  padding-left: 30px;
-  border-left: 1px solid #dcd8d3;
+  flex: 1 1 100%;
+}
+@media (min-width: 991px) {
+  /* line 85, ../../sass/partials/_statisticspage.scss */
+  .statsSectionCityVisits {
+    flex: 1 1 50%;
+    padding-left: 30px;
+    border-left: 1px solid #dddddd;
+  }
+}
+
+@media (max-width: 990px) {
+  /* line 97, ../../sass/partials/_statisticspage.scss */
+  .statsSectionMonthlyVisits .statsTable tbody {
+    display: block;
+  }
+  /* line 100, ../../sass/partials/_statisticspage.scss */
+  .statsSectionMonthlyVisits .statsTable tr {
+    width: 25%;
+    float: left;
+    display: flex;
+    flex-wrap: wrap;
+  }
+  /* line 102, ../../sass/partials/_statisticspage.scss */
+  .statsSectionMonthlyVisits .statsTable tr:first-of-type {
+    width: 60%;
+  }
+  /* line 108, ../../sass/partials/_statisticspage.scss */
+  .statsSectionMonthlyVisits .statsTable tr th {
+    flex: 1 0 100%;
+    height: 50px;
+    font-size: 1rem;
+  }
+  /* line 113, ../../sass/partials/_statisticspage.scss */
+  .statsSectionMonthlyVisits .statsTable tr td {
+    line-height: 1;
+    flex: 1 0 100%;
+    height: 50px;
+    padding-right: 0;
+  }
+}
+@media (max-width: 990px) {
+  /* line 122, ../../sass/partials/_statisticspage.scss */
+  .statsSectionMonthlyVisits.statsSection th {
+    word-spacing: normal;
+  }
 }
 
 /* line 47, ../../sass/dspace-theme.scss */
