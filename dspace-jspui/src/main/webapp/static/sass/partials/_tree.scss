@@ -1,81 +1,98 @@
-.collections-list .section-title {
-  color: $text-color;
-  margin: 10px 0;
-  color: #816B56;
-  text-transform: uppercase;
-  font-size: 16px;
-  font-weight: bold;
+.collections-list {
+  margin-bottom: 10em;
+  .section-title {
+    color: $text-color;
+    color: #816B56;
+    margin: 50px 0 10px 0;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: bold;
+  }
 }
 
 .fda-tree {
   max-width: 44rem;
-
   a {
     display: block;
     height: auto;
   }
-
   .t1 {
-    font-size: 1.2rem;
+    // All community names except top level are 1rem 
+    font-size: 1rem;
     margin: 0;
     display: block;
     font-weight: bold;
-
-    a:link, a:visited {
+    a:link,
+    a:visited {
       color: $text-color;
       padding: 7px 0;
       font-weight: 500;
     }
   }
-
   ul {
     list-style: none;
     padding-left: 0;
     margin: 0;
   }
-
   li {
     clear: left;
   }
-
-  ul > li > ul {
-    margin-left: 30px;
-    background-color: lighten($taupe-light, 29%);
-    padding-top: 10px;
-    padding-bottom: 10px;
-
-    li {
+  &>ul {
+    // Top level list only
+    &>li {
+      &>a.arrow {
+        line-height: 1.8;
+        padding: 0;
+      }
+      &>.t1 {
+        // Top level community name only
+        font-size: 1.2rem;
+      }
+    }
+    li>ul {
       margin-left: 30px;
-      clear: left;
-    }
-
-    > li > ul {
-      background-color: lighten($taupe-light, 25%);
-    }
-
-    .t1 {
-      font-size: 1rem;
-      font-weight: 400;
+      li {
+        margin-left: 30px;
+        clear: left;
+      }
     }
   }
-
   a.arrow {
-    display: inline-block;
     font-size: 1.3rem;
     font-weight: bold;
     padding-left: 0;
     text-align: left;
-    margin-right: 0;
-    width: 30px;
+    // Adding margin to improve look of "focus" state
+    margin-right: 10px;
+    width: 20px;
     color: shade($nyu-red, 5%);
-    float:left;
-    line-height: 1.8;
-    &:hover, &:active, &:focus {
+    line-height: 1;
+    height: 28px;
+    float: left;
+    padding: 7px 0 0;
+    &:hover,
+    &:active,
+    &:focus {
       text-decoration: none;
     }
-
     &:hover {
       color: tint($nyu-red, 15%);
     }
+  }
+  .tree-collections-list {
+    .t1.ct1 {
+      font-size: 1rem;
+      //   margin-bottom: 1px;
+      display: inline-block;
+    }
+  }
+  .collection-short-description {
+    font-size: .9rem;
+    margin-top: -7px;
+    line-height: 1.4;
+    margin-bottom: 7px;
+  }
+  .collection-short-description-none {
+    display: none;
   }
 }
