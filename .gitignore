@@ -9,3 +9,4 @@ build.properties
 # in the directory hierarchy.
 target/
 *~
+*.DS_Store
