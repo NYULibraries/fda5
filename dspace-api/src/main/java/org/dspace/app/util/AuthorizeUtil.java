@@ -169,19 +169,28 @@ public class AuthorizeUtil
     public static void authorizeManageDSOREADPolicy(Context context, DSpaceObject dso)
             throws AuthorizeException, SQLException
     {
-        //we get IDs of special groups
-        int nyu_group = Group.findByName(context, ConfigurationManager.getProperty("webui.submission.special.groups.nyu")).getID();
-        int gallatin_group = Group.findByName(context, ConfigurationManager.getProperty("webui.submission.special.groups.gallatin")).getID();
-
         List<ResourcePolicy> policies = AuthorizeManager.getPoliciesActionFilter(context, dso, Constants.READ);
 
-        for (ResourcePolicy policy:policies ) {
-            if ( policy.getAction() == Constants.READ &&
-                    (policy.getGroupID()==nyu_group || policy.getGroupID() == gallatin_group)) {
-                //it DSpace's way to check authorization - return nothing if authorized or through exception if not
-                return;
+        String[] specialGroups= {"webui.submission.special.groups.nyu", "webui.submission.special.groups.gallatin"};
+
+        //we get IDs of special groups
+        for ( String special_group:specialGroups) {
+            if(ConfigurationManager.isConfigured(special_group)) {
+                String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups.nyu");
+                if (Group.findByName(context, special_group_name) != null) {
+                    for (ResourcePolicy policy : policies) {
+                        if (policy.getAction() == Constants.READ &&
+                                (policy.getGroupID() == Group.findByName(context, special_group_name).getID())) {
+                            //it DSpace's way to check authorization - return nothing if authorized or through exception if not
+                            return;
+                        }
+                    }
+                }
             }
+
         }
+
+
 
         if (!AuthorizeManager.isAdmin(context))
         {
