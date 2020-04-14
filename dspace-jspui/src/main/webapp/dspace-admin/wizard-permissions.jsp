@@ -45,18 +45,6 @@
 <%
 	switch (perm)
 	{
-	case CollectionWizardServlet.PERM_READ:
-%>
-	<%-- <h1>Authorization to Read</h1> --%>
-
-    <h1><fmt:message key="jsp.dspace-admin.wizard-permissions.heading1"/>
-    <dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.site-admin\") + \"#wizard_permissions\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup>
-    </h1>
-
-	<%-- <p>Who has (by default) permission to read new items submitted to this collection? --%>
-	<p class="help-block"><fmt:message key="jsp.dspace-admin.wizard-permissions.text1"/></p>
-<%
-	break;
 
 	case CollectionWizardServlet.PERM_SUBMIT:
 %>
@@ -76,6 +64,7 @@
 	<h1><fmt:message key="jsp.dspace-admin.wizard-permissions.heading3"/>
 	<dspace:popup page="<%= LocaleSupport.getLocalizedMessage(pageContext, \"help.site-admin\") + \"#wizard_permissions\"%>"><fmt:message key="jsp.morehelp"/></dspace:popup>
 	</h1>
+
 
 	<%-- <p>Who is responsible for performing the <strong>accept/reject</strong> step?
 	They will be able to accept or reject incoming submissions.  They will not be
