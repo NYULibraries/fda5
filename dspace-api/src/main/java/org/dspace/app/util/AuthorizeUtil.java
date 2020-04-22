@@ -152,52 +152,73 @@ public class AuthorizeUtil
     }
 
     /**
-     * From now(see FDA-192) we  only allow site admins to create private collections
+     * From now(see FDA-192 jira ticket) we  only allow site admins to create private collections
      * To achieve that we only allow to remove READ policy for anonymous group when we have read policy for NYU only group
      * or school specific group (we only have one school specific group now - gallatin)
      * This method is used to check if those policies are present or if the user is site admin
      * @param context
      *            the DSpace Context Object
      * @param dso
-     *            the dspace object(item, collection, community) we want to delete READ policy
+     *            the dspace object(item, collection, community) for which we want to delete READ policy
      * @throws AuthorizeException
      *             if the current context (current user) is not allowed to
      *            remove READ policy
      * @throws SQLException
      *             if a db error occur
+     * Added by Kate
      */
     public static void authorizeManageDSOREADPolicy(Context context, DSpaceObject dso)
-            throws AuthorizeException, SQLException
+        throws AuthorizeException, SQLException
     {
-        List<ResourcePolicy> policies = AuthorizeManager.getPoliciesActionFilter(context, dso, Constants.READ);
+    List<ResourcePolicy> policies = AuthorizeManager.getPoliciesActionFilter(context, dso, Constants.READ);
 
-        String[] specialGroups= {"webui.submission.special.groups.nyu", "webui.submission.special.groups.gallatin"};
+    String[] specialGroups= {"webui.submission.special.groups.nyu", "webui.submission.special.groups.gallatin"};
 
-        //we get IDs of special groups
-        for ( String special_group:specialGroups) {
-            if(ConfigurationManager.isConfigured(special_group)) {
-                String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups.nyu");
-                if (Group.findByName(context, special_group_name) != null) {
-                    for (ResourcePolicy policy : policies) {
-                        if (policy.getAction() == Constants.READ &&
-                                (policy.getGroupID() == Group.findByName(context, special_group_name).getID())) {
-                            //it DSpace's way to check authorization - return nothing if authorized or through exception if not
-                            return;
-                        }
+    //we get IDs of special groups
+    for ( String special_group:specialGroups) {
+        if(ConfigurationManager.isConfigured(special_group)) {
+            String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups.nyu");
+            if (Group.findByName(context, special_group_name) != null) {
+                for (ResourcePolicy policy : policies) {
+                    if (policy.getAction() == Constants.READ &&
+                            (policy.getGroupID() == Group.findByName(context, special_group_name).getID())) {
+                        //it DSpace's way to check authorization - return nothing if authorized or through exception if not
+                        return;
                     }
                 }
             }
-
         }
 
+    }
 
+    if (!AuthorizeManager.isAdmin(context))
+    {
+        throw new AuthorizeException(
+                "Only system admin are allowed to make collection private");
+    }
 
-        if (!AuthorizeManager.isAdmin(context))
+    }
+
+    /**
+     * Use method authorizeManageDSOREADPolicy to identify if user can make item private e.g. remove READ policy (see FDA-192 jira ticket)
+     * @param context
+     *            the DSpace Context Object
+     * @param dso
+     *            the dspace object(item, collection, community) for which we want to delete READ policy
+     * @throws SQLException
+     *             if a db error occur
+     */
+    public static Boolean canAddDSOREADPolicy(Context context, DSpaceObject dso)
+            throws AuthorizeException, SQLException
+    {
+        try
         {
-            throw new AuthorizeException(
-                    "Only system admin are allowed to make collection private");
-        }
+            authorizeManageDSOREADPolicy( context, dso);
+        } catch (AuthorizeException au) {
 
+           return false;
+        }
+       return true;
     }
     
     /**
