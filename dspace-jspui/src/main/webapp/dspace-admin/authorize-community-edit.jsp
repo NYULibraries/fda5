@@ -48,6 +48,7 @@
     Community community = (Community) request.getAttribute("community");
     List<ResourcePolicy> policies =
         (List<ResourcePolicy>) request.getAttribute("policies");
+    Boolean canMakePrivate = (Boolean) request.getAttribute("canMakePrivate");
 %>
 
 <dspace:layout style="submission" titlekey="jsp.dspace-admin.authorize-community-edit.title"
@@ -107,7 +108,10 @@
                 <form action="<%= request.getContextPath() %>/tools/authorize" method="post">
                     <input type="hidden" name="policy_id" value="<%= rp.getID() %>" />
                     <input type="hidden" name="community_id" value="<%= community.getID() %>" />
+                    <% if (canMakePrivate||!rp.getActionText().contains("READ"))
+                                          { %>
                     <input class="btn btn-danger" type="submit" name="submit_community_delete_policy" value="<fmt:message key="jsp.dspace-admin.general.delete"/>" />
+                    <% } %>
                 </form>
              </td>
          </tr>

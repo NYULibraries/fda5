@@ -1,12 +1,7 @@
 build.properties
+dspace/target
+*/target
 .idea
-
-# ignore all .iml files in the directory hierarchy, except those
-# already under version control
-**/*.iml 
-
-# ignore all directories named 'target/", regardless of where they are
-# in the directory hierarchy.
-target/
-*~
-*.DS_Store
+**/*.iml
+**/**/**/*.iml
+**/**/*.iml

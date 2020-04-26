@@ -67,6 +67,7 @@
     Bundle [] bundles      = (Bundle [])request.getAttribute("bundles");
     Map bundle_policies    = (Map)request.getAttribute("bundle_policies"   );
     Map bitstream_policies = (Map)request.getAttribute("bitstream_policies");
+    Boolean canMakePrivate = (Boolean) request.getAttribute("canMakePrivate");
 %>
 
 <dspace:layout style="submission" titlekey="jsp.dspace-admin.authorize-item-edit.title"
@@ -262,8 +263,11 @@
                     <input type="hidden" name="item_id" value="<%= item.getID()   %>" />
                     <input type="hidden" name="bitstream_id" value="<%= myBits.getID() %>" />
                     <input class="btn btn-primary col-md-4" type="submit" name="submit_item_edit_policy" value="<fmt:message key="jsp.dspace-admin.general.edit"/>" />
+                    <% if (canMakePrivate||!rp.getActionText().contains("READ"))
+                       { %>
                     <input class="btn btn-danger col-md-4 col-md-offset-1" type="submit" name="submit_item_delete_policy" value="<fmt:message key="jsp.dspace-admin.general.delete"/>" />
-                 </form>  
+                     <% } %>
+                 </form>
             </td>
         </tr>
 <%
