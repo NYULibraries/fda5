@@ -836,13 +836,21 @@ public abstract class DSpaceObject
     public boolean isNYUOnly() throws SQLException
     {
         boolean isNYUOnly=false;
-        for(ResourcePolicy policy: AuthorizeManager.getPolicies(ourContext,this)) {
-            if (policy.getGroupID() == Group.findByName(ourContext,
-                    ConfigurationManager.getProperty("webui.submission.special.groups.nyu")).getID() && policy.getAction() == Constants.READ) {
-                isNYUOnly = true;
-                break;
+        //we get IDs of special groups
+        if(ConfigurationManager.isConfigured("webui.submission.special.groups.nyu")) {
+            String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups.nyu");
+            if (Group.findByName(ourContext, special_group_name) != null) {
+                for (ResourcePolicy policy : AuthorizeManager.getPolicies(ourContext, this)) {
+                    if (policy.getAction() == Constants.READ &&
+                                (policy.getGroupID() == Group.findByName(ourContext, special_group_name).getID())) {
+                            isNYUOnly = true;
+                            break;
+                    }
+                }
             }
         }
+
+
         return isNYUOnly;
     }
 

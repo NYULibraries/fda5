@@ -16,7 +16,8 @@
   -    statsFileDownloads - bean containing name, data, column and row labels
   -    statsCountryVisits - bean containing name, data, column and row labels
   -    statsCityVisits - bean containing name, data, column and row labels
-  -    isItem - boolean variable, returns true if the DSO is an Item 
+  -    isItem - boolean variable, returns true if the DSO is an Item
+  -    objectName - String which contains object Name added by Kate to accomodate new page design
   --%>
 
 <%@ page contentType="text/html;charset=UTF-8" %>
@@ -29,17 +30,15 @@
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
 
 <% Boolean isItem = (Boolean)request.getAttribute("isItem"); %>
+<% String objectName = (String)request.getAttribute("objectName"); %>
 
 
 <dspace:layout titlekey="jsp.statistics.title">
-<h1 class="statsPageTitle"><span class="statisticsLabel"><fmt:message key="jsp.statistics.title"/></span>
 
-<c:forEach items="${statsVisits.matrix}" var="row" varStatus="counter">
-  <c:forEach items="${row}" var="cell" varStatus="rowcounter">
-    <span class="itemTitle"><c:out value="${statsVisits.colLabels[counter.index]}"/></span>
-  </c:forEach>
-</c:forEach>
+<h1 class="statsPageTitle"><span class="statisticsLabel"><fmt:message key="jsp.statistics.title"/></span>
+    <span class="itemTitle"> <c:out value="${objectName}"/></span>
 </h1>
+
 <div class="statsTimePeriod">
 	Usage since April 12, 2016
 </div>
@@ -52,15 +51,25 @@
         <tr>
         <th><fmt:message key="jsp.statistics.heading.views"/></th>
         </tr>
-        <c:forEach items="${statsVisits.matrix}" var="row" varStatus="counter">
-        <c:forEach items="${row}" var="cell" varStatus="rowcounter">
-        <tr >
-          <td>
-            <c:out value="${cell}"/>
-          </td>
-        </c:forEach>
-        </tr>
-        </c:forEach>
+        <c:choose>
+                <c:when test="${statsVisits.matrix[0][0]>0}">
+                <c:forEach items="${statsVisits.matrix}" var="row" varStatus="counter">
+                <c:forEach items="${row}" var="cell" varStatus="rowcounter">
+                <tr >
+                  <td>
+                    <c:out value="${cell}"/>
+                  </td>
+                </tr>
+                </c:forEach>
+                </c:forEach>
+               </c:when>
+        <c:otherwise>
+               <tr >
+                   <td> 0 </td>
+               </tr>
+        </c:otherwise>
+        </c:choose>
+
       </table>
     </section>
 
@@ -73,18 +82,24 @@
         <th>Filename</th>
         <th><fmt:message key="jsp.statistics.heading.views"/></th>
       </tr>
-      <c:forEach items="${statsFileDownloads.matrix}" var="row" varStatus="counter">
-      <c:forEach items="${row}" var="cell" varStatus="rowcounter">
-      <tr>
-        <td>
-          <c:out value="${statsFileDownloads.colLabels[rowcounter.index]}"/>
-        </td>
-      <td>
-      <c:out value="${cell}"/>
-      </td>
-      </c:forEach>
-      </tr>
-      </c:forEach>
+      <c:choose>
+          <c:when test="${statsFileDownloads.matrix[0][0]>0}">
+             <c:forEach items="${statsFileDownloads.matrix}" var="row" varStatus="counter">
+             <c:forEach items="${row}" var="cell" varStatus="rowcounter">
+                <tr >
+                   <td>
+                     <c:out value="${cell}"/>
+                   </td>
+                </tr>
+             </c:forEach>
+             </c:forEach>
+          </c:when>
+          <c:otherwise>
+              <tr >
+                  <td> 0 </td>
+              </tr>
+          </c:otherwise>
+       </c:choose>
       </table>
       </section>
     <% } %>
@@ -94,30 +109,41 @@
   <section class="statsSection statsSectionMonthlyVisits">
     <h2><fmt:message key="jsp.statistics.heading.monthlyvisits"/></h2>
     <table class="statsTable">
-    <tr>
-    <c:forEach items="${statsMonthlyVisits.colLabels}" var="headerlabel" varStatus="counter">
-    <th>
-    <c:out value="${headerlabel}"/>
-    </th>
-    </c:forEach>
-    </tr>
+    <c:choose>
+       <c:when test="${statsVisits.matrix[0][0]>0}">
+         <tr>
+         <c:forEach items="${statsMonthlyVisits.colLabels}" var="headerlabel" varStatus="counter">
+          <th>
+           <c:out value="${headerlabel}"/>
+          </th>
+        </c:forEach>
+        </tr>
 
-    <c:forEach items="${statsMonthlyVisits.matrix}" var="row" varStatus="counter">
-    <tr >
-    <c:forEach items="${row}" var="cell">
-    <td>
-    <c:out value="${cell}"/>
-    </td>
-    </c:forEach>
-    </tr>
-    </c:forEach>
-    </table>
+        <c:forEach items="${statsMonthlyVisits.matrix}" var="row" varStatus="counter">
+         <tr >
+         <c:forEach items="${row}" var="cell">
+          <td>
+           <c:out value="${cell}"/>
+          </td>
+         </c:forEach>
+         </tr>
+        </c:forEach>
+       </c:when>
+       <c:otherwise >
+        <tr>
+        <td>0</td>
+        </tr>
+       </c:otherwise >
+    </c:choose >
+       </table>
   </section>
 
   <div class="statsGroup">
     <section class="statsSection statsSectionCountryVisits">
       <h2><fmt:message key="jsp.statistics.heading.countryvisits"/></h2>
       <table class="statsTable">
+        <c:choose>
+        <c:when test="${statsCountryVisits.matrix[0][0]>0}">
         <tr>
         <th>Country</th>
         <th><fmt:message key="jsp.statistics.heading.views"/></th>
@@ -134,35 +160,43 @@
         </td>
         </c:forEach>
         </c:forEach>
+       </c:when>
+        <c:otherwise >
+        <tr>
+        <td>0</td>
+        </tr>
+        </c:otherwise>
+        </c:choose>
       </table>
     </section>
 
     <section class="statsSection statsSectionCityVisits">
     <h2><fmt:message key="jsp.statistics.heading.cityvisits"/></h2>
     <table class="statsTable">
-    <tr>
-    <th>City<!-- spacer cell --></th>
-    <th><fmt:message key="jsp.statistics.heading.views"/></th>
-    </tr>
-    <c:forEach items="${statsCityVisits.matrix}" var="row" varStatus="counter">
-    <c:forEach items="${row}" var="cell" varStatus="rowcounter">
     <c:choose>
-    <c:when test="${rowcounter.index % 2 == 0}">
-    <c:set var="rowClass" value="evenRowOddCol"/>
-    </c:when>
-    <c:otherwise>
-    <c:set var="rowClass" value="oddRowOddCol"/>
-    </c:otherwise>
-    </c:choose>
-    <tr class="${rowClass}">
-    <td>
-    <c:out value="${statsCityVisits.colLabels[rowcounter.index]}"/>
-    <td>
-    <c:out value="${cell}"/>
-    </td>
-    </tr>
-    </c:forEach>
-    </c:forEach>
+            <c:when test="${statsCityVisits.matrix[0][0]>0}">
+            <tr>
+            <th>Country</th>
+            <th><fmt:message key="jsp.statistics.heading.views"/></th>
+            </tr>
+            <c:forEach items="${statsCityVisits.matrix}" var="row" varStatus="counter">
+            <c:forEach items="${row}" var="cell" varStatus="rowcounter">
+            <tr >
+            <td>
+            <c:out value="${statsCityVisits.colLabels[rowcounter.index]}"/>
+            <td>
+            <c:out value="${cell}"/>
+            </tr>
+            </td>
+            </c:forEach>
+            </c:forEach>
+           </c:when>
+            <c:otherwise >
+            <tr>
+            <td>0</td>
+            </tr>
+            </c:otherwise>
+            </c:choose>
     </table>
     </section>
   </div>

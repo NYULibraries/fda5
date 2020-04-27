@@ -132,6 +132,7 @@ public class DisplayStatisticsServlet extends DSpaceServlet
                     statsVisits.setMatrix(matrix);
                     statsVisits.setColLabels(colLabels);
                     statsVisits.setRowLabels(rowLabels);
+
                 }
 
 
@@ -284,6 +285,7 @@ public class DisplayStatisticsServlet extends DSpaceServlet
                     List<String> colLabels = dataset.getColLabels();
                     List<String> rowLabels = dataset.getRowLabels();
 
+
                     statsCityVisits.setMatrix(matrix);
                     statsCityVisits.setColLabels(colLabels);
                     statsCityVisits.setRowLabels(rowLabels);
@@ -295,13 +297,13 @@ public class DisplayStatisticsServlet extends DSpaceServlet
                                 + " and handle: " + dso.getHandle(), e);
             }
 
-
             request.setAttribute("statsVisits", statsVisits);
             request.setAttribute("statsMonthlyVisits", statsMonthlyVisits);
             request.setAttribute("statsFileDownloads", statsFileDownloads);
             request.setAttribute("statsCountryVisits", statsCountryVisits);
             request.setAttribute("statsCityVisits", statsCityVisits);
             request.setAttribute("isItem", isItem);
+            request.setAttribute("objectName", dso.getName());
 
             JSPManager.showJSP(request, response, "display-statistics.jsp");
 

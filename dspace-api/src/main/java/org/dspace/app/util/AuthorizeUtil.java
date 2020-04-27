@@ -175,13 +175,18 @@ public class AuthorizeUtil
     String[] specialGroups= {"webui.submission.special.groups.nyu", "webui.submission.special.groups.gallatin"};
 
     //we get IDs of special groups
-    for ( String special_group:specialGroups) {
-        if(ConfigurationManager.isConfigured(special_group)) {
+    for ( String special_group:specialGroups)
+    {
+        if(ConfigurationManager.isConfigured(special_group))
+        {
             String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups.nyu");
-            if (Group.findByName(context, special_group_name) != null) {
-                for (ResourcePolicy policy : policies) {
+            if (Group.findByName(context, special_group_name) != null)
+            {
+                for (ResourcePolicy policy : policies)
+                {
                     if (policy.getAction() == Constants.READ &&
-                            (policy.getGroupID() == Group.findByName(context, special_group_name).getID())) {
+                            (policy.getGroupID() == Group.findByName(context, special_group_name).getID()))
+                    {
                         //it DSpace's way to check authorization - return nothing if authorized or through exception if not
                         return;
                     }
