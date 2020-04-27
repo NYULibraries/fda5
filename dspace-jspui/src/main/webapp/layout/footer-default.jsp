@@ -38,7 +38,7 @@
             <%-- Page footer --%>
 <footer class="navbar navbar-inverse">
     <div class="footer-holder container">
-    <div class="f-1"><a href="/about">About the Archive</a> | <a target="_blank" href="/help">Help</a> | <a href="/contact">Contact</a> | <a href="/about#rights">Rights</a> | <a href="https://www.nyu.edu/footer/accessibility.html" class="ext" target="_blank">Accessibility <span class="glyphicon glyphicon-new-window"></span></a></div>
+    <div class="f-1"><a href="/about">About the Archive</a> | <a target="_blank" href="/help/help.jsp">Help</a> | <a href="/contact">Contact</a> | <a href="/about#rights">Rights</a> | <a href="https://www.nyu.edu/footer/accessibility.html" class="ext" target="_blank">Accessibility <span class="glyphicon glyphicon-new-window"></span></a></div>
     <div class="f-2">Powered by <a target="_blank" href="http://dlib.nyu.edu/dlts">NYU DLTS</a> and <a target="_blank" href="http://www.dspace.org">DSpace</a> </div>
     </div>
 </footer>
