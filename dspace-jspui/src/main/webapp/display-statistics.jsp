@@ -86,11 +86,17 @@
           <c:when test="${statsFileDownloads.matrix[0][0]>0}">
              <c:forEach items="${statsFileDownloads.matrix}" var="row" varStatus="counter">
              <c:forEach items="${row}" var="cell" varStatus="rowcounter">
+               <c:choose>
+               <c:when test="${statsMonthlyVisits.rowLabels[counter.index]!=''}">
                 <tr >
+                   <td>
+                     <c:out value="${statsMonthlyVisits.rowLabels[counter.index]}"/>
                    <td>
                      <c:out value="${cell}"/>
                    </td>
                 </tr>
+               </c:when>
+               </c:choose>
              </c:forEach>
              </c:forEach>
           </c:when>
