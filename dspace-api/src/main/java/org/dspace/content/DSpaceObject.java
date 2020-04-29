@@ -853,6 +853,35 @@ public abstract class DSpaceObject
         return false;
     }
 
+    /* Added by Kate to hide private collections */
+    public boolean isPrivate() throws SQLException {
+        //if public then we are done
+        if(isPublic()) {
+            return false;
+        }
+        //if not public we need to check if it belongs to special groups
+        List<ResourcePolicy> policies = AuthorizeManager.getPoliciesActionFilter(ourContext, this, Constants.READ);
+
+        String[] specialGroups = {"webui.submission.special.groups.nyu", "webui.submission.special.groups.gallatin"};
+
+        //we get IDs of special groups
+        for (String special_group : specialGroups) {
+            String special_group_name = ConfigurationManager.getProperty(special_group);
+
+            if (special_group_name != null) {
+                if (Group.findByName(ourContext, special_group_name) != null) {
+                    for (ResourcePolicy policy : policies) {
+                        if (policy.getAction() == Constants.READ &&
+                                (policy.getGroupID() == Group.findByName(ourContext, special_group_name).getID())) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
     /**
      * Add metadata fields. These are appended to existing values.
      * Use <code>clearDC</code> to remove values. The ordering of values

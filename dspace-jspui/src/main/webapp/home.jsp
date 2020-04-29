@@ -101,7 +101,7 @@
 
             for (int j = 0; j < cols.length; j++)
             {
-                if(cols[j].countItems()>0)
+                if((!cols[j].isPrivate()||cols[j].canEditBoolean())&&(cols[j].countItems()>0))
                 {
                   out.println("<li class=\"tree-collections-list\" role=\"treeitem\" >");
                   //String collName =  ( StringUtils.isNotBlank(cols[j].getMetadata("name"))  ? cols[j].getMetadata("name") : "Untitled" );

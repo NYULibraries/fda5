@@ -195,7 +195,7 @@
   		<ul class="tree-collections-list">
 			<%for (int j = 0; j < collections.length; j++)
 			{
-			 if (collections[j].countItems()>0) 
+			 if ((!collections[j].isPrivate()||collections[j].canEditBoolean())&&(collections[j].countItems()>0))
 			{ %>
 				<li>
 				 <span class="t1 ct1"><a href="<%= request.getContextPath() %>/handle/<%= collections[j].getHandle() %>">
