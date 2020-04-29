@@ -194,7 +194,7 @@ AuthorizeUtil
                     }
                   }
                 }
-            } 
+            }
     }
 
     if (!AuthorizeManager.isAdmin(context))
