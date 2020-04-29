@@ -825,33 +825,32 @@ public abstract class DSpaceObject
         boolean isPublic=false;
         for(ResourcePolicy policy: AuthorizeManager.getPolicies(ourContext,this)) {
             if (policy.getGroupID() == 0 && policy.getAction() == Constants.READ) {
-                isPublic = true;
-                break;
+                return true;
             }
         }
-        return isPublic;
+        return false;
     }
 
     /* Added by Kate to flag NYU Only collections */
     public boolean isNYUOnly() throws SQLException
     {
-        boolean isNYUOnly=false;
         //we get IDs of special groups
-        if(ConfigurationManager.isConfigured("webui.submission.special.groups.nyu")) {
-            String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups.nyu");
-            if (Group.findByName(ourContext, special_group_name) != null) {
-                for (ResourcePolicy policy : AuthorizeManager.getPolicies(ourContext, this)) {
+        String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups.nyu");
+        if (special_group_name!=null)
+        {
+            if (Group.findByName(ourContext, special_group_name) != null)
+            {
+                for (ResourcePolicy policy : AuthorizeManager.getPolicies(ourContext, this))
+                {
                     if (policy.getAction() == Constants.READ &&
-                                (policy.getGroupID() == Group.findByName(ourContext, special_group_name).getID())) {
-                            isNYUOnly = true;
-                            break;
+                                (policy.getGroupID() == Group.findByName(ourContext, special_group_name).getID()))
+                    {
+                            return  true;
                     }
                 }
             }
         }
-
-
-        return isNYUOnly;
+        return false;
     }
 
     /**

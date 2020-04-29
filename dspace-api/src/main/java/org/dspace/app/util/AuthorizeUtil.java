@@ -32,7 +32,8 @@ import org.dspace.eperson.Group;
  * @author bollini
  * 
  */
-public class AuthorizeUtil
+public class
+AuthorizeUtil
 {
 
     /**
@@ -177,23 +178,23 @@ public class AuthorizeUtil
     //we get IDs of special groups
     for ( String special_group:specialGroups)
     {
-        if(ConfigurationManager.isConfigured(special_group))
-        {
-            String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups.nyu");
-            if (Group.findByName(context, special_group_name) != null)
+            String special_group_name = ConfigurationManager.getProperty(special_group);
+
+            if(special_group_name!=null)
             {
-                for (ResourcePolicy policy : policies)
+                if (Group.findByName(context, special_group_name) != null)
                 {
+                  for (ResourcePolicy policy : policies)
+                  {
                     if (policy.getAction() == Constants.READ &&
                             (policy.getGroupID() == Group.findByName(context, special_group_name).getID()))
                     {
                         //it DSpace's way to check authorization - return nothing if authorized or through exception if not
                         return;
                     }
+                  }
                 }
-            }
-        }
-
+            } 
     }
 
     if (!AuthorizeManager.isAdmin(context))
