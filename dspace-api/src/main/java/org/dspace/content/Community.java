@@ -685,17 +685,25 @@ public class Community extends DSpaceObject
             {
                 TableRow row = tri.next();
 
+                //all code below is modified by Kate to only get collections which we need to display
+
                 // First check the cache
-                Collection fromCache = (Collection) ourContext.fromCache(
+                Collection collection = (Collection) ourContext.fromCache(
                         Collection.class, row.getIntColumn("collection_id"));
 
-                if (fromCache != null)
+
+                if (collection == null)
                 {
-                    collections.add(fromCache);
+                    collection = new Collection(ourContext, row);
                 }
-                else
+
+                if (AuthorizeManager.authorizeActionBoolean(ourContext,collection,(int) Constants.ADD))
                 {
-                    collections.add(new Collection(ourContext, row));
+                    collections.add(collection);
+                }
+                else if (collection.countItems()>0)
+                {
+                    collections.add(collection);
                 }
             }
         }

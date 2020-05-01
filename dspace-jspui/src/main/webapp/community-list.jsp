@@ -76,7 +76,7 @@
 			for (int j = 0; j < cols.length; j++)
 			{
 				//String collName =  ( StringUtils.isNotBlank(cols[j].getMetadata("name"))  ? cols[j].getMetadata("name") : "Untitled" );
-				if((!cols[j].isPrivate()||cols[j].canEditBoolean())&&(cols[j].countItems()>0))
+				if((!cols[j].isPrivate()||cols[j].canEditBoolean ())&&(cols[j].countItems()>0))
 				{
 				out.println("<li>");
 				out.println("<span  class=\"t1 ct1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") + "</a></span>");
