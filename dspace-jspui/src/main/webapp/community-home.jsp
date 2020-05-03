@@ -36,6 +36,7 @@
 <%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.concurrent.locks.*" %>
 <%@ page import="java.sql.SQLException" %>
@@ -172,7 +173,7 @@
 	<div class="fda-tree">
 <%
   boolean showLogos = ConfigurationManager.getBooleanProperty("jspui.community-home.logos", true);
-  if (subcommunities.length != 0)
+  if (subcommunitiesMap.length != 0)
 	{
 %>
 	<h2 class="section-title">Subcommunities</h2>
@@ -194,8 +195,6 @@
 		<h2 class="section-title">Collections</h2>
   		<ul class="tree-collections-list">
 			<%for (int j = 0; j < collections.length; j++)
-			{
-			 if ((!collections[j].isPrivate()||collections[j].canEditBoolean())&&(collections[j].countItems()>0))
 			{ %>
 				<li>
 				 <span class="t1 ct1"><a href="<%= request.getContextPath() %>/handle/<%= collections[j].getHandle() %>">
@@ -239,7 +238,6 @@
 				}  
 			  %>
 				</li>
-		<%} %>
 		<%} %>
   </ul>
 <%
@@ -344,24 +342,64 @@
 </dspace:layout>
 <%! private void build(Community c) throws SQLException {
 
-		Integer comID = Integer.valueOf(c.getID());
+		 Integer comID = Integer.valueOf(c.getID());
 
-		// Find collections in community
-		Collection[] colls = c.getCollections();
-		collectionMap.put(comID, colls);
+                // Find collections assosiated with community and if they exist add the community to map
+                Collection[] colls = c.getCollections();
+                if (colls.length > 0 )
+                {
+                   collectionMap.put(comID, colls);
+                }
+                // Find subcommunties in community
+                Community[] comms = c.getSubcommunities();
 
-		// Find subcommunties in community
-		Community[] comms = c.getSubcommunities();
+                // Find collections assosiated with community and if they exist add the community to map
+                if (comms.length > 0)
+                {
+                    subcommunityMap.put(comID, comms);
 
-		// Get all subcommunities for each communities if they have some
-		if (comms.length > 0)
-		{
-			subcommunityMap.put(comID, comms);
+                    for (int sub = 0; sub < comms.length; sub++) {
 
-			for (int sub = 0; sub < comms.length; sub++) {
+                        build(comms[sub]);
+                    }
+                }
 
-				build(comms[sub]);
-			}
-		}
+                //if it is empty remove from comms assosiated with parent comunity as we do not need to display empty commmunities
+                if(colls.length==0 && comms.length==0)
+                {
+                     Community parentComm=c.getParentCommunity();
+
+                     if(parentComm != null)
+                     {
+                        Integer parentCommID = Integer.valueOf(parentComm.getID());
+
+                        Community[] parentComms = subcommunityMap.get(parentCommID);
+
+                        if(parentComms!=null)
+                        {
+                           ArrayList<Community> parentCommsNew=new ArrayList<Community>();
+
+                           for (int i = 0; i < parentComms.length; i++)
+                           {
+
+                             if (parentComms[i].getID()!=comID)
+                             {
+                                parentCommsNew.add(parentComms[i]);
+                             }
+                           }
+
+                           Community[] parentCommsArray = new Community[ parentCommsNew.size() ];
+
+                           subcommunityMap.put(parentCommID, parentCommsNew.toArray(parentCommsArray));
+                        }
+                      }
+                }
+                //check if we have non empty children community and if we do not remove from the map
+                 Community[] commProcessed = subcommunityMap.get(comID);
+
+                 if(commProcessed!=null && commProcessed.length==0)
+                 {
+                    subcommunityMap.remove(comID);
+                 }
 	}
 %>

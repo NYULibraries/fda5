@@ -45,10 +45,6 @@
 <%@ page import="org.dspace.core.LogManager" %>
 <%@ page import="org.dspace.core.PluginManager" %>
 <%@ page import="org.dspace.plugin.SiteHomeProcessor" %>
-<%!   public Map<Integer, Collection[]> colMap; %>
-   <%!   public Map<Integer, Community[]> commMap; %>
-     <%   colMap = new HashMap<Integer, Collection[]>(); %>
-     <%   commMap = new HashMap<Integer, Community[]>(); %>
 <%
     Context context = null;
     
@@ -57,15 +53,6 @@
        
     try {
         context = UIUtil.obtainContext(request);
-
-              Community[] communities = Community.findAllTop(context);
-
-            for (int com = 0; com < communities.length; com++) 
-            {
-               build(communities[com]);
-            }
-         request.setAttribute("collections.map", colMap);
-            request.setAttribute("subcommunities.map", commMap);
  
         try
         {
@@ -106,56 +93,4 @@
       }
     }
 %>
-<%! //Modified by Kate to remove empty communities and collections from home and list community page
-      private void build(Community c) throws SQLException {
 
-        Integer comID = Integer.valueOf(c.getID());
-
-        // Find collections assosiated with community and if they exist add the community to map
-        Collection[] colls = c.getCollections();
-        if (colls.length > 0 )
-        {
-           colMap.put(comID, colls);
-        }
-        // Find subcommunties in community
-        Community[] comms = c.getSubcommunities();
-
-        // Find collections assosiated with community and if they exist add the community to map
-        if (comms.length > 0)
-        {
-            commMap.put(comID, comms);
-
-            for (int sub = 0; sub < comms.length; sub++) {
-
-                build(comms[sub]);
-            }
-        }
-
-        //if it is empty remove from comms assosiated with parent comunity as we do not need to display empty commmunities
-        if(colls.length==0 && comms.length==0)
-        {
-             Community parentComm=c.getParentCommunity();
-
-             if(parentComm != null)
-             {
-                Integer parentCommID = Integer.valueOf(parentComm.getID());
-
-                Community[] parentComms = commMap.get(parentCommID);
-                ArrayList<Community> parentCommsNew=new ArrayList<Community>();
-
-                for (int i = 0; i < parentComms.length; i++) {
-
-                  if (parentComms[i].getID()!=comID)
-                  {
-                      parentCommsNew.add(parentComms[i]);
-                  }
-                }
-
-                Community[] parentCommsArray = new Community[ parentCommsNew.size() ];
-
-                commMap.replace(parentCommID, parentCommsNew.toArray(parentCommsArray));
-             }
-        }
-
-    }
-%>

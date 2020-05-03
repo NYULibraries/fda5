@@ -601,7 +601,7 @@ public class UIUtil extends Util
         return stringValue;
     }
 
-    //added by Kate to normalize date issued to look like semester
+    //added by Kate to normalize date issued to look like semester is done for Gallatin Syllabi collection
 
     public static String returnSemester(String date) { return returnSemester(new DCDate(date)); }
 

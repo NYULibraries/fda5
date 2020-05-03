@@ -685,7 +685,7 @@ public class Community extends DSpaceObject
             {
                 TableRow row = tri.next();
 
-                //all code below is modified by Kate to only get collections which we need to display
+                //all code below is modified by Kate to only get collections which we need to display, e.g. non empty or those to which current use can add content
 
                 // First check the cache
                 Collection collection = (Collection) ourContext.fromCache(
@@ -697,13 +697,17 @@ public class Community extends DSpaceObject
                     collection = new Collection(ourContext, row);
                 }
 
-                if (AuthorizeManager.authorizeActionBoolean(ourContext,collection,(int) Constants.ADD))
+                if (collection.isPrivate())
                 {
-                    collections.add(collection);
+                    if(AuthorizeManager.authorizeActionBoolean(ourContext,collection,(int) Constants.ADD))
+                    {
+                        collections.add(collection);
+                    }
                 }
-                else if (collection.countItems()>0)
-                {
-                    collections.add(collection);
+                else {
+                    if (collection.countItems() > 0) {
+                        collections.add(collection);
+                    }
                 }
             }
         }
@@ -1475,4 +1479,6 @@ public class Community extends DSpaceObject
         ourContext.addEvent(new Event(Event.MODIFY, Constants.COMMUNITY, 
                 getID(), null, getIdentifiers(ourContext)));
     }
+
+
 }
