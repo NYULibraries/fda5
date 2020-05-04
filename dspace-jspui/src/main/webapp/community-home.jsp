@@ -42,26 +42,16 @@
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.io.IOException" %>
 <%@ page import="org.dspace.browse.ItemCountException" %>
-<%!   public Map<Integer, Collection[]> collectionMap; %>
-   <%!   public Map<Integer, Community[]> subcommunityMap; %>
-	 <%   collectionMap = new HashMap<Integer, Collection[]>(); %>
-	 <%   subcommunityMap = new HashMap<Integer, Community[]>(); %>
+<%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
 <%
 	// Retrieve attributes
 	Community community = (Community) request.getAttribute( "community" );
-	Collection[] collections =
-		(Collection[]) request.getAttribute("collections");
-	Community[] subcommunities =
-		(Community[]) request.getAttribute("subcommunities");
-	
-
-			for (int com = 0; com < subcommunities.length; com++)
-			{
-			   build(subcommunities[com]);
-			}
-
+	Collection[] collections =(Collection[]) request.getAttribute("collections");
+	Community[] subcommunities =(Community[]) request.getAttribute("subcommunities");
 	RecentSubmissions rs = (RecentSubmissions) request.getAttribute("recently.submitted");
 	MostDownloaded mostdownloaded = (MostDownloaded) request.getAttribute("most.downloaded");
+	Map collectionMap = (Map) request.getAttribute("collections.map");
+    Map subcommunityMap = (Map) request.getAttribute("subcommunities.map");
 	
 	Boolean editor_b = (Boolean)request.getAttribute("editor_button");
 	boolean editor_button = (editor_b == null ? false : editor_b.booleanValue());
@@ -93,51 +83,55 @@
 <%!
 	void showCommunity(Community c, JspWriter out, HttpServletRequest request, ItemCounter ic, Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
 	{
-		out.println( "<li role=\"treeitem\" >" );
-		out.println( "<span  class=\"t1\"><a href=\"" + request.getContextPath() + "/handle/"
-				+ c.getHandle() + "\">" + c.getMetadata("name") + "</a></span>");
-		
-		// Get the sub-communities in this community	
-		Community[] comms = (Community[]) subcommunityMap.get(c.getID());
-		if (comms != null && comms.length > 0)
-		{
-			out.println( "<ul class=\"tree-communities-list\" role=\"group\" >" );
-			for (int k = 0; k < comms.length; k++)
-			{
-			   showCommunity(comms[k], out, request, ic, collectionMap, subcommunityMap);
-			}
-		out.println( "</ul>" );
-		}
+        if (subcommunityMap.containsKey(c.getID()) || collectionMap.containsKey(c.getID()) )
+        {
+        // Get the sub-communities in this community
+        Community[] comms = (Community[]) subcommunityMap.get(c.getID());
 
-		// Get the collections in this community
-		Collection[] cols = (Collection[]) collectionMap.get(c.getID());
-		if (cols != null && cols.length > 0)
-		{
-			out.println( "<ul class=\"tree-collections-list\" role=\"group\" >" );
-			for (int j = 0; j < cols.length; j++)
-			{
-				//String collName =  ( StringUtils.isNotBlank(cols[j].getMetadata("name"))  ? cols[j].getMetadata("name") : "Untitled" );
-				out.println("<li>");
-				out.println("<span  class=\"t1 ct1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") + "</a></span>");
-				if (cols[j].isNYUOnly()) { 
-                    out.println("<span class=\"nyu-only-svg\"><svg version=\"1.1\"  xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 100.69 13.76\" style=\"enable-background:new 0 0 100.69 13.76;\" xml:space=\"preserve\">");
-		            out.println("<style type=\"text/css\"> path{fill:#57068C;} </style>");
-		            out.println("<g><path  d=\"M0,0.23h2.17l7.12,9.19V0.23h2.3v13.3H9.63L2.3,4.07v9.46H0C0,13.53,0,0.23,0,0.23z\"/><path  d=\"M18.92,8.29l-5.28-8.05h2.77l3.7,5.87l3.76-5.87h2.68l-5.28,8v5.3h-2.36V8.29H18.92z\"/><path  d=\"M28.4,7.89V0.23h2.34v7.56c0,2.47,1.27,3.78,3.36,3.78c2.07,0,3.34-1.23,3.34-3.69V0.22h2.34v7.54c0,3.97-2.24,5.97-5.72,5.97C30.61,13.74,28.4,11.74,28.4,7.89z\"/>");
-			        out.println(" <path d=\"M48.11,6.92V6.88C48.11,3.14,51,0,55.08,0s6.93,3.1,6.93,6.84v0.04c0,3.74-2.89,6.88-6.97,6.88S48.11,10.66,48.11,6.92z M59.56,6.92V6.88c0-2.58-1.88-4.73-4.52-4.73s-4.48,2.11-4.48,4.69v0.04c0,2.58,1.88,4.71,4.52,4.71S59.56,9.5,59.56,6.92z\"/><path d=\"M64,0.23h2.17l7.12,9.19V0.23h2.3v13.3h-1.96L66.3,4.07v9.46H64V0.23z\"/><path d=\"M79,0.23h2.34V11.4h6.99v2.13H79C79,13.53,79,0.23,79,0.23z\"/><path d=\"M92.21,8.29l-5.28-8.05h2.77l3.7,5.87l3.76-5.87h2.68l-5.28,8v5.3H92.2V8.29H92.21z\"/></g></svg></span>");
-                }
+        // Get the collections in this community
+        Collection[] cols = (Collection[]) collectionMap.get(c.getID());
+
+		   out.println( "<li role=\"treeitem\" >" );
+		   out.println( "<span  class=\"t1\"><a href=\"" + request.getContextPath() + "/handle/"
+		   + c.getHandle() + "\">" + c.getMetadata("name") + "</a></span>");
+
+		   if (comms != null && comms.length > 0)
+		   {
+                out.println( "<ul class=\"tree-communities-list\" role=\"group\" >" );
+			    for (int k = 0; k < comms.length; k++)
+			    {
+			        showCommunity(comms[k], out, request, ic, collectionMap, subcommunityMap);
+			    }
+		        out.println( "</ul>" );
+		    }
+
+		    if (cols != null && cols.length > 0)
+            {
+			    out.println( "<ul class=\"tree-collections-list\" role=\"group\" >" );
+			    for (int j = 0; j < cols.length; j++)
+			    {
+				    //String collName =  ( StringUtils.isNotBlank(cols[j].getMetadata("name"))  ? cols[j].getMetadata("name") : "Untitled" );
+				    out.println("<li>");
+				    out.println("<span  class=\"t1 ct1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") + "</a></span>");
+				    if (cols[j].isNYUOnly()) {
+                        out.println("<span class=\"nyu-only-svg\"><svg version=\"1.1\"  xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 100.69 13.76\" style=\"enable-background:new 0 0 100.69 13.76;\" xml:space=\"preserve\">");
+		                out.println("<style type=\"text/css\"> path{fill:#57068C;} </style>");
+		                out.println("<g><path  d=\"M0,0.23h2.17l7.12,9.19V0.23h2.3v13.3H9.63L2.3,4.07v9.46H0C0,13.53,0,0.23,0,0.23z\"/><path  d=\"M18.92,8.29l-5.28-8.05h2.77l3.7,5.87l3.76-5.87h2.68l-5.28,8v5.3h-2.36V8.29H18.92z\"/><path  d=\"M28.4,7.89V0.23h2.34v7.56c0,2.47,1.27,3.78,3.36,3.78c2.07,0,3.34-1.23,3.34-3.69V0.22h2.34v7.54c0,3.97-2.24,5.97-5.72,5.97C30.61,13.74,28.4,11.74,28.4,7.89z\"/>");
+			            out.println(" <path d=\"M48.11,6.92V6.88C48.11,3.14,51,0,55.08,0s6.93,3.1,6.93,6.84v0.04c0,3.74-2.89,6.88-6.97,6.88S48.11,10.66,48.11,6.92z M59.56,6.92V6.88c0-2.58-1.88-4.73-4.52-4.73s-4.48,2.11-4.48,4.69v0.04c0,2.58,1.88,4.71,4.52,4.71S59.56,9.5,59.56,6.92z\"/><path d=\"M64,0.23h2.17l7.12,9.19V0.23h2.3v13.3h-1.96L66.3,4.07v9.46H64V0.23z\"/><path d=\"M79,0.23h2.34V11.4h6.99v2.13H79C79,13.53,79,0.23,79,0.23z\"/><path d=\"M92.21,8.29l-5.28-8.05h2.77l3.7,5.87l3.76-5.87h2.68l-5.28,8v5.3H92.2V8.29H92.21z\"/></g></svg></span>");
+                    }
 
 				//if (StringUtils.isNotBlank(cols[j].getMetadata("short_description")))  {
 			  	//	out.println("<div class=\"collection-short-description\">" + cols[j].getMetadata("short_description") + "</div>";
 				//}
-				out.println("</li>");
+				    out.println("</li>");
+				}
 			}
 			out.println( "</ul>" );
-		}
 		out.println("</li>");
+		}
 	}
 %>
 
-<%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
 <dspace:layout locbar="commLink" title="<%= name %>" feedData="<%= feedData %>">
 
 <header class="page-title-area">
@@ -173,21 +167,24 @@
 	<div class="fda-tree">
 <%
   boolean showLogos = ConfigurationManager.getBooleanProperty("jspui.community-home.logos", true);
-  if (subcommunitiesMap.length != 0)
-	{
-%>
-	<h2 class="section-title">Subcommunities</h2>
-<%
-		for (int j = 0; j < subcommunities.length; j++)
-		{
-%>
-		<ul role="tree">
-		  <%  showCommunity(subcommunities[j], out, request, ic, collectionMap, subcommunityMap);%>
-		</ul>
-		<% }
-%>
-<%
-	}
+  //check if we have any subcommunities that should be visible to the current user, e.g. with non-empty collections or conatining objects to which
+    //the current user can add content
+    Integer comID = Integer.valueOf(community.getID());
+    Community[] comms = (Community[]) subcommunityMap.get(comID);
+
+    if (subcommunityMap.size()>0 || collectionMap.size()>0)
+  	{
+  %>
+  	<h2 class="section-title">Subcommunities</h2>
+  <%
+  		for (int j = 0; j < subcommunities.length; j++)
+  		{
+  %>
+  		<ul role="tree">
+  		  <%  showCommunity(subcommunities[j], out, request, ic, collectionMap, subcommunityMap);%>
+  		</ul>
+  		<% }
+  	}
 %>
 <%
 	if (collections.length != 0)
@@ -340,66 +337,3 @@
 </aside>
    </dspace:sidebar>
 </dspace:layout>
-<%! private void build(Community c) throws SQLException {
-
-		 Integer comID = Integer.valueOf(c.getID());
-
-                // Find collections assosiated with community and if they exist add the community to map
-                Collection[] colls = c.getCollections();
-                if (colls.length > 0 )
-                {
-                   collectionMap.put(comID, colls);
-                }
-                // Find subcommunties in community
-                Community[] comms = c.getSubcommunities();
-
-                // Find collections assosiated with community and if they exist add the community to map
-                if (comms.length > 0)
-                {
-                    subcommunityMap.put(comID, comms);
-
-                    for (int sub = 0; sub < comms.length; sub++) {
-
-                        build(comms[sub]);
-                    }
-                }
-
-                //if it is empty remove from comms assosiated with parent comunity as we do not need to display empty commmunities
-                if(colls.length==0 && comms.length==0)
-                {
-                     Community parentComm=c.getParentCommunity();
-
-                     if(parentComm != null)
-                     {
-                        Integer parentCommID = Integer.valueOf(parentComm.getID());
-
-                        Community[] parentComms = subcommunityMap.get(parentCommID);
-
-                        if(parentComms!=null)
-                        {
-                           ArrayList<Community> parentCommsNew=new ArrayList<Community>();
-
-                           for (int i = 0; i < parentComms.length; i++)
-                           {
-
-                             if (parentComms[i].getID()!=comID)
-                             {
-                                parentCommsNew.add(parentComms[i]);
-                             }
-                           }
-
-                           Community[] parentCommsArray = new Community[ parentCommsNew.size() ];
-
-                           subcommunityMap.put(parentCommID, parentCommsNew.toArray(parentCommsArray));
-                        }
-                      }
-                }
-                //check if we have non empty children community and if we do not remove from the map
-                 Community[] commProcessed = subcommunityMap.get(comID);
-
-                 if(commProcessed!=null && commProcessed.length==0)
-                 {
-                    subcommunityMap.remove(comID);
-                 }
-	}
-%>

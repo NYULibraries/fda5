@@ -20,8 +20,9 @@ import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
+import org.dspace.plugin.CommunityHomeProcessor;
 import org.dspace.plugin.PluginException;
-import org.dspace.plugin.SiteHomeProcessor;
+
 
 
 /**
@@ -31,7 +32,7 @@ import org.dspace.plugin.SiteHomeProcessor;
  * @author Kate Pechekhonova
  *
  */
-public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
+public class ListCommunitiesCommunityProcessor implements CommunityHomeProcessor
 {
 
     /** log4j category */
@@ -41,14 +42,14 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
      * blank constructor - does nothing.
      *
      */
-    public ListCommunitiesSiteProcessor()
+    public ListCommunitiesCommunityProcessor()
     {
 
     }
 
     @Override
     public void process(Context context, HttpServletRequest request,
-                        HttpServletResponse response) throws PluginException,
+                        HttpServletResponse response, Community community) throws PluginException,
             AuthorizeException
     {
 
@@ -58,9 +59,9 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
 
         try
         {
-            ListUserCommunities comList= new ListUserCommunities(context);
-             colMap = comList.getCollectionsMap();
-             commMap= comList.getCommunitiesMap();
+            ListUserCommunities comList= new ListUserCommunities(context, community);
+            colMap = comList.getCollectionsMap();
+            commMap= comList.getCommunitiesMap();
 
         }
         catch (SQLException e)

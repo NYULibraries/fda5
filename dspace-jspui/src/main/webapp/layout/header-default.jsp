@@ -179,10 +179,6 @@
 <%
     }
 %>
-
-
-
-
         <%-- Page contents --%>
 <div class="container">
 <% if (request.getAttribute("dspace.layout.sidebar") != null) { %>

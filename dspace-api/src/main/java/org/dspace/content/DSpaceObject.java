@@ -824,7 +824,7 @@ public abstract class DSpaceObject
     {
         boolean isPublic=false;
         for(ResourcePolicy policy: AuthorizeManager.getPolicies(ourContext,this)) {
-            if (policy.getGroupID() == 0 && policy.getAction() == Constants.READ) {
+            if (policy.getGroupID() == 0 && policy.getAction() == Constants.DEFAULT_ITEM_READ) {
                 return true;
             }
         }
