@@ -48,8 +48,7 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
 
     @Override
     public void process(Context context, HttpServletRequest request,
-                        HttpServletResponse response) throws PluginException,
-            AuthorizeException
+                        HttpServletResponse response) throws PluginException
     {
 
         // Get the top communities to shows in the community list
@@ -58,9 +57,10 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
 
         try
         {
-            ListUserCommunities comList= new ListUserCommunities(context);
-             colMap = comList.getCollectionsMap();
-             commMap= comList.getCommunitiesMap();
+
+            ListUserCommunities.ListAnonUserCommunities(context);
+             colMap = ListUserCommunities.colMapAnon;
+             commMap= ListUserCommunities.commMapAnon;
 
         }
         catch (SQLException e)
