@@ -46,11 +46,10 @@
     Map subcommunityMap = (Map) request.getAttribute("subcommunities.map");
     Boolean admin_b = (Boolean)request.getAttribute("admin_button");
     boolean admin_button = (admin_b == null ? false : admin_b.booleanValue());
-    ItemCounter ic = new ItemCounter(UIUtil.obtainContext(request));
 %>
 
 <%! //we use the same function 2 times so probably we should convert it to jsp tag but we can change something here so will leave for now
-	void showCommunity(Community c, JspWriter out, HttpServletRequest request, ItemCounter ic, Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
+	void showCommunity(Community c, JspWriter out, HttpServletRequest request, Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
 	{
 
           if (subcommunityMap.containsKey(c.getID()) || collectionMap.containsKey(c.getID()) )

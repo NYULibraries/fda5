@@ -51,24 +51,44 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
                         HttpServletResponse response) throws PluginException
     {
 
-        // Get the top communities to shows in the community list
-        Map colMap = new HashMap<Integer, Collection[]>();
-        Map commMap = new HashMap<Integer, Community[]>();
-
-        try
+        if(context.getCurrentUser()==null)
         {
+            // Get the top communities to shows in the community list
+            Map colMapAnon = new HashMap<Integer, Collection[]>();
+            Map commMapAnon = new HashMap<Integer, Community[]>();
 
-            ListUserCommunities.ListAnonUserCommunities(context);
-             colMap = ListUserCommunities.colMapAnon;
-             commMap= ListUserCommunities.commMapAnon;
+            try {
 
+                ListUserCommunities.ListAnonUserCommunities(context);
+                colMapAnon = ListUserCommunities.colMapAnon;
+                commMapAnon = ListUserCommunities.commMapAnon;
+
+            } catch (SQLException e) {
+                throw new PluginException(e.getMessage(), e);
+            }
+            request.setAttribute("collections.map", colMapAnon);
+            request.setAttribute("subcommunities.map", commMapAnon);
         }
-        catch (SQLException e)
+        else
         {
-            throw new PluginException(e.getMessage(), e);
+            // Get the top communities to shows in the community list
+            Map colMap = new HashMap<Integer, Collection[]>();
+            Map commMap = new HashMap<Integer, Community[]>();
+
+            try
+            {
+                ListUserCommunities comList= new ListUserCommunities(context);
+                colMap = comList.getCollectionsMap();
+                commMap= comList.getCommunitiesMap();
+
+            }
+            catch (SQLException e)
+            {
+                throw new PluginException(e.getMessage(), e);
+            }
+            request.setAttribute("collections.map", colMap);
+            request.setAttribute("subcommunities.map", commMap);
         }
-        request.setAttribute("collections.map", colMap);
-        request.setAttribute("subcommunities.map", commMap);
     }
 
 }

@@ -43,7 +43,6 @@ public class CommunityListServlet extends DSpaceServlet {
 
     // This will map communityIDs to arrays of sub-communities
     private Map<Integer, Community[]> commMap;
-    private static final Object staticLock = new Object();
 
     /**
      * log4j category
@@ -57,23 +56,32 @@ public class CommunityListServlet extends DSpaceServlet {
 
             log.info(LogManager.getHeader(context, "view_community_list", ""));
 
+            // Get the top communities to shows in the community list
             Community[] communities = Community.findAllTop(context);
 
+            colMap = new HashMap<Integer, Collection[]>();
+            commMap = new HashMap<Integer, Community[]>();
 
-            ListUserCommunities comList= new ListUserCommunities(context);
-            colMap = comList.getCollectionsMap();
-            commMap= comList.getCommunitiesMap();
-
-
-            // can they admin communities?
-            if (AuthorizeManager.isAdmin(context)) {
-                // set a variable to create an edit button
-                request.setAttribute("admin_button", Boolean.TRUE);
+            if(context.getCurrentUser()==null)
+            {
+                    ListUserCommunities.ListAnonUserCommunities(context);
+                    colMap = ListUserCommunities.colMapAnon;
+                    commMap = ListUserCommunities.commMapAnon;
             }
-
-            request.setAttribute("communities", communities);
-            request.setAttribute("collections.map", colMap);
-            request.setAttribute("subcommunities.map", commMap);
+            else
+            {
+                ListUserCommunities comList = new ListUserCommunities(context);
+                colMap = comList.getCollectionsMap();
+                commMap = comList.getCommunitiesMap();
+                // can they admin communities?
+                if (AuthorizeManager.isAdmin(context)) {
+                    // set a variable to create an edit button
+                    request.setAttribute("admin_button", Boolean.TRUE);
+                }
+            }
+                request.setAttribute("communities", communities);
+                request.setAttribute("collections.map", colMap);
+                request.setAttribute("subcommunities.map", commMap);
             JSPManager.showJSP(request, response, "/community-list.jsp");
         }
 }

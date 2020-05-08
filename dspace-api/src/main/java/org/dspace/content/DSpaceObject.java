@@ -831,11 +831,24 @@ public abstract class DSpaceObject
         return false;
     }
 
+    /* Added by Kate as isDiscoverable not always useful */
+    public boolean isPublic(Context context) throws SQLException
+    {
+        boolean isPublic=false;
+        for(ResourcePolicy policy: AuthorizeManager.getPolicies(context,this)) {
+            if (policy.getGroupID() == 0 && policy.getAction() == Constants.DEFAULT_ITEM_READ) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /* Added by Kate to flag NYU Only collections */
     public boolean isNYUOnly() throws SQLException
     {
         //we get IDs of special groups
         String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups.nyu");
+
         if (special_group_name!=null)
         {
             if (Group.findByName(ourContext, special_group_name) != null)
@@ -846,6 +859,29 @@ public abstract class DSpaceObject
                                 (policy.getGroupID() == Group.findByName(ourContext, special_group_name).getID()))
                     {
                             return  true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    /* Added by Kate to flag NYU Only collections with specific context*/
+    public boolean isNYUOnly(Context context) throws SQLException
+    {
+        //we get IDs of special groups
+        String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups.nyu");
+
+        if (special_group_name!=null)
+        {
+            if (Group.findByName(context, special_group_name) != null)
+            {
+                for (ResourcePolicy policy : AuthorizeManager.getPolicies(context, this))
+                {
+                    if (policy.getAction() == Constants.READ &&
+                            (policy.getGroupID() == Group.findByName(context, special_group_name).getID()))
+                    {
+                        return  true;
                     }
                 }
             }
@@ -873,6 +909,35 @@ public abstract class DSpaceObject
                     for (ResourcePolicy policy : policies) {
                         if (policy.getAction() == Constants.READ &&
                                 (policy.getGroupID() == Group.findByName(ourContext, special_group_name).getID())) {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    /* Added by Kate to hide private collections */
+    public boolean isPrivate(Context context) throws SQLException {
+        //if public then we are done
+        if(isPublic(context)) {
+            return false;
+        }
+        //if not public we need to check if it belongs to special groups
+        List<ResourcePolicy> policies = AuthorizeManager.getPoliciesActionFilter(ourContext, this, Constants.READ);
+
+        String[] specialGroups = {"webui.submission.special.groups.nyu", "webui.submission.special.groups.gallatin"};
+
+        //we get IDs of special groups
+        for (String special_group : specialGroups) {
+            String special_group_name = ConfigurationManager.getProperty(special_group);
+
+            if (special_group_name != null) {
+                if (Group.findByName(context, special_group_name) != null) {
+                    for (ResourcePolicy policy : policies) {
+                        if (policy.getAction() == Constants.READ &&
+                                (policy.getGroupID() == Group.findByName(context, special_group_name).getID())) {
                             return false;
                         }
                     }

@@ -75,7 +75,6 @@ public class ListUserCommunities {
 
         ourContext = context;
 
-        synchronized (staticLock) {
 
             colMap = new HashMap<Integer, Collection[]>();
             commMap = new HashMap<Integer, Community[]>();
@@ -89,7 +88,6 @@ public class ListUserCommunities {
                     build(communities[com], ourContext);
                 }
             }
-        }
     }
 
     public Map getCommunitiesMap() {
