@@ -49,27 +49,53 @@ public class ListCommunitiesCommunityProcessor implements CommunityHomeProcessor
 
     @Override
     public void process(Context context, HttpServletRequest request,
-                        HttpServletResponse response, Community community) throws PluginException,
-            AuthorizeException
+                        HttpServletResponse response, Community community) throws PluginException
     {
 
-        // Get the top communities to shows in the community list
-        Map colMap = new HashMap<Integer, Collection[]>();
-        Map commMap = new HashMap<Integer, Community[]>();
-
-        try
+        if(context.getCurrentUser()==null)
         {
-            ListUserCommunities comList= new ListUserCommunities(context, community);
-            colMap = comList.getCollectionsMap();
-            commMap= comList.getCommunitiesMap();
+            // Get the top communities to shows in the community list
+            Map colMapAnon = new HashMap<Integer, Collection[]>();
+            Map commMapAnon = new HashMap<Integer, Community[]>();
 
+            try {
+
+                ListUserCommunities.ListAnonUserCommunities(context);
+                colMapAnon = ListUserCommunities.colMapAnon;
+                commMapAnon = ListUserCommunities.commMapAnon;
+
+            } catch (SQLException e) {
+                throw new PluginException(e.getMessage(), e);
+            }
+            request.setAttribute("collections.map", colMapAnon);
+            request.setAttribute("subcommunities.map", commMapAnon);
         }
-        catch (SQLException e)
+        else
         {
-            throw new PluginException(e.getMessage(), e);
+            // Get the top communities to shows in the community list
+            Map colMap = new HashMap<Integer, Collection[]>();
+            Map commMap = new HashMap<Integer, Community[]>();
+
+            //first time we generate the list then get it from cache
+            try
+            {
+                ListUserCommunities comList=(ListUserCommunities) context.fromCache(ListUserCommunities.class,context.getCurrentUser().getID());
+
+                if(comList==null) {
+                    comList = new ListUserCommunities(context);
+                }
+                colMap = comList.getCollectionsMap();
+                commMap= comList.getCommunitiesMap();
+
+            }
+            catch (SQLException e)
+            {
+                throw new PluginException(e.getMessage(), e);
+            }
+            request.setAttribute("collections.map", colMap);
+            request.setAttribute("subcommunities.map", commMap);
         }
-        request.setAttribute("collections.map", colMap);
-        request.setAttribute("subcommunities.map", commMap);
     }
+
 
 }

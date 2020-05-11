@@ -463,9 +463,8 @@ public class EPerson extends DSpaceObject
         
 		return count.intValue();
 	}
-    
-    
-    
+
+
     /**
      * Find all the epeople that match a particular query
      * <ul>

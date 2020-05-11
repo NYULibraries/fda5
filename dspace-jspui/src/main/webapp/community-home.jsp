@@ -76,12 +76,10 @@
 	{
 		feedData = "comm:" + ConfigurationManager.getProperty("webui.feed.formats");
 	}
-	
-	ItemCounter ic = new ItemCounter(UIUtil.obtainContext(request));
 %>
 
 <%!
-	void showCommunity(Community c, JspWriter out, HttpServletRequest request, ItemCounter ic, Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
+	void showCommunity(Community c, JspWriter out, HttpServletRequest request,  Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
 	{
         if (subcommunityMap.containsKey(c.getID()) || collectionMap.containsKey(c.getID()) )
         {
@@ -100,7 +98,7 @@
                 out.println( "<ul class=\"tree-communities-list\" role=\"group\" >" );
 			    for (int k = 0; k < comms.length; k++)
 			    {
-			        showCommunity(comms[k], out, request, ic, collectionMap, subcommunityMap);
+			        showCommunity(comms[k], out, request, collectionMap, subcommunityMap);
 			    }
 		        out.println( "</ul>" );
 		    }
@@ -113,7 +111,7 @@
 				    //String collName =  ( StringUtils.isNotBlank(cols[j].getMetadata("name"))  ? cols[j].getMetadata("name") : "Untitled" );
 				    out.println("<li>");
 				    out.println("<span  class=\"t1 ct1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") + "</a></span>");
-				    if (cols[j].isNYUOnly()) {
+				    if (cols[j].isNYUOnly(UIUtil.obtainContext(request))) {
                         out.println("<span class=\"nyu-only-svg\"><svg version=\"1.1\"  xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 100.69 13.76\" style=\"enable-background:new 0 0 100.69 13.76;\" xml:space=\"preserve\">");
 		                out.println("<style type=\"text/css\"> path{fill:#57068C;} </style>");
 		                out.println("<g><path  d=\"M0,0.23h2.17l7.12,9.19V0.23h2.3v13.3H9.63L2.3,4.07v9.46H0C0,13.53,0,0.23,0,0.23z\"/><path  d=\"M18.92,8.29l-5.28-8.05h2.77l3.7,5.87l3.76-5.87h2.68l-5.28,8v5.3h-2.36V8.29H18.92z\"/><path  d=\"M28.4,7.89V0.23h2.34v7.56c0,2.47,1.27,3.78,3.36,3.78c2.07,0,3.34-1.23,3.34-3.69V0.22h2.34v7.54c0,3.97-2.24,5.97-5.72,5.97C30.61,13.74,28.4,11.74,28.4,7.89z\"/>");
@@ -172,7 +170,7 @@
     Integer comID = Integer.valueOf(community.getID());
     Community[] comms = (Community[]) subcommunityMap.get(comID);
 
-    if (subcommunityMap.size()>0 || collectionMap.size()>0)
+    if ( subcommunityMap.containsKey(comID) )
   	{
   %>
   	<h2 class="section-title">Subcommunities</h2>
@@ -181,7 +179,7 @@
   		{
   %>
   		<ul role="tree">
-  		  <%  showCommunity(subcommunities[j], out, request, ic, collectionMap, subcommunityMap);%>
+  		  <%  showCommunity(subcommunities[j], out, request, collectionMap, subcommunityMap);%>
   		</ul>
   		<% }
   	}

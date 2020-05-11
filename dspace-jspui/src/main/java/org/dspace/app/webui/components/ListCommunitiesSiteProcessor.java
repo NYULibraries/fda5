@@ -75,9 +75,14 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
             Map colMap = new HashMap<Integer, Collection[]>();
             Map commMap = new HashMap<Integer, Community[]>();
 
+            //first time we generate the list then get it from cache
             try
             {
-                ListUserCommunities comList= new ListUserCommunities(context);
+                ListUserCommunities comList=(ListUserCommunities) context.fromCache(ListUserCommunities.class,context.getCurrentUser().getID());
+
+                if(comList==null) {
+                    comList = new ListUserCommunities(context);
+                }
                 colMap = comList.getCollectionsMap();
                 commMap= comList.getCommunitiesMap();
 
