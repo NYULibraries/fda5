@@ -7,6 +7,7 @@
  */
 package org.dspace.app.webui.components;
 
+
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ import org.apache.log4j.Logger;
 import org.dspace.content.Community;
 import org.dspace.content.Collection;
 import org.dspace.core.Context;
-import org.dspace.authorize.AuthorizeManager;
+import  org.dspace.eperson.Group;
 
 /**
  * This class generates list of all collections and communities which are not empty or where the user is administrator or submitter
@@ -50,12 +51,20 @@ public class ListUserCommunities {
     private static Logger log = Logger.getLogger(ListUserCommunities.class);
 
     //used for full community list on home page and list-communities.jsp page
-    public ListUserCommunities() {
+    public  ListUserCommunities() {
 
     }
 
+    public Map getCommunitiesMap() {
+        return commMap;
+    }
+
+    public Map getCollectionsMap() {
+        return colMap;
+    }
+
     //used for full community list on home page and list-communities.jsp page for a specific loged in user
-    public ListUserCommunities(Context context) throws java.sql.SQLException {
+    public  ListUserCommunities(Context context) throws java.sql.SQLException {
 
         ourContext = context;
 
@@ -63,16 +72,33 @@ public class ListUserCommunities {
         commMap = new HashMap<Integer, Community[]>();
 
 
-        synchronized (staticLock) {
-            Community[] communities = Community.findAllTop(ourContext);
+            Community[] communities = Community.findAll(context);
 
+            //user only can see non-empty, not private collections
             for (int com = 0; com < communities.length; com++) {
-                build(communities[com], ourContext);
+                buildCollection(communities[com], context);
             }
 
-            // Cache ourselves
-            context.cache(this, ourContext.getCurrentUser().getID());
-        }
+            Community[] communitiesAval = Community.findAllTop(context);
+
+            // we only include communities which has collections that the user can see
+            for (int com = 0; com < communitiesAval.length; com++) {
+                buildCommunity(communitiesAval[com], context);
+            }
+
+    }
+
+    //used for subcommunity abd collection list for a specific community for loged on user
+    public   ListUserCommunities(Context context, Community c) throws java.sql.SQLException {
+
+        ourContext = context;
+
+        colMap = new HashMap<Integer, Collection[]>();
+        commMap = new HashMap<Integer, Community[]>();
+
+        buildCollection(c, context);
+
+        buildList(c, context);
     }
 
     // used for full community list on home page and list-communities.jsp page for an anonymos user, It is the same for all anonymouse
@@ -86,163 +112,155 @@ public class ListUserCommunities {
             colMapAnon = new HashMap<Integer, Collection[]>();
             commMapAnon = new HashMap<Integer, Community[]>();
 
-            Community[] communities = Community.findAllTop(context);
+            Community[] communities = Community.findAll(context);
 
+            //user only can see non-empty, not private collections
             for (int com = 0; com < communities.length; com++) {
-                buildAnon(communities[com], context);
+                buildAnonCollection(communities[com], context);
+            }
+
+            Community[] communitiesAval = Community.findAllTop(context);
+
+            // we only include communities which has collections the user can see
+            for (int com = 0; com < communitiesAval.length; com++) {
+                buildAnonCommunity(communitiesAval[com], context);
             }
         }
     }
 
-    public Map getCommunitiesMap() {
-        return commMap;
-    }
-
-    public Map getCollectionsMap() {
-        return colMap;
-    }
 
 
-    private static void buildAnon(Community c, Context context) throws SQLException {
+    private  void buildCollection(Community c, Context context) throws SQLException {
         Integer comID = Integer.valueOf(c.getID());
 
-        // Find collections assosiated with community and if they exist add the community to map
         Collection[] colls = c.getCollections();
+
         if (colls.length > 0) {
-            colMapAnon.put(comID, colls);
+            ArrayList<Collection> availableCol = new ArrayList<Collection>();
+
+            for (int i = 0; i < colls.length; i++) {
+
+                if ((!colls[i].isPrivate()&&colls[i].countItems()>0) || colls[i].canEditBoolean() ) {
+                    availableCol.add(colls[i]);
+                } else {
+                  Group group= colls[i].getSubmitters();
+                   if (group.isMember(context.getCurrentUser())) {
+                       availableCol.add(colls[i]);
+                   }
+                }
+            }
+            if(availableCol.size()>0) {
+                Collection[] availableColArray = new Collection[availableCol.size()];
+                colMap.put(comID, availableCol.toArray(availableColArray));
+            }
         }
-        // Find subcommunties in community
+    }
+
+    private  void buildCommunity(Community c, Context context) throws SQLException {
+        Integer comID = Integer.valueOf(c.getID());
+
         Community[] comms = c.getSubcommunities();
 
-        // Find subcommunities assosiated with community and if they exist add the community to map
         if (comms.length > 0) {
-            commMapAnon.put(comID, comms);
+            ArrayList<Community> availableComm = new ArrayList<Community>();
 
-            for (int sub = 0; sub < comms.length; sub++) {
+            for (int i = 0; i < comms.length; i++) {
 
-                buildAnon(comms[sub], context);
-            }
-        }
+                buildCommunity(comms[i], context);
 
-
-        //if the community does not have assosiated subcomunities and collections which user can see we do not want to display it. To achieve it we need to remove it from the
-        // map. It is done in 2 places. We need to remove the community from the list of communities assosiated with it's parent community and also we need to remove the community entry from the Mpa
-        // That's what we are doing below in 2 steps
-
-        //Step 1. Remove from the array assosiated with parents community
-        if (colls.length == 0 && comms.length == 0) {
-            Community parentComm = c.getParentCommunity();
-
-            if (parentComm != null) {
-                Integer parentCommID = Integer.valueOf(parentComm.getID());
-
-                Community[] parentComms = commMapAnon.get(parentCommID);
-                if (parentComms != null) {
-                    ArrayList<Community> parentCommsNew = new ArrayList<Community>();
-
-                    for (int i = 0; i < parentComms.length; i++) {
-
-                        if (parentComms[i].getID() != comID) {
-                            parentCommsNew.add(parentComms[i]);
-                        }
+                if( comms[i].canEditBoolean() || colMap.containsKey(Integer.valueOf(comms[i].getID()))
+                        || (commMap.containsKey(Integer.valueOf(comms[i].getID())))) {
+                        availableComm.add(comms[i]);
                     }
-
-                    Community[] parentCommsArray = new Community[parentCommsNew.size()];
-                    //put modified array back to map. We need to convert that to Array instead of using ArrayList which are logical here because code downstream uses Arrays
-                    //and I do not want to re-write it
-                    commMapAnon.put(parentCommID, parentCommsNew.toArray(parentCommsArray));
-                }
+            }
+            if(availableComm.size()>0 ) {
+                Community[] availableCommArray = new Community[availableComm.size()];
+                commMap.put(comID, availableComm.toArray(availableCommArray));
+            }
+        } else {
+            if(c.canEditBoolean() ) {
+                commMap.put(comID,comms);
             }
         }
-
-        //Step 2. If we do not have collections available to the user in the community, check if we have non empty children communities and if we do not and the user is not community admin, remove from the map.
-
-        if (colls.length == 0 && commMapAnon.containsKey(comID)) {
-            Community[] commProcessed = commMapAnon.get(comID);
-
-            if (commProcessed != null && commProcessed.length == 0) {
-                commMapAnon.remove(comID);
-            }
-        }
-
     }
 
-    /**Build list of subcommunities and collections  which specific user can see. All users can see public and NYU-only collections in the list
-     Empty and private collections are only included in the collection if the user can add content to the collection. In that case user will see all community tree
-     up to the collection.
-     Empty communities with no collections will only be visible to community and site admins. special case is Gallatin Syllabi collection which is available to only Gallatin School
-     students but is included to the list **/
-
-    void build(Community c, Context context) throws SQLException {
-
+    private  void buildList(Community c, Context context) throws SQLException {
         Integer comID = Integer.valueOf(c.getID());
 
-        // Find collections assosiated with community and if they exist add the community to map
-        Collection[] colls = c.getCollections();
-        if (colls.length > 0) {
-            colMap.put(comID, colls);
-        }
-        // Find subcommunties in community
+
         Community[] comms = c.getSubcommunities();
 
-        // Find subcommunities assosiated with community and if they exist add the community to map
-        if (comms.length > 0 || AuthorizeManager.isAdmin(context, c)) {
-            commMap.put(comID, comms);
+        if (comms.length > 0) {
+            ArrayList<Community> availableComm = new ArrayList<Community>();
 
-            for (int sub = 0; sub < comms.length; sub++) {
+            for (int i = 0; i < comms.length; i++) {
 
-                build(comms[sub], context);
+                buildCollection(comms[i], context);
+
+                buildList(comms[i],context);
+
+                if(comms[i].canEditBoolean() || colMap.containsKey(Integer.valueOf(comms[i].getID()))
+                        || (commMap.containsKey(Integer.valueOf(comms[i].getID())))) {
+                    availableComm.add(comms[i]);
+                }
+
+            }
+            if(availableComm.size()>0 ) {
+                Community[] availableCommArray = new Community[availableComm.size()];
+                commMap.put(comID, availableComm.toArray(availableCommArray));
+            }
+        } else {
+            if(c.canEditBoolean() ) {
+                commMap.put(comID,comms);
             }
         }
+    }
 
+    private static void buildAnonCollection(Community c, Context context) throws SQLException {
+        Integer comID = Integer.valueOf(c.getID());
 
-        //  Community admins can see all collections and communities including empty and private which they administrate (site admins see all)
-        // However if the community does not have assosiated subcomunities and collections which user can see we do not want to display it. To achieve it we need to remove it from the
-        // map. It is done in 2 places. We need to remove the community from the list of communities assosiated with it's parent community and also we need to remove the community entry from the Mpa
-        // That's what we are doing below in 2 steps
+        Collection[] colls = c.getCollections();
 
-        if (!AuthorizeManager.isAdmin(context)) {
-            //Step 1. Remove from the array assosiated with parents community
+        if (colls.length > 0) {
+            ArrayList<Collection> availableCol = new ArrayList<Collection>();
 
-            //if (commAdminList==null||!commAdminList.contains(c)) {
-            if (!AuthorizeManager.isAdmin(context, c))
-                if (colls.length == 0 && comms.length == 0) {
-                    Community parentComm = c.getParentCommunity();
+            for (int i = 0; i < colls.length; i++) {
 
-                    if (parentComm != null) {
-                        Integer parentCommID = Integer.valueOf(parentComm.getID());
+                if (!colls[i].isPrivate()&&colls[i].countItems()>0) {
+                    availableCol.add(colls[i]);
+                }
+            }
+            if(availableCol.size()>0) {
+                Collection[] availableColArray = new Collection[availableCol.size()];
+                colMapAnon.put(comID, availableCol.toArray(availableColArray));
+            }
+        }
+    }
 
-                        Community[] parentComms = commMap.get(parentCommID);
-                        if (parentComms != null) {
-                            ArrayList<Community> parentCommsNew = new ArrayList<Community>();
+    private static void buildAnonCommunity(Community c, Context context) throws SQLException {
+        Integer comID = Integer.valueOf(c.getID());
 
-                            for (int i = 0; i < parentComms.length; i++) {
+        Community[] comms = c.getSubcommunities();
 
-                                if (parentComms[i].getID() != comID) {
-                                    parentCommsNew.add(parentComms[i]);
-                                }
-                            }
+        if (comms.length > 0) {
+            ArrayList<Community> availableComm = new ArrayList<Community>();
 
-                            Community[] parentCommsArray = new Community[parentCommsNew.size()];
-                            //put modified array back to map. We need to convert that to Array instead of using ArrayList which are logical here because code downstream uses Arrays
-                            //and I do not want to re-write it
-                            commMap.put(parentCommID, parentCommsNew.toArray(parentCommsArray));
-                        }
+            for (int i = 0; i < comms.length; i++) {
+
+                if (colMapAnon.containsKey(Integer.valueOf(comms[i].getID()))) {
+                    availableComm.add(comms[i]);
+                } else {
+                    buildAnonCommunity(comms[i],context);
+                    if (commMapAnon.containsKey(Integer.valueOf(comms[i].getID()))) {
+                        availableComm.add(comms[i]);
                     }
                 }
-        }
-        //Step 2. If we do not have collections available to the user in the community, check if we have non empty children communities and if we do not and the user is not community admin, remove from the map.
-
-        //if (colls.length == 0 && commMap.containsKey(comID) && (commAdminList==null||!commAdminList.contains(c))) {
-        if (colls.length == 0 && commMap.containsKey(comID) && !AuthorizeManager.isAdmin(context, c)) {
-            Community[] commProcessed = commMap.get(comID);
-
-            if (commProcessed != null && commProcessed.length == 0) {
-                commMap.remove(comID);
+            }
+            if(availableComm.size()>0) {
+                Community[] availableCommArray = new Community[availableComm.size()];
+                commMapAnon.put(comID, availableComm.toArray(availableCommArray));
             }
         }
-
-
     }
 
 

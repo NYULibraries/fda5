@@ -74,6 +74,7 @@
  void showCommunity(Community c, JspWriter out, HttpServletRequest request, Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
  	{
  		 // Get the sub-communities in this community
+
            Community[] comms = (Community[]) subcommunityMap.get(c.getID());
 
           // Get the collections in this community

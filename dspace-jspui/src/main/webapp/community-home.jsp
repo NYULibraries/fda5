@@ -170,7 +170,7 @@
     Integer comID = Integer.valueOf(community.getID());
     Community[] comms = (Community[]) subcommunityMap.get(comID);
 
-    if ( subcommunityMap.containsKey(comID) )
+    if ( comms != null && comms.length > 0)
   	{
   %>
   	<h2 class="section-title">Subcommunities</h2>

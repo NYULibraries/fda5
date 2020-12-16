@@ -78,11 +78,7 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
             //first time we generate the list then get it from cache
             try
             {
-                ListUserCommunities comList=(ListUserCommunities) context.fromCache(ListUserCommunities.class,context.getCurrentUser().getID());
-
-                if(comList==null) {
-                    comList = new ListUserCommunities(context);
-                }
+                ListUserCommunities comList = new  ListUserCommunities(context);
                 colMap = comList.getCollectionsMap();
                 commMap= comList.getCommunitiesMap();
 

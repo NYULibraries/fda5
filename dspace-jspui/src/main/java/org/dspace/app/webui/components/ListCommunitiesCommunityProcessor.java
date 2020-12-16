@@ -79,11 +79,7 @@ public class ListCommunitiesCommunityProcessor implements CommunityHomeProcessor
             //first time we generate the list then get it from cache
             try
             {
-                ListUserCommunities comList=(ListUserCommunities) context.fromCache(ListUserCommunities.class,context.getCurrentUser().getID());
-
-                if(comList==null) {
-                    comList = new ListUserCommunities(context);
-                }
+                ListUserCommunities comList = new  ListUserCommunities(context,community);
                 colMap = comList.getCollectionsMap();
                 commMap= comList.getCommunitiesMap();
 
