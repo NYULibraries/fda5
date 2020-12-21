@@ -8,6 +8,7 @@
 package org.dspace.app.webui.components;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,9 +52,9 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
                         HttpServletResponse response) throws PluginException
     {
 
-        if(context.getCurrentUser()==null)
+        /*if(context.getCurrentUser()==null)
         {
-            // Get the top communities to shows in the community list
+           /* // Get the top communities to shows in the community list
             Map colMapAnon = new HashMap<Integer, Collection[]>();
             Map commMapAnon = new HashMap<Integer, Community[]>();
 
@@ -70,10 +71,11 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
             request.setAttribute("subcommunities.map", commMapAnon);
         }
         else
-        {
+        {*/
             // Get the top communities to shows in the community list
             Map colMap = new HashMap<Integer, Collection[]>();
             Map commMap = new HashMap<Integer, Community[]>();
+            ArrayList<Collection> nyuOnly= new ArrayList<Collection>();
 
             //first time we generate the list then get it from cache
             try
@@ -81,6 +83,7 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
                 ListUserCommunities comList = new  ListUserCommunities(context);
                 colMap = comList.getCollectionsMap();
                 commMap= comList.getCommunitiesMap();
+                nyuOnly = comList.getNYUOnly();
 
             }
             catch (SQLException e)
@@ -89,7 +92,8 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
             }
             request.setAttribute("collections.map", colMap);
             request.setAttribute("subcommunities.map", commMap);
-        }
+            request.setAttribute("nyuOnly", nyuOnly);
+        //}
     }
 
 }

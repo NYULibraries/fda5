@@ -8,6 +8,7 @@
 package org.dspace.app.webui.components;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,45 +53,26 @@ public class ListCommunitiesCommunityProcessor implements CommunityHomeProcessor
                         HttpServletResponse response, Community community) throws PluginException
     {
 
-        if(context.getCurrentUser()==null)
+        Map colMap = new HashMap<Integer, Collection[]>();
+        Map commMap = new HashMap<Integer, Community[]>();
+        ArrayList<Collection> nyuOnly= new ArrayList<Collection>();
+
+        //first time we generate the list then get it from cache
+        try
         {
-            // Get the top communities to shows in the community list
-            Map colMapAnon = new HashMap<Integer, Collection[]>();
-            Map commMapAnon = new HashMap<Integer, Community[]>();
+            ListUserCommunities comList = new  ListUserCommunities(context,community);
+            colMap = comList.getCollectionsMap();
+            commMap= comList.getCommunitiesMap();
+            nyuOnly = comList.getNYUOnly();
 
-            try {
-
-                ListUserCommunities.ListAnonUserCommunities(context);
-                colMapAnon = ListUserCommunities.colMapAnon;
-                commMapAnon = ListUserCommunities.commMapAnon;
-
-            } catch (SQLException e) {
-                throw new PluginException(e.getMessage(), e);
-            }
-            request.setAttribute("collections.map", colMapAnon);
-            request.setAttribute("subcommunities.map", commMapAnon);
         }
-        else
+        catch (SQLException e)
         {
-            // Get the top communities to shows in the community list
-            Map colMap = new HashMap<Integer, Collection[]>();
-            Map commMap = new HashMap<Integer, Community[]>();
-
-            //first time we generate the list then get it from cache
-            try
-            {
-                ListUserCommunities comList = new  ListUserCommunities(context,community);
-                colMap = comList.getCollectionsMap();
-                commMap= comList.getCommunitiesMap();
-
-            }
-            catch (SQLException e)
-            {
-                throw new PluginException(e.getMessage(), e);
-            }
-            request.setAttribute("collections.map", colMap);
-            request.setAttribute("subcommunities.map", commMap);
+            throw new PluginException(e.getMessage(), e);
         }
+        request.setAttribute("collections.map", colMap);
+        request.setAttribute("subcommunities.map", commMap);
+        request.setAttribute("nyuOnly", nyuOnly);
     }
 
 

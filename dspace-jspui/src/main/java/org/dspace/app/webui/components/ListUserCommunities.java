@@ -15,10 +15,11 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Community;
 import org.dspace.content.Collection;
 import org.dspace.core.Context;
-import  org.dspace.eperson.Group;
+import  org.dspace.eperson.EPerson;
 
 /**
  * This class generates list of all collections and communities which are not empty or where the user is administrator or submitter
@@ -33,6 +34,9 @@ public class ListUserCommunities {
 
     // This will map communityIDs to arrays of sub-communities
     private Map<Integer, Community[]> commMap;
+
+    // This will map communityIDs to arrays of sub-communities
+    private ArrayList<Collection> nyuOnly;
 
 
     // This will map collectionIDs to arrays of collections
@@ -63,6 +67,10 @@ public class ListUserCommunities {
         return colMap;
     }
 
+    public ArrayList<Collection> getNYUOnly() {
+        return nyuOnly;
+    }
+
     //used for full community list on home page and list-communities.jsp page for a specific loged in user
     public  ListUserCommunities(Context context) throws java.sql.SQLException {
 
@@ -70,6 +78,7 @@ public class ListUserCommunities {
 
         colMap = new HashMap<Integer, Collection[]>();
         commMap = new HashMap<Integer, Community[]>();
+        nyuOnly = new ArrayList<Collection>();
 
 
             Community[] communities = Community.findAll(context);
@@ -95,6 +104,8 @@ public class ListUserCommunities {
 
         colMap = new HashMap<Integer, Collection[]>();
         commMap = new HashMap<Integer, Community[]>();
+        nyuOnly = new ArrayList<Collection>();
+
 
         buildCollection(c, context);
 
@@ -131,7 +142,8 @@ public class ListUserCommunities {
 
 
     private  void buildCollection(Community c, Context context) throws SQLException {
-        Integer comID = Integer.valueOf(c.getID());
+        Integer comID = c.getID();
+        EPerson currentUser= context.getCurrentUser();
 
         Collection[] colls = c.getCollections();
 
@@ -140,24 +152,44 @@ public class ListUserCommunities {
 
             for (int i = 0; i < colls.length; i++) {
 
-                if ((!colls[i].isPrivate()&&colls[i].countItems()>0) || colls[i].canEditBoolean() ) {
-                    availableCol.add(colls[i]);
+
+                if (colls[i].isPublic()) {
+                    if(colls[i].countItems() > 0) {
+                        availableCol.add(colls[i]);
+                    }
                 } else {
-                  Group group= colls[i].getSubmitters();
-                   if (group.isMember(context.getCurrentUser())) {
-                       availableCol.add(colls[i]);
-                   }
+                /*TODO: we need to add check that it collection is not empty but it is a bit expensive as we can not use countItems() - it only shows number of items available
+                            to a specific user.If the user is not login NYUONLY counter will be 0 even if the collection is not empty. Now we do not have empty NYU only collections
+                            but it needs to be fixed soon*/
+                    if (colls[i].isNYUOnly()) {
+                        availableCol.add(colls[i]);
+                        nyuOnly.add(colls[i]);
+
+                    } else {
+
+                        if (colls[i].isGallatin()) {
+                            availableCol.add(colls[i]);
+
+                        }
+                    }
+                }
+
+                if (!availableCol.contains(colls[i])&&currentUser != null &&
+                        (colls[i].canEditBoolean(true)|| colls[i].getSubmitters().isMember(currentUser))) {
+                        availableCol.add(colls[i]);
+
                 }
             }
-            if(availableCol.size()>0) {
+            if (availableCol.size() > 0) {
                 Collection[] availableColArray = new Collection[availableCol.size()];
                 colMap.put(comID, availableCol.toArray(availableColArray));
             }
         }
+
     }
 
     private  void buildCommunity(Community c, Context context) throws SQLException {
-        Integer comID = Integer.valueOf(c.getID());
+        Integer comID = c.getID();
 
         Community[] comms = c.getSubcommunities();
 
@@ -168,8 +200,8 @@ public class ListUserCommunities {
 
                 buildCommunity(comms[i], context);
 
-                if( comms[i].canEditBoolean() || colMap.containsKey(Integer.valueOf(comms[i].getID()))
-                        || (commMap.containsKey(Integer.valueOf(comms[i].getID())))) {
+                if(  colMap.containsKey(comms[i].getID())
+                        || (commMap.containsKey(comms[i].getID())|| AuthorizeManager.isAdmin(context,comms[i]))) {
                         availableComm.add(comms[i]);
                     }
             }
@@ -185,7 +217,7 @@ public class ListUserCommunities {
     }
 
     private  void buildList(Community c, Context context) throws SQLException {
-        Integer comID = Integer.valueOf(c.getID());
+        Integer comID = c.getID();
 
 
         Community[] comms = c.getSubcommunities();
@@ -199,8 +231,8 @@ public class ListUserCommunities {
 
                 buildList(comms[i],context);
 
-                if(comms[i].canEditBoolean() || colMap.containsKey(Integer.valueOf(comms[i].getID()))
-                        || (commMap.containsKey(Integer.valueOf(comms[i].getID())))) {
+                if( colMap.containsKey(comms[i].getID())
+                        || commMap.containsKey(comms[i].getID()) || AuthorizeManager.isAdmin(context,comms[i])) {
                     availableComm.add(comms[i]);
                 }
 

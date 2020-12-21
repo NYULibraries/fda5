@@ -822,10 +822,18 @@ public abstract class DSpaceObject
     /* Added by Kate as isDiscoverable not always useful */
     public boolean isPublic() throws SQLException
     {
-        boolean isPublic=false;
-        for(ResourcePolicy policy: AuthorizeManager.getPolicies(ourContext,this)) {
-            if (policy.getGroupID() == 0 && policy.getAction() == Constants.DEFAULT_ITEM_READ) {
+        for(ResourcePolicy policy: AuthorizeManager.getPoliciesActionFilter(ourContext,this, Constants.DEFAULT_ITEM_READ)) {
+            if (policy.getGroupID() == 0) {
                 return true;
+            } else {
+                Group item_read_group = Group.find(ourContext , policy.getGroupID());
+                if(item_read_group.getMemberGroups()!=null) {
+                    for (Group group : item_read_group.getMemberGroups()) {
+                        if(group.getID()==0) {
+                            return true;
+                        }
+                    }
+                }
             }
         }
         return false;
@@ -834,10 +842,18 @@ public abstract class DSpaceObject
     /* Added by Kate as isDiscoverable not always useful */
     public boolean isPublic(Context context) throws SQLException
     {
-        boolean isPublic=false;
-        for(ResourcePolicy policy: AuthorizeManager.getPolicies(context,this)) {
-            if (policy.getGroupID() == 0 && policy.getAction() == Constants.DEFAULT_ITEM_READ) {
+        for(ResourcePolicy policy: AuthorizeManager.getPoliciesActionFilter(context,this, Constants.DEFAULT_ITEM_READ)) {
+            if (policy.getGroupID() == 0) {
                 return true;
+            } else {
+                Group item_read_group = Group.find(context , policy.getGroupID());
+                if(item_read_group.getMemberGroups()!=null) {
+                    for (Group group : item_read_group.getMemberGroups()) {
+                        if(group.getID()==0) {
+                            return true;
+                        }
+                    }
+                }
             }
         }
         return false;
@@ -846,47 +862,25 @@ public abstract class DSpaceObject
     /* Added by Kate to flag NYU Only collections */
     public boolean isNYUOnly() throws SQLException
     {
-        //we get IDs of special groups
-        String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups.nyu");
-
-        if (special_group_name!=null)
-        {
-            if (Group.findByName(ourContext, special_group_name) != null)
-            {
-                for (ResourcePolicy policy : AuthorizeManager.getPolicies(ourContext, this))
-                {
-                    if (policy.getAction() == Constants.READ &&
-                                (policy.getGroupID() == Group.findByName(ourContext, special_group_name).getID()))
-                    {
-                            return  true;
-                    }
-                }
-            }
-        }
-        return false;
+        return isSchoolOnly("nyu");
     }
 
     /* Added by Kate to flag NYU Only collections with specific context*/
     public boolean isNYUOnly(Context context) throws SQLException
     {
-        //we get IDs of special groups
-        String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups.nyu");
+        return isSchoolOnly(context,"nyu");
+    }
 
-        if (special_group_name!=null)
-        {
-            if (Group.findByName(context, special_group_name) != null)
-            {
-                for (ResourcePolicy policy : AuthorizeManager.getPolicies(context, this))
-                {
-                    if (policy.getAction() == Constants.READ &&
-                            (policy.getGroupID() == Group.findByName(context, special_group_name).getID()))
-                    {
-                        return  true;
-                    }
-                }
-            }
-        }
-        return false;
+    /* Added by Kate to flag NYU Only collections */
+    public boolean isGallatin() throws SQLException
+    {
+        return isSchoolOnly("gallatin");
+    }
+
+    /* Added by Kate to flag NYU Only collections with specific context*/
+    public boolean isGallatin(Context context) throws SQLException
+    {
+        return isSchoolOnly(context,"gallatin");
     }
 
     /* Added by Kate to hide private collections */
@@ -895,25 +889,13 @@ public abstract class DSpaceObject
         if(isPublic()) {
             return false;
         }
-        //if not public we need to check if it belongs to special groups
-        List<ResourcePolicy> policies = AuthorizeManager.getPoliciesActionFilter(ourContext, this, Constants.READ);
 
-        String[] specialGroups = {"webui.submission.special.groups.nyu", "webui.submission.special.groups.gallatin"};
+        if(isNYUOnly()) {
+            return false;
+        }
 
-        //we get IDs of special groups
-        for (String special_group : specialGroups) {
-            String special_group_name = ConfigurationManager.getProperty(special_group);
-
-            if (special_group_name != null) {
-                if (Group.findByName(ourContext, special_group_name) != null) {
-                    for (ResourcePolicy policy : policies) {
-                        if (policy.getAction() == Constants.READ &&
-                                (policy.getGroupID() == Group.findByName(ourContext, special_group_name).getID())) {
-                            return false;
-                        }
-                    }
-                }
-            }
+        if(isGallatin()) {
+            return false;
         }
         return true;
     }
@@ -924,27 +906,88 @@ public abstract class DSpaceObject
         if(isPublic(context)) {
             return false;
         }
-        //if not public we need to check if it belongs to special groups
-        List<ResourcePolicy> policies = AuthorizeManager.getPoliciesActionFilter(ourContext, this, Constants.READ);
 
-        String[] specialGroups = {"webui.submission.special.groups.nyu", "webui.submission.special.groups.gallatin"};
+        if(isNYUOnly(context)) {
+            return false;
+        }
 
-        //we get IDs of special groups
-        for (String special_group : specialGroups) {
-            String special_group_name = ConfigurationManager.getProperty(special_group);
+        if(isGallatin(context)) {
+            return false;
+        }
+        return true;
+    }
 
-            if (special_group_name != null) {
-                if (Group.findByName(context, special_group_name) != null) {
-                    for (ResourcePolicy policy : policies) {
-                        if (policy.getAction() == Constants.READ &&
-                                (policy.getGroupID() == Group.findByName(context, special_group_name).getID())) {
-                            return false;
+    /* Added by Kate to find School specific  collections */
+    public boolean isSchoolOnly(Context context, String school_name) throws SQLException {
+
+
+        //we get IDs of gallatin group
+        String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups."+school_name);
+
+
+        if (special_group_name!=null)
+        {
+            if (Group.findByName(ourContext, special_group_name) != null)
+            {
+                for (ResourcePolicy policy : AuthorizeManager.getPoliciesActionFilter(context, this,Constants.DEFAULT_ITEM_READ)) {
+
+                    Group  special_group = Group.findByName(context, special_group_name);
+                    Group  item_read_group = Group.find(context , policy.getGroupID());
+                    if (special_group.getID() == item_read_group.getID()) {
+
+                        return  true;
+                    } else {
+
+                        if(item_read_group.getMemberGroups()!=null) {
+                            for (Group group : item_read_group.getMemberGroups()) {
+                                if(group.getID()==special_group.getID()) {
+                                    return true;
+                                }
+                            }
                         }
+
                     }
                 }
             }
         }
-        return true;
+        return false;
+    }
+
+    /* Added by Kate to find School specific  collections */
+    public boolean isSchoolOnly(String school_name) throws SQLException {
+
+
+        //we get IDs of gallatin group
+        String special_group_name = ConfigurationManager.getProperty("webui.submission.special.groups."+school_name);
+
+
+        if (special_group_name!=null)
+        {
+            if (Group.findByName(ourContext, special_group_name) != null)
+            {
+                for (ResourcePolicy policy : AuthorizeManager.getPoliciesActionFilter(ourContext, this,Constants.DEFAULT_ITEM_READ)) {
+
+                    Group  special_group = Group.findByName(ourContext, special_group_name);
+                    Group  item_read_group = Group.find(ourContext , policy.getGroupID());
+                    log.error(" NYU goup"+special_group);
+                    if (special_group.getID() == item_read_group.getID()) {
+
+                        return  true;
+                    } else {
+
+                        if(item_read_group.getMemberGroups()!=null) {
+                            for (Group group : item_read_group.getMemberGroups()) {
+                                if(group.getID()==special_group.getID()) {
+                                    return true;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     /**
