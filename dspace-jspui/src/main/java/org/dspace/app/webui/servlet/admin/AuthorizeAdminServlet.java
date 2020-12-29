@@ -140,6 +140,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             {
                 // show edit form!
                 prepItemEditForm(c, request, item);
+                //Added by Kate
+                request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,item ));
 
                 JSPManager.showJSP(request, response,
                         "/dspace-admin/authorize-item-edit.jsp");
@@ -293,6 +295,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
 
             Group[] groups = Group.findAll(c, Group.NAME);
             EPerson[] epeople = EPerson.findAll(c, EPerson.EMAIL);
+            //Added by Kate
+            Boolean canMakePrivate = AuthorizeUtil.canAddDSOREADPolicy(c,collection);
 
             // return to collection permission page
             request.setAttribute("edit_title", "Collection "
@@ -303,6 +307,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             request.setAttribute("id_name", "collection_id");
             request.setAttribute("id", "" + collection.getID());
             request.setAttribute("newpolicy", "true");
+            //Added by Kate
+            request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,collection) );
 
             JSPManager.showJSP(request, response,
                     "/dspace-admin/authorize-policy-edit.jsp");
@@ -313,9 +319,12 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             Community target = Community.find(c, UIUtil.getIntParameter(
                     request, "community_id"));
             List<ResourcePolicy> policies = AuthorizeManager.getPolicies(c, target);
+            //Added by Kate
 
+            request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,target) );
             request.setAttribute("community", target);
             request.setAttribute("policies", policies);
+
             JSPManager.showJSP(request, response,
                     "/dspace-admin/authorize-community-edit.jsp");
         }
@@ -342,6 +351,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
 
             List<ResourcePolicy> policies = AuthorizeManager.getPolicies(c, collection);
             request.setAttribute("policies", policies);
+            //Added by Kate
+            request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,collection) );
 
             JSPManager.showJSP(request, response,
                     "/dspace-admin/authorize-collection-edit.jsp");
@@ -370,7 +381,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
 
             List<ResourcePolicy> policies = AuthorizeManager.getPolicies(c, community);
             request.setAttribute("policies", policies);
-
+            //Added by Kate
+            request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,community) );
             JSPManager.showJSP(request, response,
                     "/dspace-admin/authorize-community-edit.jsp");
         }
@@ -407,6 +419,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             request.setAttribute("epeople", epeople);
             request.setAttribute("id_name", "collection_id");
             request.setAttribute("id", "" + collection.getID());
+            //Added by Kate
+            request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,collection));
             JSPManager.showJSP(request, response,
                     "/dspace-admin/authorize-policy-edit.jsp");
         }
@@ -445,6 +459,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             request.setAttribute("epeople", epeople);
             request.setAttribute("id_name", "community_id");
             request.setAttribute("id", "" + community.getID());
+            //Added by Kate
+            request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,community) );
             JSPManager.showJSP(request, response,
                     "/dspace-admin/authorize-policy-edit.jsp");
         }
@@ -471,7 +487,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             request.setAttribute("id_name", "collection_id");
             request.setAttribute("id", "" + collection.getID());
             request.setAttribute("newpolicy", "true");
-
+            //Added by Kate
+            request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,collection) );
             JSPManager.showJSP(request, response,
                     "/dspace-admin/authorize-policy-edit.jsp");
         }
@@ -499,6 +516,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             request.setAttribute("id_name", "community_id");
             request.setAttribute("id", "" + community.getID());
             request.setAttribute("newpolicy", "true");
+            //Added by Kate
+            request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,community) );
 
             JSPManager.showJSP(request, response,
                     "/dspace-admin/authorize-policy-edit.jsp");
@@ -535,6 +554,7 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             ResourcePolicy policy = ResourcePolicy.find(c, policyId);
             AuthorizeUtil.authorizeManagePolicy(c, policy);
             Group group = Group.find(c, groupId);
+            Boolean canMakePrivate = false;
 
             if (collectionId != -1)
             {
@@ -566,6 +586,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
                 request.setAttribute("collection", collection);
                 request.setAttribute("policies", AuthorizeManager.getPolicies(
                         c, collection));
+                //Added by Kate
+                canMakePrivate = AuthorizeUtil.canAddDSOREADPolicy(c,collection);
                 displayPage = "/dspace-admin/authorize-collection-edit.jsp";
             }
             else if (communityId != -1)
@@ -598,6 +620,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
                 request.setAttribute("community", community);
                 request.setAttribute("policies", AuthorizeManager.getPolicies(
                         c, community));
+                //Added by Kate
+                canMakePrivate = AuthorizeUtil.canAddDSOREADPolicy(c,community);
                 displayPage = "/dspace-admin/authorize-community-edit.jsp";
             }
             else if (itemId != -1)
@@ -616,11 +640,13 @@ public class AuthorizeAdminServlet extends DSpaceServlet
 
                 // show edit form!
                 prepItemEditForm(c, request, item);
-
+                //Added by Kate
+                canMakePrivate = AuthorizeUtil.canAddDSOREADPolicy(c,item);
                 displayPage = "/dspace-admin/authorize-item-edit.jsp";
             }
 
             // now return to previous state
+            request.setAttribute("canMakePrivate", canMakePrivate );
             JSPManager.showJSP(request, response, displayPage);
         }
         else if (button.equals("submit_cancel_policy"))
@@ -639,6 +665,7 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             int communityId = UIUtil.getIntParameter(request, "community_id");
             int itemId = UIUtil.getIntParameter(request, "item_id");
             String displayPage = null;
+            Boolean canMakePrivate = false;
 
             if (collectionId != -1)
             {
@@ -648,6 +675,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
                 request.setAttribute("collection", t);
                 request.setAttribute("policies", AuthorizeManager.getPolicies(
                         c, t));
+                //Added by Kate
+                canMakePrivate = AuthorizeUtil.canAddDSOREADPolicy(c,t);
                 displayPage = "/dspace-admin/authorize-collection-edit.jsp";
             }
             else if (communityId != -1)
@@ -658,6 +687,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
                 request.setAttribute("community", t);
                 request.setAttribute("policies", AuthorizeManager.getPolicies(
                         c, t));
+                //Added by Kate
+                canMakePrivate = AuthorizeUtil.canAddDSOREADPolicy(c,t);
                 displayPage = "/dspace-admin/authorize-community-edit.jsp";
             }
             else if (itemId != -1)
@@ -667,10 +698,11 @@ public class AuthorizeAdminServlet extends DSpaceServlet
 
                 // show edit form!
                 prepItemEditForm(c, request, t);
-
+                //Added by Kate
+                canMakePrivate = AuthorizeUtil.canAddDSOREADPolicy(c,t);
                 displayPage = "/dspace-admin/authorize-item-edit.jsp";
             }
-
+            request.setAttribute("canMakePrivate", canMakePrivate);
             JSPManager.showJSP(request, response, displayPage);
         }
         else if (button.equals("submit_advanced_clear"))
@@ -724,6 +756,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
 
             request.setAttribute("collection", collection);
             request.setAttribute("policies", policies);
+            //Added by Kate
+            request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,collection) );
             JSPManager.showJSP(request, response,
                     "/dspace-admin/authorize-collection-edit.jsp");
         }

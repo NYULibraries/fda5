@@ -46,6 +46,7 @@
 
 <%
     Collection collection = (Collection) request.getAttribute("collection");
+    Boolean canMakePrivate = (Boolean) request.getAttribute("canMakePrivate");
     List<ResourcePolicy> policies =
         (List<ResourcePolicy>) request.getAttribute("policies");
 %>
@@ -107,7 +108,10 @@
                <form action="<%= request.getContextPath() %>/tools/authorize" method="post">
                     <input type="hidden" name="policy_id" value="<%= rp.getID() %>" />
                     <input type="hidden" name="collection_id" value="<%= collection.getID() %>" />
+                    <% if (canMakePrivate||!rp.getActionText().contains("READ"))
+                      { %>
                     <input class="btn btn-danger" type="submit" name="submit_collection_delete_policy" value="<fmt:message key="jsp.dspace-admin.general.delete"/>" />
+                    <% } %>
                </form>
                </td>
             </tr>
