@@ -74,36 +74,43 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
         {
             log.error(" we do not have user ");
             // Get the top communities to shows in the community list
-           colMap.putAll(ListUserCommunities.colMapAnon);
-           Collection[] cols1=(Collection[]) colMap.get(81);
-           log.error("collection:"+cols1.length);
-           commMap = ListUserCommunities.commMapAnon;
-            log.error(" global size " +ListUserCommunities.colMapAnon.size());
-            log.error(" local size " +colMap.size());
-            request.setAttribute("collections.map", colMap);
-            request.setAttribute("subcommunities.map", commMap);
-            request.setAttribute("nyuOnly", nyuOnly);
+           if(ListUserCommunities.colMapAnon!=null) {
+               colMap.putAll(ListUserCommunities.colMapAnon);
+           }
+           if(ListUserCommunities.commMapAnon!=null) {
+                commMap.putAll(ListUserCommunities.commMapAnon);
+           }
+
         }
         else {
             // Get the top communities to shows in the community list
 
             try {
                 if(AuthorizeManager.isAdmin(context)) {
-
-                    colMap = ListUserCommunities.colMapAdmin;
-                    commMap = ListUserCommunities.commMapAdmin;
+                  if(ListUserCommunities.colMapAdmin!=null) {
+                      colMap.putAll(ListUserCommunities.colMapAdmin);
+                  }
+                  if(ListUserCommunities.commMapAdmin!=null) {
+                      commMap.putAll(ListUserCommunities.commMapAdmin);
+                  }
                 } else {
                     int userID = user.getID();
-                    log.error(" we are in user"+user.getFirstName());
                     if(ListUserCommunities.commAuthorizedUsers.containsKey(userID)|| ListUserCommunities.colAuthorizedUsers.containsKey(userID) ) {
-                        log.error(" user check:"+user.getName());
                         ListCommunities comList = new ListCommunities();
                         comList.ListUserCommunities(context);
-                        colMap = comList.getCollectionsMap();
-                        commMap = comList.getCommunitiesMap();
+                        if(comList.getCollectionsMap()!=null) {
+                            colMap.putAll(comList.getCollectionsMap());
+                        }
+                        if(comList.getCommunitiesMap()!=null) {
+                            commMap.putAll(comList.getCommunitiesMap());
+                        }
                     } else {
-                        colMap = ListUserCommunities.colMapAnon;
-                        commMap = ListUserCommunities.commMapAnon;
+                        if(ListUserCommunities.colMapAnon!=null) {
+                            colMap.putAll(ListUserCommunities.colMapAnon);
+                        }
+                        if(ListUserCommunities.commMapAnon!=null) {
+                            commMap.putAll(ListUserCommunities.commMapAnon);
+                        }
                     }
 
                 }
