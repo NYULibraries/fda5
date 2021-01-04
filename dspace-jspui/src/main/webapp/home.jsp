@@ -94,7 +94,7 @@
 
                      for (int k = 0; k < comms.length; k++)
                      {
-                         showCommunity(comms[k], out, request, collectionMap, subcommunityMap);
+                         showCommunity(comms[k], out, request, collectionMap, subcommunityMap,nyuOnly);
                      }
 
                  }
@@ -106,7 +106,7 @@
                      {
                            out.println("<li class=\"tree-collections-list\" role=\"treeitem\" >");
                            //String collName =  ( StringUtils.isNotBlank(cols[j].getMetadata("name"))  ? cols[j].getMetadata("name") : "Untitled" );
-                           out.println("<span  class=\"t1 ct1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a></span>");
+                           out.println("<span  class=\"t1 ct1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">"+ cols.length+ cols[j].getMetadata("name") +"</a></span>");
                            if (nyuOnly.contains(cols[j]))
                            {
                               out.println("<span class=\"nyu-only-svg\"><svg version=\"1.1\"  xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 100.69 13.76\" style=\"enable-background:new 0 0 100.69 13.76;\" xml:space=\"preserve\">");
@@ -216,3 +216,4 @@ if (mostdownloaded != null && mostdownloaded.count() > 0)
 <% } %>
      
 </dspace:layout>
+ vc

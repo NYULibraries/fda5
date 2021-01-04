@@ -969,14 +969,16 @@ public abstract class DSpaceObject
 
                     Group  special_group = Group.findByName(ourContext, special_group_name);
                     Group  item_read_group = Group.find(ourContext , policy.getGroupID());
-                    log.error(" NYU goup"+special_group);
+                    log.error(" NYU group"+special_group.getName());
                     if (special_group.getID() == item_read_group.getID()) {
 
                         return  true;
                     } else {
 
                         if(item_read_group.getMemberGroups()!=null) {
+                            log.error(" Are we stack at "+item_read_group.getName());
                             for (Group group : item_read_group.getMemberGroups()) {
+                                log.error(" Or we stack at "+item_read_group.getName());
                                 if(group.getID()==special_group.getID()) {
                                     return true;
                                 }

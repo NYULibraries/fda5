@@ -16,11 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.dspace.authorize.AuthorizeException;
+import org.dspace.app.util.ListUserCommunities;
+import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.core.Context;
-import org.dspace.core.LogManager;
+import org.dspace.eperson.EPerson;
 import org.dspace.plugin.CommunityHomeProcessor;
 import org.dspace.plugin.PluginException;
 
@@ -55,24 +56,57 @@ public class ListCommunitiesCommunityProcessor implements CommunityHomeProcessor
 
         Map colMap = new HashMap<Integer, Collection[]>();
         Map commMap = new HashMap<Integer, Community[]>();
-        ArrayList<Collection> nyuOnly= new ArrayList<Collection>();
+        ArrayList<Collection> nyuOnly= ListUserCommunities.nyuOnly;
 
-        //first time we generate the list then get it from cache
-        try
+        if(colMap==null && commMap==null) {
+            try {
+                ListUserCommunities.ListAnonUserCommunities();
+            } catch (SQLException e) {
+                throw new PluginException(e.getMessage(), e);
+            }
+        }
+
+        EPerson user = context.getCurrentUser();
+
+        if(user==null)
         {
-            ListUserCommunities comList = new  ListUserCommunities(context,community);
-            colMap = comList.getCollectionsMap();
-            commMap= comList.getCommunitiesMap();
-            nyuOnly = comList.getNYUOnly();
+            log.error(" we do not have user ");
+            // Get the top communities to shows in the community list
+            colMap = ListUserCommunities.colMapAnon;
+            commMap = ListUserCommunities.commMapAnon;
+
+
+            request.setAttribute("collections.map", colMap);
+            request.setAttribute("subcommunities.map", commMap);
 
         }
-        catch (SQLException e)
-        {
-            throw new PluginException(e.getMessage(), e);
+        else {
+            // Get the top communities to shows in the community list
+
+            try {
+                if(AuthorizeManager.isAdmin(context)) {
+                    colMap = ListUserCommunities.colMapAdmin;
+                    commMap = ListUserCommunities.commMapAdmin;
+                } else {
+                    int userID = user.getID();
+                    log.error(" we are in user"+user.getFirstName());
+                    if(ListUserCommunities.commAuthorizedUsers.containsKey(userID)|| ListUserCommunities.colAuthorizedUsers.containsKey(userID) ) {
+                        ListCommunities comList = new ListCommunities();
+                        comList.ListUserCommunities(context);
+                        colMap = comList.getCollectionsMap();
+                        commMap = comList.getCommunitiesMap();
+                    }
+                }
+            } catch (SQLException e) {
+                throw new PluginException(e.getMessage(), e);
+            }
+
         }
+
         request.setAttribute("collections.map", colMap);
         request.setAttribute("subcommunities.map", commMap);
         request.setAttribute("nyuOnly", nyuOnly);
+
     }
 
 

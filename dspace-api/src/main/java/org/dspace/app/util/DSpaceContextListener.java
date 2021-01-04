@@ -19,6 +19,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Enumeration;
 
 /**
@@ -132,6 +133,17 @@ public class DSpaceContextListener implements ServletContextListener
             event.getServletContext().log("Can't create webapp MBean:  " + ex.getMessage());
         } catch (IllegalAccessException ex) {
             event.getServletContext().log("Can't create webapp MBean:  " + ex.getMessage());
+        }
+
+        /**
+         * Stage 4 added by Kate
+         *
+         * Build static list of collections and communities
+         */
+        try {
+            ListUserCommunities.ListAnonUserCommunities();
+        } catch (SQLException ex) {
+            event.getServletContext().log( "Cant' create collection and community map:  " + ex.getMessage());
         }
     }
 

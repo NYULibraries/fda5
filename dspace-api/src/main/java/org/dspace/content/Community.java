@@ -685,31 +685,19 @@ public class Community extends DSpaceObject
             {
                 TableRow row = tri.next();
 
-                //all code below is modified by Kate to only get collections which we need to display for the current user.
-                //User can see all non empty public, NYU only and Gallatin collections. If the collection is private the user will only be able to see it if
-                //they can add content to it.
 
                 // First check the cache
-                Collection collection = (Collection) ourContext.fromCache(
+                Collection fromCache = (Collection) ourContext.fromCache(
                         Collection.class, row.getIntColumn("collection_id"));
 
 
-                if (collection == null)
+                if (fromCache != null)
                 {
-                    collection = new Collection(ourContext, row);
+                    collections.add(fromCache);
                 }
-
-                if (collection.isPrivate())
+                else
                 {
-                    if(AuthorizeManager.authorizeActionBoolean(ourContext,collection,(int) Constants.ADD))
-                    {
-                        collections.add(collection);
-                    }
-                }
-                else {
-                    if (collection.countItems() > 0 || AuthorizeManager.authorizeActionBoolean(ourContext,collection,(int) Constants.ADD) ) {
-                        collections.add(collection);
-                    }
+                    collections.add(new Collection(ourContext, row));
                 }
             }
         }

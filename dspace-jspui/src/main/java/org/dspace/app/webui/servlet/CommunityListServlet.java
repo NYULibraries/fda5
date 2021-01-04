@@ -11,14 +11,14 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.locks.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.dspace.app.webui.components.ListUserCommunities;
+import org.dspace.app.util.ListUserCommunities;
+import org.dspace.app.webui.components.ListCommunities;
 import org.dspace.app.webui.util.JSPManager;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
@@ -32,7 +32,7 @@ import org.dspace.core.LogManager;
  * 
  * @author Robert Tansley,
  *  @version $Revision$
- * modified by Kate Pechekhonova to re-use method for creating  subcommunities and collections from org.dspace.app.webui.components.ListUserCommunities
+ * modified by Kate Pechekhonova to re-use method for creating  subcommunities and collections from org.dspace.app.util.ListUserCommunities
  * instead of building it here
  *
  */
@@ -64,13 +64,14 @@ public class CommunityListServlet extends DSpaceServlet {
 
             if(context.getCurrentUser()==null)
             {
-                    ListUserCommunities.ListAnonUserCommunities(context);
+                    ListUserCommunities.ListAnonUserCommunities();
                     colMap = ListUserCommunities.colMapAnon;
                     commMap = ListUserCommunities.commMapAnon;
             }
             else
             {
-                ListUserCommunities comList = new ListUserCommunities(context);
+                ListCommunities comList = new ListCommunities();
+                comList.ListUserCommunities(context);
                 colMap = comList.getCollectionsMap();
                 commMap = comList.getCommunitiesMap();
                 // can they admin communities?

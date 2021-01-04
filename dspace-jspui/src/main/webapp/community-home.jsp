@@ -46,8 +46,6 @@
 <%
 	// Retrieve attributes
 	Community community = (Community) request.getAttribute( "community" );
-	Collection[] collections =(Collection[]) request.getAttribute("collections");
-	Community[] subcommunities =(Community[]) request.getAttribute("subcommunities");
 	RecentSubmissions rs = (RecentSubmissions) request.getAttribute("recently.submitted");
 	MostDownloaded mostdownloaded = (MostDownloaded) request.getAttribute("most.downloaded");
 	Map collectionMap = (Map) request.getAttribute("collections.map");
@@ -169,17 +167,18 @@
     //the current user can add content
     Integer comID = Integer.valueOf(community.getID());
     Community[] comms = (Community[]) subcommunityMap.get(comID);
+    Collection[] cols = (Collection[]) collectionMap.get(comID);
 
     if ( comms != null && comms.length > 0)
   	{
   %>
   	<h2 class="section-title">Subcommunities</h2>
   <%
-  		for (int j = 0; j < subcommunities.length; j++)
+  		for (int j = 0; j < comms.length; j++)
   		{
   %>
   		<ul role="tree">
-  		  <%  showCommunity(subcommunities[j], out, request, collectionMap, subcommunityMap);%>
+  		  <%  showCommunity(comms[j], out, request, collectionMap, subcommunityMap);%>
   		</ul>
   		<% }
   	}
