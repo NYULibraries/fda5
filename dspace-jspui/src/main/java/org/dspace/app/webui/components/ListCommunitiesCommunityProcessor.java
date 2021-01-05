@@ -52,8 +52,7 @@ public class ListCommunitiesCommunityProcessor implements CommunityHomeProcessor
     public void process(Context context, HttpServletRequest request,
                         HttpServletResponse response, Community community) throws PluginException {
 
-        Map colMap = new HashMap<Integer, Collection[]>();
-        Map commMap = new HashMap<Integer, Community[]>();
+
         ArrayList<Collection> nyuOnly = ListUserCommunities.nyuOnly;
 
         if (ListUserCommunities.colMapAnon == null && ListUserCommunities.commMapAnon == null) {
@@ -68,27 +67,23 @@ public class ListCommunitiesCommunityProcessor implements CommunityHomeProcessor
 
         if (user == null) {
             // Get the top communities to shows in the community list
-            if (ListUserCommunities.colMapAnon != null) {
-                colMap.putAll(ListUserCommunities.colMapAnon);
-            }
-            if (ListUserCommunities.commMapAnon != null) {
-                commMap.putAll(ListUserCommunities.commMapAnon);
-            }
+            request.setAttribute("collections.map", ListUserCommunities.colMapAnon);
+            request.setAttribute("subcommunities.map", ListUserCommunities.commMapAnon);
 
         } else {
             // Get the top communities to shows in the community list
 
             try {
                 if (AuthorizeManager.isAdmin(context)) {
-                    if (ListUserCommunities.colMapAdmin != null) {
-                        colMap.putAll(ListUserCommunities.colMapAdmin);
-                    }
-                    if (ListUserCommunities.commMapAdmin != null) {
-                        commMap.putAll(ListUserCommunities.commMapAdmin);
-                    }
+
+                        request.setAttribute("collections.map", ListUserCommunities.colMapAdmin);
+                        request.setAttribute("subcommunities.map", ListUserCommunities.commMapAdmin);
+
                 } else {
                     int userID = user.getID();
                     if (ListUserCommunities.commAuthorizedUsers.containsKey(userID) || ListUserCommunities.colAuthorizedUsers.containsKey(userID)) {
+                        Map colMap = new HashMap<Integer, Collection[]>();
+                        Map commMap = new HashMap<Integer, Community[]>();
                         ListCommunities comList = new ListCommunities();
                         comList.ListUserCommunities(context);
                         if (comList.getCollectionsMap() != null) {
@@ -97,25 +92,20 @@ public class ListCommunitiesCommunityProcessor implements CommunityHomeProcessor
                         if (comList.getCommunitiesMap() != null) {
                             commMap.putAll(comList.getCommunitiesMap());
                         }
+                        request.setAttribute("collections.map",colMap);
+                        request.setAttribute("subcommunities.map",commMap);
                     } else {
-                        if (ListUserCommunities.colMapAnon != null) {
-                            colMap.putAll(ListUserCommunities.colMapAnon);
-                        }
-                        if (ListUserCommunities.commMapAnon != null) {
-                            commMap.putAll(ListUserCommunities.commMapAnon);
-                        }
+                        request.setAttribute("collections.map", ListUserCommunities.colMapAnon);
+                        request.setAttribute("subcommunities.map", ListUserCommunities.commMapAnon);
                     }
 
                 }
             } catch (SQLException e) {
                 throw new PluginException(e.getMessage(), e);
             }
-            request.setAttribute("collections.map", colMap);
-            request.setAttribute("subcommunities.map", commMap);
-            request.setAttribute("nyuOnly", nyuOnly);
-            request.setAttribute("community", community);
         }
 
-
+        request.setAttribute("nyuOnly", nyuOnly);
+        request.setAttribute("community", community);
     }
 }

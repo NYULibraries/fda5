@@ -44,6 +44,7 @@
     Community[] communities = (Community[]) request.getAttribute("communities");
     Map collectionMap = (Map) request.getAttribute("collections.map");
     Map subcommunityMap = (Map) request.getAttribute("subcommunities.map");
+    ArrayList<Collection> nyuOnly = (ArrayList<Collection>)  request.getAttribute("nyuOnly");
     Boolean admin_b = (Boolean)request.getAttribute("admin_button");
     boolean admin_button = (admin_b == null ? false : admin_b.booleanValue());
 %>
@@ -83,7 +84,7 @@
                           out.println("<li class=\"tree-collections-list\" role=\"treeitem\" >");
                           //String collName =  ( StringUtils.isNotBlank(cols[j].getMetadata("name"))  ? cols[j].getMetadata("name") : "Untitled" );
                           out.println("<span  class=\"t1 ct1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a></span>");
-                          if (cols[j].isNYUOnly(UIUtil.obtainContext(request)))
+                          if (nyuOnly!=null && nyuOnly.contains(cols[j]))
                           {
                             out.println("<span class=\"nyu-only-svg\"><svg version=\"1.1\"  xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 100.69 13.76\" style=\"enable-background:new 0 0 100.69 13.76;\" xml:space=\"preserve\">");
         		              out.println("<style type=\"text/css\"> path{fill:#57068C;} </style>");

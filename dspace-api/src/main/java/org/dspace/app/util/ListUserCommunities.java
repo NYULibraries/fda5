@@ -25,7 +25,13 @@ import  org.dspace.eperson.EPerson;
 import  org.dspace.eperson.Group;
 
 /**
- * This class generates list of all collections and communities which are not empty or where the user is administrator or submitter
+ * This class generates list of collections and c ommunities which will be listed on home page and on community pages
+ * Anonymous users can only see - public, NYU only and school specific (Gallatin) collection which are not empty
+ * Collection, community and site admins can see empty and private collections which ther administrate. Also submitters
+ * can see empty collections to which they can add items.
+ * We make all initial calculations when jspui applications starts and then do updates when changes are made, e.g.
+ * when items are added to empty collection, when new admins are added to private collections or when collection permissions
+ * are modified.
  *
  * @author Kate Pechekhonova
  *
@@ -83,7 +89,7 @@ public class ListUserCommunities {
 
     }
 
-    //used for full community list on home page and list-communities.jsp page for a specific loged in user
+    //generates maps for anon user, for site admins and other
     public static synchronized void ListAnonUserCommunities() throws java.sql.SQLException {
 
         Context context = new Context();

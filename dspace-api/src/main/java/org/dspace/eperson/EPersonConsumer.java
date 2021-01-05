@@ -9,7 +9,7 @@ package org.dspace.eperson;
 
 import org.apache.log4j.Logger;
 import org.dspace.core.*;
-import org.dspace.event.Consumer;
+import org.dspace. event.Consumer;
 import org.dspace.event.Event;
 
 import javax.mail.MessagingException;

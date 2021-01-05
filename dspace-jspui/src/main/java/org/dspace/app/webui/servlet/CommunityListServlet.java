@@ -9,6 +9,7 @@ package org.dspace.app.webui.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +27,8 @@ import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.core.Context;
 import org.dspace.core.LogManager;
+import org.dspace.eperson.EPerson;
+import org.dspace.plugin.PluginException;
 
 /**
  * Servlet for listing communities (and collections within them)
@@ -54,35 +57,63 @@ public class CommunityListServlet extends DSpaceServlet {
             SQLException, AuthorizeException {
 
 
-            log.info(LogManager.getHeader(context, "view_community_list", ""));
+        log.info(LogManager.getHeader(context, "view_community_list", ""));
 
+        // Get the top communities to shows in the community list
+        Community[] communities = Community.findAllTop(context);
+
+        ArrayList<Collection> nyuOnly = ListUserCommunities.nyuOnly;
+
+        if (ListUserCommunities.colMapAnon == null && ListUserCommunities.commMapAnon == null) {
+            try {
+                ListUserCommunities.ListAnonUserCommunities();
+            } catch (SQLException e) {
+                log.error(e.getMessage(), e);
+            }
+        }
+
+        EPerson user = context.getCurrentUser();
+
+        if (user == null) {
             // Get the top communities to shows in the community list
-            Community[] communities = Community.findAllTop(context);
+            request.setAttribute("collections.map", ListUserCommunities.colMapAnon);
+            request.setAttribute("subcommunities.map", ListUserCommunities.commMapAnon);
 
-            colMap = new HashMap<Integer, Collection[]>();
-            commMap = new HashMap<Integer, Community[]>();
-
-            if(context.getCurrentUser()==null)
-            {
-                    ListUserCommunities.ListAnonUserCommunities();
-                    colMap = ListUserCommunities.colMapAnon;
-                    commMap = ListUserCommunities.commMapAnon;
-            }
-            else
-            {
-                ListCommunities comList = new ListCommunities();
-                comList.ListUserCommunities(context);
-                colMap = comList.getCollectionsMap();
-                commMap = comList.getCommunitiesMap();
-                // can they admin communities?
+        } else {
+            try {
                 if (AuthorizeManager.isAdmin(context)) {
-                    // set a variable to create an edit button
-                    request.setAttribute("admin_button", Boolean.TRUE);
+
+                    request.setAttribute("collections.map", ListUserCommunities.colMapAdmin);
+                    request.setAttribute("subcommunities.map", ListUserCommunities.commMapAdmin);
+
+                } else {
+                    int userID = user.getID();
+                    if (ListUserCommunities.commAuthorizedUsers.containsKey(userID) || ListUserCommunities.colAuthorizedUsers.containsKey(userID)) {
+                        Map colMap = new HashMap<Integer, Collection[]>();
+                        Map commMap = new HashMap<Integer, Community[]>();
+                        ListCommunities comList = new ListCommunities();
+                        comList.ListUserCommunities(context);
+                        if (comList.getCollectionsMap() != null) {
+                            colMap.putAll(comList.getCollectionsMap());
+                        }
+                        if (comList.getCommunitiesMap() != null) {
+                            commMap.putAll(comList.getCommunitiesMap());
+                        }
+                        request.setAttribute("collections.map", colMap);
+                        request.setAttribute("subcommunities.map", commMap);
+                    } else {
+                        request.setAttribute("collections.map", ListUserCommunities.colMapAnon);
+                        request.setAttribute("subcommunities.map", ListUserCommunities.commMapAnon);
+                    }
+
                 }
+            } catch (SQLException e) {
+                log.error(e.getMessage(), e);
             }
-                request.setAttribute("communities", communities);
-                request.setAttribute("collections.map", colMap);
-                request.setAttribute("subcommunities.map", commMap);
+            request.setAttribute("nyuOnly", nyuOnly);
+            request.setAttribute("communities", communities);
+
             JSPManager.showJSP(request, response, "/community-list.jsp");
         }
+    }
 }
