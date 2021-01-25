@@ -74,7 +74,7 @@
 
                         for (int k = 0; k < comms.length; k++)
                         {
-                            showCommunity(comms[k], out, request, collectionMap, subcommunityMap);
+                            showCommunity(comms[k], out, request, collectionMap, subcommunityMap, nyuOnly);
                         }
 
                     }
