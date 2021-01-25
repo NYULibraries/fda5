@@ -10,7 +10,6 @@ package org.dspace.app.webui.components;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.ListIterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,8 +55,6 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
                         HttpServletResponse response) throws PluginException
     {
 
-        ArrayList<Collection> nyuOnly= ListUserCommunities.nyuOnly;
-
         if(ListUserCommunities.colMapAnon==null && ListUserCommunities.commMapAnon==null) {
             try {
                 ListUserCommunities.ListAnonUserCommunities();
@@ -65,6 +62,8 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
                 throw new PluginException(e.getMessage(), e);
             }
         }
+
+        ArrayList<Collection> nyuOnly= ListUserCommunities.nyuOnly;
 
         EPerson user = context.getCurrentUser();
 

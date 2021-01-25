@@ -110,10 +110,11 @@ public class CommunityListServlet extends DSpaceServlet {
             } catch (SQLException e) {
                 log.error(e.getMessage(), e);
             }
-            request.setAttribute("nyuOnly", nyuOnly);
-            request.setAttribute("communities", communities);
 
-            JSPManager.showJSP(request, response, "/community-list.jsp");
         }
+        request.setAttribute("nyuOnly", nyuOnly);
+        request.setAttribute("communities", communities);
+
+        JSPManager.showJSP(request, response, "/community-list.jsp");
     }
 }

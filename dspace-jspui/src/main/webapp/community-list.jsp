@@ -37,11 +37,14 @@
 <%@ page import="java.io.IOException" %>
 <%@ page import="java.sql.SQLException" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 
 <%@ taglib uri="http://www.dspace.org/dspace-tags.tld" prefix="dspace" %>
 
 <%
     Community[] communities = (Community[]) request.getAttribute("communities");
+
     Map collectionMap = (Map) request.getAttribute("collections.map");
     Map subcommunityMap = (Map) request.getAttribute("subcommunities.map");
     ArrayList<Collection> nyuOnly = (ArrayList<Collection>)  request.getAttribute("nyuOnly");
@@ -50,7 +53,7 @@
 %>
 
 <%! //we use the same function 2 times so probably we should convert it to jsp tag but we can change something here so will leave for now
-	void showCommunity(Community c, JspWriter out, HttpServletRequest request, Map collectionMap, Map subcommunityMap) throws ItemCountException, IOException, SQLException
+	void showCommunity(Community c, JspWriter out, HttpServletRequest request, Map collectionMap, Map subcommunityMap, ArrayList<Collection> nyuOnly) throws ItemCountException, IOException, SQLException
 	{
 
           if (subcommunityMap.containsKey(c.getID()) || collectionMap.containsKey(c.getID()) )
@@ -138,7 +141,7 @@
         for (int i = 0; i < communities.length; i++)
         {%>
         <ul role="tree">
-        <%    showCommunity(communities[i], out, request, collectionMap, subcommunityMap); %>
+        <%    showCommunity(communities[i], out, request, collectionMap, subcommunityMap, nyuOnly); %>
         </ul>
         <%}
 
