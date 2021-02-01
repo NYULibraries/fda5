@@ -129,6 +129,263 @@ public class ListUserCommunities {
 
     }
 
+    public static synchronized void addCollectionToPrivateList(Collection col) throws java.sql.SQLException {
+
+
+        if( privateCollections==null) {
+
+            privateCollections = new ArrayList<Collection>();
+
+        }
+        privateCollections.add(col);
+        getAuthirizedCollectionUsers(col);
+    }
+
+    public static synchronized void removeCollectionFromPrivateList(Collection col) throws java.sql.SQLException {
+
+        if( privateCollections!=null && privateCollections.contains(col)) {
+
+            privateCollections.remove(col);
+            removeUserFromAuthorizedColList(col);
+
+        }
+    }
+
+    public static synchronized void addCollectionToEmptyList(Collection col) throws java.sql.SQLException {
+
+        if( emptyCollections==null) {
+
+            emptyCollections = new ArrayList<Collection>();
+
+        }
+        emptyCollections.add(col);
+        getAuthirizedCollectionUsers(col);
+
+    }
+
+    public static synchronized void removeCollectionFromEmptyList(Collection col) throws java.sql.SQLException {
+
+        if( emptyCollections!=null && emptyCollections.contains(col)) {
+
+            emptyCollections.remove(col);
+            removeUserFromAuthorizedColList(col);
+
+        }
+
+    }
+
+    public static synchronized void addCollectionToAnnonList(Collection col) throws java.sql.SQLException {
+
+
+        if( colMapAnon==null ) {
+            colMapAnon = new HashMap<Integer, Collection[]>();
+        }
+
+        if( commMapAnon==null ) {
+            commMapAnon = new HashMap<Integer, Community[]>();
+        }
+
+        addCollection(col);
+
+    }
+
+    public static synchronized void removeCollectionFromAnnonList(Collection col) throws java.sql.SQLException {
+
+      Community[] comms = col.getCommunities();
+      for(Community com:comms) {
+          if
+
+      }
+
+    }
+
+    public static synchronized void addCollectionToAdminList(Collection col) throws java.sql.SQLException {
+
+        Context context = new Context();
+
+        if( colMapAnon==null && commMapAnon==null) {
+
+            colMapAnon = new HashMap<Integer, Collection[]>();
+            commMapAnon = new HashMap<Integer, Community[]>();
+
+        } else {
+
+
+        }
+
+    }
+
+    public static synchronized void removeCollectionFromAdminList(Collection col) throws java.sql.SQLException {
+
+        Context context = new Context();
+
+        if( colMapAnon==null && commMapAnon==null) {
+
+            colMapAnon = new HashMap<Integer, Collection[]>();
+            commMapAnon = new HashMap<Integer, Community[]>();
+
+        } else {
+
+
+        }
+
+    }
+
+
+
+
+    public static synchronized void addCommunityToAnnonList(Collection col) throws java.sql.SQLException {
+
+        Context context = new Context();
+
+        if( colMapAnon==null && commMapAnon==null) {
+
+            colMapAnon = new HashMap<Integer, Collection[]>();
+            commMapAnon = new HashMap<Integer, Community[]>();
+
+        } else {
+
+
+        }
+
+    }
+
+    public static synchronized void removeCommunityFromAnnonList(Collection col) throws java.sql.SQLException {
+
+        Context context = new Context();
+
+        if( colMapAnon==null && commMapAnon==null) {
+
+            colMapAnon = new HashMap<Integer, Collection[]>();
+            commMapAnon = new HashMap<Integer, Community[]>();
+
+        } else {
+
+
+        }
+
+    }
+
+    public static synchronized void addCommunityToAdminList(Collection col) throws java.sql.SQLException {
+
+        Context context = new Context();
+
+        if( colMapAnon==null && commMapAnon==null) {
+
+            colMapAnon = new HashMap<Integer, Collection[]>();
+            commMapAnon = new HashMap<Integer, Community[]>();
+
+        } else {
+
+
+        }
+
+    }
+
+    public static synchronized void removeCommunityFromAdminList(Collection col) throws java.sql.SQLException {
+
+        Context context = new Context();
+
+        if( colMapAnon==null && commMapAnon==null) {
+
+            colMapAnon = new HashMap<Integer, Collection[]>();
+            commMapAnon = new HashMap<Integer, Community[]>();
+
+        } else {
+
+
+        }
+
+    }
+    
+    public static synchronized void addUserToAuthorizedColList(Collection col) throws java.sql.SQLException {
+
+        ArrayList<EPerson> epersons = getAuthirizedCollectionUsers(col);
+        log.error("admins: " + epersons.size());
+        for (EPerson eperson : epersons) {
+            log.error("eperson: " + eperson.getName());
+            if (colAuthorizedUsers.containsKey(eperson.getID())) {
+                Collection[] colsOld = colAuthorizedUsers.get(eperson.getID());
+                if (colsOld != null) {
+                    List<Collection> colsOldRaw = (List<Collection>) Arrays.asList(colsOld);
+                    if (!colsOldRaw.contains(col)) {
+                        ArrayList<Collection> colsNewRaw = new ArrayList<Collection>();
+                        colsNewRaw.add(col);
+                        for (Object colsold : colsOldRaw) {
+                            colsNewRaw.add((Collection) colsold);
+                        }
+
+                        Collection[] colsNew = new Collection[colsNewRaw.size()];
+                        colAuthorizedUsers.put(eperson.getID(), colsNewRaw.toArray(colsNew));
+                        log.error("added to map: " + colAuthorizedUsers.get(eperson.getID()).length);
+                    }
+                }
+            } else {
+                Collection[] colsNew = {col};
+                colAuthorizedUsers.put(eperson.getID(), colsNew);
+            }
+        }
+
+    }
+
+    public static synchronized void removeUserFromAuthorizedColList(Collection col) throws java.sql.SQLException {
+
+        ArrayList<EPerson> epersons = getAuthirizedCollectionUsers(col);
+
+        for (EPerson eperson : epersons) {
+            log.error("eperson: " + eperson.getName());
+            if (colAuthorizedUsers.containsKey(eperson.getID())) {
+                Collection[] colsOld = colAuthorizedUsers.get(eperson.getID());
+                if (colsOld != null) {
+                    List<Collection> colsOldRaw = (List<Collection>) Arrays.asList(colsOld);
+                    if (colsOldRaw.contains(col)) {
+
+                        colsOldRaw.remove(col);
+                        Collection[] colsNew = new Collection[colsOldRaw.size()];
+                        colAuthorizedUsers.put(eperson.getID(), colsOldRaw.toArray(colsNew));
+                        log.error("added to map: " + colAuthorizedUsers.get(eperson.getID()).length);
+                    }
+                }
+            }
+        }
+
+    }
+
+    public static synchronized void addUserToAuthorizedComList(Collection col) throws java.sql.SQLException {
+
+        Context context = new Context();
+
+        if( colMapAnon==null && commMapAnon==null) {
+
+            colMapAnon = new HashMap<Integer, Collection[]>();
+            commMapAnon = new HashMap<Integer, Community[]>();
+
+        } else {
+
+
+        }
+
+    }
+
+    public static synchronized void removeUserFromAuthorizedComList(Collection col) throws java.sql.SQLException {
+
+        Context context = new Context();
+
+        if( colMapAnon==null && commMapAnon==null) {
+
+            colMapAnon = new HashMap<Integer, Collection[]>();
+            commMapAnon = new HashMap<Integer, Community[]>();
+
+        } else {
+
+
+        }
+
+    }
+
+
+
+
     private static void buildCollection(Community c, Context context) throws SQLException {
         Integer comID = c.getID();
 
@@ -174,32 +431,9 @@ public class ListUserCommunities {
                 }
 
                 if (!availableCol.contains(colls[i])) {
-                    log.error("or here at admins " + colls[i].getName());
-                    ArrayList<EPerson> epersons = getAuthirizedCollectionUsers(colls[i]);
-                    log.error("admins: " + epersons.size());
-                    for (EPerson eperson : epersons) {
-                        log.error("eperson: " + eperson.getName());
-                        if (colAuthorizedUsers.containsKey(eperson.getID())) {
-                            Collection[] colsOld = colAuthorizedUsers.get(eperson.getID());
-                            if (colsOld != null) {
-                                List<Collection> colsOldRaw = (List<Collection>) Arrays.asList(colsOld);
-                                if (!colsOldRaw.contains(colls[i])) {
-                                    ArrayList<Collection> colsNewRaw = new ArrayList<Collection>();
-                                    colsNewRaw.add(colls[i]);
-                                    for (Object colsold : colsOldRaw) {
-                                        colsNewRaw.add((Collection) colsold);
-                                    }
 
-                                    Collection[] colsNew = new Collection[colsNewRaw.size()];
-                                    colAuthorizedUsers.put(eperson.getID(), colsNewRaw.toArray(colsNew));
-                                    log.error("added to map: " + colAuthorizedUsers.get(eperson.getID()).length);
-                                }
-                            }
-                        } else {
-                            Collection[] colsNew = {colls[i]};
-                            colAuthorizedUsers.put(eperson.getID(), colsNew);
-                        }
-                    }
+                    addUserToAuthorizedColList(colls[i]);
+
 
                     if(colls[i].isPrivate()) {
                         privateCollections.add(colls[i]);
@@ -324,6 +558,84 @@ public class ListUserCommunities {
         return epersons;
     }
 
+    private static void addChildrenComm( Community com ) throws java.sql.SQLException {
 
+        Collection[] colls = com.getCollections();
+        if (colls.length > 0) {
+            colMapAnon.put(com.getID(), colls);
+        }
+        Community[] comms = com.getSubcommunities();
+        if (comms.length > 0) {
+            commMapAnon.put(com.getID(), comms);
+            for(Community subcomm:comms) {
+                addChildrenComm(  subcomm);
+            }
+        }
+    }
+
+    private static void addCollection(Collection col ) throws java.sql.SQLException {
+
+        Community[] parentComms =  col.getCommunities();
+        for (Community parentComm:parentComms) {
+            //need to check that it is "primary" parent collection
+            Collection[] colsAll = parentComm.getCollections();
+            List<Collection> colsAllRaw =  Arrays.asList(colsAll);
+            if (colsAllRaw.contains(col)) {
+                if (colMapAnon.containsKey(parentComm.getID()) && colMapAnon.get(parentComm.getID()) != null) {
+                    Collection[] colsOld = colMapAnon.get(parentComm.getID());
+
+                    List<Collection> colsOldRaw =  Arrays.asList(colsOld);
+                    if (!colsOldRaw.contains(col)) {
+                        ArrayList<Collection> colsNewRaw = new ArrayList<Collection>();
+                        colsNewRaw.add(col);
+                        for (Object colsold : colsOldRaw) {
+                            colsNewRaw.add((Collection) colsold);
+                        }
+
+                        Collection[] colsNew = new Collection[colsNewRaw.size()];
+                        colMapAnon.put(parentComm.getID(), colsNewRaw.toArray(colsNew));
+                    }
+
+                } else {
+                    Collection[] colsNew = {col};
+                    colMapAnon.put(parentComm.getID(), colsNew);
+                }
+
+                Community nextParentComm = parentComm.getParentCommunity();
+                if (nextParentComm != null) {
+                    addParentComm( parentComm);
+                }
+            }
+        }
+
+    }
+
+    private static void addParentComm( Community com ) throws java.sql.SQLException {
+        Community parentComm = (Community) com.getParentCommunity();
+        if(parentComm!=null) {
+            if ( commMapAnon.containsKey(parentComm.getID()) && commMapAnon.get(parentComm.getID())!=null) {
+                Community[] commOld = commMapAnon.get(parentComm.getID());
+                List<Community> commOldRaw =  Arrays.asList(commOld);
+                if (!commOldRaw.contains(com)) {
+                    ArrayList<Community> commNewRaw = new ArrayList<Community>();
+                    commNewRaw.add(com);
+                    for (Object commold : commOldRaw) {
+                        commNewRaw.add((Community) commold);
+                    }
+
+                    Community[] commNew = new Community[commNewRaw.size()];
+                    commMapAnon.put(parentComm.getID(), commNewRaw.toArray(commNew));
+                }
+            } else {
+                Community[] commNew = {com};
+                commMapAnon.put(parentComm.getID(), commNew);
+            }
+
+            Community nextParentComm = parentComm.getParentCommunity();
+            if (nextParentComm != null) {
+                addParentComm(nextParentComm);
+            }
+        }
+    }
 }
 

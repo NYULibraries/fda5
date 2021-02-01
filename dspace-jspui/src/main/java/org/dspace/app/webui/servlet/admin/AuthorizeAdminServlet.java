@@ -9,10 +9,7 @@ package org.dspace.app.webui.servlet.admin;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +35,7 @@ import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
 import org.dspace.eperson.Group;
 import org.dspace.handle.HandleManager;
+import org.dspace.app.util.ListUserCommunities;
 
 /**
  * Servlet for editing permissions
@@ -297,6 +295,19 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             EPerson[] epeople = EPerson.findAll(c, EPerson.EMAIL);
             //Added by Kate
             Boolean canMakePrivate = AuthorizeUtil.canAddDSOREADPolicy(c,collection);
+            //check that collection was made private and it was remove it from available list and add to private collection list
+            Community com =(Community) collection.getParentObject();
+            if(collection.isPrivate()) {
+                if(ListUserCommunities.privateCollections==null || !ListUserCommunities.privateCollections.contains(com.getID())) {
+                  ListUserCommunities.ListAnonUserCommunities();
+
+                }
+            } else {
+                if(ListUserCommunities.privateCollections.contains(com.getID())) {
+                    ListUserCommunities.ListAnonUserCommunities();
+
+                }
+            }
 
             // return to collection permission page
             request.setAttribute("edit_title", "Collection "
@@ -353,6 +364,19 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             request.setAttribute("policies", policies);
             //Added by Kate
             request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,collection) );
+            //check that collection was made private and it was remove it from available list and add to private collection list
+            Community com =(Community) collection.getParentObject();
+            if(collection.isPrivate()) {
+                if(ListUserCommunities.privateCollections==null || !ListUserCommunities.privateCollections.contains(com.getID())) {
+                    ListUserCommunities.ListAnonUserCommunities();
+
+                }
+            } else {
+                if(ListUserCommunities.privateCollections.contains(com.getID())) {
+                    ListUserCommunities.ListAnonUserCommunities();
+
+                }
+            }
 
             JSPManager.showJSP(request, response,
                     "/dspace-admin/authorize-collection-edit.jsp");
