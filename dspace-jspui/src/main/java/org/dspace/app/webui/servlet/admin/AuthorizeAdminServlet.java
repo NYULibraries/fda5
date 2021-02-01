@@ -9,7 +9,10 @@ package org.dspace.app.webui.servlet.admin;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateUtils;
 
 import org.dspace.app.util.AuthorizeUtil;
+import org.dspace.app.util.ListUserCommunities;
 import org.dspace.app.webui.servlet.DSpaceServlet;
 import org.dspace.app.webui.util.JSPManager;
 import org.dspace.app.webui.util.UIUtil;
@@ -35,7 +39,6 @@ import org.dspace.core.Context;
 import org.dspace.eperson.EPerson;
 import org.dspace.eperson.Group;
 import org.dspace.handle.HandleManager;
-import org.dspace.app.util.ListUserCommunities;
 
 /**
  * Servlet for editing permissions
@@ -295,20 +298,9 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             EPerson[] epeople = EPerson.findAll(c, EPerson.EMAIL);
             //Added by Kate
             Boolean canMakePrivate = AuthorizeUtil.canAddDSOREADPolicy(c,collection);
-            //check that collection was made private and it was remove it from available list and add to private collection list
-            Community com =(Community) collection.getParentObject();
-            if(collection.isPrivate()) {
-                if(ListUserCommunities.privateCollections==null || !ListUserCommunities.privateCollections.contains(com.getID())) {
-                  ListUserCommunities.ListAnonUserCommunities();
-
-                }
-            } else {
-                if(ListUserCommunities.privateCollections.contains(com.getID())) {
-                    ListUserCommunities.ListAnonUserCommunities();
-
-                }
-            }
-
+            //check that collection was made private and it was remove it
+            //added by Kate
+            ListUserCommunities.checkCollection(collection);
             // return to collection permission page
             request.setAttribute("edit_title", "Collection "
                     + collection.getID());
@@ -319,7 +311,7 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             request.setAttribute("id", "" + collection.getID());
             request.setAttribute("newpolicy", "true");
             //Added by Kate
-            request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,collection) );
+            request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,collection));
 
             JSPManager.showJSP(request, response,
                     "/dspace-admin/authorize-policy-edit.jsp");
@@ -364,19 +356,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             request.setAttribute("policies", policies);
             //Added by Kate
             request.setAttribute("canMakePrivate", AuthorizeUtil.canAddDSOREADPolicy(c,collection) );
-            //check that collection was made private and it was remove it from available list and add to private collection list
-            Community com =(Community) collection.getParentObject();
-            if(collection.isPrivate()) {
-                if(ListUserCommunities.privateCollections==null || !ListUserCommunities.privateCollections.contains(com.getID())) {
-                    ListUserCommunities.ListAnonUserCommunities();
-
-                }
-            } else {
-                if(ListUserCommunities.privateCollections.contains(com.getID())) {
-                    ListUserCommunities.ListAnonUserCommunities();
-
-                }
-            }
+            //added by Kate
+            ListUserCommunities.checkCollection(collection);
 
             JSPManager.showJSP(request, response,
                     "/dspace-admin/authorize-collection-edit.jsp");
@@ -431,6 +412,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
             {
                 policy = ResourcePolicy.find(c, policyId);
             }
+            //aded by Kate to update collection/community hash if me make collection private
+            ListUserCommunities.checkCollection(collection);
 
             Group[] groups = Group.findAll(c, Group.NAME);
             EPerson[] epeople = EPerson.findAll(c, EPerson.EMAIL);
@@ -501,7 +484,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
 
             Group[] groups = Group.findAll(c, Group.NAME);
             EPerson[] epeople = EPerson.findAll(c, EPerson.EMAIL);
-
+            //added by Kate
+            ListUserCommunities.checkCollection(collection);
             // return to collection permission page
             request.setAttribute("edit_title", "Collection "
                     + collection.getID());
@@ -605,7 +589,8 @@ public class AuthorizeAdminServlet extends DSpaceServlet
                         AuthorizeManager.addPolicies(c, rps, bs);
                     }
                 }
-
+                //added by Kate
+                ListUserCommunities.checkCollection(collection);
                 // set up page attributes
                 request.setAttribute("collection", collection);
                 request.setAttribute("policies", AuthorizeManager.getPolicies(
@@ -645,7 +630,10 @@ public class AuthorizeAdminServlet extends DSpaceServlet
                 request.setAttribute("policies", AuthorizeManager.getPolicies(
                         c, community));
                 //Added by Kate
+
                 canMakePrivate = AuthorizeUtil.canAddDSOREADPolicy(c,community);
+                //added by Kate
+                ListUserCommunities.checkCollection(collection);
                 displayPage = "/dspace-admin/authorize-community-edit.jsp";
             }
             else if (itemId != -1)

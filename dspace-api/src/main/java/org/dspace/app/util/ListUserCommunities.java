@@ -883,5 +883,17 @@ public class ListUserCommunities {
         }
     }
 
+    public static void checkCollection(Collection collection) throws java.sql.SQLException {
+        if(collection.isPrivate()) {
+            if(privateCollections==null || !privateCollections.contains(collection)) {
+                addCollectionToPrivateList(collection);
+            }
+        } else {
+            if(privateCollections.contains(collection)) {
+                removeCollectionFromPrivateList(collection);
+            }
+        }
+    }
+
 }
 
