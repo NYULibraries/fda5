@@ -148,7 +148,7 @@ public class ListUserCommunities {
         if( privateCollections!=null && privateCollections.contains(col)) {
 
             privateCollections.remove(col);
-            removeUserFromAuthorizedColList(col);
+            removeUsersFromAuthorizedColList(col);
 
         }
     }
@@ -317,20 +317,103 @@ public class ListUserCommunities {
         if(dso.getType()== Constants.COMMUNITY) {
             if(commAuthorizedUsers==null) {
                 commAuthorizedUsers = new HashMap<Integer, Community[]>();
-                Community[] comms = {(Community) dso};
-                commAuthorizedUsers.put(epersonID, comms );
-            } else {
-                if(commAuthorizedUsers.containsKey(epersonID)) {
-
+            }
+            Community com = (Community) dso;
+            if(commAuthorizedUsers.containsKey(epersonID)) {
+                Community[] commsOld = commAuthorizedUsers.get(epersonID);
+                if (commsOld != null) {
+                    List<Community> commsOldRaw = (List<Community>) Arrays.asList(commsOld);
+                    if (!commsOldRaw.contains(com)) {
+                        commsOldRaw.add(com);
+                        Community[] commsNew = new Community[commsOldRaw.size()];
+                        commAuthorizedUsers.put(epersonID, commsOldRaw.toArray(commsNew));
+                        log.error("added to map: " + colAuthorizedUsers.get(eperson.getID()).length);
+                    }
                 }
+
+            } else {
+                    Community[] comms = {com};
+                    commAuthorizedUsers.put(epersonID, comms );
+            }
+
+        }
+
+        if(dso.getType()== Constants.COLLECTION) {
+            if(colAuthorizedUsers==null) {
+                colAuthorizedUsers = new HashMap<Integer, Collection[]>();
+            }
+            Collection col = (Collection) dso;
+            if(colAuthorizedUsers.containsKey(epersonID)) {
+                Collection[] colsOld = colAuthorizedUsers.get(epersonID);
+                if (colsOld != null) {
+                    List<Collection> colsOldRaw = (List<Collection>) Arrays.asList(colsOld);
+                    if (!colsOldRaw.contains(col)) {
+                        colsOldRaw.add(col);
+                        Collection[] colsNew = new Collection[colsOldRaw.size()];
+                        colAuthorizedUsers.put(epersonID, colsOldRaw.toArray(colsNew));
+                        log.error("added to map: " + colAuthorizedUsers.get(eperson.getID()).length);
+                    }
+                }
+
+            } else {
+                Collection[] cols = {col};
+                colAuthorizedUsers.put(epersonID, cols );
             }
 
         }
 
     }
 
-    public static synchronized void removeAuthorizedUser(Boolean comm) {
+    public static synchronized void removeAuthorizedUser(DSpaceObject dso, EPerson eperson) {
+        int epersonID = eperson.getID();
+        if(dso.getType()== Constants.COMMUNITY) {
+            if(commAuthorizedUsers!=null) {
+                Community com = (Community) dso;
 
+                if (commAuthorizedUsers.containsKey(epersonID)) {
+                    Community[] commsOld = commAuthorizedUsers.get(epersonID);
+                    if (commsOld != null) {
+                        List<Community> commsOldRaw = (List<Community>) Arrays.asList(commsOld);
+                        if (commsOldRaw.contains(com)) {
+                            commsOldRaw.remove(com);
+                            if (commsOldRaw.size() > 0) {
+                                Community[] commsNew = new Community[commsOldRaw.size()];
+                                commAuthorizedUsers.put(epersonID, commsOldRaw.toArray(commsNew));
+                            } else {
+                                commAuthorizedUsers.remove(epersonID);
+                            }
+
+                        }
+                    }
+
+                }
+            }
+
+        }
+
+        if(dso.getType()== Constants.COLLECTION) {
+            if (colAuthorizedUsers != null) {
+                Collection col = (Collection) dso;
+
+                if (colAuthorizedUsers.containsKey(epersonID)) {
+                    Collection[] colsOld = colAuthorizedUsers.get(epersonID);
+                    if (colsOld != null) {
+                        List<Collection> colsOldRaw = (List<Collection>) Arrays.asList(colsOld);
+                        if (colsOldRaw.contains(col)) {
+                            colsOldRaw.remove(col);
+                            if (colsOldRaw.size() > 0) {
+                                Collection[] colsNew = new Collection[colsOldRaw.size()];
+                                colAuthorizedUsers.put(epersonID, colsOldRaw.toArray(colsNew));
+                            } else {
+                                colAuthorizedUsers.remove(epersonID);
+                            }
+
+                        }
+                    }
+
+                }
+            }
+        }
     }
 
     public static synchronized void addUsersToAuthorizedComList(Community com) throws java.sql.SQLException {
@@ -437,7 +520,7 @@ public class ListUserCommunities {
 
                 if (!availableCol.contains(colls[i])) {
 
-                    addUserToAuthorizedColList(colls[i]);
+                    addUsersToAuthorizedColList(colls[i]);
 
 
                     if(colls[i].isPrivate()) {
