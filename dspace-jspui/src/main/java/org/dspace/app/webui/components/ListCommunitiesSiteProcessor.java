@@ -18,12 +18,11 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Logger;
 import org.dspace.app.util.ListUserCommunities;
 import org.dspace.authorize.AuthorizeManager;
-import org.dspace.authorize.ResourcePolicy;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.core.Context;
-import org.dspace.eperson.Group;
 import org.dspace.eperson. EPerson;
+import org.dspace.frontlist.ListCommunities;
 import org.dspace.plugin.PluginException;
 import org.dspace.plugin.SiteHomeProcessor;
 

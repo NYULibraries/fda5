@@ -80,8 +80,7 @@
 <%!
 	void showCommunity(Community c, JspWriter out, HttpServletRequest request,  Map collectionMap, Map subcommunityMap, ArrayList nyuOnly) throws ItemCountException, IOException, SQLException
 	{
-        if (subcommunityMap.containsKey(c.getID()) || collectionMap.containsKey(c.getID()) )
-        {
+
         // Get the sub-communities in this community
         Community[] comms = (Community[]) subcommunityMap.get(c.getID());
 
@@ -125,7 +124,7 @@
 			}
 			out.println( "</ul>" );
 		out.println("</li>");
-		}
+
 	}
 %>
 
@@ -185,7 +184,7 @@
   	}
 %>
 <%
-	if (cols.length != 0)
+	if (cols!= null && cols.length != 0)
 	{ %>
 		<h2 class="section-title">Collections</h2>
   		<ul class="tree-collections-list">

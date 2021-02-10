@@ -1,4 +1,4 @@
-package org.dspace.app.webui.components;
+package org.dspace.frontlist;
 
 /**
  * The contents of this file are subject to the license and copyright
