@@ -100,14 +100,6 @@ public class FrontListEventConsumer implements Consumer {
                                                     }
                                             }
                                             if (event.getObjectType() == Constants.COMMUNITY) {
-                                                    /*if (et == Event.ADD) {
-                                                            if (event.getObject(ctx) != null) {
-                                                                    Community o = (Community) event.getObject(ctx);
-                                                                    log.warn(" processing adding community");
-                                                                    processAddCommunity(o);
-
-                                                            }
-                                                    }*/
 
                                                     if (et == Event.REMOVE) {
                                                             log.warn(" processing removing community");
@@ -140,12 +132,6 @@ public class FrontListEventConsumer implements Consumer {
                                 processModifyGroup(ctx, (EPerson) event.getObject(ctx), (Group) event.getSubject(ctx), et);
                         }
                 }
-
-                if(st==Constants.SITE ) {
-                       log.warn("event: "+event.getEventTypeAsString());
-                }
-
-
 
 
         }

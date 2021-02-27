@@ -385,10 +385,8 @@ public class ListUserCommunities {
 
     public static synchronized void addCommunityToAdminList(Community com) throws java.sql.SQLException {
 
-        if( commMapAdmin!=null ) {
             addParentComm(com, true);
             addChildrenComm(com, true);
-        }
         log.warn(" updated community "+ commMapAdmin.get(com.getParentCommunity().getID()).length);
 
     }
@@ -812,29 +810,41 @@ public class ListUserCommunities {
     }
 
     private static void addChildrenComm( Community com, Boolean admin ) throws java.sql.SQLException {
-
+        int comID = com.getID();
         Collection[] colls = com.getCollections();
         if (colls.length > 0) {
             if(admin) {
-                colMapAdmin.put(com.getID(), colls);
+                colMapAdmin.put(comID, colls);
             } else {
-                colMapAnon.put(com.getID(), colls);
+                colMapAnon.put(comID, colls);
             }
         }
         Community[] comms = com.getSubcommunities();
-
             if(admin) {
-                commMapAdmin.put(com.getID(), comms);
+                if(commMapAdmin == null) {
+                    commMapAdmin.put(comID, comms);
+                } else {
+                    if(!commMapAdmin.containsKey(comID)) {
+                        commMapAdmin.put(comID, comms);
+                    }
+                }
             } else {
-                if (comms.length > 0) {
-                    commMapAnon.put(com.getID(), comms);
+                if (comms.length > 0 ) {
+                    if(commMapAnon == null) {
+                        commMapAnon.put(comID, comms);
+                    } else {
+                        if (!commMapAnon.containsKey(comID)) {
+                            commMapAnon.put(comID, comms);
+                        }
+                    }
                 }
             }
+
 
             for(Community subcomm:comms) {
                 addChildrenComm(  subcomm, admin);
             }
-    }
+        }
 
     private static void addCollection(Collection col, Boolean admin ) throws java.sql.SQLException {
 
@@ -984,8 +994,8 @@ public class ListUserCommunities {
                         commsOldRaw.add(com);
                         log.warn(" new size "+commsOldRaw.size());
                         Community[] commNew = new Community[commsOldRaw.size()];
-                        commMapAnon.put(parentComm.getID(), commsOldRaw.toArray(commNew));
-                        log.warn(" new size "+commMapAnon.get(parentComm.getID())[0].getName());
+                        commMapAdmin.put(parentComm.getID(), commsOldRaw.toArray(commNew));
+                        log.warn(" new size "+commMapAdmin.get(parentComm.getID())[0].getName());
                     }
                 } else {
                     Community[] commNew = {com};
@@ -1025,7 +1035,7 @@ public class ListUserCommunities {
                         commsOldRaw.remove(com);
                         commsOldRaw.add(com);
                         Community[] commNew = new Community[commsOldRaw.size()];
-                        commMapAnon.put(parentComm.getID(), commsOldRaw.toArray(commNew));
+                        commMapAdmin.put(parentComm.getID(), commsOldRaw.toArray(commNew));
                     }
                 } else {
                     Community[] commNew = {com};
