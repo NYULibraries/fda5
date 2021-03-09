@@ -411,7 +411,7 @@ public class CitationDocument {
     }
 
     public int drawStringWordWrap(PDPage page, PDPageContentStream contentStream, String text,
-                                    int startX, int startY, PDFont pdfFont, float fontSize) throws IOException {
+                                  int startX, int startY, PDFont pdfFont, float fontSize) throws IOException {
         float leading = 1.5f * fontSize;
 
         PDRectangle mediabox = page.findMediaBox();

@@ -274,6 +274,7 @@ public class AuthorizeManager
     {
 
 
+
         // return FALSE if there is no DSpaceObject
         if (o == null)
         {

@@ -990,12 +990,9 @@ public class ListUserCommunities {
                     Community[] commsOld = commMapAdmin.get(parentComm.getID());
                     LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
                     if (!commsOldRaw.contains(com)) {
-                        log.warn(" old size "+commsOldRaw.size());
                         commsOldRaw.add(com);
-                        log.warn(" new size "+commsOldRaw.size());
                         Community[] commNew = new Community[commsOldRaw.size()];
                         commMapAdmin.put(parentComm.getID(), commsOldRaw.toArray(commNew));
-                        log.warn(" new size "+commMapAdmin.get(parentComm.getID())[0].getName());
                     }
                 } else {
                     Community[] commNew = {com};

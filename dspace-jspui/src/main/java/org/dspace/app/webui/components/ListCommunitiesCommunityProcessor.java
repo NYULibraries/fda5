@@ -70,6 +70,7 @@ public class ListCommunitiesCommunityProcessor implements CommunityHomeProcessor
             // Get the top communities to shows in the community list
             request.setAttribute("collections.map", ListUserCommunities.colMapAnon);
             request.setAttribute("subcommunities.map", ListUserCommunities.commMapAnon);
+            log.warn(" the empty user");
 
         } else {
             // Get the top communities to shows in the community list

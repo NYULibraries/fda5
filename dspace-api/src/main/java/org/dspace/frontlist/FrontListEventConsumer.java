@@ -109,11 +109,11 @@ public class FrontListEventConsumer implements Consumer {
                                             }
                                     } else {
                                             if (et == Event.MODIFY_METADATA) {
-                                                    log.warn(" processing adding top community");
+                                                    log.warn(" processing adding/updating  community");
                                                     processUpdateCommunity(s);
                                             }
                                             if (et == Event.CREATE) {
-                                                    log.warn(" processing adding top community");
+                                                    log.warn(" processing adding community");
                                                     processAddCommunity(s);
                                             }
 

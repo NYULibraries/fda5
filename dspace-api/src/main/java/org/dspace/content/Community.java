@@ -1197,19 +1197,22 @@ public class Community extends DSpaceObject
      */
     public void delete() throws SQLException, AuthorizeException, IOException
     {
+
         // Check for a parent Community
         Community parent = getParentCommunity();
 
-        // Check authorisation.
+        // Check authorisation. - modified by Kate
+        // MUST be object Admin or
         // MUST have either REMOVE permissions on parent community (if exists)
         // OR have DELETE permissions on current community
-        if (parent!= null && !AuthorizeManager.authorizeActionBoolean(ourContext,
-                parent, Constants.REMOVE))
-        {
-            // If we don't have Parent Community REMOVE permissions, then
-            // we MUST at least have current Community DELETE permissions
-            AuthorizeManager
-                    .authorizeAction(ourContext, this, Constants.DELETE);
+        if(!AuthorizeManager.isAdmin(ourContext,this) ) {
+            if (parent != null && !AuthorizeManager.authorizeActionBoolean(ourContext,
+                    parent, Constants.REMOVE)) {
+                // If we don't have Parent Community REMOVE permissions, then
+                // we MUST at least have current Community DELETE permissions
+                AuthorizeManager
+                        .authorizeAction(ourContext, this, Constants.DELETE);
+            }
         }
 
         // Check if this is a top-level Community or not
