@@ -852,41 +852,47 @@ public class ListUserCommunities {
         if(parentComms!=null) {
             log.warn(" get collection " + parentComms.length);
             for (Community parentComm : parentComms) {
-                int parentCommID = parentComm.getID();
-                if (admin) {
-                    if (colMapAdmin.containsKey(parentCommID) && colMapAdmin.get(parentCommID) != null) {
-                        Collection[] colsOld = colMapAdmin.get(parentCommID);
+                Collection[] colsChildren = parentComm.getCollections();
+                if(colsChildren != null) {
+                    LinkedList<Collection> colsChildrenRaw = new LinkedList(Arrays.asList(colsChildren));
+                    if(colsChildrenRaw.contains(col)) {
+                        int parentCommID = parentComm.getID();
+                        if (admin) {
+                            if (colMapAdmin.containsKey(parentCommID) && colMapAdmin.get(parentCommID) != null) {
+                                Collection[] colsOld = colMapAdmin.get(parentCommID);
 
-                        LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
-                        if (!colsOldRaw.contains(col)) {
-                            colsOldRaw.add(col);
-                            Collection[] colsNew = new Collection[colsOldRaw.size()];
-                            colMapAdmin.put(parentCommID, colsOldRaw.toArray(colsNew));
+                                LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
+                                if (!colsOldRaw.contains(col)) {
+                                    colsOldRaw.add(col);
+                                    Collection[] colsNew = new Collection[colsOldRaw.size()];
+                                    colMapAdmin.put(parentCommID, colsOldRaw.toArray(colsNew));
+                                }
+
+                            } else {
+                                Collection[] colsNew = {col};
+                                colMapAdmin.put(parentComm.getID(), colsNew);
+                            }
+                        } else {
+                            if (colMapAnon.containsKey(parentCommID) && colMapAnon.get(parentCommID) != null) {
+                                Collection[] colsOld = colMapAnon.get(parentCommID);
+
+                                LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
+                                if (!colsOldRaw.contains(col)) {
+                                    colsOldRaw.add(col);
+                                    Collection[] colsNew = new Collection[colsOldRaw.size()];
+                                    colMapAnon.put(parentCommID, colsOldRaw.toArray(colsNew));
+                                }
+
+                            } else {
+                                Collection[] colsNew = {col};
+                                colMapAnon.put(parentCommID, colsNew);
+                            }
                         }
-
-                    } else {
-                        Collection[] colsNew = {col};
-                        colMapAdmin.put(parentComm.getID(), colsNew);
-                    }
-                } else {
-                    if (colMapAnon.containsKey(parentCommID) && colMapAnon.get(parentCommID) != null) {
-                        Collection[] colsOld = colMapAnon.get(parentCommID);
-
-                        LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
-                        if (!colsOldRaw.contains(col)) {
-                            colsOldRaw.add(col);
-                            Collection[] colsNew = new Collection[colsOldRaw.size()];
-                            colMapAnon.put(parentCommID, colsOldRaw.toArray(colsNew));
+                        Community nextParentComm = parentComm.getParentCommunity();
+                        if (nextParentComm != null) {
+                            addParentComm(parentComm, admin);
                         }
-
-                    } else {
-                        Collection[] colsNew = {col};
-                        colMapAnon.put(parentCommID, colsNew);
                     }
-                }
-                Community nextParentComm = parentComm.getParentCommunity();
-                if (nextParentComm != null) {
-                    addParentComm(parentComm, admin);
                 }
             }
         }
@@ -1074,6 +1080,12 @@ public class ListUserCommunities {
                                 colMapAdmin.put(parentComm.getID(), colsOldRaw.toArray(colsNew));
                             } else {
                                 colMapAdmin.remove(parentComm.getID());
+                                if(!commMapAdmin.containsKey(parentComm.getID())) {
+                                    Community nextParentComm = parentComm.getParentCommunity();
+                                    if (nextParentComm != null) {
+                                        removeParentComm(parentComm, admin);
+                                    }
+                                }
                             }
                         }
 
@@ -1091,16 +1103,18 @@ public class ListUserCommunities {
                             colMapAnon.put(parentComm.getID(), colsOldRaw.toArray(colsNew));
                             } else {
                                 colMapAnon.remove(parentComm.getID());
+                                if(!commMapAnon.containsKey(parentComm.getID())) {
+                                    Community nextParentComm = parentComm.getParentCommunity();
+                                    if (nextParentComm != null) {
+                                        removeParentComm(parentComm, admin);
+                                    }
+                                }
                             }
                         }
 
                     }
                 }
 
-                Community nextParentComm = parentComm.getParentCommunity();
-                if (nextParentComm != null) {
-                    removeParentComm( parentComm, admin);
-                }
             }
         }
 
@@ -1115,13 +1129,21 @@ public class ListUserCommunities {
                         LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
 
                         for (Collection col:colsOldRaw) {
-                            if(col.getID()==collectionID)
-                            colsOldRaw.remove(col);
-                            if(colsOldRaw.size()>0) {
-                                Collection[] colsNew = new Collection[colsOldRaw.size()];
-                                colMapAdmin.put(communityID, colsOldRaw.toArray(colsNew));
-                            } else {
-                                colMapAdmin.remove(communityID);
+                            if(col.getID()==collectionID) {
+                                colsOldRaw.remove(col);
+                                if (colsOldRaw.size() > 0) {
+                                    Collection[] colsNew = new Collection[colsOldRaw.size()];
+                                    colMapAdmin.put(communityID, colsOldRaw.toArray(colsNew));
+                                } else {
+                                    colMapAdmin.remove(communityID);
+                                    if(!commMapAdmin.containsKey(communityID)) {
+                                        Community nextParentComm = comm.getParentCommunity();
+                                        if (nextParentComm != null) {
+                                            removeParentComm(comm, admin);
+                                        }
+                                    }
+
+                                }
                             }
                         }
 
@@ -1141,19 +1163,18 @@ public class ListUserCommunities {
                                     colMapAnon.put(communityID, colsOldRaw.toArray(colsNew));
                                 } else {
                                     colMapAnon.remove(communityID);
+                                    if(!commMapAnon.containsKey(communityID)) {
+                                        Community nextParentComm = comm.getParentCommunity();
+                                        if (nextParentComm != null) {
+                                            removeParentComm( comm, admin);
+                                        }
+                                    }
                                 }
                             }
                         }
 
                     }
                 }
-
-                Community nextParentComm = comm.getParentCommunity();
-                if (nextParentComm != null) {
-                    removeParentComm( comm, admin);
-                }
-
-
     }
 
     private static void removeParentComm( Community com, Boolean admin ) throws java.sql.SQLException {

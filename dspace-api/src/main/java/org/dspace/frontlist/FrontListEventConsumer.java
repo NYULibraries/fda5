@@ -14,6 +14,7 @@ import org.dspace.event.Consumer;
 import org.dspace.event.Event;
 import org.dspace.app.util.ListUserCommunities;
 import org.dspace.content.Community;
+import org.dspace.content.Item;
 import org.dspace.eperson.EPerson;
 import org.dspace.eperson.Group;
 
@@ -42,16 +43,29 @@ public class FrontListEventConsumer implements Consumer {
                 int  st= event.getSubjectType();
                 int et= event.getEventType();
 
-                if (st != Constants.COLLECTION && st!= Constants.GROUP && st!= Constants.COMMUNITY&& st!= Constants.SITE ) {
+                if (st != Constants.COLLECTION && st!= Constants.GROUP && st!= Constants.COMMUNITY
+                        && st!= Constants.SITE && st != Constants.ITEM ) {
                         log
                                 .warn("FrontListConsumer should not have been given this kind of Subject in an event, skipping: "
                                         + event.toString());
                         return;
                 }
+                if (st==Constants.ITEM && et == Event.MODIFY && event.getDetail().equals("WITHDRAW")) {
+                        Item s = (Item) event.getSubject(ctx);
+                        Collection[] cols =s.getCollections();
+                        for (Collection col:cols) {
+                                if (col.countItems() == 0){
+                                        log.warn(" processing removing item");
+                                        processRemoveItem(col);
+
+                                }
+                        }
+                }
                 if(st==Constants.COLLECTION ) {
                         Collection s = (Collection) event.getSubject(ctx);
                         if(s!=null) {
-                                if (et == Event.REMOVE) {
+                                log.warn(" processing removing item "+ event.getDetail());
+                                if (et == Event.REMOVE ) {
                                         if (s.countItems() == 0) {
                                                 log.warn(" processing removing item");
                                                 processRemoveItem(s);
@@ -93,11 +107,12 @@ public class FrontListEventConsumer implements Consumer {
                                                                     processAddCollection(s, o);
                                                             }
                                                     }
-                                                    if (et == Event.REMOVE) {
+                                                    if (et == Event.REMOVE ) {
                                                             log.warn(" processing removing collection");
                                                             processRemoveCollection(s, objectID);
 
                                                     }
+
                                             }
                                             if (event.getObjectType() == Constants.COMMUNITY) {
 
