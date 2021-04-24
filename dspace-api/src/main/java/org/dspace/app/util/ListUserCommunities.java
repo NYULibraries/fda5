@@ -434,7 +434,7 @@ public class ListUserCommunities {
 
     }
 
-    public static synchronized void addUsersToAuthorizedColList(Collection col) throws java.sql.SQLException {
+    public static  void addUsersToAuthorizedColList(Collection col) throws java.sql.SQLException {
 
         ArrayList<EPerson> epersons = getAuthirizedCollectionUsers(col);
         log.error("admins: " + epersons.size());
@@ -459,7 +459,7 @@ public class ListUserCommunities {
 
     }
 
-    public static synchronized void removeUsersFromAuthorizedColList(Collection col) throws java.sql.SQLException {
+    public static  void removeUsersFromAuthorizedColList(Collection col) throws java.sql.SQLException {
 
         ArrayList<EPerson> epersons = getAuthirizedCollectionUsers(col);
 
@@ -585,7 +585,7 @@ public class ListUserCommunities {
         }
     }
 
-    public static synchronized void addUsersToAuthorizedComList(Community com) throws java.sql.SQLException {
+    public static  void addUsersToAuthorizedComList(Community com) throws java.sql.SQLException {
         ArrayList<EPerson> epersons = getAuthirizedCommunityUsers(com);
         log.error("admins: " + epersons.size());
         for (EPerson eperson : epersons) {
@@ -610,7 +610,7 @@ public class ListUserCommunities {
 
     }
 
-    public static synchronized void removeUsersFromAuthorizedComList(Community com) throws java.sql.SQLException {
+    public static  void removeUsersFromAuthorizedComList(Community com) throws java.sql.SQLException {
 
         ArrayList<EPerson> epersons = getAuthirizedCommunityUsers(com);
 
@@ -724,6 +724,7 @@ public class ListUserCommunities {
                 } else {
                     ArrayList<EPerson> epersons = getAuthirizedCommunityUsers(comms[i]);
                     for(EPerson eperson:epersons) {
+                        log.warn("eperson:"+eperson.getName());
                         if(commAuthorizedUsers.containsKey(eperson.getID())) {
                             Community[] commsOld = commAuthorizedUsers.get(eperson.getID());
                             if(commsOld!=null) {
@@ -775,11 +776,34 @@ public class ListUserCommunities {
                 epersons.addAll(allusers);
             }
         }
+
+        Community[] parentComms = col.getCommunities();
+        for(Community  parentComm:parentComms) {
+            allusers = getAuthirizedGroup(parentComm);
+            if( allusers!=null) {
+                epersons.addAll(allusers);
+            }
+        }
+
         return epersons;
     }
 
     private static ArrayList<EPerson> getAuthirizedCommunityUsers(Community com) throws SQLException {
 
+        ArrayList<EPerson> epersons= new ArrayList<EPerson>();
+
+        epersons = getAuthirizedGroup(com);
+        Community[] parentComms = com.getAllParents();
+        for(Community  parentComm:parentComms) {
+            ArrayList<EPerson> parentEpersons = getAuthirizedGroup(parentComm);
+            if( parentEpersons!=null) {
+                epersons.addAll(parentEpersons);
+            }
+        }
+        return epersons;
+    }
+
+    private static ArrayList<EPerson> getAuthirizedGroup(Community com) throws SQLException {
         ArrayList<EPerson> epersons= new ArrayList<EPerson>();
         ArrayList<EPerson> allusers= new ArrayList<EPerson>();
 
@@ -851,6 +875,7 @@ public class ListUserCommunities {
         Community[] parentComms =  col.getCommunities();
         if(parentComms!=null) {
             log.warn(" get collection " + parentComms.length);
+
             for (Community parentComm : parentComms) {
                 Collection[] colsChildren = parentComm.getCollections();
                 if(colsChildren != null) {
@@ -961,7 +986,6 @@ public class ListUserCommunities {
                         Collection[] colsNew = new Collection[colsOldRaw.size()];
                         log.warn("collection name "+col.getName()+ " added");
                         colMapAdmin.put(parentCommID, colsOldRaw.toArray(colsNew));
-                        log.warn(" new " + colMapAdmin.get(parentCommID)[4].getName() + " no ");
                     }
 
                 }
@@ -988,7 +1012,7 @@ public class ListUserCommunities {
 
     private static void addParentComm( Community com, Boolean admin ) throws java.sql.SQLException {
         Community parentComm = (Community) com.getParentCommunity();
-        log.warn(" community "+com.getID());
+        log.warn(" community "+com.getName()+ " no");
         if(parentComm!=null) {
             log.warn(" parent community "+parentComm.getName());
             if(admin) {
@@ -1022,7 +1046,8 @@ public class ListUserCommunities {
             }
             Community nextParentComm = parentComm.getParentCommunity();
             if (nextParentComm != null) {
-                addParentComm(nextParentComm, admin);
+                log.warn(" add to community "+nextParentComm.getName());
+                addParentComm(parentComm, admin);
             }
         }
     }

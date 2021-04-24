@@ -78,6 +78,7 @@ public class ListCommunities {
         // we only include communities which has collections that the user can see
         if(userCol!= null ) {
             for (int col = 0; col < userCol.length; col++) {
+                log.warn("collection we will add"+userCol[col].getName());
                 addUserCol(userCol[col]);
             }
         }
@@ -112,7 +113,7 @@ public class ListCommunities {
     }
 
     private void addUserCol(Collection col ) throws java.sql.SQLException {
-
+        log.warn("col id"+col.getID());
         Community[] parentComms =  col.getCommunities();
         for (Community parentComm:parentComms) {
             //need to check that it is "primary" parent collection
@@ -149,7 +150,8 @@ public class ListCommunities {
     }
 
     private void addParentComm( Community com ) throws java.sql.SQLException {
-        Community parentComm = (Community) com.getParentCommunity();
+        log.warn("community add parent:"+com.getName());
+        Community parentComm = com.getParentCommunity();
         if(parentComm!=null) {
             if ( commMap.containsKey(parentComm.getID()) && commMap.get(parentComm.getID())!=null) {
                 Community[] commOld = commMap.get(parentComm.getID());
@@ -171,7 +173,7 @@ public class ListCommunities {
 
             Community nextParentComm = parentComm.getParentCommunity();
             if (nextParentComm != null) {
-                addParentComm(nextParentComm);
+                addParentComm(parentComm);
             }
         }
     }
