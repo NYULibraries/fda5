@@ -22,7 +22,13 @@
  <form-map>
     <name-map collection-handle="2451/60387" form-name="Tandon" />
  </form-map>
- <form-map>
+<form-map>
+<name-map collection-handle="/123456789/61251" form-name="Tandon-capstone" />
+</form-map>
+<form-map>
+<name-map collection-handle="123456789/61252" form-name="Tandon-capstone" />
+</form-map> 
+<form-map>
    <name-map collection-handle="2451/37860" form-name="Laefer" />
  </form-map>
  <form-map>
