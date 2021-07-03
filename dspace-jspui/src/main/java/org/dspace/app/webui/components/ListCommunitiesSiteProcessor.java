@@ -86,6 +86,7 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
                         Map colMap = new HashMap<Integer, Collection[]>();
                         Map commMap = new HashMap<Integer, Community[]>();
                         ListCommunities comList = new ListCommunities();
+                        log.warn("context:"+context.isValid());
                         comList.ListUserCommunities(context);
                         if (comList.getCollectionsMap() != null) {
                             colMap.putAll(comList.getCollectionsMap());

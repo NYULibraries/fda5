@@ -481,7 +481,7 @@ public class ListUserCommunities {
 
     }
 
-    public static synchronized void addAuthorizedUser(DSpaceObject dso, EPerson eperson) {
+    public static  void addAuthorizedUser(DSpaceObject dso, EPerson eperson) {
         int epersonID = eperson.getID();
         if(dso.getType()== Constants.COMMUNITY) {
             if(commAuthorizedUsers==null) {
@@ -533,7 +533,7 @@ public class ListUserCommunities {
 
     }
 
-    public static synchronized void removeAuthorizedUser(DSpaceObject dso, EPerson eperson) {
+    public static  void removeAuthorizedUser(DSpaceObject dso, EPerson eperson) {
         int epersonID = eperson.getID();
         if(dso.getType()== Constants.COMMUNITY) {
             if(commAuthorizedUsers!=null) {
@@ -616,7 +616,7 @@ public class ListUserCommunities {
 
         for (EPerson eperson : epersons) {
             log.error("eperson: " + eperson.getName());
-            if (colAuthorizedUsers.containsKey(eperson.getID())) {
+            if (commAuthorizedUsers.containsKey(eperson.getID())) {
                 Community[] commsOld = commAuthorizedUsers.get(eperson.getID());
                 if (commsOld != null) {
                     LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
@@ -969,7 +969,7 @@ public class ListUserCommunities {
 
     }
 
-    public static synchronized void updateCollectionMetadata( Collection col, Boolean admin ) throws java.sql.SQLException {
+    public static  void updateCollectionMetadata( Collection col, Boolean admin ) throws java.sql.SQLException {
 
         if(col.getParentObject()!=null) {
             int parentCommID = col.getParentObject().getID();
@@ -1052,7 +1052,7 @@ public class ListUserCommunities {
         }
     }
 
-    public static synchronized void updateCommunityMetadata( Community com, Boolean admin ) throws java.sql.SQLException {
+    public static  void updateCommunityMetadata( Community com, Boolean admin ) throws java.sql.SQLException {
         Community parentComm = (Community) com.getParentCommunity();
         if(parentComm!=null) {
             if (admin) {

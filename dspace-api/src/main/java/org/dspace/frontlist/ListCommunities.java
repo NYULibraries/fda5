@@ -79,12 +79,18 @@ public class ListCommunities {
         if(userCol!= null ) {
             for (int col = 0; col < userCol.length; col++) {
                 log.warn("collection we will add"+userCol[col].getName());
-                addUserCol(userCol[col]);
+                Collection coL = Collection.find(ourContext, userComm[col].getID());
+                if(coL!=null) {
+                    addUserCol(coL);
+                }
             }
         }
         if(userComm!= null ) {
             for (int com = 0; com < userComm.length; com++) {
-                addUserComm( userComm[com]);
+                Community comm = Community.find(ourContext, userComm[com].getID());
+                if(comm != null) {
+                    addUserComm(comm);
+                }
             }
         }
         log.error(" local:"+colMap);
@@ -92,9 +98,8 @@ public class ListCommunities {
     }
 
     private void addUserComm(Community com ) throws java.sql.SQLException {
-        addParentComm( com);
-        addChildrenComm( com);
-
+            addParentComm(com);
+            addChildrenComm(com);
     }
 
     private void addChildrenComm( Community com ) throws java.sql.SQLException {
@@ -151,6 +156,7 @@ public class ListCommunities {
 
     private void addParentComm( Community com ) throws java.sql.SQLException {
         log.warn("community add parent:"+com.getName());
+        log.warn("community add parent:"+com.getID());
         Community parentComm = com.getParentCommunity();
         if(parentComm!=null) {
             if ( commMap.containsKey(parentComm.getID()) && commMap.get(parentComm.getID())!=null) {
