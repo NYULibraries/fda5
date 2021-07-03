@@ -5231,6 +5231,12 @@ it, please enter the types and the actual numbers or codes below.</hint>
        <stored-value>none</stored-value>
       </pair>
    </value-pairs>
+   <value-pairs value-pairs-name="capstone_types" dc-term="type">
+      <pair>
+       <displayed-value>Capstone</displayed-value>
+       <stored-value>Capstone</stored-value>
+      </pair>
+   </value-pairs>
 </form-value-pairs>
 </input-forms>
 
