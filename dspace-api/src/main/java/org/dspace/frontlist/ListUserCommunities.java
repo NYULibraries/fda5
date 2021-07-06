@@ -336,49 +336,64 @@ public class ListUserCommunities {
         }
     }
 
-    //Returns array of private and empty collections if user has admin access to it
-    //and they needed to be added to the communities list
+    //Returns array of private and empty collection's ids for which user has admin access.
     //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCollectionUsers> colAuthorizedUsers
-    public static Collection[] getAuthorizedCollections(int epersonID,Context context) throws java.sql.SQLException{
-        ArrayList colsRaw = new ArrayList();
+    public static ArrayList getAuthorizedCollections(int epersonID) {
+        ArrayList colIDs = new ArrayList();
         Iterator iteratorAuthCollections = colAuthorizedUsers.iterator();
         while (iteratorAuthCollections.hasNext()) {
             AuthorizedCollectionUsers authCol = (AuthorizedCollectionUsers) iteratorAuthCollections.next();
             if(authCol.getEpersonID()==epersonID) {
-                Collection col = Collection.find(context, authCol.getCollectionID());
-                if(col!=null) {
-                    colsRaw.add(col);
-                }
+                    colIDs.add(authCol.getCollectionID());
             }
 
         }
-        if (colsRaw.size() > 0) {
-            Collection[] cols = new Collection[colsRaw.size()];
-            return cols;
-        }
-        return null;
+        return colIDs;
     }
-    //Returns array of private and empty subcommunities if user has admin access to it
-    //and they needed to be added to the communities list
+
+    //Returns if user has admin access to any private or empty collection.
+    //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCollectionUsers> colAuthorizedUsers
+    public static Boolean checkAuthorizedCollections(int epersonID) {
+        ArrayList colIDs = new ArrayList();
+        Iterator iteratorAuthCollections = colAuthorizedUsers.iterator();
+        while (iteratorAuthCollections.hasNext()) {
+            AuthorizedCollectionUsers authCol = (AuthorizedCollectionUsers) iteratorAuthCollections.next();
+            if(authCol.getEpersonID()==epersonID) {
+                return true;
+            }
+
+        }
+        return false;
+    }
+
+    //Returns array of private and empty subcommunities ids for which user has admin access.
     //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCommunityUsers> commAuthorizedUsers
-    public static Community[] getAuthorizedCommunities(int epersonID,Context context) throws java.sql.SQLException {
-        ArrayList comsRaw = new ArrayList();
+    public static  ArrayList getAuthorizedCommunities(int epersonID)  {
+        ArrayList comIDs = new ArrayList();
         Iterator iteratorAuthCommunities = commAuthorizedUsers.iterator();
         while (iteratorAuthCommunities.hasNext()) {
             AuthorizedCommunityUsers authComm = (AuthorizedCommunityUsers) iteratorAuthCommunities.next();
             if(authComm.getEpersonID()==epersonID) {
-                Community com = Community.find(context, authComm.getCollectionID());
-                if(com!=null) {
-                    comsRaw.add(com);
-                }
+                    comIDs.add(authComm.getCollectionID());
             }
 
         }
-        if (comsRaw.size() > 0) {
-            Community[] coms = new Community[comsRaw.size()];
-            return coms;
+        return comIDs;
+    }
+
+    //Returns array of private and empty subcommunities ids for which user has admin access.
+    //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCommunityUsers> commAuthorizedUsers
+    public static Boolean checkAuthorizedCommunities(int epersonID)  {
+        ArrayList comIDs = new ArrayList();
+        Iterator iteratorAuthCommunities = commAuthorizedUsers.iterator();
+        while (iteratorAuthCommunities.hasNext()) {
+            AuthorizedCommunityUsers authComm = (AuthorizedCommunityUsers) iteratorAuthCommunities.next();
+            if(authComm.getEpersonID()==epersonID) {
+                return true;
+            }
+
         }
-        return null;
+        return false;
     }
 
     /*private static ArrayList<EPerson> getAuthirizedCollectionUsers(Collection col) throws SQLException {

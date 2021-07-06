@@ -83,15 +83,14 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
 
                     //if a user is not a site admin, check if the user is admin of some private or empty collections or communities
                     //generate tailored list of communities which include those collections and communities
-                    Collection[] cols = ListUserCommunities.getAuthorizedCollections(userID,context);
-                    Community[] comms = ListUserCommunities.getAuthorizedCommunities(userID,context);
-
-                    if ( cols!=null || comms!=null ) {
+                    if ( ListUserCommunities.checkAuthorizedCollections(userID)
+                            || ListUserCommunities.checkAuthorizedCommunities(userID) ) {
                         Map colMap = new HashMap<Integer, Collection[]>();
                         Map commMap = new HashMap<Integer, Community[]>();
 
                         ListCommunities comList = new ListCommunities();
                         comList.BuildUserCommunitiesList(context);
+
                         if (comList.getCollectionsMap() != null) {
                             colMap.putAll(comList.getCollectionsMap());
                         }

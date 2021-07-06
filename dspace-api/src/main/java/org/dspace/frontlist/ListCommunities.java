@@ -22,23 +22,18 @@ import org.dspace.content.Collection;
 import org.dspace.core.Context;
 
 /**
- * This class generates list of all collections and communities which are not empty or where the user is administrator or submitter
- *
+ * This class makes calculations to display list of communities tailored for a specific user
+ * those calculations are used by ListCommunitiesSiteProcessor, which in turn pass those maps to jsp pages
  * @author Kate Pechekhonova
  *
  */
 public class ListCommunities {
 
-    // This will map communityIDs to arrays of collections
+    // This will map communityIDs to arrays of collections for specific user
     private HashMap<Integer, Collection[]> colMap=new HashMap<Integer, Collection[]>();
 
-    // This will map communityIDs to arrays of sub-communities
+    // This will map communityIDs to arrays of sub-communities for specific user
     private Map<Integer, Community[]> commMap=new HashMap<Integer, Community[]>();;
-
-    /**
-     * Our context
-     */
-    protected Context ourContext;
 
 
     /**
@@ -46,7 +41,7 @@ public class ListCommunities {
      */
     private static Logger log = Logger.getLogger(ListUserCommunities.class);
 
-    //used for full community list on home page and list-communities.jsp page
+    //We start with generic list to which we will add private and empty collections and comunities for which the user has admin/submitter access
     public ListCommunities() {
 
         colMap.putAll(ListUserCommunities.colMapAnon);
@@ -54,40 +49,43 @@ public class ListCommunities {
 
     }
 
+    //Returns map with all communities->subcommunities available to the user
     public Map getCommunitiesMap() {
         return commMap;
     }
 
+    //Returns map with all communities->collections available to the user
     public Map getCollectionsMap() {
         return colMap;
     }
 
 
-    //used for full community list on home page and list-communities.jsp page and is tailored for specific user
+    //Build  full community/collection list for the user and updates commMap and colMap attributes
+    // It will be displayed on home page and list-communities.jsp page for the user
    public void BuildUserCommunitiesList(Context context) throws java.sql.SQLException {
 
-        ourContext = context;
         int userID = context.getCurrentUser().getID();
         log.debug(" size of generic collection Map:"+ListUserCommunities.colMapAnon.size());
         log.debug(" size of generic community Map:"+ListUserCommunities.commMapAnon.size());
 
-        Community[] userComm = ListUserCommunities.getAuthorizedCommunities(userID,ourContext);
-        Collection[] userCol = ListUserCommunities.getAuthorizedCollections(userID,ourContext);
+        ArrayList userComm = ListUserCommunities.getAuthorizedCommunities(userID);
+        ArrayList userCol = ListUserCommunities.getAuthorizedCollections(userID);
 
-        // we only include communities which has collections that the user can see
+        // We only add communities which have collections that the user can see
         if(userCol!= null ) {
-            for (int col = 0; col < userCol.length; col++) {
-                log.debug("collection we will add "+userCol[col].getName());
-                Collection coL = Collection.find(ourContext, userCol[col].getID());
+            for (Object colID:userCol) {
+                log.debug("collection we will add "+userCol.size());
+                Collection coL = Collection.find(context,(Integer) colID);
                 if(coL!=null) {
                     addUserCol(coL);
                 }
             }
         }
+        // We only add communities which have sub-communities that the user can see
         if(userComm!= null ) {
-            for (int com = 0; com < userComm.length; com++) {
-                log.debug("community we will add "+userComm[com].getName());
-                Community comm = Community.find(ourContext, userComm[com].getID());
+            for (Object comID:userComm) {
+                log.debug("community we will add "+userComm.size());
+                Community comm = Community.find(context,(Integer) comID);
                 if(comm != null) {
                     addUserComm(comm);
                 }
@@ -97,11 +95,43 @@ public class ListCommunities {
         log.debug(" size of tailored collection Map:"+commMap.size());
     }
 
+    //if community is visible to the user we also need to see it's parents and children community/collection in the community tree
     private void addUserComm(Community com ) throws java.sql.SQLException {
             addParentComm(com);
             addChildrenComm(com);
     }
 
+    //If community is visible to the user then we also need to add it's parent community to the community tree
+    //so we can get access to it.
+    private void addParentComm( Community com ) throws java.sql.SQLException {
+        Community parentComm = com.getParentCommunity();
+        if(parentComm!=null) {
+            if ( commMap.containsKey(parentComm.getID()) && commMap.get(parentComm.getID())!=null) {
+                Community[] commOld = commMap.get(parentComm.getID());
+                List<Community> commOldRaw =  Arrays.asList(commOld);
+                if (!commOldRaw.contains(com)) {
+                    ArrayList<Community> commNewRaw = new ArrayList<Community>();
+                    commNewRaw.add(com);
+                    for (Object commold : commOldRaw) {
+                        commNewRaw.add((Community) commold);
+                    }
+
+                    Community[] commNew = new Community[commNewRaw.size()];
+                    commMap.put(parentComm.getID(), commNewRaw.toArray(commNew));
+                }
+            } else {
+                Community[] commNew = {com};
+                commMap.put(parentComm.getID(), commNew);
+            }
+
+            Community nextParentComm = parentComm.getParentCommunity();
+            if (nextParentComm != null) {
+                addParentComm(parentComm);
+            }
+        }
+    }
+
+    //if community is visible to the user then it's collections and sub-communities are also visible to the user and need to be added to the tree
     private void addChildrenComm( Community com ) throws java.sql.SQLException {
 
         Collection[] colls = com.getCollections();
@@ -117,6 +147,7 @@ public class ListCommunities {
         }
     }
 
+    //If collection is visible to the user we need to add it to the tree as well as all it's parent community
     private void addUserCol(Collection col ) throws java.sql.SQLException {
         log.debug("collection id"+col.getID());
         Community[] parentComms =  col.getCommunities();
@@ -154,33 +185,4 @@ public class ListCommunities {
 
     }
 
-    private void addParentComm( Community com ) throws java.sql.SQLException {
-        Community parentComm = com.getParentCommunity();
-        if(parentComm!=null) {
-            if ( commMap.containsKey(parentComm.getID()) && commMap.get(parentComm.getID())!=null) {
-                Community[] commOld = commMap.get(parentComm.getID());
-                List<Community> commOldRaw =  Arrays.asList(commOld);
-                if (!commOldRaw.contains(com)) {
-                    ArrayList<Community> commNewRaw = new ArrayList<Community>();
-                    commNewRaw.add(com);
-                    for (Object commold : commOldRaw) {
-                        commNewRaw.add((Community) commold);
-                    }
-
-                    Community[] commNew = new Community[commNewRaw.size()];
-                    commMap.put(parentComm.getID(), commNewRaw.toArray(commNew));
-                }
-            } else {
-                Community[] commNew = {com};
-                commMap.put(parentComm.getID(), commNew);
-            }
-
-            Community nextParentComm = parentComm.getParentCommunity();
-            if (nextParentComm != null) {
-                addParentComm(parentComm);
-            }
-        }
-    }
-
 }
-
