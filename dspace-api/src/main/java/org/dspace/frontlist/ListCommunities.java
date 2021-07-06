@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 
 import org.dspace.content.Community;
 import org.dspace.content.Collection;
 import org.dspace.core.Context;
-import org.dspace.app.util.ListUserCommunities;
 
 /**
  * This class generates list of all collections and communities which are not empty or where the user is administrator or submitter
@@ -44,7 +44,7 @@ public class ListCommunities {
     /**
      * log4j category
      */
-    private static Logger log = Logger.getLogger(org.dspace.app.util.ListUserCommunities.class);
+    private static Logger log = Logger.getLogger(ListUserCommunities.class);
 
     //used for full community list on home page and list-communities.jsp page
     public ListCommunities() {
@@ -63,23 +63,22 @@ public class ListCommunities {
     }
 
 
-    //used for full community list on home page and list-communities.jsp page for a specific loged in user
-   public void ListUserCommunities(Context context) throws java.sql.SQLException {
+    //used for full community list on home page and list-communities.jsp page and is tailored for specific user
+   public void BuildUserCommunitiesList(Context context) throws java.sql.SQLException {
 
         ourContext = context;
         int userID = context.getCurrentUser().getID();
+        log.debug(" size of generic collection Map:"+ListUserCommunities.colMapAnon.size());
+        log.debug(" size of generic community Map:"+ListUserCommunities.commMapAnon.size());
 
-
-        log.error(" global:"+ListUserCommunities.colMapAnon.size());
-
-        Community[] userComm = ListUserCommunities.commAuthorizedUsers.get(userID);
-        Collection[] userCol = ListUserCommunities.colAuthorizedUsers.get(userID);
+        Community[] userComm = ListUserCommunities.getAuthorizedCommunities(userID,ourContext);
+        Collection[] userCol = ListUserCommunities.getAuthorizedCollections(userID,ourContext);
 
         // we only include communities which has collections that the user can see
         if(userCol!= null ) {
             for (int col = 0; col < userCol.length; col++) {
-                log.warn("collection we will add"+userCol[col].getName());
-                Collection coL = Collection.find(ourContext, userComm[col].getID());
+                log.debug("collection we will add "+userCol[col].getName());
+                Collection coL = Collection.find(ourContext, userCol[col].getID());
                 if(coL!=null) {
                     addUserCol(coL);
                 }
@@ -87,14 +86,15 @@ public class ListCommunities {
         }
         if(userComm!= null ) {
             for (int com = 0; com < userComm.length; com++) {
+                log.debug("community we will add "+userComm[com].getName());
                 Community comm = Community.find(ourContext, userComm[com].getID());
                 if(comm != null) {
                     addUserComm(comm);
                 }
             }
         }
-        log.error(" local:"+colMap);
-
+        log.debug(" size of tailored collection Map:"+colMap.size());
+        log.debug(" size of tailored collection Map:"+commMap.size());
     }
 
     private void addUserComm(Community com ) throws java.sql.SQLException {
@@ -118,7 +118,7 @@ public class ListCommunities {
     }
 
     private void addUserCol(Collection col ) throws java.sql.SQLException {
-        log.warn("col id"+col.getID());
+        log.debug("collection id"+col.getID());
         Community[] parentComms =  col.getCommunities();
         for (Community parentComm:parentComms) {
             //need to check that it is "primary" parent collection
@@ -155,8 +155,6 @@ public class ListCommunities {
     }
 
     private void addParentComm( Community com ) throws java.sql.SQLException {
-        log.warn("community add parent:"+com.getName());
-        log.warn("community add parent:"+com.getID());
         Community parentComm = com.getParentCommunity();
         if(parentComm!=null) {
             if ( commMap.containsKey(parentComm.getID()) && commMap.get(parentComm.getID())!=null) {
@@ -183,9 +181,6 @@ public class ListCommunities {
             }
         }
     }
-
-
-
 
 }
 

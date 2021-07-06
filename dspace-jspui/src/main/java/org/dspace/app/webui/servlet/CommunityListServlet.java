@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.dspace.app.util.ListUserCommunities;
+import org.dspace.frontlist.ListUserCommunities;
 import org.dspace.frontlist.ListCommunities;
 import org.dspace.app.webui.util.JSPManager;
 import org.dspace.authorize.AuthorizeException;
@@ -34,7 +34,7 @@ import org.dspace.eperson.EPerson;
  * 
  * @author Robert Tansley,
  *  @version $Revision$
- * modified by Kate Pechekhonova to re-use method for creating  subcommunities and collections from org.dspace.app.util.ListUserCommunities
+ * modified by Kate Pechekhonova to re-use method for creating  subcommunities and collections from org.dspace.frontlist.ListUserCommunities
  * instead of building it here
  *
  */

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
-import org.dspace.app.util.ListUserCommunities;
+import org.dspace.frontlist.ListUserCommunities;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
@@ -53,41 +53,43 @@ public class ListCommunitiesCommunityProcessor implements CommunityHomeProcessor
     public void process(Context context, HttpServletRequest request,
                         HttpServletResponse response, Community community) throws PluginException {
 
-
-        ArrayList<Collection> nyuOnly = ListUserCommunities.nyuOnly;
-
-        if (ListUserCommunities.colMapAnon == null && ListUserCommunities.commMapAnon == null) {
+        //if generic communities list was not build before for some reasons try to build it now
+        if(ListUserCommunities.colMapAnon==null && ListUserCommunities.commMapAnon==null) {
             try {
-                ListUserCommunities.ListAnonUserCommunities();
-            } catch (SQLException e) {
+                ListUserCommunities.PrebuildFrontListsCommunities();
+            } catch (Exception e) {
                 throw new PluginException(e.getMessage(), e);
             }
         }
 
+        //now start buildinhg community list tailored for the user
         EPerson user = context.getCurrentUser();
 
+        //for anonymous user just show generic list
         if (user == null) {
-            // Get the top communities to shows in the community list
             request.setAttribute("collections.map", ListUserCommunities.colMapAnon);
             request.setAttribute("subcommunities.map", ListUserCommunities.commMapAnon);
-            log.warn(" the empty user");
 
         } else {
-            // Get the top communities to shows in the community list
-
             try {
+                //for site admin user show admin list
                 if (AuthorizeManager.isAdmin(context)) {
-
-                        request.setAttribute("collections.map", ListUserCommunities.colMapAdmin);
-                        request.setAttribute("subcommunities.map", ListUserCommunities.commMapAdmin);
-
+                    request.setAttribute("collections.map", ListUserCommunities.colMapAdmin);
+                    request.setAttribute("subcommunities.map", ListUserCommunities.commMapAdmin);
                 } else {
                     int userID = user.getID();
-                    if (ListUserCommunities.commAuthorizedUsers.containsKey(userID) || ListUserCommunities.colAuthorizedUsers.containsKey(userID)) {
+
+                    //if a user is not a site admin, check if the user is admin of some private or empty collections or communities
+                    //generate tailored list of communities which include those collections and communities
+                    Collection[] cols = ListUserCommunities.getAuthorizedCollections(userID,context);
+                    Community[] comms = ListUserCommunities.getAuthorizedCommunities(userID,context);
+
+                    if ( cols!=null || comms!=null ) {
                         Map colMap = new HashMap<Integer, Collection[]>();
                         Map commMap = new HashMap<Integer, Community[]>();
+
                         ListCommunities comList = new ListCommunities();
-                        comList.ListUserCommunities(context);
+                        comList.BuildUserCommunitiesList(context);
                         if (comList.getCollectionsMap() != null) {
                             colMap.putAll(comList.getCollectionsMap());
                         }
@@ -96,6 +98,7 @@ public class ListCommunitiesCommunityProcessor implements CommunityHomeProcessor
                         }
                         request.setAttribute("collections.map",colMap);
                         request.setAttribute("subcommunities.map",commMap);
+                        //if user does not have access to empty or private collections and communities show generic list
                     } else {
                         request.setAttribute("collections.map", ListUserCommunities.colMapAnon);
                         request.setAttribute("subcommunities.map", ListUserCommunities.commMapAnon);
@@ -105,9 +108,10 @@ public class ListCommunitiesCommunityProcessor implements CommunityHomeProcessor
             } catch (SQLException e) {
                 throw new PluginException(e.getMessage(), e);
             }
-        }
 
-        request.setAttribute("nyuOnly", nyuOnly);
-        request.setAttribute("community", community);
+        }
+        //Used to add nyuOnly icon on main or community page
+        request.setAttribute("nyuOnly", ListUserCommunities.nyuOnly);
+
     }
 }

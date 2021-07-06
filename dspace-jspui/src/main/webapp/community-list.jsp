@@ -39,6 +39,7 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.concurrent.CopyOnWriteArrayList" %>
 
 <%@ taglib uri="http://www.dspace.org/dspace-tags.tld" prefix="dspace" %>
 
@@ -47,13 +48,13 @@
 
     Map collectionMap = (Map) request.getAttribute("collections.map");
     Map subcommunityMap = (Map) request.getAttribute("subcommunities.map");
-    ArrayList<Collection> nyuOnly = (ArrayList<Collection>)  request.getAttribute("nyuOnly");
+    CopyOnWriteArrayList nyuOnly = (CopyOnWriteArrayList)  request.getAttribute("nyuOnly");
     Boolean admin_b = (Boolean)request.getAttribute("admin_button");
     boolean admin_button = (admin_b == null ? false : admin_b.booleanValue());
 %>
 
 <%! //we use the same function 2 times so probably we should convert it to jsp tag but we can change something here so will leave for now
-	void showCommunity(Community c, JspWriter out, HttpServletRequest request, Map collectionMap, Map subcommunityMap, ArrayList<Collection> nyuOnly) throws ItemCountException, IOException, SQLException
+	void showCommunity(Community c, JspWriter out, HttpServletRequest request, Map collectionMap, Map subcommunityMap, CopyOnWriteArrayList nyuOnly) throws ItemCountException, IOException, SQLException
 	{
 
           if (subcommunityMap.containsKey(c.getID()) || collectionMap.containsKey(c.getID()) )
@@ -87,7 +88,7 @@
                           out.println("<li class=\"tree-collections-list\" role=\"treeitem\" >");
                           //String collName =  ( StringUtils.isNotBlank(cols[j].getMetadata("name"))  ? cols[j].getMetadata("name") : "Untitled" );
                           out.println("<span  class=\"t1 ct1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") +"</a></span>");
-                          if (nyuOnly!=null && nyuOnly.contains(cols[j]))
+                          if (nyuOnly!=null && nyuOnly.contains(cols[j].getID()))
                           {
                             out.println("<span class=\"nyu-only-svg\"><svg version=\"1.1\"  xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 100.69 13.76\" style=\"enable-background:new 0 0 100.69 13.76;\" xml:space=\"preserve\">");
         		              out.println("<style type=\"text/css\"> path{fill:#57068C;} </style>");

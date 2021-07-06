@@ -1097,17 +1097,15 @@ public class Community extends DSpaceObject
 
             // Remove the parent/child mapping with this collection
             // We do this before deletion, so that the deletion doesn't throw database integrity violations
-            //DatabaseManager.updateQuery(ourContext,
-            //      "DELETE FROM community2collection WHERE community_id= ? "+
-            //    "AND collection_id= ? ", getID(), c.getID());
+            DatabaseManager.updateQuery(ourContext,
+                  "DELETE FROM community2collection WHERE community_id= ? "+
+                "AND collection_id= ? ", getID(), c.getID());
 
             // As long as this Collection only had one parent, delete it
             // NOTE: if it had multiple parents, we will keep it around,
             // and just remove that single parent/child mapping
             if (numParents == 1)
             {
-                //that will not work if delegated community admin will try to delete collection.
-                //Kate moved delete relashionship community2collection to delete collection methodd
                 c.delete();
             }
         
@@ -1142,6 +1140,7 @@ public class Community extends DSpaceObject
             AuthorizeException, IOException
     {
         // Check authorisation.
+       
         AuthorizeManager.authorizeAction(ourContext, this, Constants.REMOVE);
 
         // Do the removal in a try/catch, so that we can rollback on error
@@ -1201,19 +1200,17 @@ public class Community extends DSpaceObject
         // Check for a parent Community
         Community parent = getParentCommunity();
 
-        // Check authorisation. - modified by Kate
-        // MUST be object Admin or
+        // Check authorisation.
         // MUST have either REMOVE permissions on parent community (if exists)
         // OR have DELETE permissions on current community
-        if(!AuthorizeManager.isAdmin(ourContext,this) ) {
-            if (parent != null && !AuthorizeManager.authorizeActionBoolean(ourContext,
+        if (parent != null && !AuthorizeManager.authorizeActionBoolean(ourContext,
                     parent, Constants.REMOVE)) {
                 // If we don't have Parent Community REMOVE permissions, then
                 // we MUST at least have current Community DELETE permissions
                 AuthorizeManager
                         .authorizeAction(ourContext, this, Constants.DELETE);
-            }
         }
+
 
         // Check if this is a top-level Community or not
         if (parent == null)

@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.time.DateUtils;
 
 import org.dspace.app.util.AuthorizeUtil;
-import org.dspace.app.util.ListUserCommunities;
+import org.dspace.frontlist.ListUserCommunities;
 import org.dspace.app.webui.servlet.DSpaceServlet;
 import org.dspace.app.webui.util.JSPManager;
 import org.dspace.app.webui.util.UIUtil;

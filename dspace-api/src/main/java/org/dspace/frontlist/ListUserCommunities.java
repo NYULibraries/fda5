@@ -5,11 +5,15 @@
  * <p>
  * http://www.dspace.org/license/
  */
-package org.dspace.app.util;
+package org.dspace.frontlist;
 
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentMap;
 
 import org.apache.log4j.Logger;
 
@@ -18,17 +22,20 @@ import org.dspace.content.Collection;
 import org.dspace.content.DSpaceObject;
 import org.dspace.core.Constants;
 import org.dspace.core.Context;
-import  org.dspace.eperson.EPerson;
-import  org.dspace.eperson.Group;
+import org.dspace.eperson.EPerson;
+import org.dspace.eperson.Group;
 
 /**
- * This class generates list of collections and c ommunities which will be listed on home page and on community pages
- * Anonymous users can only see - public, NYU only and school specific (Gallatin) collection which are not empty
- * Collection, community and site admins can see empty and private collections which ther administrate. Also submitters
+ * This class generates list of collections and communities which will be listed on home page and on community pages
+ * Anonymous users can only see - public, NYU only and school specific (Gallatin) collection which are not empty.
+ * Collection, community and site admins can see empty and private collections which they administrate. Also submitters
  * can see empty collections to which they can add items.
- * We make all initial calculations when jspui applications starts and then do updates when changes are made, e.g.
- * when items are added to empty collection, when new admins are added to private collections or when collection permissions
- * are modified.
+ * We make all initial calculations when jspui application starts and then do updates when changes are made:
+ * when items are added to empty collection,
+ * when all items are removed from collection,
+ * when new admins are added or removed for private collections,
+ * when collection permissions are modified,
+ * when collections and communities are added or removed
  *
  * @author Kate Pechekhonova
  *
@@ -36,35 +43,47 @@ import  org.dspace.eperson.Group;
 public class ListUserCommunities {
 
 
-    // This contains list of NYU only collections
-    public static ArrayList<Collection> nyuOnly;
+    // This contains list of NYU only collections IDs
+    public static CopyOnWriteArrayList<Integer> nyuOnly;
 
-    // This contains list of Gallatin only collectiuons
-    public static ArrayList<Collection> gallatinOnly;
+    // This contains list of Gallatin only collectiuons IDs
+    public static CopyOnWriteArrayList<Integer> gallatinOnly;
 
-    // This contains list of empty collections
-    public static ArrayList<Collection> emptyCollections;
+    // This contains list of empty collections IDs
+    public static CopyOnWriteArrayList<Integer> emptyCollections;
 
-    // This contains list of private collections
-    public static ArrayList<Collection> privateCollections;
+    // This contains list of private collections IDs
+    public static CopyOnWriteArrayList<Integer> privateCollections;
 
-    // This will map collectionIDs to arrays of collections
-    public static Map<Integer, Collection[]> colMapAnon;
+    // This will map parent communityIDs to arrays of collections for all
+    // publicly available (not private and not empty) collections
+    public static ConcurrentMap<Integer, Collection[]> colMapAnon;
 
-    // This will map communityIDs to arrays of sub-communities
-    public static Map<Integer, Community[]> commMapAnon;
+    // This will map parent communityIDs to arrays of sub-communities for all
+    // publicly available (not private and not empty) collections
+    public static ConcurrentMap<Integer, Community[]> commMapAnon;
 
-    // This will map collectionIDs to arrays of collections
-    public static Map<Integer, Collection[]> colMapAdmin;
+    // This will map all parent communityIDs to arrays of all  collections
+    public static ConcurrentMap<Integer, Collection[]> colMapAdmin;
 
-    // This will map communityIDs to arrays of sub-communities
-    public static Map<Integer, Community[]> commMapAdmin;
+    // This will map all parent communityIDs to arrays of all sub-communities
+    public static ConcurrentMap<Integer, Community[]> commMapAdmin;
 
-    // This will map collectionIDs to arrays of collections
-    public static Map<Integer, Collection[]> colAuthorizedUsers;
+    // This contains final list of triples <epersonID,groupID,collectionID> for empty and private collection admins
+    public static CopyOnWriteArrayList<AuthorizedCollectionUsers> colAuthorizedUsers;
 
-    // This will map communityIDs to arrays of sub-communities
-    public static Map<Integer, Community[]> commAuthorizedUsers;
+    // This contains final list of triples <epersonID,groupID,communityID> for empty and private community admins
+    public static CopyOnWriteArrayList<AuthorizedCommunityUsers> commAuthorizedUsers;
+
+    // This contains temporary list of triples <epersonID,groupID,collectionID> for empty and private collection admins
+    // It will be used for initial calculations as CopyOnWriteArrayList creates new copy each time "write" operation is performed
+    // so is not suitable for many inserts
+    public static ArrayList<AuthorizedCollectionUsers> colAuthorizedUsersRaw;
+
+    // This contains temporary list of triples <epersonID,groupID,communityID> for empty and private community admins
+    // It will be used for initial calculations as CopyOnWriteArrayList creates new copy each time "write" operation is performed
+    // so is not suitable for many inserts
+    public static ArrayList<AuthorizedCommunityUsers> commAuthorizedUsersRaw;
 
 
     private static final Object staticLock = new Object();
@@ -86,47 +105,360 @@ public class ListUserCommunities {
 
     }
 
-    //generates maps for anon user, for site admins and other
-    public static synchronized void ListAnonUserCommunities() throws java.sql.SQLException {
+    //generates maps for anon user, for site admins and other strucrtures which will be used to get tailored community lists for different users
+    public static synchronized void PrebuildFrontListsCommunities() throws java.sql.SQLException {
 
         Context context = new Context();
 
         if( colMapAnon==null && commMapAnon==null) {
 
-            colMapAnon = new HashMap<Integer, Collection[]>();
-            commMapAnon = new HashMap<Integer, Community[]>();
-            colMapAdmin = new HashMap<Integer, Collection[]>();
-            commMapAdmin = new HashMap<Integer, Community[]>();
-            colAuthorizedUsers = new HashMap<Integer, Collection[]>();
-            commAuthorizedUsers = new HashMap<Integer, Community[]>();
-            nyuOnly = new ArrayList<Collection>();
-            gallatinOnly = new ArrayList<Collection>();
-            privateCollections = new ArrayList<Collection>();
-            emptyCollections = new ArrayList<Collection>();
+            colMapAnon = new ConcurrentHashMap<Integer, Collection[]>();
+            commMapAnon = new ConcurrentHashMap<Integer, Community[]>();
+            colMapAdmin = new ConcurrentHashMap<Integer, Collection[]>();
+            commMapAdmin = new ConcurrentHashMap<Integer, Community[]>();
+            colAuthorizedUsersRaw = new ArrayList<AuthorizedCollectionUsers>();
+            commAuthorizedUsersRaw = new ArrayList<AuthorizedCommunityUsers>();
+            colAuthorizedUsers = new CopyOnWriteArrayList<AuthorizedCollectionUsers>();
+            commAuthorizedUsers = new CopyOnWriteArrayList<AuthorizedCommunityUsers>();
+            nyuOnly = new  CopyOnWriteArrayList<Integer>();
+            gallatinOnly = new  CopyOnWriteArrayList<Integer>();
+            privateCollections = new  CopyOnWriteArrayList<Integer>();
+            emptyCollections = new  CopyOnWriteArrayList<Integer>();
 
-
+            // Build admin and general maps of collection for each  community.
+            // In the process of building maps we will also build nyuOnly, gallatinOnly,
+            // privateCollections, emptyCollections which will allow us to make faster calculations
+            // We also will build an ArrayList of class AuthorizedCoolectionUsers
+            // The later will be used to build user specific front list for collection admins
             Community[] communities = Community.findAll(context);
 
             if(communities!=null) {
                 //user only can see non-empty, not private collections
                 for (int com = 0; com < communities.length; com++) {
-                    buildCollection(communities[com], context);
+                    buildCollections(communities[com]);
                 }
             }
 
+            //Build admin and general list of subcommunities for each community.
+            //In the process of building maps we will also build ArrayList of class AuthorizedCommunityUsers.
+            // It will be used to build user specific front list for community admins.
+            // We will be using recrussion so here we start with Top level communities
             Community[] communitiesAval = Community.findAllTop(context);
 
             if(communitiesAval!=null) {
-                // we only include communities which has collections that the user can see
                 for (int com = 0; com < communitiesAval.length; com++) {
-                    buildCommunity(communitiesAval[com], context);
+                    buildCommunity(communitiesAval[com]);
                 }
+            }
+
+            //convert ArrayLists for private and empty collections/communities admins to CopyOnWriteArrayList to make it threadsafe
+              colAuthorizedUsers = new CopyOnWriteArrayList<AuthorizedCollectionUsers>(colAuthorizedUsersRaw);
+              commAuthorizedUsers = new CopyOnWriteArrayList<AuthorizedCommunityUsers>(commAuthorizedUsersRaw);
+        }
+
+    }
+
+    /* Build admin and general maps of collection for each  community.
+     * In the process of building maps we will also build nyuOnly, gallatinOnly,
+     * privateCollections, emptyCollections which will allow us to make faster calculations
+     * We also will build an ArrayList of class AuthorizedCoolectionUsers
+     * The later will be used to build user specific front list for collection admins
+     * Takes parent community as input
+     */
+    private static void buildCollections(Community c) throws SQLException {
+
+        Integer comID = c.getID();
+        Collection[] colls = c.getCollections();
+        log.debug("collection array length: "+colls.length);
+
+        //build admin map
+        colMapAdmin.put(comID, colls);
+        log.debug("community used: "+c.getName()+" size: "+ colMapAdmin.get(comID).length);
+
+        if (colls.length > 0) {
+            ArrayList<Collection> availableCol = new ArrayList<Collection>();
+
+
+            for (int i = 0; i < colls.length; i++) {
+
+                int countItems = colls[i].countItems();
+                int colID = colls[i].getID();
+                if (colls[i].isPublic()) {
+                    if(countItems>0) {
+                        availableCol.add(colls[i]);
+                    } else {
+                        emptyCollections.add(colID);
+                    }
+                } else {
+                    if (colls[i].isNYUOnly()) {
+                        if(countItems>0) {
+                            availableCol.add(colls[i]);
+                        } else {
+                            emptyCollections.add(colID);
+                        }
+                        nyuOnly.add(colID);
+
+                    } else {
+
+                        if (colls[i].isGallatin()) {
+                            if(countItems>0) {
+                                availableCol.add(colls[i]);
+                            } else {
+                                emptyCollections.add(colID);
+                            }
+                            gallatinOnly.add(colID);
+                        }
+                    }
+                }
+
+                if (!availableCol.contains(colls[i])) {
+
+                    buildAuthorizedColList(colls[i]);
+
+                    if(colls[i].isPrivate()) {
+                        privateCollections.add(colID);
+                    }
+                    if(countItems==0) {
+                        emptyCollections.add(colID);
+                    }
+
+                }
+            }
+            //if community has publicly available collection add it to generic map
+            if (availableCol.size() > 0) {
+                Collection[] availableColArray = new Collection[availableCol.size()];
+                colMapAnon.put(comID, availableCol.toArray(availableColArray));
             }
         }
 
     }
 
-    public static synchronized void addCollectionToPrivateList(Collection col) throws java.sql.SQLException {
+    private static void buildCommunity(Community c) throws SQLException {
+        Integer comID = c.getID();
+        Community[] comms = c.getSubcommunities();
+        log.debug("community array length: "+comms.length);
+
+        commMapAdmin.put(comID, comms);
+        log.debug("community: "+c.getName()+" size: "+ commMapAdmin.get(comID).length);
+
+        if (comms.length > 0) {
+            ArrayList<Community> availableComm = new ArrayList<Community>();
+
+            for (int i = 0; i < comms.length; i++) {
+
+                buildCommunity(comms[i]);
+
+                if (colMapAnon.containsKey(comms[i].getID())
+                        || commMapAnon.containsKey(comms[i].getID())) {
+                    availableComm.add(comms[i]);
+                //if community has only private and non-empty collections or subcommunities we need to add it's admins to
+                //authorized community admins list so they can see it in the list
+                } else {
+                    buildAuthorizedCommList(comms[i]);
+                }
+            }
+            //if community has public,nyuonly,gallatinonly and non-empty collections or subcommunities we need to add them to generic list
+            if (availableComm.size() > 0) {
+                Community[] availableCommArray = new Community[availableComm.size()];
+                commMapAnon.put(comID, availableComm.toArray(availableCommArray));
+            }
+        }
+    }
+
+    //get all users who might have admin access to the collection
+    //they might be collection admins or submitters or parent community admins
+    //take collection as parameter
+    private static void buildAuthorizedColList(Collection col) throws java.sql.SQLException {
+
+        Group admins = col.getAdministrators();
+        if(admins!=null) {
+              buildAuthorizedGroupUsers(admins,col);
+        }
+
+        Group submitters = col.getSubmitters();
+        if(submitters!=null) {
+              buildAuthorizedGroupUsers(submitters,col);
+        }
+
+        Community[] parentComms = col.getCommunities();
+        for(Community  parentComm:parentComms) {
+              buildCommGroupUsers(parentComm,col);
+        }
+
+    }
+
+    //get all users who might have admin access to the community
+    //they might be collection admins or submitters or parent community admins
+    //takes community as a parameter
+    private static void buildAuthorizedCommList(Community com) throws java.sql.SQLException {
+
+        Group admins = com.getAdministrators();
+        if(admins!=null) {
+            buildAuthorizedGroupUsers(admins,com);
+        }
+    }
+
+    //get all admins for collection's parent community
+    private static void buildCommGroupUsers(Community com,Collection col) throws SQLException {
+
+        Group admins = com.getAdministrators();
+        if(admins!=null) {
+            buildAuthorizedGroupUsers(admins,col);
+        }
+    }
+
+    //add values to colAuthorizedUsersRaw and commAuthorizedUsersRaw ArrayLists which will be at the end converted to WriteOnCopyArrayLists
+    //take the group assosiated with object and either collection or community
+    private static void buildAuthorizedGroupUsers(Group g,DSpaceObject ds) {
+
+        if(ds.getType()==Constants.COLLECTION) {
+            for (EPerson eperson : g.getMembers()) {
+                colAuthorizedUsersRaw.add(new AuthorizedCollectionUsers(eperson.getID(), g.getID(), ds.getID()));
+            }
+            for (Group ag : g.getMemberGroups()) {
+                for (EPerson geperson : ag.getMembers()) {
+                    colAuthorizedUsersRaw.add(new AuthorizedCollectionUsers(geperson.getID(), g.getID(), ds.getID()));
+                }
+
+            }
+        }
+
+        if(ds.getType()==Constants.COMMUNITY) {
+            for (EPerson eperson : g.getMembers()) {
+                colAuthorizedUsersRaw.add(new AuthorizedCollectionUsers(eperson.getID(), g.getID(), ds.getID()));
+            }
+            for (Group ag : g.getMemberGroups()) {
+                for (EPerson geperson : ag.getMembers()) {
+                    commAuthorizedUsers.add(new AuthorizedCommunityUsers(geperson.getID(), g.getID(), ds.getID()));
+                }
+
+            }
+        }
+    }
+
+    //Returns array of private and empty collections if user has admin access to it
+    //and they needed to be added to the communities list
+    //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCollectionUsers> colAuthorizedUsers
+    public static Collection[] getAuthorizedCollections(int epersonID,Context context) throws java.sql.SQLException{
+        ArrayList colsRaw = new ArrayList();
+        Iterator iteratorAuthCollections = colAuthorizedUsers.iterator();
+        while (iteratorAuthCollections.hasNext()) {
+            AuthorizedCollectionUsers authCol = (AuthorizedCollectionUsers) iteratorAuthCollections.next();
+            if(authCol.getEpersonID()==epersonID) {
+                Collection col = Collection.find(context, authCol.getCollectionID());
+                if(col!=null) {
+                    colsRaw.add(col);
+                }
+            }
+
+        }
+        if (colsRaw.size() > 0) {
+            Collection[] cols = new Collection[colsRaw.size()];
+            return cols;
+        }
+        return null;
+    }
+    //Returns array of private and empty subcommunities if user has admin access to it
+    //and they needed to be added to the communities list
+    //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCommunityUsers> commAuthorizedUsers
+    public static Community[] getAuthorizedCommunities(int epersonID,Context context) throws java.sql.SQLException {
+        ArrayList comsRaw = new ArrayList();
+        Iterator iteratorAuthCommunities = commAuthorizedUsers.iterator();
+        while (iteratorAuthCommunities.hasNext()) {
+            AuthorizedCommunityUsers authComm = (AuthorizedCommunityUsers) iteratorAuthCommunities.next();
+            if(authComm.getEpersonID()==epersonID) {
+                Community com = Community.find(context, authComm.getCollectionID());
+                if(com!=null) {
+                    comsRaw.add(com);
+                }
+            }
+
+        }
+        if (comsRaw.size() > 0) {
+            Community[] coms = new Community[comsRaw.size()];
+            return coms;
+        }
+        return null;
+    }
+
+    /*private static ArrayList<EPerson> getAuthirizedCollectionUsers(Collection col) throws SQLException {
+
+        ArrayList<EPerson> epersons= new ArrayList<EPerson>();
+        ArrayList<EPerson> allusers= new ArrayList<EPerson>();
+
+        Group admins = col.getAdministrators();
+        if(admins!=null) {
+            allusers =  getAllGroupUsers(admins);
+            if(allusers!=null) {
+                epersons.addAll(allusers);
+            }
+        }
+
+        Group submitters = col.getSubmitters();
+        if(submitters!=null) {
+            allusers =  getAllGroupUsers(submitters);
+            if(allusers!=null) {
+                epersons.addAll(allusers);
+            }
+        }
+
+        Community[] parentComms = col.getCommunities();
+        for(Community  parentComm:parentComms) {
+            allusers = getAuthirizedGroup(parentComm);
+            if( allusers!=null) {
+                epersons.addAll(allusers);
+            }
+        }
+
+        return epersons;
+    }
+
+    private static ArrayList<EPerson> getAuthirizedCommunityUsers(Community com) throws SQLException {
+
+        ArrayList<EPerson> epersons= new ArrayList<EPerson>();
+
+        epersons = getAuthirizedGroup(com);
+        Community[] parentComms = com.getAllParents();
+        for(Community  parentComm:parentComms) {
+            ArrayList<EPerson> parentEpersons = getAuthirizedGroup(parentComm);
+            if( parentEpersons!=null) {
+                epersons.addAll(parentEpersons);
+            }
+        }
+        return epersons;
+    }
+
+    private static ArrayList<EPerson> getAuthirizedGroup(Community com) throws SQLException {
+        ArrayList<EPerson> epersons= new ArrayList<EPerson>();
+        ArrayList<EPerson> allusers= new ArrayList<EPerson>();
+
+        Group admins = com.getAdministrators();
+        if(admins!=null) {
+            allusers =  getAllGroupUsers(admins);
+            if(allusers!=null) {
+                epersons.addAll(allusers);
+            }
+        }
+        return epersons;
+    }
+
+    private static ArrayList<EPerson> getAllGroupUsers(Group g) {
+
+        ArrayList<EPerson> epersons= new ArrayList<EPerson>();
+
+        for(EPerson eperson:g.getMembers()) {
+            epersons.add(eperson);
+        }
+        for(Group ag:g.getMemberGroups()) {
+            for(EPerson geperson:ag.getMembers()) {
+                epersons.add(geperson);
+            }
+
+        }
+        return epersons;
+    }
+
+   /* public static synchronized void addCollectionToPrivateList(Collection col) throws java.sql.SQLException {
 
 
         if( privateCollections==null) {
@@ -337,7 +669,6 @@ public class ListUserCommunities {
 
     }
 
-
     public static synchronized void removeCollectionFromAdminList(Collection col) throws java.sql.SQLException {
 
         if( colMapAdmin!=null || commMapAdmin!=null ) {
@@ -353,9 +684,6 @@ public class ListUserCommunities {
         }
 
     }
-
-
-
 
     public static synchronized void addCommunityToAnnonList(Community com) throws java.sql.SQLException {
 
@@ -373,6 +701,7 @@ public class ListUserCommunities {
 
 
     }
+
     public static synchronized void removeCommunityFromAnnonList(Community com) throws java.sql.SQLException {
 
         if(  commMapAdmin!=null ) {
@@ -609,152 +938,6 @@ public class ListUserCommunities {
 
 
     }
-
-    public static  void removeUsersFromAuthorizedComList(Community com) throws java.sql.SQLException {
-
-        ArrayList<EPerson> epersons = getAuthirizedCommunityUsers(com);
-
-        for (EPerson eperson : epersons) {
-            log.error("eperson: " + eperson.getName());
-            if (commAuthorizedUsers.containsKey(eperson.getID())) {
-                Community[] commsOld = commAuthorizedUsers.get(eperson.getID());
-                if (commsOld != null) {
-                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
-                    if (commsOldRaw.contains(com)) {
-                        commsOldRaw.remove(com);
-                        Community[] colsNew = new Community[commsOldRaw.size()];
-                        commAuthorizedUsers.put(eperson.getID(), commsOldRaw.toArray(colsNew));
-                        log.error("added to map: " + colAuthorizedUsers.get(eperson.getID()).length);
-                    }
-                }
-            }
-        }
-
-    }
-
-
-
-
-
-
-    private static void buildCollection(Community c, Context context) throws SQLException {
-        Integer comID = c.getID();
-
-        Collection[] colls = c.getCollections();
-
-        colMapAdmin.put(comID, colls);
-        log.error("community: "+c.getName()+" size: "+ colMapAdmin.get(comID).length);
-
-        if (colls.length > 0) {
-            log.error("length"+colls.length);
-            ArrayList<Collection> availableCol = new ArrayList<Collection>();
-
-
-            for (int i = 0; i < colls.length; i++) {
-
-                int countItems = colls[i].countItems();
-                if (colls[i].isPublic()) {
-                    if(countItems>0) {
-                        availableCol.add(colls[i]);
-                    } else {
-                        emptyCollections.add(colls[i]);
-                    }
-                } else {
-                    if (colls[i].isNYUOnly()) {
-                        if(countItems>0) {
-                            availableCol.add(colls[i]);
-                        } else {
-                            emptyCollections.add(colls[i]);
-                        }
-                        nyuOnly.add(colls[i]);
-
-                    } else {
-
-                        if (colls[i].isGallatin()) {
-                            if(countItems>0) {
-                                availableCol.add(colls[i]);
-                            } else {
-                                emptyCollections.add(colls[i]);
-                            }
-                            gallatinOnly.add(colls[i]);
-                        }
-                    }
-                }
-
-                if (!availableCol.contains(colls[i])) {
-
-                    addUsersToAuthorizedColList(colls[i]);
-
-
-                    if(colls[i].isPrivate()) {
-                        privateCollections.add(colls[i]);
-                    }
-                     if(countItems==0) {
-                        emptyCollections.add(colls[i]);
-                     }
-
-                }
-            }
-            if (availableCol.size() > 0) {
-                Collection[] availableColArray = new Collection[availableCol.size()];
-                colMapAnon.put(comID, availableCol.toArray(availableColArray));
-            }
-        }
-
-    }
-
-
-    private static void buildCommunity(Community c, Context context) throws SQLException {
-        Integer comID = c.getID();
-
-        Community[] comms = c.getSubcommunities();
-
-        commMapAdmin.put(comID, comms);
-
-        if (comms.length > 0) {
-            ArrayList<Community> availableComm = new ArrayList<Community>();
-
-            for (int i = 0; i < comms.length; i++) {
-
-                buildCommunity(comms[i], context);
-
-                if (colMapAnon.containsKey(comms[i].getID())
-                        || commMapAnon.containsKey(comms[i].getID())) {
-                    availableComm.add(comms[i]);
-                } else {
-                    ArrayList<EPerson> epersons = getAuthirizedCommunityUsers(comms[i]);
-                    for(EPerson eperson:epersons) {
-                        log.warn("eperson:"+eperson.getName());
-                        if(commAuthorizedUsers.containsKey(eperson.getID())) {
-                            Community[] commsOld = commAuthorizedUsers.get(eperson.getID());
-                            if(commsOld!=null) {
-                                List<Community> commsOldRaw = (List<Community>) Arrays.asList(commsOld);
-                                if (!commsOldRaw.contains(comms[i])) {
-                                    ArrayList<Community> commsNewRaw = new ArrayList<Community>();
-                                    commsNewRaw.add(comms[i]);
-                                    for (Object commsold : commsOldRaw) {
-                                        commsNewRaw.add((Community) commsold);
-                                    }
-
-                                    Community[] commsNew = new Community[commsNewRaw.size()];
-                                    commAuthorizedUsers.put(eperson.getID(), commsNewRaw.toArray(commsNew));
-                                }
-                            }
-                        } else {
-                            Community[] commsNew = {comms[i]};
-                            commAuthorizedUsers.put(eperson.getID(), commsNew );
-                        }
-                    }
-                }
-            }
-            if (availableComm.size() > 0) {
-                Community[] availableCommArray = new Community[availableComm.size()];
-                commMapAnon.put(comID, availableComm.toArray(availableCommArray));
-            }
-        }
-    }
-
-
 
     private static ArrayList<EPerson> getAuthirizedCollectionUsers(Collection col) throws SQLException {
 
@@ -1007,8 +1190,6 @@ public class ListUserCommunities {
         }
 
     }
-
-
 
     private static void addParentComm( Community com, Boolean admin ) throws java.sql.SQLException {
         Community parentComm = (Community) com.getParentCommunity();
@@ -1350,7 +1531,7 @@ public class ListUserCommunities {
                 removeCollectionFromGallatinOnlyList(collection);
             }
         }
-    }
+    }*/
 
 }
 

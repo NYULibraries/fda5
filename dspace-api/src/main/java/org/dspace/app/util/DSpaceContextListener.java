@@ -8,6 +8,7 @@
 package org.dspace.app.util;
 
 import org.dspace.core.ConfigurationManager;
+import org.dspace.frontlist.ListUserCommunities;
 import org.dspace.storage.rdbms.DatabaseManager;
 import org.apache.log4j.Logger;
 
@@ -138,10 +139,12 @@ public class DSpaceContextListener implements ServletContextListener
         /**
          * Stage 4 added by Kate
          *
-         * Build static list of collections and communities
+         * Build static ConcurrentHashMaps of communities and collections for site admins and users who are not admins of private and empty
+         * communities and collections. It also creates threadsafe arrays (type CopyWriteArrayList) of NYU-ONLY,Private,Gallatin,Empty collections
+         * and the lists of administrators of empty and private collections and admins
          */
         try {
-            ListUserCommunities.ListAnonUserCommunities();
+            ListUserCommunities.PrebuildFrontListsCommunities();
         } catch (SQLException ex) {
             event.getServletContext().log( "Cant' create collection and community map:  " + ex.getMessage());
         }

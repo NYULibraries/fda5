@@ -1347,11 +1347,6 @@ public class Collection extends DSpaceObject
         // Remove from cache
         ourContext.removeCached(this, getID());
 
-        // Added by Kate to make it possible for comminty admins to delete colection
-        DatabaseManager.updateQuery(ourContext,
-                "DELETE FROM community2collection WHERE community_id= ? " +
-                        "AND collection_id= ? ", this.getParentObject().getID(), getID());
-
         // Delete collection row
         DatabaseManager.delete(ourContext, collectionRow);
 

@@ -43,6 +43,7 @@
 <%@ page import="java.io.IOException" %>
 <%@ page import="org.dspace.browse.ItemCountException" %>
 <%@page import="org.dspace.app.webui.servlet.MyDSpaceServlet"%>
+<%@ page import="java.util.concurrent.CopyOnWriteArrayList" %>
 <%
 	// Retrieve attributes
 	Community community = (Community) request.getAttribute( "community" );
@@ -50,7 +51,7 @@
 	MostDownloaded mostdownloaded = (MostDownloaded) request.getAttribute("most.downloaded");
 	Map collectionMap = (Map) request.getAttribute("collections.map");
     Map subcommunityMap = (Map) request.getAttribute("subcommunities.map");
-    ArrayList nyuOnly=(ArrayList) request.getAttribute("nyuOnly");
+    CopyOnWriteArrayList nyuOnly=(CopyOnWriteArrayList) request.getAttribute("nyuOnly");
 	
 	Boolean editor_b = (Boolean)request.getAttribute("editor_button");
 	boolean editor_button = (editor_b == null ? false : editor_b.booleanValue());
@@ -78,7 +79,7 @@
 %>
 
 <%!
-	void showCommunity(Community c, JspWriter out, HttpServletRequest request,  Map collectionMap, Map subcommunityMap, ArrayList nyuOnly) throws ItemCountException, IOException, SQLException
+	void showCommunity(Community c, JspWriter out, HttpServletRequest request,  Map collectionMap, Map subcommunityMap, CopyOnWriteArrayList nyuOnly) throws ItemCountException, IOException, SQLException
 	{
 
         // Get the sub-communities in this community
@@ -109,7 +110,7 @@
 				    //String collName =  ( StringUtils.isNotBlank(cols[j].getMetadata("name"))  ? cols[j].getMetadata("name") : "Untitled" );
 				    out.println("<li>");
 				    out.println("<span  class=\"t1 ct1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">" + cols[j].getMetadata("name") + "</a></span>");
-				    if (nyuOnly!=null && nyuOnly.contains(cols[j])) {
+				    if (nyuOnly!=null && nyuOnly.contains(cols[j].getID())) {
                         out.println("<span class=\"nyu-only-svg\"><svg version=\"1.1\"  xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 100.69 13.76\" style=\"enable-background:new 0 0 100.69 13.76;\" xml:space=\"preserve\">");
 		                out.println("<style type=\"text/css\"> path{fill:#57068C;} </style>");
 		                out.println("<g><path  d=\"M0,0.23h2.17l7.12,9.19V0.23h2.3v13.3H9.63L2.3,4.07v9.46H0C0,13.53,0,0.23,0,0.23z\"/><path  d=\"M18.92,8.29l-5.28-8.05h2.77l3.7,5.87l3.76-5.87h2.68l-5.28,8v5.3h-2.36V8.29H18.92z\"/><path  d=\"M28.4,7.89V0.23h2.34v7.56c0,2.47,1.27,3.78,3.36,3.78c2.07,0,3.34-1.23,3.34-3.69V0.22h2.34v7.54c0,3.97-2.24,5.97-5.72,5.97C30.61,13.74,28.4,11.74,28.4,7.89z\"/>");

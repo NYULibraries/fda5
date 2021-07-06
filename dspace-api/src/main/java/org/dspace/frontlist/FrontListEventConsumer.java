@@ -12,7 +12,6 @@ import org.dspace.content.Collection;
 import org.dspace.core.Context;
 import org.dspace.event.Consumer;
 import org.dspace.event.Event;
-import org.dspace.app.util.ListUserCommunities;
 import org.dspace.content.Community;
 import org.dspace.content.Item;
 import org.dspace.eperson.EPerson;
@@ -143,7 +142,7 @@ public class FrontListEventConsumer implements Consumer {
                 }
 
                 if(st==Constants.GROUP ) {
-                        if(event.getObject(ctx)!=null && event.getObjectType()==Constants.COLLECTION) {
+                        if(event.getObject(ctx)!=null && event.getObjectType()==Constants.EPERSON) {
                                 processModifyGroup(ctx, (EPerson) event.getObject(ctx), (Group) event.getSubject(ctx), et);
                         }
                 }
