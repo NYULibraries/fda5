@@ -27,13 +27,14 @@
 <%@ page import="java.util.Locale"%>
 <%@ page import="javax.servlet.jsp.jstl.core.*" %>
 <%@ page import="javax.servlet.jsp.jstl.fmt.LocaleSupport" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.concurrent.CopyOnWriteArrayList" %>
 <%@ page import="org.dspace.core.I18nUtil" %>
 <%@ page import="org.dspace.app.webui.util.UIUtil" %>
 <%@ page import="org.dspace.app.webui.components.RecentSubmissions" %>
 <%@ page import="org.dspace.app.webui.components.MostDownloaded" %>
 <%@ page import="org.dspace.content.Community" %>
 <%@ page import="org.dspace.content.Collection" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page import="org.dspace.core.Context" %>
 <%@ page import="org.dspace.core.ConfigurationManager" %>
 <%@ page import="org.dspace.core.NewsManager" %>
@@ -54,7 +55,7 @@
 
     Map collectionMap = (Map) request.getAttribute("collections.map");
     Map subcommunityMap = (Map) request.getAttribute("subcommunities.map");
-    ArrayList<Collection> nyuOnly = (ArrayList<Collection>)  request.getAttribute("nyuOnly");
+    CopyOnWriteArrayList nyuOnly = (CopyOnWriteArrayList)  request.getAttribute("nyuOnly");
     Locale sessionLocale = UIUtil.getSessionLocale(request);
     Config.set(request.getSession(), Config.FMT_LOCALE, sessionLocale);
     String topNews = NewsManager.readNewsFile(LocaleSupport.getLocalizedMessage(pageContext, "news-top.html"));
@@ -73,7 +74,7 @@
     MostDownloaded mostdownloaded = ( MostDownloaded) request.getAttribute("most.downloaded");
 %>
 <%! //we use the same function 2 times so probably we should convert it to jsp tag but we can change something here so will leave for now
- void showCommunity(Community c, JspWriter out, HttpServletRequest request, Map collectionMap, Map subcommunityMap, ArrayList<Collection> nyuOnly) throws ItemCountException, IOException, SQLException
+ void showCommunity(Community c, JspWriter out, HttpServletRequest request, Map collectionMap, Map subcommunityMap,CopyOnWriteArrayList nyuOnly) throws ItemCountException, IOException, SQLException
  	{
  		 // Get the sub-communities in this community
 
@@ -107,7 +108,7 @@
                            out.println("<li class=\"tree-collections-list\" role=\"treeitem\" >");
                            //String collName =  ( StringUtils.isNotBlank(cols[j].getMetadata("name"))  ? cols[j].getMetadata("name") : "Untitled" );
                            out.println("<span  class=\"t1 ct1\"><a href=\"" + request.getContextPath() + "/handle/" + cols[j].getHandle() + "\">"+ cols[j].getMetadata("name") +"</a></span>");
-                           if (nyuOnly!=null && nyuOnly.contains(cols[j]))
+                           if (nyuOnly!=null && nyuOnly.contains(cols[j].getID()))
                            {
                               out.println("<span class=\"nyu-only-svg\"><svg version=\"1.1\"  xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" viewBox=\"0 0 100.69 13.76\" style=\"enable-background:new 0 0 100.69 13.76;\" xml:space=\"preserve\">");
          		              out.println("<style type=\"text/css\"> path{fill:#57068C;} </style>");

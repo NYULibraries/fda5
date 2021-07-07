@@ -254,6 +254,7 @@ public class ListUserCommunities {
                 //if community has only private and non-empty collections or subcommunities we need to add it's admins to
                 //authorized community admins list so they can see it in the list
                 } else {
+                    log.debug("community which is private or empty "+c.getName());
                     buildAuthorizedCommList(comms[i]);
                 }
             }
@@ -270,6 +271,7 @@ public class ListUserCommunities {
     //take collection as parameter
     private static void buildAuthorizedColList(Collection col) throws java.sql.SQLException {
 
+        log.debug("get admins for collection "+col.getName()+" which is private or empty ");
         Group admins = col.getAdministrators();
         if(admins!=null) {
               buildAuthorizedGroupUsers(admins,col);
@@ -288,22 +290,28 @@ public class ListUserCommunities {
     }
 
     //get all users who might have admin access to the community
-    //they might be collection admins or submitters or parent community admins
-    //takes community as a parameter
+    //they might be community admins or  parent communities admins
+    //method takes community as a parameter
     private static void buildAuthorizedCommList(Community com) throws java.sql.SQLException {
 
+        log.debug("get admins for community "+com.getName()+" which is private or empty ");
         Group admins = com.getAdministrators();
         if(admins!=null) {
             buildAuthorizedGroupUsers(admins,com);
         }
+
+        Community[] parentComms = com.getAllParents();
+        for(Community  parentComm:parentComms) {
+            buildCommGroupUsers(parentComm,com);
+        }
     }
 
-    //get all admins for collection's parent community
-    private static void buildCommGroupUsers(Community com,Collection col) throws SQLException {
-
+    //get all admins for  parent community of collection or subcommunity
+    private static void buildCommGroupUsers(Community com,DSpaceObject ds) throws SQLException {
+        log.debug("get object type"+ds.getType()+" "+ds.getName()+" which is private or empty ");
         Group admins = com.getAdministrators();
         if(admins!=null) {
-            buildAuthorizedGroupUsers(admins,col);
+            buildAuthorizedGroupUsers(admins,ds);
         }
     }
 
@@ -314,10 +322,12 @@ public class ListUserCommunities {
         if(ds.getType()==Constants.COLLECTION) {
             for (EPerson eperson : g.getMembers()) {
                 colAuthorizedUsersRaw.add(new AuthorizedCollectionUsers(eperson.getID(), g.getID(), ds.getID()));
+                log.debug(" we added eperson "+eperson.getName()+" group "+g.getName()+" object of type"+ds.getType()+" "+ds.getName());
             }
             for (Group ag : g.getMemberGroups()) {
                 for (EPerson geperson : ag.getMembers()) {
                     colAuthorizedUsersRaw.add(new AuthorizedCollectionUsers(geperson.getID(), g.getID(), ds.getID()));
+                    log.debug(" we added eperson from group "+geperson.getName()+" group "+g.getName()+" object of type"+ds.getType()+" "+ds.getName());
                 }
 
             }
@@ -326,10 +336,12 @@ public class ListUserCommunities {
         if(ds.getType()==Constants.COMMUNITY) {
             for (EPerson eperson : g.getMembers()) {
                 colAuthorizedUsersRaw.add(new AuthorizedCollectionUsers(eperson.getID(), g.getID(), ds.getID()));
+                log.debug(" we added eperson "+eperson.getName()+" group "+g.getName()+" object of type"+ds.getType()+" "+ds.getName());
             }
             for (Group ag : g.getMemberGroups()) {
                 for (EPerson geperson : ag.getMembers()) {
-                    commAuthorizedUsers.add(new AuthorizedCommunityUsers(geperson.getID(), g.getID(), ds.getID()));
+                    commAuthorizedUsersRaw.add(new AuthorizedCommunityUsers(geperson.getID(), g.getID(), ds.getID()));
+                    log.debug(" we added eperson from group "+geperson.getName()+" group "+g.getName()+" object of type"+ds.getType()+" "+ds.getName());
                 }
 
             }
@@ -344,6 +356,7 @@ public class ListUserCommunities {
         while (iteratorAuthCollections.hasNext()) {
             AuthorizedCollectionUsers authCol = (AuthorizedCollectionUsers) iteratorAuthCollections.next();
             if(authCol.getEpersonID()==epersonID) {
+                    log.debug("collection available to user "+authCol.getCollectionID());
                     colIDs.add(authCol.getCollectionID());
             }
 
@@ -354,11 +367,11 @@ public class ListUserCommunities {
     //Returns if user has admin access to any private or empty collection.
     //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCollectionUsers> colAuthorizedUsers
     public static Boolean checkAuthorizedCollections(int epersonID) {
-        ArrayList colIDs = new ArrayList();
         Iterator iteratorAuthCollections = colAuthorizedUsers.iterator();
         while (iteratorAuthCollections.hasNext()) {
             AuthorizedCollectionUsers authCol = (AuthorizedCollectionUsers) iteratorAuthCollections.next();
             if(authCol.getEpersonID()==epersonID) {
+                log.debug("collection available to user on check "+authCol.getCollectionID());
                 return true;
             }
 
@@ -371,10 +384,12 @@ public class ListUserCommunities {
     public static  ArrayList getAuthorizedCommunities(int epersonID)  {
         ArrayList comIDs = new ArrayList();
         Iterator iteratorAuthCommunities = commAuthorizedUsers.iterator();
+        log.debug(" Size of authorized communities ArrayList size "+commAuthorizedUsers.size());
         while (iteratorAuthCommunities.hasNext()) {
             AuthorizedCommunityUsers authComm = (AuthorizedCommunityUsers) iteratorAuthCommunities.next();
             if(authComm.getEpersonID()==epersonID) {
-                    comIDs.add(authComm.getCollectionID());
+                    log.debug("community available to user "+authComm.getCommunityID());
+                    comIDs.add(authComm.getCommunityID());
             }
 
         }
@@ -384,11 +399,14 @@ public class ListUserCommunities {
     //Returns array of private and empty subcommunities ids for which user has admin access.
     //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCommunityUsers> commAuthorizedUsers
     public static Boolean checkAuthorizedCommunities(int epersonID)  {
-        ArrayList comIDs = new ArrayList();
         Iterator iteratorAuthCommunities = commAuthorizedUsers.iterator();
+        log.debug(" Size of authorized communities ArrayList check "+commAuthorizedUsers.size());
         while (iteratorAuthCommunities.hasNext()) {
+            log.debug(" Authorized communities ArrayList start iteration ");
             AuthorizedCommunityUsers authComm = (AuthorizedCommunityUsers) iteratorAuthCommunities.next();
+            log.debug(" Authorized communities ArrayList get value to check "+authComm.getEpersonID());
             if(authComm.getEpersonID()==epersonID) {
+                log.debug("community available to user on check "+authComm.getCommunityID());
                 return true;
             }
 
@@ -1516,10 +1534,10 @@ public class ListUserCommunities {
 
         }
 
-    }
+    }*/
 
     public static void checkCollection(Collection collection) throws java.sql.SQLException {
-        if(collection.isPrivate()) {
+        /*if(collection.isPrivate()) {
             if(privateCollections==null || !privateCollections.contains(collection)) {
                 addCollectionToPrivateList(collection);
             }
@@ -1545,8 +1563,8 @@ public class ListUserCommunities {
             if(gallatinOnly.contains(collection)) {
                 removeCollectionFromGallatinOnlyList(collection);
             }
-        }
-    }*/
+        }*/
+    }
 
 }
 

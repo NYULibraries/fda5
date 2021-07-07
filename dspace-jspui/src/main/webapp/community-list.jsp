@@ -134,7 +134,7 @@
 	<h1 id="page-title"><fmt:message key="jsp.community-list.title"/></h1>
 	<p><fmt:message key="jsp.community-list.text1"/></p>
 
-<% if (communities.length != 0)
+<% if ( communities!=null && communities.length != 0)
 {
 %>
 <div class="fda-tree">

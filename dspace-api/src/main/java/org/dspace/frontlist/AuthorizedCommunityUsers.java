@@ -16,7 +16,7 @@ public class AuthorizedCommunityUsers {
     private int communityID;
 
     public AuthorizedCommunityUsers(int epersonID, int groupID, int communityID) {
-        setCollectionID(communityID);
+        setCommunityID(communityID);
         setEpersonID(epersonID);
         setGroupID(groupID);
     }
@@ -29,11 +29,11 @@ public class AuthorizedCommunityUsers {
         this.epersonID = epersonID;
     }
 
-    public int getCollectionID() {
+    public int getCommunityID() {
         return communityID;
     }
 
-    public void setCollectionID(int communityID) {
+    public void setCommunityID(int communityID) {
         this.communityID = communityID;
     }
 

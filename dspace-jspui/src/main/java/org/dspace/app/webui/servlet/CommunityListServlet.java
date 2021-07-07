@@ -9,9 +9,9 @@ package org.dspace.app.webui.servlet;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -61,60 +61,66 @@ public class CommunityListServlet extends DSpaceServlet {
         // Get the top communities to shows in the community list
         Community[] communities = Community.findAllTop(context);
 
-        ArrayList<Collection> nyuOnly = ListUserCommunities.nyuOnly;
+        CopyOnWriteArrayList nyuOnly = ListUserCommunities.nyuOnly;
 
-        if (ListUserCommunities.colMapAnon == null && ListUserCommunities.commMapAnon == null) {
+        //if generic communities list was not build before for some reasons try to build it now
+        if(ListUserCommunities.colMapAnon==null && ListUserCommunities.commMapAnon==null) {
             try {
-                ListUserCommunities.ListAnonUserCommunities();
-            } catch (SQLException e) {
-                log.error(e.getMessage(), e);
+                ListUserCommunities.PrebuildFrontListsCommunities();
+            } catch (Exception e) {
+                throw new ServletException(e.getMessage(), e);
             }
         }
 
+        //now start buildinhg community list tailored for the user
         EPerson user = context.getCurrentUser();
 
+        //for anonymous user just show generic list
         if (user == null) {
-            // Get the top communities to shows in the community list
             request.setAttribute("collections.map", ListUserCommunities.colMapAnon);
             request.setAttribute("subcommunities.map", ListUserCommunities.commMapAnon);
 
         } else {
             try {
+                //for site admin user show admin list
                 if (AuthorizeManager.isAdmin(context)) {
-
                     request.setAttribute("collections.map", ListUserCommunities.colMapAdmin);
                     request.setAttribute("subcommunities.map", ListUserCommunities.commMapAdmin);
-                    request.setAttribute("admin_button", true);
-
                 } else {
                     int userID = user.getID();
-                    if (ListUserCommunities.commAuthorizedUsers.containsKey(userID) || ListUserCommunities.colAuthorizedUsers.containsKey(userID)) {
+
+                    //if a user is not a site admin, check if the user is admin of some private or empty collections or communities
+                    //generate tailored list of communities which include those collections and communities
+                    if ( ListUserCommunities.checkAuthorizedCollections(userID)
+                            || ListUserCommunities.checkAuthorizedCommunities(userID) ) {
                         Map colMap = new HashMap<Integer, Collection[]>();
                         Map commMap = new HashMap<Integer, Community[]>();
+
                         ListCommunities comList = new ListCommunities();
-                        comList.ListUserCommunities(context);
+                        comList.BuildUserCommunitiesList(context);
+
                         if (comList.getCollectionsMap() != null) {
                             colMap.putAll(comList.getCollectionsMap());
                         }
                         if (comList.getCommunitiesMap() != null) {
                             commMap.putAll(comList.getCommunitiesMap());
                         }
-                        request.setAttribute("collections.map", colMap);
-                        request.setAttribute("subcommunities.map", commMap);
+                        request.setAttribute("collections.map",colMap);
+                        request.setAttribute("subcommunities.map",commMap);
+                        //if user does not have access to empty or private collections and communities show generic list
                     } else {
                         request.setAttribute("collections.map", ListUserCommunities.colMapAnon);
                         request.setAttribute("subcommunities.map", ListUserCommunities.commMapAnon);
                     }
 
                 }
-            } catch (SQLException e) {
-                log.error(e.getMessage(), e);
+            } catch (Exception e) {
+                throw new ServletException(e.getMessage(), e);
             }
 
         }
-        request.setAttribute("nyuOnly", nyuOnly);
-        request.setAttribute("communities", communities);
-
+        //Used to add nyuOnly icon on main or community page
+        request.setAttribute("nyuOnly", ListUserCommunities.nyuOnly);
         JSPManager.showJSP(request, response, "/community-list.jsp");
     }
 }

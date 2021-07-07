@@ -87,12 +87,13 @@ public class ListCommunities {
                 log.debug("community we will add "+userComm.size());
                 Community comm = Community.find(context,(Integer) comID);
                 if(comm != null) {
+                    log.debug("community to add "+comm.getName());
                     addUserComm(comm);
                 }
             }
         }
         log.debug(" size of tailored collection Map:"+colMap.size());
-        log.debug(" size of tailored collection Map:"+commMap.size());
+        log.debug(" size of tailored community Map:"+commMap.size());
     }
 
     //if community is visible to the user we also need to see it's parents and children community/collection in the community tree
@@ -142,8 +143,10 @@ public class ListCommunities {
         if (comms.length > 0) {
             commMap.put(com.getID(), comms);
             for(Community subcomm:comms) {
-                addChildrenComm(  subcomm);
+                addChildrenComm(subcomm);
             }
+        } else {
+            commMap.put(com.getID(), null);
         }
     }
 

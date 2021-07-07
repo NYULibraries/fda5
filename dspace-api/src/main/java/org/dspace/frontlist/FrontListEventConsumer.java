@@ -174,7 +174,7 @@ public class FrontListEventConsumer implements Consumer {
                         int resourceID = rp.getResourceID();
                         int resourceType = rp.getResourceType();
 
-                        if(resourceType== Constants.COLLECTION) {
+                       /* if(resourceType== Constants.COLLECTION) {
                                 Collection  col =(Collection) DSpaceObject.find(context, resourceType, resourceID );
                                 if((ListUserCommunities.privateCollections!=null && ListUserCommunities.privateCollections.contains(col) )||
                                         (ListUserCommunities.emptyCollections!=null && ListUserCommunities.emptyCollections.contains(col)) ) {
@@ -202,13 +202,13 @@ public class FrontListEventConsumer implements Consumer {
                         if(resourceType== Constants.GROUP) {
                                 Group  parentGroup =(Group) DSpaceObject.find(context, resourceType, resourceID );
                                 processModifyGroup(context, eperson, parentGroup, eventType);
-                        }
+                        }*/
                 }
         }
 
         private void processAddItem( Collection col ) throws java.sql.SQLException {
 
-                        if(ListUserCommunities.emptyCollections!=null
+                       /* if(ListUserCommunities.emptyCollections!=null
                                 && ListUserCommunities.emptyCollections.contains(col)) {
                                 ListUserCommunities.removeCollectionFromEmptyList(col);
                                 if(!col.isPrivate()) {
@@ -216,24 +216,20 @@ public class FrontListEventConsumer implements Consumer {
                                         ListUserCommunities.addCollectionToAnnonList(col);
                                 }
 
-                        }
-
-
-
+                        }*/
         }
 
         private void processRemoveItem( Collection col ) throws java.sql.SQLException {
-                               ListUserCommunities.addCollectionToEmptyList(col);
+                             /*  ListUserCommunities.addCollectionToEmptyList(col);
                                 if( !ListUserCommunities.privateCollections.contains(col)) {
                                         ListUserCommunities.removeCollectionFromAnnonList(col);
-                                }
-
+                                }*/
 
         }
 
         private void processAddCollection( Community comm, Collection col ) throws java.sql.SQLException {
 
-                log.warn("We continue adding collection");
+               /* log.warn("We continue adding collection");
                 ListUserCommunities.addCollectionToEmptyList(col);
                 log.warn("We adding collection to Admin list");
                 ListUserCommunities.addCollectionToAdminListID(comm, col);
@@ -247,59 +243,59 @@ public class FrontListEventConsumer implements Consumer {
                 }
                 if(col.isGallatin()) {
                                 ListUserCommunities.addCollectionToGallatinOnlyList(col);
-                }
+                }*/
 
 
         }
 
         private void processAddCommunity( Community comm ) throws java.sql.SQLException {
 
-                ListUserCommunities.addCommunityToAdminList(comm);
-                ListUserCommunities.addUsersToAuthorizedComList(comm);
+                /*ListUserCommunities.addCommunityToAdminList(comm);
+                ListUserCommunities.addUsersToAuthorizedComList(comm);*/
 
 
         }
 
         private void processRemoveCollection( Community comm, int collectionID ) throws java.sql.SQLException {
 
-                ListUserCommunities.removeCollectionFromAnnonListID(comm,collectionID);
+                /*ListUserCommunities.removeCollectionFromAnnonListID(comm,collectionID);
                 ListUserCommunities.removeCollectionFromAdminListID(comm,collectionID);
                 ListUserCommunities.removeCollectionFromEmptyListID(collectionID);
                 ListUserCommunities.removeCollectionFromPrivateListID(collectionID);
                 ListUserCommunities.removeCollectionFromNYUOnlyListID(collectionID);
-                ListUserCommunities.removeCollectionFromGallatinOnlyListID(collectionID);
+                ListUserCommunities.removeCollectionFromGallatinOnlyListID(collectionID);*/
 
         }
 
         private void processRemoveCommunity( Community parentComm, int communityID ) throws java.sql.SQLException {
 
-                ListUserCommunities.removeCommunityFromAdminListID(parentComm,communityID);
-                ListUserCommunities.removeCommunityFromAnnonListID(parentComm,communityID);
+               /* ListUserCommunities.removeCommunityFromAdminListID(parentComm,communityID);
+                ListUserCommunities.removeCommunityFromAnnonListID(parentComm,communityID);*/
 
         }
 
         private void processDeleteCommunity(  int communityID ) throws java.sql.SQLException {
 
-                ListUserCommunities.removeChildrenCommunityFromAdminListID(communityID);
-                ListUserCommunities.removeChildrenCommunityFromAnnonListID(communityID);
+               /* ListUserCommunities.removeChildrenCommunityFromAdminListID(communityID);
+                ListUserCommunities.removeChildrenCommunityFromAnnonListID(communityID);*/
 
         }
 
         private void processCreateCommunity(  Community comm ) throws java.sql.SQLException {
 
-                ListUserCommunities.addCommunityToAdminListID(comm.getID());
-                ListUserCommunities.addUsersToAuthorizedComList(comm);
+               /* ListUserCommunities.addCommunityToAdminListID(comm.getID());
+                ListUserCommunities.addUsersToAuthorizedComList(comm);*/
 
         }
 
         private void processUpdateCollection(Collection col) throws java.sql.SQLException {
-                ListUserCommunities.updateCollectionMetadata(col, true);
-                ListUserCommunities.updateCollectionMetadata(col, false);
+                /*ListUserCommunities.updateCollectionMetadata(col, true);
+                ListUserCommunities.updateCollectionMetadata(col, false);*/
         }
 
         private void processUpdateCommunity(Community comm) throws java.sql.SQLException {
-                ListUserCommunities.updateCommunityMetadata(comm, true);
-                ListUserCommunities.updateCommunityMetadata(comm, false);
+               /* ListUserCommunities.updateCommunityMetadata(comm, true);
+                ListUserCommunities.updateCommunityMetadata(comm, false);*/
 
         }
 }
