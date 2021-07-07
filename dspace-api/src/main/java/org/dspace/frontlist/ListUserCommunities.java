@@ -153,8 +153,10 @@ public class ListUserCommunities {
 
             //convert ArrayLists for private and empty collections/communities admins to CopyOnWriteArrayList to make it threadsafe
               colAuthorizedUsers = new CopyOnWriteArrayList<AuthorizedCollectionUsers>(colAuthorizedUsersRaw);
+              log.debug("size of authorized collection list"+colAuthorizedUsers.size());
               commAuthorizedUsers = new CopyOnWriteArrayList<AuthorizedCommunityUsers>(commAuthorizedUsersRaw);
-        }
+              log.debug("size of authorized community list"+commAuthorizedUsers.size());
+    }
 
     }
 
@@ -335,7 +337,7 @@ public class ListUserCommunities {
 
         if(ds.getType()==Constants.COMMUNITY) {
             for (EPerson eperson : g.getMembers()) {
-                colAuthorizedUsersRaw.add(new AuthorizedCollectionUsers(eperson.getID(), g.getID(), ds.getID()));
+                commAuthorizedUsersRaw.add(new AuthorizedCommunityUsers(eperson.getID(), g.getID(), ds.getID()));
                 log.debug(" we added eperson "+eperson.getName()+" group "+g.getName()+" object of type"+ds.getType()+" "+ds.getName());
             }
             for (Group ag : g.getMemberGroups()) {
