@@ -111,8 +111,9 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
             }
 
         }
-        //Used to add nyuOnly icon on main or community page
+        //Used to add nyuOnly or gallatinOnly icon on main or community page
         request.setAttribute("nyuOnly", ListUserCommunities.nyuOnly);
+        request.setAttribute("gallatinOnly", ListUserCommunities.gallatinOnly);
 
     }
 

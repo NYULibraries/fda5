@@ -119,8 +119,10 @@ public class CommunityListServlet extends DSpaceServlet {
             }
 
         }
-        //Used to add nyuOnly icon on main or community page
+        //Used to add nyuOnly icon or gallatinOnly on main or community page
         request.setAttribute("nyuOnly", ListUserCommunities.nyuOnly);
+        request.setAttribute("gallatinOnly", ListUserCommunities.gallatinOnly);
+        request.setAttribute("communities", communities);
         JSPManager.showJSP(request, response, "/community-list.jsp");
     }
 }

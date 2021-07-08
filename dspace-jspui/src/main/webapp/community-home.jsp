@@ -52,6 +52,7 @@
 	Map collectionMap = (Map) request.getAttribute("collections.map");
     Map subcommunityMap = (Map) request.getAttribute("subcommunities.map");
     CopyOnWriteArrayList nyuOnly=(CopyOnWriteArrayList) request.getAttribute("nyuOnly");
+    //CopyOnWriteArrayList gallatinOnly = (CopyOnWriteArrayList)  request.getAttribute("gallatinOnly");
 	
 	Boolean editor_b = (Boolean)request.getAttribute("editor_button");
 	boolean editor_button = (editor_b == null ? false : editor_b.booleanValue());
@@ -218,8 +219,6 @@
 		   		</svg>
 			</span>
 			<% }  %>
-		
-			 
 			  <%
 			  if (StringUtils.isNotBlank(cols[j].getMetadata("short_description")))
 			  { %>

@@ -49,6 +49,7 @@
     Map collectionMap = (Map) request.getAttribute("collections.map");
     Map subcommunityMap = (Map) request.getAttribute("subcommunities.map");
     CopyOnWriteArrayList nyuOnly = (CopyOnWriteArrayList)  request.getAttribute("nyuOnly");
+    //CopyOnWriteArrayList gallatinOnly = (CopyOnWriteArrayList)  request.getAttribute("gallatinOnly");
     Boolean admin_b = (Boolean)request.getAttribute("admin_button");
     boolean admin_button = (admin_b == null ? false : admin_b.booleanValue());
 %>
@@ -134,7 +135,7 @@
 	<h1 id="page-title"><fmt:message key="jsp.community-list.title"/></h1>
 	<p><fmt:message key="jsp.community-list.text1"/></p>
 
-<% if ( communities!=null && communities.length != 0)
+<% if ( communities!=null && communities.length > 0)
 {
 %>
 <div class="fda-tree">
