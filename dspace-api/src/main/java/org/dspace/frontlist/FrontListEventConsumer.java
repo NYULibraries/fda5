@@ -31,9 +31,37 @@ public class FrontListEventConsumer implements Consumer {
         }
 
         /**
-         * Consume a content event -- just build the sets of objects to add (new) to
-         * the index, update, and delete.
-         *
+         * We do not want to show  private and empty collections to non-admin users.
+         * Only those users who can administrate private or empty collection or can submitte to those collections, will see them.
+         * It has proved to be too resource intensive to calculate on the fly which communities and collection to show to a specific user
+         * To reduce the amount of calculations we do most calculations on the application startup
+         * On the start up we initialize 4 static ConcurrentHashMaps objects:
+         * Map of communities and collections for site admins colMapAdmin,comMapAdmin
+         * Map of communities and collections for all non-admin users colMapAnon,comMapAnon
+         * Each entry in maps for collections has community id as a key and array of those community collections as a value
+         * < Parent Community ID, [array of collections]>
+         * Each entry in maps for communities has parent community id as a key and array of those community subcommunties as a value
+         * < Parent Community ID, [array of subcommunties]>
+         * As we have a limited number of  users who can get access to private ans empty collections,
+         * for those users we will add communities and collections on the fly.
+         * On the application start up we pre-calculate the list of those users and keep them in 2 static CopyOnWriteArrayLists (we use this type to
+         * avoid concurrency issues) - colAuthorizedUsers and commAuthorizedUsers.
+         * Each item in colAuthorizedUsers is an object of custom type AuthorizedCollectionUsers. It keep the triple <eperson ID, group ID, collection ID>
+         * Each item in commAuthorizedUsers is an object of custom type AuthorizedCollectionUsers. It keep the triple <eperson ID, group ID, community ID>
+         * Also we pre-calculate 4 objects of CopyOnWriteArrayLists - nyuOnly, gallatinOnly, emptyCollections, privateCollections
+         * All those objects are used By Classes
+         * ListCommunitiesSiteProcessor to generate site home page (objects will be passed to home.jsp as attributes)
+         * ListCommunitiescomminityProcessor to generate community home page (objects will be passed to community-home.jsp as attributes)
+         * ComminityListServlet to generate communities and collection lists (objects will be passed to community-list.jsp as attributes)
+         * As we make all initial calculations when the application starts we need to update the objects  when the following changes are made:
+         * when items are added to empty collection,
+         * when all items are removed from collection,
+         * when new admins or submitters are added or removed for private or empty collections,
+         * when collection permissions are modified,
+         * when collections and communities are added or removed
+         * when collection and community metadata is modified
+         * We use this class to consume the information of the event listed above and trigger the appropriate calculations.
+         * More information about Dspace event processing system here - https://wiki.lyrasis.org/display/DSPACE/EventSystemPrototype
          * @param ctx   DSpace context
          * @param event Content event
          */
@@ -42,6 +70,7 @@ public class FrontListEventConsumer implements Consumer {
                 int  st= event.getSubjectType();
                 int et= event.getEventType();
 
+                //check that we only get  events we need
                 if (st != Constants.COLLECTION && st!= Constants.GROUP && st!= Constants.COMMUNITY
                         && st!= Constants.SITE && st != Constants.ITEM ) {
                         log
@@ -49,17 +78,64 @@ public class FrontListEventConsumer implements Consumer {
                                         + event.toString());
                         return;
                 }
-                if (st==Constants.ITEM && et == Event.MODIFY && event.getDetail().equals("WITHDRAW")) {
-                        Item s = (Item) event.getSubject(ctx);
-                        Collection[] cols =s.getCollections();
-                        for (Collection col:cols) {
-                                if (col.countItems() == 0){
-                                        log.warn(" processing removing item");
-                                        processRemoveItem(col);
+                //remove top level community
+                if(st==Constants.SITE ) {
+                        if(event.getObjectID()!=-1 && et == Event.REMOVE) {
+                                int objectID = event.getObjectID();
+                                log.warn(" processing removing community");
+                                processRemoveCommunityID(objectID);
+                        }
+
+                }
+                //community related events, e.g. when community is a subject and some action is performed over community element, e.g. object
+                //any event has subject and action but some like "COMMUNITY DELETE " might not have object
+                if(st==Constants.COMMUNITY ) {
+                        if(event.getSubject(ctx)!=null) {
+                                Community s = (Community) event.getSubject(ctx);
+                                if(event.getObjectID()!=-1) {
+                                        int objectID = event.getObjectID();
+                                        //add or remove collection to the community, the event is issued AFTER collection is added/removed to/from the community
+                                        if (event.getObjectType() == Constants.COLLECTION) {
+
+                                                if (et == Event.ADD) {
+                                                        if (event.getObject(ctx) != null) {
+                                                                log.debug(" processing adding collection");
+                                                                Collection o = (Collection) event.getObject(ctx);
+                                                                processAddCollection(s, o);
+                                                        }
+                                                }
+                                                if (et == Event.REMOVE ) {
+                                                        log.warn(" processing removing collection");
+                                                        processRemoveCollection(s, objectID);
+
+                                                }
+
+                                        }
+                                        //add or remove subcommunity to the community, the event is issued AFTER collection is added/removed to/from the community
+                                        if (event.getObjectType() == Constants.COMMUNITY) {
+
+                                                if (et == Event.REMOVE) {
+                                                        log.warn(" processing removing community");
+                                                        processRemoveCommunity(s, objectID);
+
+                                                }
+                                        }
+                                //we work on community itself not on it's elements
+                                } else {
+                                        if (et == Event.MODIFY_METADATA) {
+                                                log.warn(" processing adding/updating  community");
+                                                processUpdateCommunity(s);
+                                        }
+                                        if (et == Event.CREATE) {
+                                                log.warn(" processing adding community");
+                                                processAddCommunity(s);
+                                        }
+
 
                                 }
                         }
                 }
+
                 if(st==Constants.COLLECTION ) {
                         Collection s = (Collection) event.getSubject(ctx);
                         if(s!=null) {
@@ -92,54 +168,18 @@ public class FrontListEventConsumer implements Consumer {
                 }
 
 
-                if(st==Constants.COMMUNITY ) {
-                        if(event.getSubject(ctx)!=null) {
-                                Community s = (Community) event.getSubject(ctx);
-                                    if(event.getObjectID()!=-1) {
-                                            int objectID = event.getObjectID();
-                                            if (event.getObjectType() == Constants.COLLECTION) {
+                if (st==Constants.ITEM && et == Event.MODIFY && event.getDetail().equals("WITHDRAW")) {
+                        Item s = (Item) event.getSubject(ctx);
+                        Collection[] cols =s.getCollections();
+                        for (Collection col:cols) {
+                                if (col.countItems() == 0){
+                                        log.warn(" processing removing item");
+                                        processRemoveItem(col);
 
-                                                   if (et == Event.ADD) {
-                                                            if (event.getObject(ctx) != null) {
-                                                                    log.warn(" processing adding collection");
-                                                                    Collection o = (Collection) event.getObject(ctx);
-                                                                    processAddCollection(s, o);
-                                                            }
-                                                    }
-                                                    if (et == Event.REMOVE ) {
-                                                            log.warn(" processing removing collection");
-                                                            processRemoveCollection(s, objectID);
-
-                                                    }
-
-                                            }
-                                            if (event.getObjectType() == Constants.COMMUNITY) {
-
-                                                    if (et == Event.REMOVE) {
-                                                            log.warn(" processing removing community");
-                                                            processRemoveCommunity(s, objectID);
-
-                                                    }
-                                            }
-                                    } else {
-                                            if (et == Event.MODIFY_METADATA) {
-                                                    log.warn(" processing adding/updating  community");
-                                                    processUpdateCommunity(s);
-                                            }
-                                            if (et == Event.CREATE) {
-                                                    log.warn(" processing adding community");
-                                                    processAddCommunity(s);
-                                            }
-
-
-                                    }
-                        } else {
-                                if (et == Event.DELETE) {
-                                        log.warn(" processing deleteing community");
-                                        processDeleteCommunity(event.getSubjectID());
                                 }
                         }
                 }
+
 
                 if(st==Constants.GROUP ) {
                         if(event.getObject(ctx)!=null && event.getObjectType()==Constants.EPERSON) {
@@ -167,6 +207,7 @@ public class FrontListEventConsumer implements Consumer {
             // No-op
 
         }
+
 
         private void processModifyGroup( Context context, EPerson eperson, Group group, int eventType ) throws java.sql.SQLException {
                 List<ResourcePolicy> rps= AuthorizeManager.getPoliciesForGroup(context, group);
