@@ -462,6 +462,7 @@ public class ListUserCommunities {
                             commMapAdmin.put(parentCommID, commsOldRaw.toArray(commNew));
                         } else {
                             commMapAdmin.remove(parentCommID);
+                            removeFromCommunityAdminByCommID(communityID);
                         }
                     }
                 }
@@ -490,9 +491,20 @@ public class ListUserCommunities {
     private static void removeChildrenCommID(int communityID, Boolean admin) throws java.sql.SQLException {
         if(admin) {
             if (commMapAdmin!=null && commMapAdmin.containsKey(communityID)) {
+                Community[] comms = commMapAdmin.get(communityID);
+                if(comms.length>0) {
+                    for (Community comm: comms) {
+                        removeChildrenCommID(comm.getID(), true);
+                    }
+                }
+                removeFromCommunityAdminByCommID(communityID);
                 commMapAdmin.remove(communityID);
             }
             if (colMapAdmin!=null && colMapAdmin.containsKey(communityID)) {
+                Collection[] cols = colMapAdmin.get(communityID);
+                for(Collection col:cols) {
+                    removeFromCollectionAdminByColID(col.getID());
+                }
                 colMapAdmin.remove(communityID);
             }
         } else {
@@ -500,7 +512,7 @@ public class ListUserCommunities {
                 commMapAnon.remove(communityID);
             }
             if (colMapAnon!=null && colMapAdmin.containsKey(communityID)) {
-                colMapAdmin.remove(communityID);
+                colMapAnon.remove(communityID);
             }
 
         }
@@ -649,11 +661,162 @@ public class ListUserCommunities {
 
     /*** Methods used to manage collections added and removed during the application life cycle ***/
     //Removes collection from the admin list when it is deleted
+    public static void removeCollectionFromAdminMapByID(int parentCommID, int collectionID) throws java.sql.SQLException {
+            removeColID(parentCommID,collectionID,true);
+            removeFromCollectionAdminByColID(parentCommID);
+    }
     //Removes collection from non-admin list when it is deleted, becomes private or no longer has public items
     //Add collection to the admin list when it is created
     //Add collection and it parent communities to the non-admin list when collection becomes public
     // or when public items are added to it.
+    public static void removeCollectionFromAnonMapByID(int parentCommID, int collectionID) throws java.sql.SQLException {
+        removeColID(parentCommID,collectionID,false);
+    }
+    //Add collection to admin list when collection is created
+    public static void addCollectionToAdminMap(Collection col) throws java.sql.SQLException {
+        addCollection(col,true);
+        buildAuthorizedColList(col);
+        emptyCollections.add(col.getID());
+        if(col.isPrivate()) {
+            privateCollections.addIfAbsent(col.getID());
+        }
+        if(col.isNYUOnly()) {
+            nyuOnly.addIfAbsent(col.getID());
+        }
+        if(col.isGallatin()) {
+            gallatinOnly.addIfAbsent(col.getID());
+        }
+    }
+    //Add collection to annon list when items are added to collection or non-empty collection is no longer private
+    public static void addCollectionToAnonMap(Collection col) throws java.sql.SQLException {
+        addCollection(col,false);
+        removeFromCollectionAdminByColID(col.getID());
+    }
+    //Remove collection from the array which is assosiated with it's parent community in admin or non-admin map using it's id
+    private static void removeColID(int parentCommID, int collectionID, Boolean admin ) throws java.sql.SQLException {
+        if(admin) {
+            if (colMapAdmin.containsKey(parentCommID) && colMapAdmin.get(parentCommID) != null) {
+                Collection[] colsOld = colMapAdmin.get(parentCommID);
+                LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
+                for (Collection col: colsOldRaw) {
+                    if(col.getID()==collectionID) {
+                        colsOldRaw.remove(col);
+                        if (colsOldRaw.size() > 0) {
+                            Collection[] colsNew = new Collection[colsOldRaw.size()];
+                            colMapAdmin.put(parentCommID, colsOldRaw.toArray(colsNew));
+                        } else {
+                            colMapAdmin.remove(parentCommID);
+                        }
+                    }
+                }
+            }
+        } else {
+            if (colMapAnon.containsKey(parentCommID) && colMapAnon.get(parentCommID) != null) {
+                Collection[] colsOld = colMapAnon.get(parentCommID);
+                LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
+                for (Collection col: colsOldRaw) {
+                    if(col.getID()==collectionID) {
+                        colsOldRaw.remove(col);
+                        if (colsOldRaw.size() > 0) {
+                            Collection[] colsNew = new Collection[colsOldRaw.size()];
+                            colMapAnon.put(parentCommID, colsOldRaw.toArray(colsNew));
+                        } else {
+                            colMapAnon.remove(parentCommID);
+                            removeFromCommunityAdminByCommID(parentCommID);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //Add collection to the array which is assosiated with it's parent community in admin or non-admin map using it's id
+    private static void addCollection(Collection col, Boolean admin) throws java.sql.SQLException {
+        Community[] parentComms =  col.getCommunities();
+        if(parentComms!=null) {
+            log.debug(" we are adding collection to map " + parentComms.length);
 
+            for (Community parentComm : parentComms) {
+                Collection[] colsChildren = parentComm.getCollections();
+                if(colsChildren != null) {
+                    LinkedList<Collection> colsChildrenRaw = new LinkedList(Arrays.asList(colsChildren));
+                    if(colsChildrenRaw.contains(col)) {
+                        int parentCommID = parentComm.getID();
+                        if (admin) {
+                            log.debug(" we are adding collection to admin map " + parentComms.length);
+                            if (colMapAdmin.containsKey(parentCommID) && colMapAdmin.get(parentCommID) != null) {
+                                Collection[] colsOld = colMapAdmin.get(parentCommID);
+
+                                LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
+                                if (!colsOldRaw.contains(col)) {
+                                    colsOldRaw.add(col);
+                                    Collection[] colsNew = new Collection[colsOldRaw.size()];
+                                    colMapAdmin.put(parentCommID, colsOldRaw.toArray(colsNew));
+                                }
+
+                            } else {
+                                Collection[] colsNew = {col};
+                                colMapAdmin.put(parentComm.getID(), colsNew);
+                            }
+                        } else {
+                            log.debug(" we are adding collection to non-admin map " + parentComms.length);
+                            if (colMapAnon.containsKey(parentCommID) && colMapAnon.get(parentCommID) != null) {
+                                Collection[] colsOld = colMapAnon.get(parentCommID);
+
+                                LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
+                                if (!colsOldRaw.contains(col)) {
+                                    colsOldRaw.add(col);
+                                    Collection[] colsNew = new Collection[colsOldRaw.size()];
+                                    colMapAnon.put(parentCommID, colsOldRaw.toArray(colsNew));
+                                }
+
+                            } else {
+                                Collection[] colsNew = {col};
+                                colMapAnon.put(parentCommID, colsNew);
+                                //if collection's parent community was not added to non-admin collection map,
+                                // that parent community might not be added to the community map so we won't get to it
+                                //To fix it we check that community parent community entry
+                                Community nextParentComm = parentComm.getParentCommunity();
+                                if (nextParentComm != null) {
+                                    addParentComm(parentComm, admin);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    //Remove collection id from the list of NYU Only collection
+    public static  void removeCollectionFromNyuOnlyListID(int collectionID) throws java.sql.SQLException {
+
+        if( nyuOnly!=null) {
+            nyuOnly.remove(collectionID);
+        }
+
+    }
+    //Remove collection id from the list of Gallatin Only collections
+    public static  void removeCollectionFromGallatinOnlyListID(int collectionID) throws java.sql.SQLException {
+
+        if( gallatinOnly!=null) {
+            gallatinOnly.remove(collectionID);
+        }
+    }
+    //Remove collection id from the list of private collections
+    public static  void removeCollectionFromPrivateListID(int collectionID) throws java.sql.SQLException {
+
+        if( privateCollections!=null) {
+            privateCollections.remove(collectionID);
+        }
+
+    }
+    //Remove collection id from the list of empty collection
+    public static  void removeCollectionFromEmptyListID(int collectionID) throws java.sql.SQLException {
+
+        if( emptyCollections!=null) {
+            emptyCollections.remove(collectionID);
+        }
+
+    }
     //Removes entries from authorized collection admin list when collection is removed
     private static void removeFromCollectionAdminByColID(int collectionID){
         if( colAuthorizedUsers!=null) {
@@ -676,10 +839,6 @@ public class ListUserCommunities {
     }
     //Removes entries from authorized collection admin list when eperson is removed from group
     private static void removeFromCollectionAdminByEpersonID(){
-
-    }
-    //Add entries to authorized collections admin list when community is added or made private
-    private static void addToCollectionAdminByColID(){
 
     }
     //Add entries to authorized collections  admin list when group is added to introduce new collection policy
@@ -1332,55 +1491,7 @@ public class ListUserCommunities {
 
     private static void addCollection(Collection col, Boolean admin ) throws java.sql.SQLException {
 
-        Community[] parentComms =  col.getCommunities();
-        if(parentComms!=null) {
-            log.warn(" get collection " + parentComms.length);
 
-            for (Community parentComm : parentComms) {
-                Collection[] colsChildren = parentComm.getCollections();
-                if(colsChildren != null) {
-                    LinkedList<Collection> colsChildrenRaw = new LinkedList(Arrays.asList(colsChildren));
-                    if(colsChildrenRaw.contains(col)) {
-                        int parentCommID = parentComm.getID();
-                        if (admin) {
-                            if (colMapAdmin.containsKey(parentCommID) && colMapAdmin.get(parentCommID) != null) {
-                                Collection[] colsOld = colMapAdmin.get(parentCommID);
-
-                                LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
-                                if (!colsOldRaw.contains(col)) {
-                                    colsOldRaw.add(col);
-                                    Collection[] colsNew = new Collection[colsOldRaw.size()];
-                                    colMapAdmin.put(parentCommID, colsOldRaw.toArray(colsNew));
-                                }
-
-                            } else {
-                                Collection[] colsNew = {col};
-                                colMapAdmin.put(parentComm.getID(), colsNew);
-                            }
-                        } else {
-                            if (colMapAnon.containsKey(parentCommID) && colMapAnon.get(parentCommID) != null) {
-                                Collection[] colsOld = colMapAnon.get(parentCommID);
-
-                                LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
-                                if (!colsOldRaw.contains(col)) {
-                                    colsOldRaw.add(col);
-                                    Collection[] colsNew = new Collection[colsOldRaw.size()];
-                                    colMapAnon.put(parentCommID, colsOldRaw.toArray(colsNew));
-                                }
-
-                            } else {
-                                Collection[] colsNew = {col};
-                                colMapAnon.put(parentCommID, colsNew);
-                            }
-                        }
-                        Community nextParentComm = parentComm.getParentCommunity();
-                        if (nextParentComm != null) {
-                            addParentComm(parentComm, admin);
-                        }
-                    }
-                }
-            }
-        }
     }
 
     private static void addCollectionID(Community comm, Collection col, Boolean admin ) throws java.sql.SQLException {

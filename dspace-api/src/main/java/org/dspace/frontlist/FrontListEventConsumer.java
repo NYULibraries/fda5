@@ -105,8 +105,8 @@ public class FrontListEventConsumer implements Consumer {
                                                         }
                                                 }
                                                 if (et == Event.REMOVE ) {
-                                                        log.warn(" processing removing collection");
-                                                        //processRemoveCollection(s, objectID);
+                                                        log.debug(" processing removing collection");
+                                                        processRemoveCollection(subjectID, objectID);
 
                                                 }
 
@@ -124,11 +124,11 @@ public class FrontListEventConsumer implements Consumer {
                                 } else {
                                         Community s = (Community) event.getSubject(ctx);
                                         if (et == Event.MODIFY_METADATA) {
-                                                log.warn(" processing adding/updating  community");
-                                                //processUpdateCommunity(s);
+                                                log.debug(" processing updating  community");
+                                                processUpdateCommunity(s);
                                         }
                                         if (et == Event.CREATE) {
-                                                log.warn(" processing adding community");
+                                                log.debug(" processing adding community");
                                                 processAddCommunity(s);
                                         }
 
@@ -325,14 +325,14 @@ public class FrontListEventConsumer implements Consumer {
                 ListUserCommunities.addCommunityToAdminMap(comm);
         }
 
-        private void processRemoveCollection( Community comm, int collectionID ) throws java.sql.SQLException {
+        private void processRemoveCollection( int parentCommID, int collectionID ) throws java.sql.SQLException {
 
-                /*ListUserCommunities.removeCollectionFromAnnonListID(comm,collectionID);
-                ListUserCommunities.removeCollectionFromAdminListID(comm,collectionID);
+                ListUserCommunities.removeCollectionFromAnonMapByID(parentCommID,collectionID);
+                ListUserCommunities.removeCollectionFromAdminMapByID(parentCommID,collectionID);
                 ListUserCommunities.removeCollectionFromEmptyListID(collectionID);
                 ListUserCommunities.removeCollectionFromPrivateListID(collectionID);
-                ListUserCommunities.removeCollectionFromNYUOnlyListID(collectionID);
-                ListUserCommunities.removeCollectionFromGallatinOnlyListID(collectionID);*/
+                ListUserCommunities.removeCollectionFromNyuOnlyListID(collectionID);
+                ListUserCommunities.removeCollectionFromGallatinOnlyListID(collectionID);
 
         }
 
