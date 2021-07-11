@@ -101,7 +101,7 @@ public class FrontListEventConsumer implements Consumer {
                                                         if (event.getObject(ctx) != null) {
                                                                 log.debug(" processing adding collection");
                                                                 Collection o = (Collection) event.getObject(ctx);
-                                                                //processAddCollection(s, o);
+                                                                processAddCollection(o);
                                                         }
                                                 }
                                                 if (et == Event.REMOVE ) {
@@ -124,7 +124,7 @@ public class FrontListEventConsumer implements Consumer {
                                 } else {
                                         Community s = (Community) event.getSubject(ctx);
                                         if (et == Event.MODIFY_METADATA) {
-                                                log.debug(" processing updating  community");
+                                                log.debug(" processing updating  community metadata ");
                                                 processUpdateCommunity(s);
                                         }
                                         if (et == Event.CREATE) {
@@ -160,7 +160,7 @@ public class FrontListEventConsumer implements Consumer {
                                         }
                                 }
                                 if (et == Event.MODIFY_METADATA) {
-                                        log.warn(" processing adding collection");
+                                        log.warn(" processing updating collection metadata");
                                         processUpdateCollection(s);
                                 }
 
@@ -241,6 +241,70 @@ public class FrontListEventConsumer implements Consumer {
                 ListUserCommunities.removeChildrenCommunityFromAdminListID(communityID);
 
         }
+
+        //If an item is added to an empty collection and this collection is not private we add this collection to non-admin list
+        private void processAddItem( Collection col ) throws java.sql.SQLException {
+
+                       /* if(ListUserCommunities.emptyCollections!=null
+                                && ListUserCommunities.emptyCollections.contains(col)) {
+                                ListUserCommunities.removeCollectionFromEmptyList(col);
+                                if(!col.isPrivate()) {
+                                        ListUserCommunities.removeUsersFromAuthorizedColList(col);
+                                        ListUserCommunities.addCollectionToAnnonList(col);
+                                }
+
+                        }*/
+        }
+
+        
+        private void processRemoveItem( Collection col ) throws java.sql.SQLException {
+                             /*  ListUserCommunities.addCollectionToEmptyList(col);
+                                if( !ListUserCommunities.privateCollections.contains(col)) {
+                                        ListUserCommunities.removeCollectionFromAnnonList(col);
+                                }*/
+
+        }
+
+        private void processAddCollection( Collection col ) throws java.sql.SQLException {
+
+                log.debug("We adding collection to Admin list");
+                ListUserCommunities.addCollectionToAdminMap(col);
+                ListUserCommunities.addCollectionToAnonMap(col);
+
+                if(col.isPrivate()) {
+                                ListUserCommunities.addCollectionToPrivateListID(col.getID());
+                }
+                if(col.isNYUOnly()) {
+                                ListUserCommunities.addCollectionToNyuOnlyListID(col.getID());
+                }
+                if(col.isGallatin()) {
+                                ListUserCommunities.addCollectionToGallatinOnlyListID(col.getID());
+                }
+        }
+        //Adds community to admin map after creation. As community is empty when created it will only withible to admins
+        private void processAddCommunity( Community comm ) throws java.sql.SQLException {
+                ListUserCommunities.addCommunityToAdminMap(comm);
+        }
+
+        private void processRemoveCollection( int parentCommID, int collectionID ) throws java.sql.SQLException {
+
+                ListUserCommunities.removeCollectionFromAnonMapByID(parentCommID,collectionID);
+                ListUserCommunities.removeCollectionFromAdminMapByID(parentCommID,collectionID);
+                ListUserCommunities.removeCollectionFromEmptyListID(collectionID);
+                ListUserCommunities.removeCollectionFromPrivateListID(collectionID);
+                ListUserCommunities.removeCollectionFromNyuOnlyListID(collectionID);
+                ListUserCommunities.removeCollectionFromGallatinOnlyListID(collectionID);
+
+        }
+
+
+        private void processUpdateCollection(Collection col) throws java.sql.SQLException {
+                ListUserCommunities.updateCollectionMetadata(col);
+        }
+
+        private void processUpdateCommunity(Community comm) throws java.sql.SQLException {
+                ListUserCommunities.updateCommunityMetadata(comm);
+        }
         private void processModifyGroup( Context context, EPerson eperson, Group group, int eventType ) throws java.sql.SQLException {
                 List<ResourcePolicy> rps= AuthorizeManager.getPoliciesForGroup(context, group);
                 for (ResourcePolicy rp:rps) {
@@ -277,88 +341,5 @@ public class FrontListEventConsumer implements Consumer {
                                 processModifyGroup(context, eperson, parentGroup, eventType);
                         }*/
                 }
-        }
-
-        private void processAddItem( Collection col ) throws java.sql.SQLException {
-
-                       /* if(ListUserCommunities.emptyCollections!=null
-                                && ListUserCommunities.emptyCollections.contains(col)) {
-                                ListUserCommunities.removeCollectionFromEmptyList(col);
-                                if(!col.isPrivate()) {
-                                        ListUserCommunities.removeUsersFromAuthorizedColList(col);
-                                        ListUserCommunities.addCollectionToAnnonList(col);
-                                }
-
-                        }*/
-        }
-
-        private void processRemoveItem( Collection col ) throws java.sql.SQLException {
-                             /*  ListUserCommunities.addCollectionToEmptyList(col);
-                                if( !ListUserCommunities.privateCollections.contains(col)) {
-                                        ListUserCommunities.removeCollectionFromAnnonList(col);
-                                }*/
-
-        }
-
-        private void processAddCollection( Community comm, Collection col ) throws java.sql.SQLException {
-
-               /* log.warn("We continue adding collection");
-                ListUserCommunities.addCollectionToEmptyList(col);
-                log.warn("We adding collection to Admin list");
-                ListUserCommunities.addCollectionToAdminListID(comm, col);
-                ListUserCommunities.addUsersToAuthorizedColList(col);
-
-                if(col.isPrivate()) {
-                                ListUserCommunities.addCollectionToPrivateList(col);
-                }
-                if(col.isNYUOnly()) {
-                                ListUserCommunities.addCollectionToNYUOnlyList(col);
-                }
-                if(col.isGallatin()) {
-                                ListUserCommunities.addCollectionToGallatinOnlyList(col);
-                }*/
-
-
-        }
-        //Adds community to admin map after creation. As community is empty when created it will only withible to admins
-        private void processAddCommunity( Community comm ) throws java.sql.SQLException {
-                ListUserCommunities.addCommunityToAdminMap(comm);
-        }
-
-        private void processRemoveCollection( int parentCommID, int collectionID ) throws java.sql.SQLException {
-
-                ListUserCommunities.removeCollectionFromAnonMapByID(parentCommID,collectionID);
-                ListUserCommunities.removeCollectionFromAdminMapByID(parentCommID,collectionID);
-                ListUserCommunities.removeCollectionFromEmptyListID(collectionID);
-                ListUserCommunities.removeCollectionFromPrivateListID(collectionID);
-                ListUserCommunities.removeCollectionFromNyuOnlyListID(collectionID);
-                ListUserCommunities.removeCollectionFromGallatinOnlyListID(collectionID);
-
-        }
-
-
-        private void processDeleteCommunity(  int communityID ) throws java.sql.SQLException {
-
-               /* ListUserCommunities.removeChildrenCommunityFromAdminListID(communityID);
-                ListUserCommunities.removeChildrenCommunityFromAnnonListID(communityID);*/
-
-        }
-
-        private void processCreateCommunity(  Community comm ) throws java.sql.SQLException {
-
-               /* ListUserCommunities.addCommunityToAdminListID(comm.getID());
-                ListUserCommunities.addUsersToAuthorizedComList(comm);*/
-
-        }
-
-        private void processUpdateCollection(Collection col) throws java.sql.SQLException {
-                /*ListUserCommunities.updateCollectionMetadata(col, true);
-                ListUserCommunities.updateCollectionMetadata(col, false);*/
-        }
-
-        private void processUpdateCommunity(Community comm) throws java.sql.SQLException {
-               /* ListUserCommunities.updateCommunityMetadata(comm, true);
-                ListUserCommunities.updateCommunityMetadata(comm, false);*/
-
         }
 }
