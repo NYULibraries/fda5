@@ -609,7 +609,32 @@ public class ListUserCommunities {
             }
         }
     }
-
+    //if subcommunty metadata was updated, update it in the map
+    public static  void updateCommunityMetadata( Community comm ) throws java.sql.SQLException {
+        Community parentComm = (Community) comm.getParentCommunity();
+        if(parentComm!=null) {
+                if (commMapAdmin.containsKey(parentComm.getID()) && commMapAdmin.get(parentComm.getID()) != null) {
+                    Community[] commsOld = commMapAdmin.get(parentComm.getID());
+                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
+                    if (commsOldRaw.contains(comm)) {
+                        commsOldRaw.remove(comm);
+                        commsOldRaw.add(comm);
+                        Community[] commNew = new Community[commsOldRaw.size()];
+                        commMapAdmin.put(parentComm.getID(), commsOldRaw.toArray(commNew));
+                    }
+                }
+                if (commMapAnon.containsKey(parentComm.getID()) && commMapAnon.get(parentComm.getID()) != null) {
+                    Community[] commsOld = commMapAnon.get(parentComm.getID());
+                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
+                    if (commsOldRaw.contains(comm)) {
+                        commsOldRaw.remove(comm);
+                        commsOldRaw.add(comm);
+                        Community[] commNew = new Community[commsOldRaw.size()];
+                        commMapAnon.put(parentComm.getID(), commsOldRaw.toArray(commNew));
+                    }
+                }
+        }
+    }
 
     //Add entries to authorized communities  admin list when group is added to introduce new community policy
     private static void addToCommunityAdminByGroup(){
@@ -1443,39 +1468,6 @@ public class ListUserCommunities {
 
     }
 
-
-
-    public static  void updateCommunityMetadata( Community com, Boolean admin ) throws java.sql.SQLException {
-        Community parentComm = (Community) com.getParentCommunity();
-        if(parentComm!=null) {
-            if (admin) {
-                if (commMapAdmin.containsKey(parentComm.getID()) && commMapAdmin.get(parentComm.getID()) != null) {
-                    Community[] commsOld = commMapAdmin.get(parentComm.getID());
-                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
-                    if (commsOldRaw.contains(com)) {
-                        commsOldRaw.remove(com);
-                        commsOldRaw.add(com);
-                        Community[] commNew = new Community[commsOldRaw.size()];
-                        commMapAdmin.put(parentComm.getID(), commsOldRaw.toArray(commNew));
-                    }
-                } else {
-                    Community[] commNew = {com};
-                    commMapAdmin.put(parentComm.getID(), commNew);
-                }
-            } else {
-                if (commMapAnon.containsKey(parentComm.getID()) && commMapAnon.get(parentComm.getID()) != null) {
-                    Community[] commsOld = commMapAnon.get(parentComm.getID());
-                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
-                    if (commsOldRaw.contains(com)) {
-                        commsOldRaw.remove(com);
-                        commsOldRaw.add(com);
-                        Community[] commNew = new Community[commsOldRaw.size()];
-                        commMapAnon.put(parentComm.getID(), commsOldRaw.toArray(commNew));
-                    }
-                }
-            }
-        }
-    }
 
     private static void removeCollection(Collection col, Boolean admin ) throws java.sql.SQLException {
 
