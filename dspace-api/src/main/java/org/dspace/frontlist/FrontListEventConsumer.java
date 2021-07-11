@@ -82,8 +82,8 @@ public class FrontListEventConsumer implements Consumer {
                 if(st==Constants.SITE ) {
                         if(event.getObjectID()!=-1 && et == Event.REMOVE) {
                                 int objectID = event.getObjectID();
-                                log.warn(" processing removing community");
-                                processRemoveCommunityID(objectID);
+                                log.debug(" processing removing top community");
+                                processRemoveTopCommunityID(objectID);
                         }
 
                 }
@@ -91,7 +91,7 @@ public class FrontListEventConsumer implements Consumer {
                 //any event has subject and action but some like "COMMUNITY DELETE " might not have object
                 if(st==Constants.COMMUNITY ) {
                         if(event.getSubject(ctx)!=null) {
-                                Community s = (Community) event.getSubject(ctx);
+                                int subjectID = event.getSubjectID();
                                 if(event.getObjectID()!=-1) {
                                         int objectID = event.getObjectID();
                                         //add or remove collection to the community, the event is issued AFTER collection is added/removed to/from the community
@@ -101,30 +101,31 @@ public class FrontListEventConsumer implements Consumer {
                                                         if (event.getObject(ctx) != null) {
                                                                 log.debug(" processing adding collection");
                                                                 Collection o = (Collection) event.getObject(ctx);
-                                                                processAddCollection(s, o);
+                                                                //processAddCollection(s, o);
                                                         }
                                                 }
                                                 if (et == Event.REMOVE ) {
                                                         log.warn(" processing removing collection");
-                                                        processRemoveCollection(s, objectID);
+                                                        //processRemoveCollection(s, objectID);
 
                                                 }
 
                                         }
-                                        //add or remove subcommunity to the community, the event is issued AFTER collection is added/removed to/from the community
+                                        //Removes subcommunity from the community
                                         if (event.getObjectType() == Constants.COMMUNITY) {
 
                                                 if (et == Event.REMOVE) {
-                                                        log.warn(" processing removing community");
-                                                        processRemoveCommunity(s, objectID);
+                                                        log.debug(" processing removing subcommunity");
+                                                        processRemoveSubCommunity(subjectID, objectID);
 
                                                 }
                                         }
                                 //we work on community itself not on it's elements
                                 } else {
+                                        Community s = (Community) event.getSubject(ctx);
                                         if (et == Event.MODIFY_METADATA) {
                                                 log.warn(" processing adding/updating  community");
-                                                processUpdateCommunity(s);
+                                                //processUpdateCommunity(s);
                                         }
                                         if (et == Event.CREATE) {
                                                 log.warn(" processing adding community");
@@ -207,8 +208,39 @@ public class FrontListEventConsumer implements Consumer {
             // No-op
 
         }
+        //Processes removing top level community and it's children elements from maps.
+        //The event is issued after community and it's children objects are already deleted
+        //We are just modifying maps. We use java objects which support concurrency so all operations are threadsafe
+        private void processRemoveTopCommunityID(  int communityID ) throws java.sql.SQLException {
 
+                //remove children collection and subcommunity from the non-admin map
+                ListUserCommunities.removeChildrenCommunityFromAnnonListID(communityID);
 
+                //remove children collection and subcommunity from the admin map
+                ListUserCommunities.removeChildrenCommunityFromAdminListID(communityID);
+        }
+
+        //Processes removing subcommunity and it's children elements from maps.
+        //Also removes the subcommunity from the list of subcommunities in the maps entry for it's parent community
+        //The event is issued after subcommunity and it's children objects are already deleted
+        //We are just modifying maps. We use java objects which support concurrency so all operations are threadsafe
+        private void processRemoveSubCommunity( int parentCommID, int communityID ) throws java.sql.SQLException {
+
+                //Modifies the array of subcommunities in the non-admin map entry for the parent comminity
+                // to remove deleted subcommunity
+                ListUserCommunities.removeSubcommunityFromParentAnnonListID(parentCommID,communityID);
+
+                //Modifies the array of subcommunities in the non-admin map entry for the parent comminity
+                // to remove deleted subcommunity
+                ListUserCommunities.removeSubcommunityFromParentAdminListID(parentCommID,communityID);
+
+                //Removes entries for children collection and subcommunity from the non-admin map
+                ListUserCommunities.removeChildrenCommunityFromAnnonListID(communityID);
+
+                //Removes entries for children collection and subcommunity from the admin map
+                ListUserCommunities.removeChildrenCommunityFromAdminListID(communityID);
+
+        }
         private void processModifyGroup( Context context, EPerson eperson, Group group, int eventType ) throws java.sql.SQLException {
                 List<ResourcePolicy> rps= AuthorizeManager.getPoliciesForGroup(context, group);
                 for (ResourcePolicy rp:rps) {
@@ -288,13 +320,9 @@ public class FrontListEventConsumer implements Consumer {
 
 
         }
-
+        //Adds community to admin map after creation. As community is empty when created it will only withible to admins
         private void processAddCommunity( Community comm ) throws java.sql.SQLException {
-
-                /*ListUserCommunities.addCommunityToAdminList(comm);
-                ListUserCommunities.addUsersToAuthorizedComList(comm);*/
-
-
+                ListUserCommunities.addCommunityToAdminMap(comm);
         }
 
         private void processRemoveCollection( Community comm, int collectionID ) throws java.sql.SQLException {
@@ -308,12 +336,6 @@ public class FrontListEventConsumer implements Consumer {
 
         }
 
-        private void processRemoveCommunity( Community parentComm, int communityID ) throws java.sql.SQLException {
-
-               /* ListUserCommunities.removeCommunityFromAdminListID(parentComm,communityID);
-                ListUserCommunities.removeCommunityFromAnnonListID(parentComm,communityID);*/
-
-        }
 
         private void processDeleteCommunity(  int communityID ) throws java.sql.SQLException {
 

@@ -163,13 +163,17 @@ public class ListUserCommunities {
 
     }
 
-    /* Build admin and general maps of collection for each  community.
+    /****Methods needed to build pre-calculated objects****/
+
+    /* Build admin and non-admin maps of collection for each  community.
      * In the process of building maps we will also build nyuOnly, gallatinOnly,
      * privateCollections, emptyCollections which will allow us to make faster calculations
-     * We also will build an ArrayList of class AuthorizedCoolectionUsers
+     * We also will build an ArrayLists of classes AuthorizedCoolectionUsers and AuthorizedCommunityUsers-
      * The later will be used to build user specific front list for collection admins
      * Takes parent community as input
      */
+
+    //Builds subcommunity map, e.g. map where each entry looks like <key=Parent Community ID, value=[Children Subcommunties of this community]
     private static void buildCollections(Community c) throws SQLException {
 
         Integer comID = c.getID();
@@ -229,7 +233,7 @@ public class ListUserCommunities {
 
                 }
             }
-            //if community has publicly available collection add it to generic map
+            //if community has publicly available collection(s) add it to non-admin map
             if (availableCol.size() > 0) {
                 Collection[] availableColArray = new Collection[availableCol.size()];
                 colMapAnon.put(comID, availableCol.toArray(availableColArray));
@@ -238,6 +242,7 @@ public class ListUserCommunities {
 
     }
 
+    //Builds collection map, e.g. map where each entry looks like <key=Parent Community ID, value=[Children Collections of this community]
     private static void buildCommunity(Community c) throws SQLException {
         Integer comID = c.getID();
         Community[] comms = c.getSubcommunities();
@@ -270,6 +275,7 @@ public class ListUserCommunities {
             }
         }
     }
+
 
     //get all users who might have admin access to the collection
     //they might be collection admins or submitters or parent community admins
@@ -353,6 +359,8 @@ public class ListUserCommunities {
         }
     }
 
+    /*** Methods used to build communties and collections list for admins of private or/and empty communties/collections***/
+
     //Returns array of private and empty collection's ids for which user has admin access.
     //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCollectionUsers> colAuthorizedUsers
     public static ArrayList getAuthorizedCollections(int epersonID) {
@@ -419,9 +427,29 @@ public class ListUserCommunities {
         return false;
     }
 
+    /*** Methods used to manage communites and subcommunities added and removed during the application life cucle ***/
+
+    //Removes entry for the community and it's children objects from non-admin maps
+    public static void removeChildrenCommunityFromAnnonListID(int communityID)throws java.sql.SQLException {
+        removeChildrenCommID(communityID,false);
+    }
+    //Removes entry for the community and it's children objects from admin maps and list of special admins
+    public static void removeChildrenCommunityFromAdminListID(int communityID)throws java.sql.SQLException {
+        removeFromCommunityAdminByCommID(communityID);
+        removeChildrenCommID(communityID,true);
+    }
+    //Removes subcommunity from parent entry in non-admin map
+    public static void   removeSubcommunityFromParentAnnonListID(int parentCommID, int communityID)throws java.sql.SQLException {
+        removeParentCommID(parentCommID, communityID,false);
+    }
+
+    //Removes subcommunity from parent entry in admin map
+    public static void   removeSubcommunityFromParentAdminListID(int parentCommID, int communityID)throws java.sql.SQLException {
+        removeParentCommID(parentCommID, communityID,true);
+    }
+
     //Remove subcommunity from the array which is assosiated with it's parent community in admin or non-admin map using it's id
-    private static void removeParentCommID(Community parentComm, int communityID, Boolean admin ) throws java.sql.SQLException {
-        int parentCommID = parentComm.getID();
+    private static void removeParentCommID(int parentCommID, int communityID, Boolean admin ) throws java.sql.SQLException {
         if(admin) {
             if (commMapAdmin.containsKey(parentCommID) && commMapAdmin.get(parentCommID) != null) {
                 Community[] commsOld = commMapAdmin.get(parentCommID);
@@ -431,9 +459,9 @@ public class ListUserCommunities {
                         commsOldRaw.remove(comm);
                         if (commsOldRaw.size() > 0) {
                             Community[] commNew = new Community[commsOldRaw.size()];
-                            commMapAdmin.put(parentComm.getID(), commsOldRaw.toArray(commNew));
+                            commMapAdmin.put(parentCommID, commsOldRaw.toArray(commNew));
                         } else {
-                            commMapAdmin.remove(parentComm.getID());
+                            commMapAdmin.remove(parentCommID);
                         }
                     }
                 }
@@ -447,17 +475,18 @@ public class ListUserCommunities {
                         commsOldRaw.remove(comm);
                         if (commsOldRaw.size() > 0) {
                             Community[] commNew = new Community[commsOldRaw.size()];
-                            commMapAnon.put(parentComm.getID(), commsOldRaw.toArray(commNew));
+                            commMapAnon.put(parentCommID, commsOldRaw.toArray(commNew));
                         } else {
-                            commMapAnon.remove(parentComm.getID());
+                            commMapAnon.remove(parentCommID);
                         }
                     }
                 }
             }
         }
     }
-    //Removes entry for community from collection and community map when the community is removed
-    //We are not removing entries for children subcommunities but it does not better because we won't get to them
+    //Removes entry for community from collection and community maps when the community is removed.
+    //We are not removing entries for children subcommunities but it does not matter because we won't get to them if entry
+    //for the parent community is removed
     private static void removeChildrenCommID(int communityID, Boolean admin) throws java.sql.SQLException {
         if(admin) {
             if (commMapAdmin!=null && commMapAdmin.containsKey(communityID)) {
@@ -478,8 +507,32 @@ public class ListUserCommunities {
 
     }
     //Removes entries from authorized communities  admin list when community is removed
-    private static void removeFromCommunityAdminByCommID(){
+    private static void removeFromCommunityAdminByCommID(int communityID){
+        if (commMapAdmin!=null && commMapAdmin.containsKey(communityID) ) {
+            Community[] comms = commMapAdmin.get(communityID);
+            for( Community comm:comms) {
+                if (commMapAdmin!=null && commMapAdmin.containsKey(comm.getID())) {
+                    removeFromCommunityAdminByCommID(comm.getID());
+                }
+                if (colMapAdmin!=null && colMapAdmin.containsKey(comm.getID())) {
+                    Collection[] cols = colMapAdmin.get(comm.getID());
+                    for(Collection col:cols) {
+                        removeFromCollectionAdminByColID(col.getID());
+                    }
+                }
+            }
+            if( commAuthorizedUsers!=null) {
+                Iterator iteratorAuthCommunities = commAuthorizedUsers.iterator();
+                while (iteratorAuthCommunities.hasNext()) {
+                    AuthorizedCommunityUsers authComm = (AuthorizedCommunityUsers) iteratorAuthCommunities.next();
+                    if (authComm.getCommunityID() == communityID) {
+                        log.debug("collection entry to remove " + authComm.getCommunityID());
+                        commAuthorizedUsers.remove(authComm);
+                    }
 
+                }
+            }
+        }
     }
     //Removes entries from authorized communities  admin list when group is removed
     private static void removeFromCommunityAdminByGroupID(){
@@ -489,32 +542,119 @@ public class ListUserCommunities {
     private static void removeFromCommunityAdminByEpersonID(){
 
     }
-    //Removes entries from authorized communities  admin list when community is removed
-    private static void removeFromCollectionAdminByCommID(){
-
+    //Adds community to admin map. It will happen immediately after the community is created and because it is yet empty it will be
+    //only visible to admins. According to FDA policy we won't have private communities so community admins will remain in authorized users list only
+    //till we add a non-empty, public collection to the community.
+    public static void addCommunityToAdminMap(Community comm) throws java.sql.SQLException {
+        //first add the community to admin community map
+        addParentComm(comm, true);
+        //add community admins to the authorized list
+        buildAuthorizedCommList(comm);
     }
-    //Removes entries from authorized communities  admin list when group is removed
-    private static void removeFromCollectionAdminByGroupID(){
-
+    //Adds community to non-admin map. It will happen only after the following conditions are met:
+    // A collection is added to the community or it's subcommunities
+    // That collection is not private
+    // At least one item is added to that collection.
+    // We will take care of authorized commmunity admins on collection level
+    public static void addCommunityToAnonMap(Community comm) throws java.sql.SQLException {
+        addParentComm(comm, false);
     }
-    //Removes entries from authorized communities  admin list when eperson is removed from group
-    private static void removeFromCollectionAdminByEpersonID(){
+    //Makes actual calculations to add parent community to admin or non-admin map
+    private static void addParentComm( Community comm, Boolean admin ) throws java.sql.SQLException {
+        Community parentComm = (Community) comm.getParentCommunity();
+        log.debug(" Community we are adding "+comm.getName());
+        if(parentComm!=null) {
+            log.debug(" Adding subcommunity to community "+parentComm.getName());
+            if(admin) {
+                if (commMapAdmin.containsKey(parentComm.getID()) && commMapAdmin.get(parentComm.getID()) != null) {
+                    Community[] commsOld = commMapAdmin.get(parentComm.getID());
+                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
+                    if (!commsOldRaw.contains(comm)) {
+                        commsOldRaw.add(comm);
+                        Community[] commNew = new Community[commsOldRaw.size()];
+                        commMapAdmin.put(parentComm.getID(), commsOldRaw.toArray(commNew));
+                    }
+                } else {
+                    Community[] commNew = {comm};
+                    commMapAdmin.put(parentComm.getID(), commNew);
+                }
+            } else {
+                if (commMapAnon.containsKey(parentComm.getID()) && commMapAnon.get(parentComm.getID()) != null) {
+                    Community[] commsOld = commMapAnon.get(parentComm.getID());
+                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
+                    if (!commsOldRaw.contains(comm)) {
 
-    }
-    //Add entries to authorized communities  admin list when community is added or made private
-    private static void addToCommunityAdminByCommID(){
+                        commsOldRaw.add(comm);
 
+                        Community[] commNew = new Community[commsOldRaw.size()];
+                        commMapAnon.put(parentComm.getID(), commsOldRaw.toArray(commNew));
+                    }
+                } else {
+                    Community[] commNew = {comm};
+                    commMapAnon.put(parentComm.getID(), commNew);
+                }
+            }
+            Community nextParentComm = parentComm.getParentCommunity();
+            if (nextParentComm != null) {
+                log.debug("Adding next level parent community "+nextParentComm.getName());
+                addParentComm(parentComm, admin);
+            }
+        } else {
+            if(admin) {
+                log.debug(" Adding top level community to admin map"+comm.getName());
+                commMapAdmin.put(comm.getID(), null);
+            } else {
+                log.debug(" Adding top level community to non-admin map"+comm.getName());
+                commMapAnon.put(comm.getID(), null);
+            }
+        }
     }
+
+
     //Add entries to authorized communities  admin list when group is added to introduce new community policy
-    private static void addToCommunityAdminByGroupID(){
+    private static void addToCommunityAdminByGroup(){
 
     }
     //Add entries to authorized communities  admin list when eperson is added to the group
     private static void addToCommunityAdminByEpersonID(){
 
     }
+
+
+
+    /*** Methods used to manage collections added and removed during the application life cycle ***/
+    //Removes collection from the admin list when it is deleted
+    //Removes collection from non-admin list when it is deleted, becomes private or no longer has public items
+    //Add collection to the admin list when it is created
+    //Add collection and it parent communities to the non-admin list when collection becomes public
+    // or when public items are added to it.
+
+    //Removes entries from authorized collection admin list when collection is removed
+    private static void removeFromCollectionAdminByColID(int collectionID){
+        if( colAuthorizedUsers!=null) {
+            Iterator iteratorAuthCollections = colAuthorizedUsers.iterator();
+            while (iteratorAuthCollections.hasNext()) {
+                AuthorizedCollectionUsers authCol = (AuthorizedCollectionUsers) iteratorAuthCollections.next();
+                if (authCol.getCollectionID() == collectionID) {
+                    log.debug("collection entry to remove " + authCol.getCollectionID());
+                    colAuthorizedUsers.remove(authCol);
+                }
+
+            }
+        }
+    }
+    //Removes entries from authorized collection  admin list when group is removed
+    private static void removeFromCollectionAdminByGroupID(int groupID){
+        if( colAuthorizedUsers!=null) {
+
+        }
+    }
+    //Removes entries from authorized collection admin list when eperson is removed from group
+    private static void removeFromCollectionAdminByEpersonID(){
+
+    }
     //Add entries to authorized collections admin list when community is added or made private
-    private static void addToCollectionAdminByCommID(){
+    private static void addToCollectionAdminByColID(){
 
     }
     //Add entries to authorized collections  admin list when group is added to introduce new collection policy
@@ -1163,42 +1303,7 @@ public class ListUserCommunities {
         return epersons;
     }
 
-    private static void addChildrenComm( Community com, Boolean admin ) throws java.sql.SQLException {
-        int comID = com.getID();
-        Collection[] colls = com.getCollections();
-        if (colls.length > 0) {
-            if(admin) {
-                colMapAdmin.put(comID, colls);
-            } else {
-                colMapAnon.put(comID, colls);
-            }
-        }
-        Community[] comms = com.getSubcommunities();
-            if(admin) {
-                if(commMapAdmin == null) {
-                    commMapAdmin.put(comID, comms);
-                } else {
-                    if(!commMapAdmin.containsKey(comID)) {
-                        commMapAdmin.put(comID, comms);
-                    }
-                }
-            } else {
-                if (comms.length > 0 ) {
-                    if(commMapAnon == null) {
-                        commMapAnon.put(comID, comms);
-                    } else {
-                        if (!commMapAnon.containsKey(comID)) {
-                            commMapAnon.put(comID, comms);
-                        }
-                    }
-                }
-            }
 
-
-            for(Community subcomm:comms) {
-                addChildrenComm(  subcomm, admin);
-            }
-        }
 
     private static void addCollection(Collection col, Boolean admin ) throws java.sql.SQLException {
 
@@ -1338,47 +1443,7 @@ public class ListUserCommunities {
 
     }
 
-    private static void addParentComm( Community com, Boolean admin ) throws java.sql.SQLException {
-        Community parentComm = (Community) com.getParentCommunity();
-        log.warn(" community "+com.getName()+ " no");
-        if(parentComm!=null) {
-            log.warn(" parent community "+parentComm.getName());
-            if(admin) {
-                if (commMapAdmin.containsKey(parentComm.getID()) && commMapAdmin.get(parentComm.getID()) != null) {
-                    Community[] commsOld = commMapAdmin.get(parentComm.getID());
-                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
-                    if (!commsOldRaw.contains(com)) {
-                        commsOldRaw.add(com);
-                        Community[] commNew = new Community[commsOldRaw.size()];
-                        commMapAdmin.put(parentComm.getID(), commsOldRaw.toArray(commNew));
-                    }
-                } else {
-                    Community[] commNew = {com};
-                    commMapAdmin.put(parentComm.getID(), commNew);
-                }
-            } else {
-                if (commMapAnon.containsKey(parentComm.getID()) && commMapAnon.get(parentComm.getID()) != null) {
-                    Community[] commsOld = commMapAnon.get(parentComm.getID());
-                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
-                    if (!commsOldRaw.contains(com)) {
 
-                        commsOldRaw.add(com);
-
-                        Community[] commNew = new Community[commsOldRaw.size()];
-                        commMapAnon.put(parentComm.getID(), commsOldRaw.toArray(commNew));
-                    }
-                } else {
-                    Community[] commNew = {com};
-                    commMapAnon.put(parentComm.getID(), commNew);
-                }
-            }
-            Community nextParentComm = parentComm.getParentCommunity();
-            if (nextParentComm != null) {
-                log.warn(" add to community "+nextParentComm.getName());
-                addParentComm(parentComm, admin);
-            }
-        }
-    }
 
     public static  void updateCommunityMetadata( Community com, Boolean admin ) throws java.sql.SQLException {
         Community parentComm = (Community) com.getParentCommunity();
