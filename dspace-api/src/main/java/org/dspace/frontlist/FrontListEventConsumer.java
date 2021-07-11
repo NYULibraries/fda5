@@ -136,14 +136,16 @@ public class FrontListEventConsumer implements Consumer {
                                 }
                         }
                 }
-
+                //colection related events, e.g. when collection is an event  subject and some action is performed over collection element, e.g. object
+                //any event has subject and action but some like "COLECCTION MODIFY_METADATA " might not have object
+                //NOTE:remove and add collection events are processed on community level so are not mentioned here
                 if(st==Constants.COLLECTION ) {
                         Collection s = (Collection) event.getSubject(ctx);
                         if(s!=null) {
-                                log.warn(" processing removing item "+ event.getDetail());
+                                log.debug(" processing removing item "+ event.getDetail());
                                 if (et == Event.REMOVE ) {
                                         if (s.countItems() == 0) {
-                                                log.warn(" processing removing item");
+                                                log.debug(" processing removing last item from collection "+s.getName());
                                                 processRemoveItem(s);
 
                                         }
@@ -152,7 +154,7 @@ public class FrontListEventConsumer implements Consumer {
                                         if (event.getObject(ctx) != null && event.getObjectType() == Constants.ITEM) {
                                                 if (ListUserCommunities.emptyCollections != null &&
                                                         ListUserCommunities.emptyCollections.contains(s)) {
-                                                        log.warn(" processing adding item");
+                                                        log.debug(" processing adding item for previously empty collection "+s.getName());
                                                         processAddItem(s);
                                                 }
 
@@ -168,7 +170,8 @@ public class FrontListEventConsumer implements Consumer {
 
                 }
 
-
+                //most item related events are processed on collection level. The only event we are processing for an item  is when
+                //last item in the collection is withdrawn.
                 if (st==Constants.ITEM && et == Event.MODIFY && event.getDetail().equals("WITHDRAW")) {
                         Item s = (Item) event.getSubject(ctx);
                         Collection[] cols =s.getCollections();
@@ -181,10 +184,13 @@ public class FrontListEventConsumer implements Consumer {
                         }
                 }
 
-
+                //group related events, e.g. when an eperson is added or removed from the group or when group is deleted
                 if(st==Constants.GROUP ) {
                         if(event.getObject(ctx)!=null && event.getObjectType()==Constants.EPERSON) {
                                 processModifyGroup(ctx, (EPerson) event.getObject(ctx), (Group) event.getSubject(ctx), et);
+                        }
+                        if(event.getEventType()==Event.DELETE) {
+                                processDeleteGroup( event.getSubjectID());
                         }
                 }
 
@@ -244,32 +250,34 @@ public class FrontListEventConsumer implements Consumer {
 
         //If an item is added to an empty collection and this collection is not private we add this collection to non-admin list
         private void processAddItem( Collection col ) throws java.sql.SQLException {
-
-                       /* if(ListUserCommunities.emptyCollections!=null
+             if(ListUserCommunities.emptyCollections!=null
                                 && ListUserCommunities.emptyCollections.contains(col)) {
-                                ListUserCommunities.removeCollectionFromEmptyList(col);
+                                ListUserCommunities.removeCollectionFromEmptyListID(col.getID());
                                 if(!col.isPrivate()) {
-                                        ListUserCommunities.removeUsersFromAuthorizedColList(col);
-                                        ListUserCommunities.addCollectionToAnnonList(col);
+                                        ListUserCommunities.addCollectionToAnonMap(col);
                                 }
 
-                        }*/
+             }
         }
 
-        
+        //If the last item is removed or withdrawn from a public collection, the collection is removed from non-admin list
+        //It will now only will be visible to site admin, parent community admins and collection admins
         private void processRemoveItem( Collection col ) throws java.sql.SQLException {
-                             /*  ListUserCommunities.addCollectionToEmptyList(col);
+                             ListUserCommunities.addCollectionToEmptyListID(col.getID());
                                 if( !ListUserCommunities.privateCollections.contains(col)) {
-                                        ListUserCommunities.removeCollectionFromAnnonList(col);
-                                }*/
+                                        if(col.getParentObject()!=null) {
+                                                int parentCommID = col.getParentObject().getID();
+                                                ListUserCommunities.removeCollectionFromAnonMapByID(parentCommID,col.getID());
+                                        }
+                                }
 
         }
-
+        //Add newly created collection to the admin list. As after creation it is empty, add it to the empty list
+        // If it is private, nyuonly or gallatin only add it to the appropriate list
+        //The collection will be visible to only to site admin and community admin users
         private void processAddCollection( Collection col ) throws java.sql.SQLException {
-
                 log.debug("We adding collection to Admin list");
                 ListUserCommunities.addCollectionToAdminMap(col);
-                ListUserCommunities.addCollectionToAnonMap(col);
 
                 if(col.isPrivate()) {
                                 ListUserCommunities.addCollectionToPrivateListID(col.getID());
@@ -285,7 +293,8 @@ public class FrontListEventConsumer implements Consumer {
         private void processAddCommunity( Community comm ) throws java.sql.SQLException {
                 ListUserCommunities.addCommunityToAdminMap(comm);
         }
-
+        //Process removal of collection from the repository. In that case collection needs to be removed from all maps and lists
+        //It admins needs to be removed from admin list
         private void processRemoveCollection( int parentCommID, int collectionID ) throws java.sql.SQLException {
 
                 ListUserCommunities.removeCollectionFromAnonMapByID(parentCommID,collectionID);
@@ -297,11 +306,11 @@ public class FrontListEventConsumer implements Consumer {
 
         }
 
-
+        //If collection metadata is updated we need to update collection object in the collection maps
         private void processUpdateCollection(Collection col) throws java.sql.SQLException {
                 ListUserCommunities.updateCollectionMetadata(col);
         }
-
+        //If community metadata is updated we need to update community object in the subcommunities maps
         private void processUpdateCommunity(Community comm) throws java.sql.SQLException {
                 ListUserCommunities.updateCommunityMetadata(comm);
         }
@@ -340,6 +349,10 @@ public class FrontListEventConsumer implements Consumer {
                                 Group  parentGroup =(Group) DSpaceObject.find(context, resourceType, resourceID );
                                 processModifyGroup(context, eperson, parentGroup, eventType);
                         }*/
+                }
+        }
+        private void processDeleteGroup(  int groupID) throws java.sql.SQLException {
+
                 }
         }
 }
