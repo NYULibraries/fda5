@@ -546,14 +546,6 @@ public class ListUserCommunities {
             }
         }
     }
-    //Removes entries from authorized communities  admin list when group is removed
-    private static void removeFromCommunityAdminByGroupID(){
-
-    }
-    //Removes entries from authorized communities  admin list when eperson is removed from group
-    private static void removeFromCommunityAdminByEpersonID(){
-
-    }
     //Adds community to admin map. It will happen immediately after the community is created and because it is yet empty it will be
     //only visible to admins. According to FDA policy we won't have private communities so community admins will remain in authorized users list only
     //till we add a non-empty, public collection to the community.
@@ -649,14 +641,7 @@ public class ListUserCommunities {
             }
         }
     }
-    //Add entries to authorized communities  admin list when group is added to introduce new community policy
-    private static void addToCommunityAdminByGroup(){
 
-    }
-    //Add entries to authorized communities  admin list when eperson is added to the group
-    private static void addToCommunityAdminByEpersonID(){
-
-    }
 
 
 
@@ -885,929 +870,124 @@ public class ListUserCommunities {
             }
         }
     }
-    //Removes entries from authorized collection  admin list when group is removed
-    private static void removeFromCollectionAdminByGroupID(int groupID){
-        if( colAuthorizedUsers!=null) {
 
-        }
+
+    /***Methods used to manage admin groups membership  during the application life cycle***/
+    // We will be handling here only cases when an eperson is added or removed to/from the group
+    // Or when the whole group is removed. All other cases are handled on collection and community level
+    public static void DeleteGroup(int groupID){
+        removeFromAdminByGroupID(groupID,true);
+        removeFromAdminByGroupID(groupID,false);
     }
     //Removes entries from authorized collection admin list when eperson is removed from group
-    private static void removeFromCollectionAdminByEpersonID(){
-
+    public static void removeFromCollectionAdminByEpersonID( int groupID, int epersonID){
+        removeFromAdminByEpersonID(groupID, epersonID, true);
     }
-    //Add entries to authorized collections  admin list when group is added to introduce new collection policy
-    private static void addToCollectionAdminByGroupID(){
-
+    //Add entries to authorized collections admin list when new person is added to a group
+    public static void addToCollectionAdminByEpersonID( int groupID, int epersonID, int collectionID){
+        addToAdminByEpersonID(groupID,epersonID, collectionID,  true);
     }
-    //Add entries to authorized collections admin list when community is added or made private
-    private static void addToCollectionAdminByEpersonID(){
-
+    //Removes entries from authorized communities  admin list when eperson is removed from group
+    public static void removeFromCommunityAdminByEpersonID( int groupID, int epersonID){
+        removeFromAdminByEpersonID(groupID, epersonID, false);
     }
-
-    //Removes entries from authorized collections  admin list when collection is removed
-
-    /*private static ArrayList<EPerson> getAuthirizedCollectionUsers(Collection col) throws SQLException {
-
-        ArrayList<EPerson> epersons= new ArrayList<EPerson>();
-        ArrayList<EPerson> allusers= new ArrayList<EPerson>();
-
-        Group admins = col.getAdministrators();
-        if(admins!=null) {
-            allusers =  getAllGroupUsers(admins);
-            if(allusers!=null) {
-                epersons.addAll(allusers);
-            }
-        }
-
-        Group submitters = col.getSubmitters();
-        if(submitters!=null) {
-            allusers =  getAllGroupUsers(submitters);
-            if(allusers!=null) {
-                epersons.addAll(allusers);
-            }
-        }
-
-        Community[] parentComms = col.getCommunities();
-        for(Community  parentComm:parentComms) {
-            allusers = getAuthirizedGroup(parentComm);
-            if( allusers!=null) {
-                epersons.addAll(allusers);
-            }
-        }
-
-        return epersons;
+    //Add entries to authorized communities  admin list when eperson is added to the group
+    public static void addToCommunityAdminByEpersonID( int groupID, int epersonID, int communityID){
+        addToAdminByEpersonID(groupID,epersonID, communityID,  false);
     }
-
-    private static ArrayList<EPerson> getAuthirizedCommunityUsers(Community com) throws SQLException {
-
-        ArrayList<EPerson> epersons= new ArrayList<EPerson>();
-
-        epersons = getAuthirizedGroup(com);
-        Community[] parentComms = com.getAllParents();
-        for(Community  parentComm:parentComms) {
-            ArrayList<EPerson> parentEpersons = getAuthirizedGroup(parentComm);
-            if( parentEpersons!=null) {
-                epersons.addAll(parentEpersons);
-            }
-        }
-        return epersons;
-    }
-
-    private static ArrayList<EPerson> getAuthirizedGroup(Community com) throws SQLException {
-        ArrayList<EPerson> epersons= new ArrayList<EPerson>();
-        ArrayList<EPerson> allusers= new ArrayList<EPerson>();
-
-        Group admins = com.getAdministrators();
-        if(admins!=null) {
-            allusers =  getAllGroupUsers(admins);
-            if(allusers!=null) {
-                epersons.addAll(allusers);
-            }
-        }
-        return epersons;
-    }
-
-    private static ArrayList<EPerson> getAllGroupUsers(Group g) {
-
-        ArrayList<EPerson> epersons= new ArrayList<EPerson>();
-
-        for(EPerson eperson:g.getMembers()) {
-            epersons.add(eperson);
-        }
-        for(Group ag:g.getMemberGroups()) {
-            for(EPerson geperson:ag.getMembers()) {
-                epersons.add(geperson);
-            }
-
-        }
-        return epersons;
-    }
-
-   /* public static synchronized void addCollectionToPrivateList(Collection col) throws java.sql.SQLException {
-
-
-        if( privateCollections==null) {
-
-            privateCollections = new ArrayList<Collection>();
-
-        }
-        privateCollections.add(col);
-        getAuthirizedCollectionUsers(col);
-    }
-
-    public static synchronized void removeCollectionFromPrivateListID(int collectionID) throws java.sql.SQLException {
-
-        if( privateCollections!=null) {
-
-            for(Collection col:privateCollections) {
-                if(col.getID()== collectionID) {
-                    privateCollections.remove(col);
-                }
-            }
-
-        }
-    }
-
-    public static synchronized void removeCollectionFromPrivateList(Collection col) throws java.sql.SQLException {
-
-        if( privateCollections!=null && privateCollections.contains(col)) {
-
-            privateCollections.remove(col);
-            removeUsersFromAuthorizedColList(col);
-
-        }
-    }
-
-    public static synchronized void addCollectionToNYUOnlyList(Collection col) throws java.sql.SQLException {
-
-        if( nyuOnly==null) {
-
-            emptyCollections = new ArrayList<Collection>();
-
-        }
-        nyuOnly.add(col);
-    }
-
-    public static synchronized void removeCollectionFromNYUOnlyListID(int collectionID) throws java.sql.SQLException {
-
-        if( nyuOnly!=null) {
-
-            for(Collection col:nyuOnly) {
-                if(col.getID()== collectionID) {
-
-                    nyuOnly.remove(col);
-                }
-            }
-
-        }
-
-    }
-
-    public static synchronized void removeCollectionFromNYUOnlyList(Collection col) throws java.sql.SQLException {
-
-        if( nyuOnly!=null && nyuOnly.contains(col)) {
-
-            nyuOnly.remove(col);
-
-        }
-
-    }
-
-    public static synchronized void addCollectionToGallatinOnlyList(Collection col) throws java.sql.SQLException {
-
-        if( gallatinOnly==null) {
-
-            gallatinOnly = new ArrayList<Collection>();
-
-        }
-        gallatinOnly.add(col);
-    }
-
-    public static synchronized void removeCollectionFromGallatinOnlyListID(int collectionID) throws java.sql.SQLException {
-
-        if( gallatinOnly!=null) {
-
-            for(Collection col:gallatinOnly) {
-                if(col.getID()== collectionID) {
-                    gallatinOnly.remove(col);
-                }
-            }
-        }
-
-    }
-
-    public static synchronized void removeCollectionFromGallatinOnlyList(Collection col) throws java.sql.SQLException {
-
-        if( gallatinOnly!=null && gallatinOnly.contains(col)) {
-
-            gallatinOnly.remove(col);
-
-        }
-
-    }
-
-    public static synchronized void addCollectionToEmptyList(Collection col) throws java.sql.SQLException {
-
-        if( emptyCollections==null) {
-
-            emptyCollections = new ArrayList<Collection>();
-
-        }
-        emptyCollections.add(col);
-        getAuthirizedCollectionUsers(col);
-
-    }
-
-    public static synchronized void removeCollectionFromEmptyListID(int collectionID) throws java.sql.SQLException {
-
-        if( emptyCollections!=null) {
-            for(Collection col:emptyCollections) {
-                if(col.getID()== collectionID) {
-                    emptyCollections.remove(col);
-                }
-            }
-
-        }
-
-    }
-
-    public static synchronized void removeCollectionFromEmptyList(Collection col) throws java.sql.SQLException {
-
-        if( emptyCollections!=null && emptyCollections.contains(col)) {
-
-            emptyCollections.remove(col);
-            removeUsersFromAuthorizedColList(col);
-
-        }
-
-    }
-
-    public static synchronized void addCollectionToAnnonList(Collection col) throws java.sql.SQLException {
-
-
-        if( colMapAnon==null ) {
-            colMapAnon = new HashMap<Integer, Collection[]>();
-        }
-
-        if( commMapAnon==null ) {
-            commMapAnon = new HashMap<Integer, Community[]>();
-        }
-
-        addCollection(col, false);
-
-    }
-
-    public static synchronized void addCollectionToAnnonListID(Community comm, Collection col) throws java.sql.SQLException {
-
-
-        if( colMapAnon==null ) {
-            colMapAnon = new HashMap<Integer, Collection[]>();
-        }
-
-        if( commMapAnon==null ) {
-            commMapAnon = new HashMap<Integer, Community[]>();
-        }
-
-        addCollectionID(comm, col, false);
-
-    }
-
-    public static synchronized void removeCollectionFromAnnonList(Collection col) throws java.sql.SQLException {
-
-        if( colMapAnon!=null || commMapAnon!=null ) {
-            removeCollection(col, false);
-        }
-    }
-
-    public static synchronized void removeCollectionFromAnnonListID(Community comm, int collectionID) throws java.sql.SQLException {
-
-        if( colMapAnon!=null || commMapAnon!=null ) {
-            removeCollectionID(comm, collectionID,false);
-        }
-    }
-
-    public static synchronized void addCollectionToAdminList(Collection col) throws java.sql.SQLException {
-
-        if( colMapAdmin==null ) {
-            colMapAdmin = new HashMap<Integer, Collection[]>();
-        }
-
-        if( commMapAdmin==null ) {
-            commMapAdmin = new HashMap<Integer, Community[]>();
-        }
-        log.warn("Start modifying admin list");
-        addCollection(col, true);
-
-    }
-
-    public static synchronized void addCollectionToAdminListID(Community com, Collection col) throws java.sql.SQLException {
-
-        if( colMapAdmin==null ) {
-            colMapAdmin = new HashMap<Integer, Collection[]>();
-        }
-
-        if( commMapAdmin==null ) {
-            commMapAdmin = new HashMap<Integer, Community[]>();
-        }
-        log.warn("Start modifying admin list");
-        addCollectionID(com, col, true);
-
-    }
-
-    public static synchronized void removeCollectionFromAdminList(Collection col) throws java.sql.SQLException {
-
-        if( colMapAdmin!=null || commMapAdmin!=null ) {
-            removeCollection(col, true);
-        }
-
-    }
-
-    public static synchronized void removeCollectionFromAdminListID(Community com, int collectionID) throws java.sql.SQLException {
-
-        if( colMapAdmin!=null || commMapAdmin!=null ) {
-            removeCollectionID(com, collectionID, true);
-        }
-
-    }
-
-    public static synchronized void addCommunityToAnnonList(Community com) throws java.sql.SQLException {
-
-        if( commMapAdmin!=null ) {
-            addParentComm(com, false);
-            addChildrenComm(com, false);
-        }
-    }
-
-    public static synchronized void removeCommunityFromAnnonListID(Community parentComm, int communityID) throws java.sql.SQLException {
-
-        if(  commMapAdmin!=null ) {
-            removeParentCommID(parentComm, communityID, false);
-        }
-
-
-    }
-
-    public static synchronized void removeCommunityFromAnnonList(Community com) throws java.sql.SQLException {
-
-        if(  commMapAdmin!=null ) {
-            removeParentComm(com, false);
-            removeChildrenComm(com, false);
-        }
-
-
-    }
-
-    public static synchronized void addCommunityToAdminList(Community com) throws java.sql.SQLException {
-
-            addParentComm(com, true);
-            addChildrenComm(com, true);
-        log.warn(" updated community "+ commMapAdmin.get(com.getParentCommunity().getID()).length);
-
-    }
-
-    public static synchronized void addCommunityToAdminListID(int communityID) throws java.sql.SQLException {
-
-        if( commMapAdmin==null ) {
-            commMapAdmin = new HashMap<Integer, Community[]>();
-        }
-        commMapAdmin.put(communityID,null);
-
-    }
-
-    public static synchronized void removeCommunityFromAdminListID(Community com, int communityID) throws java.sql.SQLException {
-
-        if(  commMapAdmin!=null ) {
-            removeParentCommID(com,communityID, true);
-        }
-
-    }
-
-    public static synchronized void removeCommunityFromAdminList(Community com) throws java.sql.SQLException {
-
-        if(  commMapAdmin!=null ) {
-            removeParentComm(com, true);
-            removeChildrenComm(com, true);
-        }
-
-    }
-
-    public static synchronized void removeChildrenCommunityFromAnnonListID(int communityID) throws java.sql.SQLException {
-
-        if(  commMapAnon!=null ) {
-            removeChildrenCommID(communityID, false);
-
-        }
-
-    }
-
-    public static synchronized void removeChildrenCommunityFromAdminListID(int communityID) throws java.sql.SQLException {
-
-        if(  commMapAdmin!=null ) {
-            removeChildrenCommID(communityID, true);
-        }
-
-    }
-
-    public static  void addUsersToAuthorizedColList(Collection col) throws java.sql.SQLException {
-
-        ArrayList<EPerson> epersons = getAuthirizedCollectionUsers(col);
-        log.error("admins: " + epersons.size());
-        for (EPerson eperson : epersons) {
-            log.error("eperson: " + eperson.getName());
-            if (colAuthorizedUsers.containsKey(eperson.getID())) {
-                Collection[] colsOld = colAuthorizedUsers.get(eperson.getID());
-                if (colsOld != null) {
-                    LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
-                    if (!colsOldRaw.contains(col)) {
-                        colsOldRaw.add(col);
-                        Collection[] colsNew = new Collection[colsOldRaw.size()];
-                        colAuthorizedUsers.put(eperson.getID(), colsOldRaw.toArray(colsNew));
-                        log.error("added to map: " + colAuthorizedUsers.get(eperson.getID()).length);
-                    }
-                }
-            } else {
-                Collection[] colsNew = {col};
-                colAuthorizedUsers.put(eperson.getID(), colsNew);
-            }
-        }
-
-    }
-
-    public static  void removeUsersFromAuthorizedColList(Collection col) throws java.sql.SQLException {
-
-        ArrayList<EPerson> epersons = getAuthirizedCollectionUsers(col);
-
-        for (EPerson eperson : epersons) {
-            log.error("eperson: " + eperson.getName());
-            if (colAuthorizedUsers.containsKey(eperson.getID())) {
-                Collection[] colsOld = colAuthorizedUsers.get(eperson.getID());
-                if (colsOld != null) {
-                    LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
-                    if (colsOldRaw.contains(col)) {
-                        colsOldRaw.remove(col);
-                        Collection[] colsNew = new Collection[colsOldRaw.size()];
-                        colAuthorizedUsers.put(eperson.getID(), colsOldRaw.toArray(colsNew));
-                        log.error("added to map: " + colAuthorizedUsers.get(eperson.getID()).length);
-                    }
-                }
-            }
-        }
-
-    }
-
-    public static  void addAuthorizedUser(DSpaceObject dso, EPerson eperson) {
-        int epersonID = eperson.getID();
-        if(dso.getType()== Constants.COMMUNITY) {
-            if(commAuthorizedUsers==null) {
-                commAuthorizedUsers = new HashMap<Integer, Community[]>();
-            }
-            Community com = (Community) dso;
-            if(commAuthorizedUsers.containsKey(epersonID)) {
-                Community[] commsOld = commAuthorizedUsers.get(epersonID);
-                if (commsOld != null) {
-                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
-                    if (!commsOldRaw.contains(com)) {
-                        commsOldRaw.add(com);
-                        Community[] commsNew = new Community[commsOldRaw.size()];
-                        commAuthorizedUsers.put(epersonID, commsOldRaw.toArray(commsNew));
-                        log.error("added to map: " + colAuthorizedUsers.get(eperson.getID()).length);
-                    }
-                }
-
-            } else {
-                    Community[] comms = {com};
-                    commAuthorizedUsers.put(epersonID, comms );
-            }
-
-        }
-
-        if(dso.getType()== Constants.COLLECTION) {
-            if(colAuthorizedUsers==null) {
-                colAuthorizedUsers = new HashMap<Integer, Collection[]>();
-            }
-            Collection col = (Collection) dso;
-            if(colAuthorizedUsers.containsKey(epersonID)) {
-                Collection[] colsOld = colAuthorizedUsers.get(epersonID);
-                if (colsOld != null) {
-                    List<Collection> colsOldRaw = (List<Collection>) Arrays.asList(colsOld);
-                    if (!colsOldRaw.contains(col)) {
-                        colsOldRaw.add(col);
-                        Collection[] colsNew = new Collection[colsOldRaw.size()];
-                        colAuthorizedUsers.put(epersonID, colsOldRaw.toArray(colsNew));
-                        log.error("added to map: " + colAuthorizedUsers.get(eperson.getID()).length);
-                    }
-                }
-
-            } else {
-                Collection[] cols = {col};
-                colAuthorizedUsers.put(epersonID, cols );
-            }
-
-        }
-
-    }
-
-    public static  void removeAuthorizedUser(DSpaceObject dso, EPerson eperson) {
-        int epersonID = eperson.getID();
-        if(dso.getType()== Constants.COMMUNITY) {
-            if(commAuthorizedUsers!=null) {
-                Community com = (Community) dso;
-
-                if (commAuthorizedUsers.containsKey(epersonID)) {
-                    Community[] commsOld = commAuthorizedUsers.get(epersonID);
-                    if (commsOld != null) {
-                        LinkedList<Collection> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
-                        if (commsOldRaw.contains(com)) {
-                            commsOldRaw.remove(com);
-                            if (commsOldRaw.size() > 0) {
-                                Community[] commsNew = new Community[commsOldRaw.size()];
-                                commAuthorizedUsers.put(epersonID, commsOldRaw.toArray(commsNew));
-                            } else {
-                                commAuthorizedUsers.remove(epersonID);
-                            }
-
-                        }
-                    }
-
-                }
-            }
-
-        }
-
-        if(dso.getType()== Constants.COLLECTION) {
-            if (colAuthorizedUsers != null) {
-                Collection col = (Collection) dso;
-
-                if (colAuthorizedUsers.containsKey(epersonID)) {
-                    Collection[] colsOld = colAuthorizedUsers.get(epersonID);
-                    if (colsOld != null) {
-                        List<Collection> colsOldRaw = (List<Collection>) Arrays.asList(colsOld);
-                        if (colsOldRaw.contains(col)) {
-                            colsOldRaw.remove(col);
-                            if (colsOldRaw.size() > 0) {
-                                Collection[] colsNew = new Collection[colsOldRaw.size()];
-                                colAuthorizedUsers.put(epersonID, colsOldRaw.toArray(colsNew));
-                            } else {
-                                colAuthorizedUsers.remove(epersonID);
-                            }
-
-                        }
-                    }
-
-                }
-            }
-        }
-    }
-
-    public static  void addUsersToAuthorizedComList(Community com) throws java.sql.SQLException {
-        ArrayList<EPerson> epersons = getAuthirizedCommunityUsers(com);
-        log.error("admins: " + epersons.size());
-        for (EPerson eperson : epersons) {
-            log.error("eperson: " + eperson.getName());
-            if (commAuthorizedUsers.containsKey(eperson.getID())) {
-                Community[] commsOld = commAuthorizedUsers.get(eperson.getID());
-                if (commsOld != null) {
-                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
-                    if (!commsOldRaw.contains(com)) {
-                        commsOldRaw.add(com);
-                        Community[] commsNew = new Community[commsOldRaw.size()];
-                        commAuthorizedUsers.put(eperson.getID(), commsOldRaw.toArray(commsNew));
-                        log.error("added to map: " + colAuthorizedUsers.get(eperson.getID()).length);
-                    }
-                }
-            } else {
-                Community[] commsNew = {com};
-                commAuthorizedUsers.put(eperson.getID(), commsNew);
-            }
-        }
-
-
-    }
-
-    private static ArrayList<EPerson> getAuthirizedCollectionUsers(Collection col) throws SQLException {
-
-            ArrayList<EPerson> epersons= new ArrayList<EPerson>();
-            ArrayList<EPerson> allusers= new ArrayList<EPerson>();
-
-            Group admins = col.getAdministrators();
-            if(admins!=null) {
-              allusers =  getAllGroupUsers(admins);
-                if(allusers!=null) {
-                    epersons.addAll(allusers);
-                }
-            }
-
-        Group submitters = col.getSubmitters();
-        if(submitters!=null) {
-            allusers =  getAllGroupUsers(submitters);
-            if(allusers!=null) {
-                epersons.addAll(allusers);
-            }
-        }
-
-        Community[] parentComms = col.getCommunities();
-        for(Community  parentComm:parentComms) {
-            allusers = getAuthirizedGroup(parentComm);
-            if( allusers!=null) {
-                epersons.addAll(allusers);
-            }
-        }
-
-        return epersons;
-    }
-
-    private static ArrayList<EPerson> getAuthirizedCommunityUsers(Community com) throws SQLException {
-
-        ArrayList<EPerson> epersons= new ArrayList<EPerson>();
-
-        epersons = getAuthirizedGroup(com);
-        Community[] parentComms = com.getAllParents();
-        for(Community  parentComm:parentComms) {
-            ArrayList<EPerson> parentEpersons = getAuthirizedGroup(parentComm);
-            if( parentEpersons!=null) {
-                epersons.addAll(parentEpersons);
-            }
-        }
-        return epersons;
-    }
-
-    private static ArrayList<EPerson> getAuthirizedGroup(Community com) throws SQLException {
-        ArrayList<EPerson> epersons= new ArrayList<EPerson>();
-        ArrayList<EPerson> allusers= new ArrayList<EPerson>();
-
-        Group admins = com.getAdministrators();
-        if(admins!=null) {
-            allusers =  getAllGroupUsers(admins);
-            if(allusers!=null) {
-                epersons.addAll(allusers);
-            }
-        }
-        return epersons;
-    }
-
-    private static ArrayList<EPerson> getAllGroupUsers(Group g) {
-
-        ArrayList<EPerson> epersons= new ArrayList<EPerson>();
-
-        for(EPerson eperson:g.getMembers()) {
-           epersons.add(eperson);
-        }
-        for(Group ag:g.getMemberGroups()) {
-            for(EPerson geperson:ag.getMembers()) {
-                epersons.add(geperson);
-            }
-
-        }
-        return epersons;
-    }
-
-
-
-    private static void addCollection(Collection col, Boolean admin ) throws java.sql.SQLException {
-
-
-    }
-
-    private static void addCollectionID(Community comm, Collection col, Boolean admin ) throws java.sql.SQLException {
-
-                int parentCommID=comm.getID();
-                log.warn("parent community id "+parentCommID);
-                if (admin) {
-                    if (colMapAdmin.containsKey(parentCommID) && colMapAdmin.get(parentCommID) != null) {
-                        Collection[] colsOld = colMapAdmin.get(parentCommID);
-                        LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
-                        log.warn("collection array size "+colsOldRaw.size());
-                        if (!colsOldRaw.contains(col)) {
-                            log.warn("adding collection "+col.getName());
-                            colsOldRaw.add(col);
-                            log.warn("collection array new size "+colsOldRaw.size());
-                            Collection[] colsNew = new Collection[colsOldRaw.size()];
-                            log.warn("collection array  length "+colsNew.length);
-                            colMapAdmin.put(parentCommID, colsOldRaw.toArray(colsNew));
-                            log.warn(" new "+ colMapAdmin.get(parentCommID)[4].getName()+" no ");
-                        }
-
-                    } else {
-                        Collection[] colsNew = {col};
-                        colMapAdmin.put(parentCommID, colsNew);
-                    }
-                } else {
-                    if (colMapAnon.containsKey(parentCommID) && colMapAnon.get(parentCommID) != null) {
-                        Collection[] colsOld = colMapAnon.get(parentCommID);
-
-                        LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
-                        if (!colsOldRaw.contains(col)) {
-                            colsOldRaw.add(col);
-                            Collection[] colsNew = new Collection[colsOldRaw.size()];
-                            colMapAnon.put(parentCommID, colsOldRaw.toArray(colsNew));
-                        }
-
-                    } else {
-                        Collection[] colsNew = {col};
-                        colMapAnon.put(parentCommID, colsNew);
-                    }
-                }
-                Community nextParentComm = comm.getParentCommunity();
-                if (nextParentComm != null) {
-                    addParentComm(comm, admin);
-                }
-
-    }
-
-
-
-
-    private static void removeCollection(Collection col, Boolean admin ) throws java.sql.SQLException {
-
-        Community[] parentComms =  col.getCommunities();
-        for (Community parentComm:parentComms) {
-            //need to check that it is "primary" parent collection
-            Collection[] colsAll = parentComm.getCollections();
-            List<Collection> colsAllRaw =  Arrays.asList(colsAll);
-            if (colsAllRaw.contains(col)) {
-                if(admin) {
-                    if (colMapAdmin.containsKey(parentComm.getID()) && colMapAdmin.get(parentComm.getID()) != null) {
-                        Collection[] colsOld = colMapAdmin.get(parentComm.getID());
-
-                        LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
-
-                        if (colsOldRaw.contains(col)) {
-                            colsOldRaw.remove(col);
-                            if(colsOldRaw.size()>0) {
-                                Collection[] colsNew = new Collection[colsOldRaw.size()];
-                                colMapAdmin.put(parentComm.getID(), colsOldRaw.toArray(colsNew));
-                            } else {
-                                colMapAdmin.remove(parentComm.getID());
-                                if(!commMapAdmin.containsKey(parentComm.getID())) {
-                                    Community nextParentComm = parentComm.getParentCommunity();
-                                    if (nextParentComm != null) {
-                                        removeParentComm(parentComm, admin);
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-
-                } else {
-                    if (colMapAnon.containsKey(parentComm.getID()) && colMapAnon.get(parentComm.getID()) != null) {
-                        Collection[] colsOld = colMapAnon.get(parentComm.getID());
-
-                        LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
-                        if (colsOldRaw.contains(col)) {
-                            colsOldRaw.remove(col);
-                            if(colsOldRaw.size()>0) {
-                            Collection[] colsNew = new Collection[colsOldRaw.size()];
-                            colMapAnon.put(parentComm.getID(), colsOldRaw.toArray(colsNew));
-                            } else {
-                                colMapAnon.remove(parentComm.getID());
-                                if(!commMapAnon.containsKey(parentComm.getID())) {
-                                    Community nextParentComm = parentComm.getParentCommunity();
-                                    if (nextParentComm != null) {
-                                        removeParentComm(parentComm, admin);
-                                    }
-                                }
-                            }
-                        }
-
-                    }
+    //Do actual removal from communiuty or collection admin list for user
+    private static void removeFromAdminByGroupID(int groupID, Boolean changeCol){
+        if( changeCol&&colAuthorizedUsers!=null) {
+            Iterator iteratorAuthCollections = colAuthorizedUsers.iterator();
+            while (iteratorAuthCollections.hasNext()) {
+                AuthorizedCollectionUsers authCol = (AuthorizedCollectionUsers) iteratorAuthCollections.next();
+                if (authCol.getGroupID() == groupID) {
+                    log.debug("group entry to remove " + authCol.getGroupID());
+                    colAuthorizedUsers.remove(authCol);
                 }
 
             }
         }
-
-    }
-
-    private static void removeCollectionID(Community comm, int collectionID, Boolean admin ) throws java.sql.SQLException {
-                int communityID = comm.getID();
-                if(admin) {
-                    if (colMapAdmin.containsKey(communityID) && colMapAdmin.get(communityID) != null) {
-                        Collection[] colsOld = colMapAdmin.get(communityID);
-
-                        LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
-
-                        for (Collection col:colsOldRaw) {
-                            if(col.getID()==collectionID) {
-                                colsOldRaw.remove(col);
-                                if (colsOldRaw.size() > 0) {
-                                    Collection[] colsNew = new Collection[colsOldRaw.size()];
-                                    colMapAdmin.put(communityID, colsOldRaw.toArray(colsNew));
-                                } else {
-                                    colMapAdmin.remove(communityID);
-                                    if(!commMapAdmin.containsKey(communityID)) {
-                                        Community nextParentComm = comm.getParentCommunity();
-                                        if (nextParentComm != null) {
-                                            removeParentComm(comm, admin);
-                                        }
-                                    }
-
-                                }
-                            }
-                        }
-
-                    }
-
-                } else {
-                    if (colMapAnon.containsKey(communityID) && colMapAnon.get(communityID) != null) {
-                        Collection[] colsOld = colMapAnon.get(communityID);
-
-                        LinkedList<Collection> colsOldRaw = new LinkedList(Arrays.asList(colsOld));
-
-                        for (Collection col:colsOldRaw) {
-                            if (col.getID() == collectionID) {
-                                colsOldRaw.remove(col);
-                                if (colsOldRaw.size() > 0) {
-                                    Collection[] colsNew = new Collection[colsOldRaw.size()];
-                                    colMapAnon.put(communityID, colsOldRaw.toArray(colsNew));
-                                } else {
-                                    colMapAnon.remove(communityID);
-                                    if(!commMapAnon.containsKey(communityID)) {
-                                        Community nextParentComm = comm.getParentCommunity();
-                                        if (nextParentComm != null) {
-                                            removeParentComm( comm, admin);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    }
+        if( !changeCol&&commAuthorizedUsers!=null) {
+            Iterator iteratorAuthCommunities = commAuthorizedUsers.iterator();
+            while (iteratorAuthCommunities.hasNext()) {
+                AuthorizedCommunityUsers authComm = (AuthorizedCommunityUsers) iteratorAuthCommunities.next();
+                if (authComm.getGroupID() == groupID) {
+                    log.debug("group entry to remove " + authComm.getGroupID());
+                    commAuthorizedUsers.remove(authComm);
                 }
-    }
 
-    private static void removeParentComm( Community com, Boolean admin ) throws java.sql.SQLException {
-        Community parentComm = (Community) com.getParentCommunity();
-        if(parentComm!=null) {
-            if(admin) {
-                if (commMapAdmin.containsKey(parentComm.getID()) && commMapAdmin.get(parentComm.getID()) != null) {
-                    Community[] commsOld = commMapAdmin.get(parentComm.getID());
-                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
-                    if (commsOldRaw.contains(com)) {
-                        commsOldRaw.remove(com);
-                        if (commsOldRaw.size() > 0) {
-                            Community[] commNew = new Community[commsOldRaw.size()];
-                            commMapAdmin.put(parentComm.getID(), commsOldRaw.toArray(commNew));
-                        } else {
-                            commMapAdmin.remove(parentComm.getID());
-                        }
-                    }
-                }
-            } else {
-                if (commMapAnon.containsKey(parentComm.getID()) && commMapAnon.get(parentComm.getID()) != null) {
-                    Community[] commsOld = commMapAnon.get(parentComm.getID());
-                    LinkedList<Community> commsOldRaw = new LinkedList(Arrays.asList(commsOld));
-                    if (commsOldRaw.contains(com)) {
-                            commsOldRaw.remove(com);
-                            if (commsOldRaw.size() > 0) {
-                                Community[] commNew = new Community[commsOldRaw.size()];
-                            commMapAnon.put(parentComm.getID(), commsOldRaw.toArray(commNew));
-                        } else {
-                            commMapAnon.remove(parentComm.getID());
-                        }
-                    }
-                }
-            }
-
-            Community nextParentComm = parentComm.getParentCommunity();
-            if (nextParentComm != null) {
-                removeParentComm(nextParentComm, admin);
             }
         }
     }
+    //Do actula removal from community or collection admin list for specific person from the group
+    private static void removeFromAdminByEpersonID(int groupID,int epersonID, Boolean changeCol){
+        if( changeCol&&colAuthorizedUsers!=null) {
+            Iterator iteratorAuthCollections = colAuthorizedUsers.iterator();
+            while (iteratorAuthCollections.hasNext()) {
+                AuthorizedCollectionUsers authCol = (AuthorizedCollectionUsers) iteratorAuthCollections.next();
+                if (authCol.getGroupID() == groupID && authCol.getEpersonID()==epersonID) {
+                    log.debug("group entry to remove " + authCol.getGroupID()+" eperson to remove "+authCol.getEpersonID());
+                    colAuthorizedUsers.remove(authCol);
+                }
 
-    private static void removeChildrenComm( Community com, Boolean admin ) throws java.sql.SQLException {
-
-        Collection[] colls = com.getCollections();
-        if (colls.length > 0) {
-            if(admin) {
-                colMapAdmin.remove(com.getID());
-            } else {
-                colMapAnon.remove(com.getID());
             }
         }
-        Community[] comms = com.getSubcommunities();
-        if (comms.length > 0) {
-            if(admin) {
-                commMapAdmin.remove(com.getID());
-            } else {
-                commMapAnon.remove(com.getID());
-            }
-            for(Community subcomm:comms) {
-                removeChildrenComm(  subcomm, admin);
+        if( !changeCol&&commAuthorizedUsers!=null) {
+            Iterator iteratorAuthCommunities = commAuthorizedUsers.iterator();
+            while (iteratorAuthCommunities.hasNext()) {
+                AuthorizedCommunityUsers authComm = (AuthorizedCommunityUsers) iteratorAuthCommunities.next();
+                if (authComm.getGroupID() == groupID && authComm.getEpersonID()==epersonID) {
+                    log.debug("group entry to remove " + authComm.getGroupID()+" eperson to remove "+authComm.getEpersonID());
+                    commAuthorizedUsers.remove(authComm);
+                }
+
             }
         }
-    }*/
+    }
+    //Do actual addition to  community or collection admin list for specific person from the group
+    private static void addToAdminByEpersonID(int groupID,int epersonID, int objectID, Boolean changeCol) {
+       if(changeCol) {
+           colAuthorizedUsers.add(new AuthorizedCollectionUsers(epersonID,groupID,objectID));
+       } else {
+           commAuthorizedUsers.add(new AuthorizedCommunityUsers(epersonID,groupID,objectID));
+       }
+    }
 
-
-
+    //Modify maps and lists when collection policy is modifed. That method is called by admin servlets which modify collection
+    //and admin policy
     public static void checkCollection(Collection collection) throws java.sql.SQLException {
-        /*if(collection.isPrivate()) {
-            if(privateCollections==null || !privateCollections.contains(collection)) {
-                addCollectionToPrivateList(collection);
+        int collectionID=collection.getID();
+        if(collection.isPrivate()) {
+            if(privateCollections==null || !privateCollections.contains(collectionID)) {
+                addCollectionToPrivateListID(collectionID);
             }
         } else {
-            if(privateCollections.contains(collection)) {
-                removeCollectionFromPrivateList(collection);
+            if(privateCollections.contains(collectionID)) {
+                removeCollectionFromPrivateListID(collectionID);
+                if(!emptyCollections.contains(collectionID)) {
+                    addCollectionToAnonMap(collection);
+                }
             }
         }
         if(collection.isNYUOnly()) {
-            if(nyuOnly==null || !nyuOnly.contains(collection)) {
-                addCollectionToNYUOnlyList(collection);
+            if(nyuOnly==null || !nyuOnly.contains(collectionID)) {
+                addCollectionToNyuOnlyListID(collectionID);
             }
         } else {
-            if(nyuOnly.contains(collection)) {
-                removeCollectionFromNYUOnlyList(collection);
+            if(nyuOnly.contains(collectionID)) {
+                removeCollectionFromNyuOnlyListID(collectionID);
             }
         }
         if(collection.isGallatin()) {
-            if(gallatinOnly==null || !gallatinOnly.contains(collection)) {
-                addCollectionToGallatinOnlyList(collection);
+            if(gallatinOnly==null || !gallatinOnly.contains(collectionID)) {
+                addCollectionToGallatinOnlyListID(collectionID);
             }
         } else {
-            if(gallatinOnly.contains(collection)) {
-                removeCollectionFromGallatinOnlyList(collection);
+            if(gallatinOnly.contains(collectionID)) {
+                removeCollectionFromGallatinOnlyListID(collectionID);
             }
-        }*/
+        }
     }
 
 }

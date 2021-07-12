@@ -314,45 +314,47 @@ public class FrontListEventConsumer implements Consumer {
         private void processUpdateCommunity(Community comm) throws java.sql.SQLException {
                 ListUserCommunities.updateCommunityMetadata(comm);
         }
+        //If user is added or removed from groups which contain admins of private and empty collections/communities
+        //those lists should be updated
         private void processModifyGroup( Context context, EPerson eperson, Group group, int eventType ) throws java.sql.SQLException {
                 List<ResourcePolicy> rps= AuthorizeManager.getPoliciesForGroup(context, group);
                 for (ResourcePolicy rp:rps) {
                         int resourceID = rp.getResourceID();
                         int resourceType = rp.getResourceType();
 
-                       /* if(resourceType== Constants.COLLECTION) {
+                       if(resourceType== Constants.COLLECTION) {
                                 Collection  col =(Collection) DSpaceObject.find(context, resourceType, resourceID );
                                 if((ListUserCommunities.privateCollections!=null && ListUserCommunities.privateCollections.contains(col) )||
                                         (ListUserCommunities.emptyCollections!=null && ListUserCommunities.emptyCollections.contains(col)) ) {
 
                                         if(eventType==Event.ADD) {
-                                                ListUserCommunities.addAuthorizedUser(col, eperson);
+                                                ListUserCommunities.addToCollectionAdminByEpersonID(group.getID(),eperson.getID(),col.getID());
                                         }
                                         if(eventType==Event.REMOVE) {
-                                                ListUserCommunities.removeAuthorizedUser(col, eperson);
+                                                ListUserCommunities.removeFromCollectionAdminByEpersonID(group.getID(), eperson.getID());
                                         }
                                 }
                         }
                         if(resourceType== Constants.COMMUNITY) {
-                                Community  com =(Community) DSpaceObject.find(context, resourceType, resourceID );
-                                if(com.getAllCollections().length==0) {
+                                Community  comm =(Community) DSpaceObject.find(context, resourceType, resourceID );
+                                if(comm.getAllCollections().length==0) {
 
                                         if(eventType==Event.ADD) {
-                                                ListUserCommunities.addAuthorizedUser(com, eperson);
+                                                ListUserCommunities.addToCollectionAdminByEpersonID(group.getID(),eperson.getID(),comm.getID());
                                         }
                                         if(eventType==Event.REMOVE) {
-                                                ListUserCommunities.removeAuthorizedUser(com, eperson);
+                                                ListUserCommunities.removeFromCollectionAdminByEpersonID(group.getID(),eperson.getID());
                                         }
                                 }
                         }
                         if(resourceType== Constants.GROUP) {
                                 Group  parentGroup =(Group) DSpaceObject.find(context, resourceType, resourceID );
                                 processModifyGroup(context, eperson, parentGroup, eventType);
-                        }*/
+                        }
                 }
         }
+        //If group is deleted remove all entries related to that group from the list of admins of private and empty collections
         private void processDeleteGroup(  int groupID) throws java.sql.SQLException {
-
-                }
+                ListUserCommunities.DeleteGroup(groupID);
         }
 }
