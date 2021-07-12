@@ -954,8 +954,7 @@ public class ListUserCommunities {
        }
     }
 
-    //Modify maps and lists when collection policy is modifed. That method is called by admin servlets which modify collection
-    //and admin policy
+    //Modify maps and lists when collection policy is modifed. That method is called by admin servlet AuthorizeAdminServlet
     public static void checkCollection(Collection collection) throws java.sql.SQLException {
         int collectionID=collection.getID();
         if(collection.isPrivate()) {
