@@ -53,13 +53,13 @@ lifecycle:
  
  - To add new processing plugins for home and community pages
  
- `plugin.sequence.org.dspace.plugin.SiteHomeProcessor = \
+   `plugin.sequence.org.dspace.plugin.SiteHomeProcessor = \
     org.dspace.app.webui.components.TopCommunitiesSiteProcessor,\
         org.dspace.app.webui.components.ListCommunitiesSiteProcessor,\
         org.dspace.app.webui.components.MostDownloadedSite,\
         org.dspace.app.webui.discovery.SideBarFacetProcessor`
   
-  `plugin.sequence.org.dspace.plugin.CommunityHomeProcessor = \
+    `plugin.sequence.org.dspace.plugin.CommunityHomeProcessor = \
         org.dspace.app.webui.components.ListCommunitiesCommunityProcessor,\
         org.dspace.app.webui.components.MostDownloadedCommunity,\
         org.dspace.app.webui.discovery.SideBarFacetProcessor`      
@@ -76,8 +76,11 @@ lifecycle:
  collection
 
    `core.authorization.community-admin.create-subelement = true`
+
    `core.authorization.community-admin.delete-subelement = false`
+
    `core.authorization.community-admin.policies = false`
+
    `core.authorization.community-admin.collection.policies = false`
  
  - To not allow collection admins to modify collection policies 
