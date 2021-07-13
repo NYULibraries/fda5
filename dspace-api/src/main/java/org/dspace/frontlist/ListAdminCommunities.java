@@ -27,7 +27,7 @@ import org.dspace.core.Context;
  * @author Kate Pechekhonova
  *
  */
-public class ListCommunities {
+public class ListAdminCommunities {
 
     // This will map communityIDs to arrays of collections for specific user
     private HashMap<Integer, Collection[]> colMap=new HashMap<Integer, Collection[]>();
@@ -42,7 +42,7 @@ public class ListCommunities {
     private static Logger log = Logger.getLogger(ListUserCommunities.class);
 
     //We start with generic list to which we will add private and empty collections and comunities for which the user has admin/submitter access
-    public ListCommunities() {
+    public ListAdminCommunities() {
 
         colMap.putAll(ListUserCommunities.colMapAnon);
         commMap.putAll(ListUserCommunities.commMapAnon);

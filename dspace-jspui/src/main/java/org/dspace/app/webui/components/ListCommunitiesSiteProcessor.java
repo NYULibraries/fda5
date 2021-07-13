@@ -8,7 +8,6 @@
 package org.dspace.app.webui.components;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,13 +16,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 import org.dspace.frontlist.ListUserCommunities;
-import org.dspace.frontlist.ListCommunities;
+import org.dspace.frontlist.ListAdminCommunities;
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.content.Collection;
 import org.dspace.content.Community;
 import org.dspace.core.Context;
 import org.dspace.eperson. EPerson;
-import org.dspace.frontlist.ListCommunities;
 import org.dspace.plugin.PluginException;
 import org.dspace.plugin.SiteHomeProcessor;
 
@@ -88,7 +86,7 @@ public class ListCommunitiesSiteProcessor implements SiteHomeProcessor
                         Map colMap = new HashMap<Integer, Collection[]>();
                         Map commMap = new HashMap<Integer, Community[]>();
 
-                        ListCommunities comList = new ListCommunities();
+                        ListAdminCommunities comList = new ListAdminCommunities();
                         comList.BuildUserCommunitiesList(context);
 
                         if (comList.getCollectionsMap() != null) {

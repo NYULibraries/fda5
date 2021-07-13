@@ -18,8 +18,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
+import org.dspace.frontlist.ListAdminCommunities;
 import org.dspace.frontlist.ListUserCommunities;
-import org.dspace.frontlist.ListCommunities;
 import org.dspace.app.webui.util.JSPManager;
 import org.dspace.authorize.AuthorizeException;
 import org.dspace.authorize.AuthorizeManager;
@@ -96,7 +96,7 @@ public class CommunityListServlet extends DSpaceServlet {
                         Map colMap = new HashMap<Integer, Collection[]>();
                         Map commMap = new HashMap<Integer, Community[]>();
 
-                        ListCommunities comList = new ListCommunities();
+                        ListAdminCommunities comList = new ListAdminCommunities();
                         comList.BuildUserCommunitiesList(context);
 
                         if (comList.getCollectionsMap() != null) {
