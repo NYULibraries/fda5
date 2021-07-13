@@ -109,7 +109,7 @@ public class ListUserCommunities {
     }
 
     //generates maps for anon user, for site admins and other strucrtures which will be used to get tailored community lists for different users
-    public static  void PrebuildFrontListsCommunities() throws java.sql.SQLException {
+    public static  void PrebuildFrontListsCommunities() throws SQLException {
 
         Context context = new Context();
 
@@ -173,7 +173,9 @@ public class ListUserCommunities {
      * Takes parent community as input
      */
 
-    //Builds subcommunity map, e.g. map where each entry looks like <key=Parent Community ID, value=[Children Subcommunties of this community]
+    /*Builds subcommunity map, e.g. map where each entry looks like <key=Parent Community ID, value=[Children Subcommunties of this community]
+     *@param Community
+     */
     private static void buildCollections(Community c) throws SQLException {
 
         Integer comID = c.getID();
@@ -242,7 +244,9 @@ public class ListUserCommunities {
 
     }
 
-    //Builds collection map, e.g. map where each entry looks like <key=Parent Community ID, value=[Children Collections of this community]
+    /*Builds collection map, e.g. map where each entry looks like <key=Parent Community ID, value=[Children Collections of this community]
+    *@param Community
+    */
     private static void buildCommunity(Community c) throws SQLException {
         Integer comID = c.getID();
         Community[] comms = c.getSubcommunities();
@@ -277,10 +281,11 @@ public class ListUserCommunities {
     }
 
 
-    //get all users who might have admin access to the collection
-    //they might be collection admins or submitters or parent community admins
-    //take collection as parameter
-    private static void buildAuthorizedColList(Collection col) throws java.sql.SQLException {
+    /*get all users who might have admin access to the collection
+    *they might be collection admins or submitters or parent community admins
+    * @param Collection
+    */
+    private static void buildAuthorizedColList(Collection col) throws SQLException {
 
         log.debug("get admins for collection "+col.getName()+" which is private or empty ");
         Group admins = col.getAdministrators();
@@ -300,10 +305,10 @@ public class ListUserCommunities {
 
     }
 
-    //get all users who might have admin access to the community
-    //they might be community admins or  parent communities admins
-    //method takes community as a parameter
-    private static void buildAuthorizedCommList(Community com) throws java.sql.SQLException {
+    /*get all users who might have admin access to the community
+     *they might be community admins or  parent communities admins
+     * @param Community */
+    private static void buildAuthorizedCommList(Community com) throws SQLException {
 
         log.debug("get admins for community "+com.getName()+" which is private or empty ");
         Group admins = com.getAdministrators();
@@ -317,7 +322,10 @@ public class ListUserCommunities {
         }
     }
 
-    //get all admins for  parent community of collection or subcommunity
+    /*get all admins for  parent community of collection or subcommunity
+     * @param Parent Community
+     * @param  Child Dspace object (collection or community)
+     */
     private static void buildCommGroupUsers(Community com,DSpaceObject ds) throws SQLException {
         log.debug("get object type"+ds.getType()+" "+ds.getName()+" which is private or empty ");
         Group admins = com.getAdministrators();
@@ -326,8 +334,9 @@ public class ListUserCommunities {
         }
     }
 
-    //add values to colAuthorizedUsersRaw and commAuthorizedUsersRaw ArrayLists which will be at the end converted to WriteOnCopyArrayLists
-    //take the group assosiated with object and either collection or community
+    /*Add values to colAuthorizedUsersRaw and commAuthorizedUsersRaw ArrayLists which will be at the end converted to WriteOnCopyArrayLists
+     *@param Group
+     *@param DSpaceObject*/
     private static void buildAuthorizedGroupUsers(Group g,DSpaceObject ds) {
 
         if(ds.getType()==Constants.COLLECTION) {
@@ -361,8 +370,9 @@ public class ListUserCommunities {
 
     /*** Methods used to build communties and collections list for admins of private or/and empty communties/collections***/
 
-    //Returns array of private and empty collection's ids for which user has admin access.
-    //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCollectionUsers> colAuthorizedUsers
+    /*Returns array of private and empty collection's ids for which user has admin access.
+    * Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCollectionUsers> colAuthorizedUsers
+    *@param epersonID*/
     public static ArrayList getAuthorizedCollections(int epersonID) {
         ArrayList colIDs = new ArrayList();
         Iterator iteratorAuthCollections = colAuthorizedUsers.iterator();
@@ -377,8 +387,9 @@ public class ListUserCommunities {
         return colIDs;
     }
 
-    //Returns if user has admin access to any private or empty collection.
-    //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCollectionUsers> colAuthorizedUsers
+    /*Returns if user has admin access to any private or empty collection.
+     * Gets data from static CopyOnWriteArrayList<AuthorizedCollectionUsers> colAuthorizedUsers
+     *@param epersonID*/
     public static Boolean checkAuthorizedCollections(int epersonID) {
         Iterator iteratorAuthCollections = colAuthorizedUsers.iterator();
         while (iteratorAuthCollections.hasNext()) {
@@ -392,8 +403,9 @@ public class ListUserCommunities {
         return false;
     }
 
-    //Returns array of private and empty subcommunities ids for which user has admin access.
-    //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCommunityUsers> commAuthorizedUsers
+    /*Returns array of private and empty subcommunities ids for which user has admin access.
+     *Get data from static CopyOnWriteArrayList<AuthorizedCommunityUsers> commAuthorizedUsers
+     *@param epersonID*/
     public static  ArrayList getAuthorizedCommunities(int epersonID)  {
         ArrayList comIDs = new ArrayList();
         Iterator iteratorAuthCommunities = commAuthorizedUsers.iterator();
@@ -409,8 +421,9 @@ public class ListUserCommunities {
         return comIDs;
     }
 
-    //Returns array of private and empty subcommunities ids for which user has admin access.
-    //Takes epersonId as a parameter and get data from static CopyOnWriteArrayList<AuthorizedCommunityUsers> commAuthorizedUsers
+    /*Returns array of private and empty subcommunities ids for which user has admin access.
+    * Gets data from static CopyOnWriteArrayList<AuthorizedCommunityUsers> commAuthorizedUsers
+    *@param personID */
     public static Boolean checkAuthorizedCommunities(int epersonID)  {
         Iterator iteratorAuthCommunities = commAuthorizedUsers.iterator();
         log.debug(" Size of authorized communities ArrayList check "+commAuthorizedUsers.size());
@@ -429,27 +442,36 @@ public class ListUserCommunities {
 
     /*** Methods used to manage communites and subcommunities added and removed during the application life cucle ***/
 
-    //Removes entry for the community and it's children objects from non-admin maps
-    public static void removeChildrenCommunityFromAnnonListID(int communityID)throws java.sql.SQLException {
+    /*Removes entry for the community and it's children objects from non-admin maps
+     *@param comminityID*/
+    public static void removeChildrenCommunityFromAnnonListID(int communityID)throws SQLException {
         removeChildrenCommID(communityID,false);
     }
-    //Removes entry for the community and it's children objects from admin maps and list of special admins
-    public static void removeChildrenCommunityFromAdminListID(int communityID)throws java.sql.SQLException {
+    /*Removes entry for the community and it's children objects from admin maps and list of special admins
+     *@param comminityID*/
+    public static void removeChildrenCommunityFromAdminListID(int communityID)throws SQLException {
         removeFromCommunityAdminByCommID(communityID);
         removeChildrenCommID(communityID,true);
     }
-    //Removes subcommunity from parent entry in non-admin map
-    public static void   removeSubcommunityFromParentAnnonListID(int parentCommID, int communityID)throws java.sql.SQLException {
+    /*Removes subcommunity from parent entry in non-admin map
+     *@param parentCommID
+     *@param communityID */
+    public static void   removeSubcommunityFromParentAnnonListID(int parentCommID, int communityID) throws SQLException {
         removeParentCommID(parentCommID, communityID,false);
     }
 
-    //Removes subcommunity from parent entry in admin map
-    public static void   removeSubcommunityFromParentAdminListID(int parentCommID, int communityID)throws java.sql.SQLException {
+    /*Removes subcommunity from parent entry in admin map
+     *@param parentCommID
+     *@param communityID */
+    public static void   removeSubcommunityFromParentAdminListID(int parentCommID, int communityID)throws SQLException {
         removeParentCommID(parentCommID, communityID,true);
     }
 
-    //Remove subcommunity from the array which is assosiated with it's parent community in admin or non-admin map using it's id
-    private static void removeParentCommID(int parentCommID, int communityID, Boolean admin ) throws java.sql.SQLException {
+    /*Removes subcommunity from the array which is assosiated with it's parent community in admin or non-admin map using it's id
+     *@param parentCommID
+     *@param communityID
+     *@param admin*/
+    private static void removeParentCommID(int parentCommID, int communityID, Boolean admin ) throws SQLException {
         if(admin) {
             if (commMapAdmin.containsKey(parentCommID) && commMapAdmin.get(parentCommID) != null) {
                 Community[] commsOld = commMapAdmin.get(parentCommID);
@@ -485,10 +507,13 @@ public class ListUserCommunities {
             }
         }
     }
-    //Removes entry for community from collection and community maps when the community is removed.
-    //We are not removing entries for children subcommunities but it does not matter because we won't get to them if entry
-    //for the parent community is removed
-    private static void removeChildrenCommID(int communityID, Boolean admin) throws java.sql.SQLException {
+    /*Removes entry for community from collection and community maps when the community is removed.
+     *We are not removing entries for children subcommunities but it does not matter because we won't get to them if entry
+     *for the parent community is removed
+     *@param comminityID
+     * @param admin
+     */
+    private static void removeChildrenCommID(int communityID, Boolean admin) throws SQLException {
         if(admin) {
             if (commMapAdmin!=null && commMapAdmin.containsKey(communityID)) {
                 Community[] comms = commMapAdmin.get(communityID);
@@ -518,7 +543,8 @@ public class ListUserCommunities {
         }
 
     }
-    //Removes entries from authorized communities  admin list when community is removed
+    /*Removes entries from authorized communities  admin list when community is removed
+     *@param communityID*/
     private static void removeFromCommunityAdminByCommID(int communityID){
         if (commMapAdmin!=null && commMapAdmin.containsKey(communityID) ) {
             Community[] comms = commMapAdmin.get(communityID);
@@ -546,25 +572,27 @@ public class ListUserCommunities {
             }
         }
     }
-    //Adds community to admin map. It will happen immediately after the community is created and because it is yet empty it will be
-    //only visible to admins. According to FDA policy we won't have private communities so community admins will remain in authorized users list only
-    //till we add a non-empty, public collection to the community.
-    public static void addCommunityToAdminMap(Community comm) throws java.sql.SQLException {
+    /*Adds community to admin map. It will happen immediately after the community is created and because it is yet empty it will be
+     *only visible to admins. According to FDA policy we won't have private communities so community admins will remain in authorized users list only
+     *till we add a non-empty, public collection to the community.
+     *@param Community*/
+    public static void addCommunityToAdminMap(Community comm) throws SQLException {
         //first add the community to admin community map
         addParentComm(comm, true);
         //add community admins to the authorized list
         buildAuthorizedCommList(comm);
     }
-    //Adds community to non-admin map. It will happen only after the following conditions are met:
-    // A collection is added to the community or it's subcommunities
-    // That collection is not private
-    // At least one item is added to that collection.
-    // We will take care of authorized commmunity admins on collection level
-    public static void addCommunityToAnonMap(Community comm) throws java.sql.SQLException {
+    /*Adds community to non-admin map. It will happen only after the following conditions are met:
+    * A collection is added to the community or it's subcommunities
+    * That collection is not private
+    * At least one item is added to that collection.
+    * We will take care of authorized commmunity admins on collection level
+    * @param Community*/
+    public static void addCommunityToAnonMap(Community comm) throws SQLException {
         addParentComm(comm, false);
     }
-    //Makes actual calculations to add parent community to admin or non-admin map
-    private static void addParentComm( Community comm, Boolean admin ) throws java.sql.SQLException {
+    /*Makes actual calculations to add parent community to admin or non-admin map */
+    private static void addParentComm( Community comm, Boolean admin ) throws SQLException {
         Community parentComm = (Community) comm.getParentCommunity();
         log.debug(" Community we are adding "+comm.getName());
         if(parentComm!=null) {
@@ -613,7 +641,7 @@ public class ListUserCommunities {
             }
         }
     }
-    //if subcommunty metadata was updated, update it in the map
+    /*if subcommunty metadata was updated, update it in the map*/
     public static  void updateCommunityMetadata( Community comm ) throws java.sql.SQLException {
         Community parentComm = (Community) comm.getParentCommunity();
         if (parentComm != null) {
@@ -646,20 +674,25 @@ public class ListUserCommunities {
 
 
     /*** Methods used to manage collections added and removed during the application life cycle ***/
-    //Removes collection from the admin list when it is deleted
-    public static void removeCollectionFromAdminMapByID(int parentCommID, int collectionID) throws java.sql.SQLException {
+    /*Removes collection from the admin list when it is deleted
+    * @param parentCommID
+    * @param collectionID*/
+    public static void removeCollectionFromAdminMapByID(int parentCommID, int collectionID) throws SQLException {
             removeColID(parentCommID,collectionID,true);
             removeFromCollectionAdminByColID(parentCommID);
     }
-    //Removes collection from non-admin list when it is deleted, becomes private or no longer has public items
-    //Add collection to the admin list when it is created
-    //Add collection and it parent communities to the non-admin list when collection becomes public
-    // or when public items are added to it.
-    public static void removeCollectionFromAnonMapByID(int parentCommID, int collectionID) throws java.sql.SQLException {
+    /*Removes collection from non-admin list when it is deleted, becomes private or no longer has public items
+    * Add collection to the admin list when it is created
+    * Add collection and it parent communities to the non-admin list when collection becomes public
+    * or when public items are added to it.
+     * @param parentCommID
+     * @param collectionID*/
+    public static void removeCollectionFromAnonMapByID(int parentCommID, int collectionID) throws SQLException {
         removeColID(parentCommID,collectionID,false);
     }
-    //Add collection to admin list when collection is created
-    public static void addCollectionToAdminMap(Collection col) throws java.sql.SQLException {
+    /*Add collection to admin list when collection is created
+     *@param Collection*/
+    public static void addCollectionToAdminMap(Collection col) throws SQLException {
         addCollection(col,true);
         buildAuthorizedColList(col);
         addCollectionToEmptyListID(col.getID());
@@ -673,13 +706,17 @@ public class ListUserCommunities {
             addCollectionToGallatinOnlyListID(col.getID());
         }
     }
-    //Add collection to annon list when items are added to collection or non-empty collection is no longer private
-    public static void addCollectionToAnonMap(Collection col) throws java.sql.SQLException {
+    /*Add collection to annon list when items are added to collection or non-empty collection is no longer private
+     *@param Collection */
+    public static void addCollectionToAnonMap(Collection col) throws SQLException {
         addCollection(col,false);
         removeFromCollectionAdminByColID(col.getID());
     }
-    //Remove collection from the array which is assosiated with it's parent community in admin or non-admin map using it's id
-    private static void removeColID(int parentCommID, int collectionID, Boolean admin ) throws java.sql.SQLException {
+    /*Remove collection from the array which is assosiated with it's parent community in admin or non-admin map using it's id
+     * @param parentCommID
+     * @param collectionID
+     * @param admin*/
+    private static void removeColID(int parentCommID, int collectionID, Boolean admin ) throws SQLException {
         if(admin) {
             if (colMapAdmin.containsKey(parentCommID) && colMapAdmin.get(parentCommID) != null) {
                 Collection[] colsOld = colMapAdmin.get(parentCommID);
@@ -715,8 +752,10 @@ public class ListUserCommunities {
             }
         }
     }
-    //Add collection to the array which is assosiated with it's parent community in admin or non-admin map using it's id
-    private static void addCollection(Collection col, Boolean admin) throws java.sql.SQLException {
+    /*Add collection to the array which is assosiated with it's parent community in admin or non-admin map using it's id
+     *@param Collection
+     * @param admin */
+    private static void addCollection(Collection col, Boolean admin) throws SQLException {
         Community[] parentComms =  col.getCommunities();
         if(parentComms!=null) {
             log.debug(" we are adding collection to map " + parentComms.length);
@@ -772,8 +811,9 @@ public class ListUserCommunities {
             }
         }
     }
-    //Update collection metadata in the map
-    public static  void updateCollectionMetadata( Collection coL ) throws java.sql.SQLException {
+    /*Update collection metadata in the map
+    *@param Collection*/
+    public static  void updateCollectionMetadata( Collection coL ) throws SQLException {
 
         if(coL.getParentObject()!=null) {
             int parentCommID = coL.getParentObject().getID();
@@ -809,54 +849,63 @@ public class ListUserCommunities {
         }
 
     }
-    //Remove collection id from the list of NYU Only collection
-    public static  void removeCollectionFromNyuOnlyListID(int collectionID) throws java.sql.SQLException {
+    /*Remove collection id from the list of NYU Only collection
+     *@param collectionID*/
+    public static  void removeCollectionFromNyuOnlyListID(int collectionID)  {
 
         if( nyuOnly!=null) {
-            nyuOnly.remove(collectionID);
+            nyuOnly.remove((Integer) collectionID);
         }
 
     }
-    //Remove collection id from the list of Gallatin Only collections
-    public static  void removeCollectionFromGallatinOnlyListID(int collectionID) throws java.sql.SQLException {
+    /*Remove collection id from the list of Gallatin Only collections
+     *@param collectionID*/
+    public static  void removeCollectionFromGallatinOnlyListID(int collectionID)  {
 
         if( gallatinOnly!=null) {
-            gallatinOnly.remove(collectionID);
+            gallatinOnly.remove((Integer) collectionID);
         }
     }
-    //Remove collection id from the list of private collections
-    public static  void removeCollectionFromPrivateListID(int collectionID) throws java.sql.SQLException {
+    /*Remove collection id from the list of private collections
+     *@param collectionID*/
+    public static  void removeCollectionFromPrivateListID(int collectionID)  {
 
         if( privateCollections!=null) {
-            privateCollections.remove(collectionID);
+            privateCollections.remove((Integer) collectionID);
         }
 
     }
-    //Remove collection id from the list of empty collection
-    public static  void removeCollectionFromEmptyListID(int collectionID) throws java.sql.SQLException {
+    /*Remove collection id from the list of empty collection
+     *@param collectionID*/
+    public static  void removeCollectionFromEmptyListID(int collectionID)  {
 
         if( emptyCollections!=null) {
-            emptyCollections.remove(collectionID);
+            emptyCollections.remove((Integer) collectionID);
         }
 
     }
-    //Add collection to NYU Only list
-    public static  void addCollectionToNyuOnlyListID(int collectionID) throws java.sql.SQLException {
-            nyuOnly.addIfAbsent(collectionID);
+    /*Add collection to NYU Only list
+     *@param collectionID*/
+    public static  void addCollectionToNyuOnlyListID(int collectionID)  {
+            nyuOnly.addIfAbsent((Integer) collectionID);
     }
-    //Add collection id to the list of Gallatin Only collections
-    public static  void addCollectionToGallatinOnlyListID(int collectionID) throws java.sql.SQLException {
-            gallatinOnly.addIfAbsent(collectionID);
+    /*Add collection id to the list of Gallatin Only collections
+     *@param collectionID*/
+    public static  void addCollectionToGallatinOnlyListID(int collectionID)  {
+            gallatinOnly.addIfAbsent((Integer) collectionID);
     }
-    //Add collection id to the list of private collections
-    public static  void addCollectionToPrivateListID(int collectionID) throws java.sql.SQLException {
-            privateCollections.addIfAbsent(collectionID);
+    /*Add collection id to the list of private collections
+     *@param collectionID*/
+    public static  void addCollectionToPrivateListID(int collectionID)  {
+            privateCollections.addIfAbsent((Integer) collectionID);
     }
-    //Add collection id to the list of empty collection
-    public static  void addCollectionToEmptyListID(int collectionID) throws java.sql.SQLException {
-            emptyCollections.addIfAbsent(collectionID);
+    /*Add collection id to the list of empty collection
+     *@param collectionID*/
+    public static  void addCollectionToEmptyListID(int collectionID)  {
+            emptyCollections.addIfAbsent((Integer) collectionID);
     }
-    //Removes entries from authorized collection admin list when collection is removed
+    /*Removes entries from authorized collection admin list when collection is removed
+     *@param collectionID*/
     private static void removeFromCollectionAdminByColID(int collectionID){
         if( colAuthorizedUsers!=null) {
             Iterator iteratorAuthCollections = colAuthorizedUsers.iterator();
@@ -873,29 +922,43 @@ public class ListUserCommunities {
 
 
     /***Methods used to manage admin groups membership  during the application life cycle***/
-    // We will be handling here only cases when an eperson is added or removed to/from the group
-    // Or when the whole group is removed. All other cases are handled on collection and community level
+    /* We will be handling here only cases when an eperson is added or removed to/from the group
+     * Or when the whole group is removed. All other cases are handled on collection and community level
+     * @param groupID */
     public static void DeleteGroup(int groupID){
         removeFromAdminByGroupID(groupID,true);
         removeFromAdminByGroupID(groupID,false);
     }
-    //Removes entries from authorized collection admin list when eperson is removed from group
+    /*Removes entries from authorized collection admin list when eperson is removed from group
+     * @param groupID
+     * @param epersonID*/
     public static void removeFromCollectionAdminByEpersonID( int groupID, int epersonID){
         removeFromAdminByEpersonID(groupID, epersonID, true);
     }
-    //Add entries to authorized collections admin list when new person is added to a group
+    /*Add entries to authorized collections admin list when new person is added to a group
+     * @param groupID
+     * @param epersonID
+     * @param collectionID*/
     public static void addToCollectionAdminByEpersonID( int groupID, int epersonID, int collectionID){
         addToAdminByEpersonID(groupID,epersonID, collectionID,  true);
     }
-    //Removes entries from authorized communities  admin list when eperson is removed from group
+    /*Removes entries from authorized communities  admin list when eperson is removed from group
+     * @param groupID
+     * @param epersonID*/
     public static void removeFromCommunityAdminByEpersonID( int groupID, int epersonID){
         removeFromAdminByEpersonID(groupID, epersonID, false);
     }
-    //Add entries to authorized communities  admin list when eperson is added to the group
+    /*Add entries to authorized communities  admin list when eperson is added to the group
+     * @param groupID
+     * @param epersonID
+     * @param communityID*/
     public static void addToCommunityAdminByEpersonID( int groupID, int epersonID, int communityID){
         addToAdminByEpersonID(groupID,epersonID, communityID,  false);
     }
-    //Do actual removal from communiuty or collection admin list for user
+    /*Do actual removal from communiuty or collection admin list for user
+     * @param groupID
+     * @param changeCol
+     */
     private static void removeFromAdminByGroupID(int groupID, Boolean changeCol){
         if( changeCol&&colAuthorizedUsers!=null) {
             Iterator iteratorAuthCollections = colAuthorizedUsers.iterator();
@@ -920,7 +983,10 @@ public class ListUserCommunities {
             }
         }
     }
-    //Do actula removal from community or collection admin list for specific person from the group
+    /*Do actula removal from community or collection admin list for specific person from the group
+    * @param groupID
+    * @param epersonID
+    * @param changeCol*/
     private static void removeFromAdminByEpersonID(int groupID,int epersonID, Boolean changeCol){
         if( changeCol&&colAuthorizedUsers!=null) {
             Iterator iteratorAuthCollections = colAuthorizedUsers.iterator();
@@ -945,7 +1011,11 @@ public class ListUserCommunities {
             }
         }
     }
-    //Do actual addition to  community or collection admin list for specific person from the group
+    /*Do actual addition to  community or collection admin list for specific person from the group
+     * @param groupID
+     * @param epersonID
+     * @param objectID
+     * @param changeCol*/
     private static void addToAdminByEpersonID(int groupID,int epersonID, int objectID, Boolean changeCol) {
        if(changeCol) {
            colAuthorizedUsers.add(new AuthorizedCollectionUsers(epersonID,groupID,objectID));
@@ -954,8 +1024,9 @@ public class ListUserCommunities {
        }
     }
 
-    //Modify maps and lists when collection policy is modifed. That method is called by admin servlet AuthorizeAdminServlet
-    public static void checkCollection(Collection collection) throws java.sql.SQLException {
+    /*Modify maps and lists when collection policy is modified. That method is called by admin servlet AuthorizeAdminServlet
+     * @param Collection  */
+    public static void checkCollection(Collection collection) throws SQLException {
         int collectionID=collection.getID();
         if(collection.isPrivate()) {
             if(privateCollections==null || !privateCollections.contains(collectionID)) {

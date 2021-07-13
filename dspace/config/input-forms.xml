@@ -145,8 +145,6 @@
     <name-map collection-handle="2451/33611" form-name="DataS" />
   </form-map>
   <form-map>
-=======
-  <form-map>
     <name-map collection-handle="2451/26402" form-name="Stern" />
   </form-map>
 
@@ -2920,7 +2918,6 @@
       <pair>
 	<displayed-value>ISSN</displayed-value>
 	<stored-value>issn</stored-value>
-
       </pair>
       <pair>
 	<displayed-value>Other</displayed-value>
@@ -2928,24 +2925,13 @@
       </pair>
       <pair>
 	<displayed-value>ISMN</displayed-value>
-
 	<stored-value>ismn</stored-value>
-<<<<<<< HEAD
       </pair>
       <pair>
 	<displayed-value>Gov't Doc #</displayed-value>
 	<stored-value>govdoc</stored-value>
       </pair>
       <pair>
-=======
-      </pair>
-      <pair>
-	<displayed-value>Gov't Doc #</displayed-value>
-	<stored-value>govdoc</stored-value>
-      </pair>
-      <pair>
->>>>>>> origin/main
-
 	<displayed-value>URI</displayed-value>
 	<stored-value>uri</stored-value>
       </pair>

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Iterator;
+import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
@@ -49,20 +49,22 @@ public class ListCommunities {
 
     }
 
-    //Returns map with all communities->subcommunities available to the user
+    /*Returns map with all communities->subcommunities available to the user*/
     public Map getCommunitiesMap() {
         return commMap;
     }
 
-    //Returns map with all communities->collections available to the user
+    /*Returns map with all communities->collections available to the user*/
     public Map getCollectionsMap() {
         return colMap;
     }
 
 
-    //Build  full community/collection list for the user and updates commMap and colMap attributes
-    // It will be displayed on home page and list-communities.jsp page for the user
-   public void BuildUserCommunitiesList(Context context) throws java.sql.SQLException {
+    /* Build  full community/collection list for the user and updates commMap and colMap attributes
+     * It will be displayed on home page and list-communities.jsp page for the user
+     * @param Context
+     */
+   public void BuildUserCommunitiesList(Context context) throws SQLException {
 
         int userID = context.getCurrentUser().getID();
         log.debug(" size of generic collection Map:"+ListUserCommunities.colMapAnon.size());
@@ -96,14 +98,18 @@ public class ListCommunities {
         log.debug(" size of tailored community Map:"+commMap.size());
     }
 
-    //if community is visible to the user we also need to see it's parents and children community/collection in the community tree
+    /*if community is visible to the user we also need to see it's parents and children community/collection in the community tree
+     * @param Community
+     */
     private void addUserComm(Community com ) throws java.sql.SQLException {
             addParentComm(com);
             addChildrenComm(com);
     }
 
-    //If community is visible to the user then we also need to add it's parent community to the community tree
-    //so we can get access to it.
+    /*If community is visible to the user then we also need to add it's parent community to the community tree
+     * so we can get access to it.
+     * @param Community
+     */
     private void addParentComm( Community com ) throws java.sql.SQLException {
         Community parentComm = com.getParentCommunity();
         if(parentComm!=null) {
@@ -132,8 +138,10 @@ public class ListCommunities {
         }
     }
 
-    //if community is visible to the user then it's collections and sub-communities are also visible to the user and need to be added to the tree
-    private void addChildrenComm( Community com ) throws java.sql.SQLException {
+    /*If community is visible to the user then it's collections and sub-communities are also visible to the user and need to be added to the tree
+     * @param Community
+     */
+    private void addChildrenComm( Community com ) throws SQLException {
 
         Collection[] colls = com.getCollections();
         if (colls.length > 0) {
@@ -150,8 +158,10 @@ public class ListCommunities {
         }
     }
 
-    //If collection is visible to the user we need to add it to the tree as well as all it's parent community
-    private void addUserCol(Collection col ) throws java.sql.SQLException {
+    /*If collection is visible to the user we need to add it to the tree as well as all it's parent community
+     * @param Collection
+     */
+    private void addUserCol(Collection col ) throws SQLException {
         log.debug("collection id"+col.getID());
         Community[] parentComms =  col.getCommunities();
         for (Community parentComm:parentComms) {

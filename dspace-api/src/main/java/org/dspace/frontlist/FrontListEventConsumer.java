@@ -2,7 +2,8 @@ package org.dspace.frontlist;
 
 import org.apache.log4j.Logger;
 
-import java.util.*;
+import java.util.List;
+import java.sql.SQLException;
 
 import org.dspace.authorize.AuthorizeManager;
 import org.dspace.authorize.ResourcePolicy;
@@ -32,19 +33,19 @@ public class FrontListEventConsumer implements Consumer {
 
         /**
          * We do not want to show  private and empty collections to non-admin users.
-         * Only those users who can administrate private or empty collection or can submitte to those collections, will see them.
-         * It has proved to be too resource intensive to calculate on the fly which communities and collection to show to a specific user
-         * To reduce the amount of calculations we do most calculations on the application startup
-         * On the start up we initialize 4 static ConcurrentHashMaps objects:
+         * Only those users who can administrate private or empty collections or can submite to those collections, will see them.
+         * It proved to be too resource intensive to calculate on the fly which communities and collection a specific user should see.
+         * To reduce the amount of calculations we do most calculations at the application startup
+         * When the application is started  we initialize 4 static ConcurrentHashMaps objects:
          * Map of communities and collections for site admins colMapAdmin,comMapAdmin
          * Map of communities and collections for all non-admin users colMapAnon,comMapAnon
          * Each entry in maps for collections has community id as a key and array of those community collections as a value
          * < Parent Community ID, [array of collections]>
          * Each entry in maps for communities has parent community id as a key and array of those community subcommunties as a value
          * < Parent Community ID, [array of subcommunties]>
-         * As we have a limited number of  users who can get access to private ans empty collections,
+         * As we have a limited number of  users who can get access to private and empty collections,
          * for those users we will add communities and collections on the fly.
-         * On the application start up we pre-calculate the list of those users and keep them in 2 static CopyOnWriteArrayLists (we use this type to
+         * At the application start up we pre-calculate the list of those users and keep them in 2 static CopyOnWriteArrayLists (we use this type to
          * avoid concurrency issues) - colAuthorizedUsers and commAuthorizedUsers.
          * Each item in colAuthorizedUsers is an object of custom type AuthorizedCollectionUsers. It keep the triple <eperson ID, group ID, collection ID>
          * Each item in commAuthorizedUsers is an object of custom type AuthorizedCollectionUsers. It keep the triple <eperson ID, group ID, community ID>
@@ -153,7 +154,7 @@ public class FrontListEventConsumer implements Consumer {
                                 if (et == Event.ADD) {
                                         if (event.getObject(ctx) != null && event.getObjectType() == Constants.ITEM) {
                                                 if (ListUserCommunities.emptyCollections != null &&
-                                                        ListUserCommunities.emptyCollections.contains(s)) {
+                                                        ListUserCommunities.emptyCollections.contains(s.getID())) {
                                                         log.debug(" processing adding item for previously empty collection "+s.getName());
                                                         processAddItem(s);
                                                 }
@@ -162,7 +163,7 @@ public class FrontListEventConsumer implements Consumer {
                                         }
                                 }
                                 if (et == Event.MODIFY_METADATA) {
-                                        log.warn(" processing updating collection metadata");
+                                        log.debug(" processing updating collection metadata");
                                         processUpdateCollection(s);
                                 }
 
@@ -177,7 +178,7 @@ public class FrontListEventConsumer implements Consumer {
                         Collection[] cols =s.getCollections();
                         for (Collection col:cols) {
                                 if (col.countItems() == 0){
-                                        log.warn(" processing removing item");
+                                        log.debug(" processing removing withdrawn item "+s.getName());
                                         processRemoveItem(col);
 
                                 }
@@ -186,10 +187,13 @@ public class FrontListEventConsumer implements Consumer {
 
                 //group related events, e.g. when an eperson is added or removed from the group or when group is deleted
                 if(st==Constants.GROUP ) {
+                        log.debug(" working with group object ");
                         if(event.getObject(ctx)!=null && event.getObjectType()==Constants.EPERSON) {
+                                log.debug(" adding or removing eperson ");
                                 processModifyGroup(ctx, (EPerson) event.getObject(ctx), (Group) event.getSubject(ctx), et);
                         }
                         if(event.getEventType()==Event.DELETE) {
+                                log.debug(" deleting group ");
                                 processDeleteGroup( event.getSubjectID());
                         }
                 }
@@ -214,10 +218,12 @@ public class FrontListEventConsumer implements Consumer {
             // No-op
 
         }
-        //Processes removing top level community and it's children elements from maps.
-        //The event is issued after community and it's children objects are already deleted
-        //We are just modifying maps. We use java objects which support concurrency so all operations are threadsafe
-        private void processRemoveTopCommunityID(  int communityID ) throws java.sql.SQLException {
+        /*Processes removing top level community and it's children elements from maps.
+         *The event is issued after community and it's children objects are already deleted
+         *We are just modifying maps. We use java objects which support concurrency so all operations are threadsafe
+         * @param communityID
+         */
+        private void processRemoveTopCommunityID(  int communityID ) throws SQLException {
 
                 //remove children collection and subcommunity from the non-admin map
                 ListUserCommunities.removeChildrenCommunityFromAnnonListID(communityID);
@@ -226,11 +232,14 @@ public class FrontListEventConsumer implements Consumer {
                 ListUserCommunities.removeChildrenCommunityFromAdminListID(communityID);
         }
 
-        //Processes removing subcommunity and it's children elements from maps.
-        //Also removes the subcommunity from the list of subcommunities in the maps entry for it's parent community
-        //The event is issued after subcommunity and it's children objects are already deleted
-        //We are just modifying maps. We use java objects which support concurrency so all operations are threadsafe
-        private void processRemoveSubCommunity( int parentCommID, int communityID ) throws java.sql.SQLException {
+        /*Processes removing subcommunity and it's children elements from maps.
+         *Also removes the subcommunity from the list of subcommunities in the maps entry for it's parent community
+         *The event is issued after subcommunity and it's children objects are already deleted
+         *We are just modifying maps. We use java objects which support concurrency so all operations are threadsafe
+         * @param parentCommID
+         * @param communityID
+         */
+        private void processRemoveSubCommunity( int parentCommID, int communityID ) throws SQLException {
 
                 //Modifies the array of subcommunities in the non-admin map entry for the parent comminity
                 // to remove deleted subcommunity
@@ -248,10 +257,12 @@ public class FrontListEventConsumer implements Consumer {
 
         }
 
-        //If an item is added to an empty collection and this collection is not private we add this collection to non-admin list
-        private void processAddItem( Collection col ) throws java.sql.SQLException {
+        /*If an item is added to an empty collection and this collection is not private we add this collection to non-admin list
+         * @param Collection
+         */
+        private void processAddItem( Collection col ) throws SQLException {
              if(ListUserCommunities.emptyCollections!=null
-                                && ListUserCommunities.emptyCollections.contains(col)) {
+                                && ListUserCommunities.emptyCollections.contains(col.getID())) {
                                 ListUserCommunities.removeCollectionFromEmptyListID(col.getID());
                                 if(!col.isPrivate()) {
                                         ListUserCommunities.addCollectionToAnonMap(col);
@@ -260,11 +271,13 @@ public class FrontListEventConsumer implements Consumer {
              }
         }
 
-        //If the last item is removed or withdrawn from a public collection, the collection is removed from non-admin list
-        //It will now only will be visible to site admin, parent community admins and collection admins
-        private void processRemoveItem( Collection col ) throws java.sql.SQLException {
+        /*If the last item is removed or withdrawn from a public collection, the collection is removed from non-admin list
+         *It will now only will be visible to site admin, parent community admins and collection admins
+         * @param Collection
+         */
+        private void processRemoveItem( Collection col ) throws SQLException {
                              ListUserCommunities.addCollectionToEmptyListID(col.getID());
-                                if( !ListUserCommunities.privateCollections.contains(col)) {
+                                if( !ListUserCommunities.privateCollections.contains(col.getID())) {
                                         if(col.getParentObject()!=null) {
                                                 int parentCommID = col.getParentObject().getID();
                                                 ListUserCommunities.removeCollectionFromAnonMapByID(parentCommID,col.getID());
@@ -272,10 +285,12 @@ public class FrontListEventConsumer implements Consumer {
                                 }
 
         }
-        //Add newly created collection to the admin list. As after creation it is empty, add it to the empty list
-        // If it is private, nyuonly or gallatin only add it to the appropriate list
-        //The collection will be visible to only to site admin and community admin users
-        private void processAddCollection( Collection col ) throws java.sql.SQLException {
+        /*Add newly created collection to the admin list. As after creation it is empty, add it to the empty list
+         *If it is private, nyuonly or gallatin only add it to the appropriate list
+         *The collection will be visible to only to site admin and community admin users
+         * @param Collection
+         */
+        private void processAddCollection( Collection col ) throws SQLException {
                 log.debug("We adding collection to Admin list");
                 ListUserCommunities.addCollectionToAdminMap(col);
 
@@ -289,13 +304,16 @@ public class FrontListEventConsumer implements Consumer {
                                 ListUserCommunities.addCollectionToGallatinOnlyListID(col.getID());
                 }
         }
-        //Adds community to admin map after creation. As community is empty when created it will only withible to admins
-        private void processAddCommunity( Community comm ) throws java.sql.SQLException {
+        /*Adds community to admin map after creation. As community is empty when created it will only withible to admins
+         * @param Community*/
+        private void processAddCommunity( Community comm ) throws SQLException {
                 ListUserCommunities.addCommunityToAdminMap(comm);
         }
-        //Process removal of collection from the repository. In that case collection needs to be removed from all maps and lists
-        //It admins needs to be removed from admin list
-        private void processRemoveCollection( int parentCommID, int collectionID ) throws java.sql.SQLException {
+        /*Process removal of collection from the repository. In that case collection needs to be removed from all maps and lists
+         *It admins needs to be removed from admin list
+         * @param parentCommID
+         * @param collectionID */
+        private void processRemoveCollection( int parentCommID, int collectionID ) throws SQLException {
 
                 ListUserCommunities.removeCollectionFromAnonMapByID(parentCommID,collectionID);
                 ListUserCommunities.removeCollectionFromAdminMapByID(parentCommID,collectionID);
@@ -306,55 +324,80 @@ public class FrontListEventConsumer implements Consumer {
 
         }
 
-        //If collection metadata is updated we need to update collection object in the collection maps
-        private void processUpdateCollection(Collection col) throws java.sql.SQLException {
+        /*If collection metadata is updated we need to update collection object in the collection maps
+         * @param Collection
+         */
+        private void processUpdateCollection(Collection col) throws SQLException {
                 ListUserCommunities.updateCollectionMetadata(col);
         }
-        //If community metadata is updated we need to update community object in the subcommunities maps
-        private void processUpdateCommunity(Community comm) throws java.sql.SQLException {
+        /*If community metadata is updated we need to update community object in the subcommunities maps
+         * @param Community
+         */
+        private void processUpdateCommunity(Community comm) throws SQLException {
                 ListUserCommunities.updateCommunityMetadata(comm);
         }
-        //If user is added or removed from groups which contain admins of private and empty collections/communities
-        //those lists should be updated
-        private void processModifyGroup( Context context, EPerson eperson, Group group, int eventType ) throws java.sql.SQLException {
-                List<ResourcePolicy> rps= AuthorizeManager.getPoliciesForGroup(context, group);
-                for (ResourcePolicy rp:rps) {
-                        int resourceID = rp.getResourceID();
-                        int resourceType = rp.getResourceType();
+        /*If user is added or removed from groups which contain admins for private and/or empty collections/communities
+         *those lists should be updated
+         * @param context
+         * @param EPerson
+         * @param Group
+         * @param eventType*/
+        private void processModifyGroup( Context context, EPerson eperson, Group group, int eventType ) throws SQLException {
+                        int epersonID = eperson.getID();
+                        int groupID = group.getID();
+                        List<ResourcePolicy> rps = AuthorizeManager.getPoliciesForGroup(context, group);
+                        for (ResourcePolicy rp : rps) {
+                                int resourceID = rp.getResourceID();
+                                int resourceType = rp.getResourceType();
 
-                       if(resourceType== Constants.COLLECTION) {
-                                Collection  col =(Collection) DSpaceObject.find(context, resourceType, resourceID );
-                                if((ListUserCommunities.privateCollections!=null && ListUserCommunities.privateCollections.contains(col) )||
-                                        (ListUserCommunities.emptyCollections!=null && ListUserCommunities.emptyCollections.contains(col)) ) {
+                                if (resourceType == Constants.COLLECTION) {
+                                        if (eventType == Event.REMOVE)  {
+                                                log.debug(" Removing new collection admin " + eperson.getName() + " for group " + group.getName());
+                                                ListUserCommunities.removeFromCollectionAdminByEpersonID(groupID, epersonID);
+                                        } else {
+                                                Collection col = (Collection) DSpaceObject.find(context, resourceType, resourceID);
+                                                if(col!=null) {
+                                                        int colID = col.getID();
+                                                        if ((ListUserCommunities.privateCollections != null && ListUserCommunities.privateCollections.contains(colID)) ||
+                                                                (ListUserCommunities.emptyCollections != null && ListUserCommunities.emptyCollections.contains(colID))) {
+                                                                log.debug(" Adding new collection admin " + eperson.getName() + " for collection " + col.getName());
+                                                                if (eventType == Event.ADD) {
+                                                                        ListUserCommunities.addToCollectionAdminByEpersonID(groupID, epersonID, colID);
+                                                                }
+                                                        }
+                                                }
 
-                                        if(eventType==Event.ADD) {
-                                                ListUserCommunities.addToCollectionAdminByEpersonID(group.getID(),eperson.getID(),col.getID());
                                         }
-                                        if(eventType==Event.REMOVE) {
-                                                ListUserCommunities.removeFromCollectionAdminByEpersonID(group.getID(), eperson.getID());
+                                }
+                                if (resourceType == Constants.COMMUNITY ) {
+                                        log.debug(" Removing new community admin " + eperson.getName() + " for group "+group.getName() );
+                                        if (eventType == Event.REMOVE) {
+                                                ListUserCommunities.removeFromCommunityAdminByEpersonID(groupID, epersonID);
+                                        } else {
+                                                Community comm = (Community) DSpaceObject.find(context, resourceType, resourceID);
+                                                if(comm!=null) {
+                                                        int commID = comm.getID();
+                                                        if ((ListUserCommunities.colMapAnon != null && !ListUserCommunities.colMapAnon.containsKey(commID))
+                                                                && (ListUserCommunities.commMapAnon != null && !ListUserCommunities.commMapAnon.containsKey(commID)))
+                                                                log.debug(" Adding new collection admin " + eperson.getName() + " for community " + comm.getName());
+                                                        if (eventType == Event.ADD) {
+                                                                ListUserCommunities.addToCommunityAdminByEpersonID(groupID, epersonID, commID);
+                                                        }
+                                                }
+                                        }
+                                }
+                                if (resourceType == Constants.GROUP) {
+                                        Group parentGroup = (Group) DSpaceObject.find(context, resourceType, resourceID);
+                                        if(parentGroup!=null) {
+                                                processModifyGroup(context, eperson, parentGroup, eventType);
                                         }
                                 }
                         }
-                        if(resourceType== Constants.COMMUNITY) {
-                                Community  comm =(Community) DSpaceObject.find(context, resourceType, resourceID );
-                                if(comm.getAllCollections().length==0) {
-
-                                        if(eventType==Event.ADD) {
-                                                ListUserCommunities.addToCollectionAdminByEpersonID(group.getID(),eperson.getID(),comm.getID());
-                                        }
-                                        if(eventType==Event.REMOVE) {
-                                                ListUserCommunities.removeFromCollectionAdminByEpersonID(group.getID(),eperson.getID());
-                                        }
-                                }
-                        }
-                        if(resourceType== Constants.GROUP) {
-                                Group  parentGroup =(Group) DSpaceObject.find(context, resourceType, resourceID );
-                                processModifyGroup(context, eperson, parentGroup, eventType);
-                        }
-                }
         }
-        //If group is deleted remove all entries related to that group from the list of admins of private and empty collections
-        private void processDeleteGroup(  int groupID) throws java.sql.SQLException {
+        /*If group is deleted remove all entries related to that group from the list of admins of private and empty collections
+         * @param groupID
+         */
+        private void processDeleteGroup(  int groupID)  {
                 ListUserCommunities.DeleteGroup(groupID);
         }
 }
