@@ -508,7 +508,7 @@
     <!-- This form should be used for collections with a template item that includes rights information.  -->
     <!-- This form should be paired with a submission-process that DOES NOT include a rights-entry step.  -->
     <!-- Form was created so that the UX for existing users did not change when the separate rights-entry -->
-    <!-- step was added to the default submission-process.                                                --> 
+    <!-- step was added to the default submission-process.                                                -->
     <form name="traditional-with-rights">
       <page number="1">
 	<field>
