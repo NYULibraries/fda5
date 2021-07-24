@@ -18,6 +18,8 @@
  <!-- for handle "default".                                                -->
  <submission-map>
    <name-map collection-handle="default" submission-name="traditional" />
+   <name-map collection-handle="2451/62822" submission-name="embargo" />
+   <name-map collection-handle="2451/62796" submission-name="embargo" />
    <name-map collection-handle="2451/34841" submission-name="gallatin" />
  </submission-map>
 
@@ -221,6 +223,47 @@
      </submission-process>
 
 
+     <!--This "DPN" project with embargo-->
+     <submission-process name="embargo">
+         <step>
+             <processing-class>org.dspace.submit.step.SkipInitialQuestionsStep</processing-class>
+         </step>
+         <step>
+             <heading>submit.progressbar.license</heading>
+             <processing-class>org.dspace.submit.step.LicenseStep</processing-class>
+             <jspui-binding>org.dspace.app.webui.submit.step.JSPLicenseStep</jspui-binding>
+             <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.LicenseStep</xmlui-binding>
+             <workflow-editable>false</workflow-editable>
+         </step>
+         <step>
+             <heading>submit.progressbar.upload</heading>
+             <processing-class>org.dspace.submit.step.UploadWithEmbargoStep</processing-class>
+             <jspui-binding>org.dspace.app.webui.submit.step.JSPUploadWithEmbargoStep</jspui-binding>
+             <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.UploadWithEmbargoStep</xmlui-binding>
+             <workflow-editable>true</workflow-editable>
+         </step>
+         <step>
+             <heading>submit.progressbar.describe</heading>
+             <processing-class>org.dspace.submit.step.DescribeStep</processing-class>
+             <jspui-binding>org.dspace.app.webui.submit.step.JSPDescribeStep</jspui-binding>
+             <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.DescribeStep</xmlui-binding>
+             <workflow-editable>true</workflow-editable>
+         </step>
+         <step>
+             <heading>submit.progressbar.access</heading>
+             <processing-class>org.dspace.submit.step.AccessStep</processing-class>
+             <jspui-binding>org.dspace.app.webui.submit.step.JSPAccessStep</jspui-binding>
+             <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.AccessStep</xmlui-binding>
+             <workflow-editable>true</workflow-editable>
+         </step>
+         <step>
+             <heading>submit.progressbar.verify</heading>
+             <processing-class>org.dspace.submit.step.VerifyStep</processing-class>
+             <jspui-binding>org.dspace.app.webui.submit.step.JSPVerifyStep</jspui-binding>
+             <xmlui-binding>org.dspace.app.xmlui.aspect.submission.submit.ReviewStep</xmlui-binding>
+             <workflow-editable>true</workflow-editable>
+         </step>
+     </submission-process>
 
 
      <submission-process name="gallatin">
