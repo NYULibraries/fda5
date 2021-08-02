@@ -426,7 +426,7 @@ public class AuthorizeManager
 
         if(userid != 0 && o instanceof Item) {
 
-            if (((Item) o).getSubmitter().getID() == userid) {
+            if (((Item) o).getSubmitter()!=null && ((Item) o).getSubmitter().getID() == userid) {
                 return true;
             }
 

@@ -131,8 +131,8 @@ public class ListUserCommunities {
             // Build admin and general maps of collection for each  community.
             // In the process of building maps we will also build nyuOnly, gallatinOnly,
             // privateCollections, emptyCollections which will allow us to make faster calculations
-            // We also will build an ArrayList of class AuthorizedCoolectionUsers
-            // The later will be used to build user specific front list for collection admins
+            // We also will build an ArrayList of  AuthorizedCoolectionUsers objects and ArrayList of AuthorizedCommunityUsers object
+            // The later will be used to build user specific front list for collection admins and community admins
             Community[] communities = Community.findAll(context);
 
             if(communities!=null) {

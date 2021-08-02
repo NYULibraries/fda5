@@ -147,7 +147,7 @@ public class I18nUtilTest
 
         // Test for a stock key
         key = "jsp.general.home";
-        expResult = "DSpace Home";
+        expResult = "FDA Home";
         result = I18nUtil.getMessage(key);
         assertEquals("Returns the translation of the key if it is defined",
                 expResult, result);
@@ -170,7 +170,7 @@ public class I18nUtilTest
 
         // Test for a stock key
         key = "jsp.general.home";
-        expResult = "DSpace Home";
+        expResult = "FDA Home";
         result = I18nUtil.getMessage(key, locale);
         assertEquals("Returns the translation of the key if it is defined",
                 expResult, result);

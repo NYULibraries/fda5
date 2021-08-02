@@ -22,6 +22,7 @@ import org.junit.*;
 import static org.junit.Assert.* ;
 import static org.hamcrest.CoreMatchers.*;
 import mockit.NonStrictExpectations;
+import org.dspace.frontlist.ListUserCommunities;
 
 /**
  * Unit Tests for class Community
@@ -1489,7 +1490,7 @@ public class CommunityTest extends AbstractDSpaceObjectTest
     public void testGetAdminObject() throws SQLException
     {
         //default community has no admin object
-        assertThat("testGetAdminObject 0", (Community)c.getAdminObject(Constants.REMOVE), equalTo(c));
+        assertThat("testGetAdminObject 0", (Community)c.getAdminObject(Constants.REMOVE), nullValue());
         assertThat("testGetAdminObject 1", (Community)c.getAdminObject(Constants.ADD), equalTo(c));
         assertThat("testGetAdminObject 2", c.getAdminObject(Constants.DELETE), nullValue());
         assertThat("testGetAdminObject 3", (Community)c.getAdminObject(Constants.ADMIN), equalTo(c));
