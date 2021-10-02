@@ -73,7 +73,7 @@
 		<div class="panel-body">
         <h5 class="access-setting"><fmt:message key="jsp.submit.access.private_setting.heading"/></h5>
 
-		<div class="row">
+	<!--	<div class="row">
             	<label class="col-md-2" for="private_option"><fmt:message key="jsp.submit.access.private_setting.label"/></label>
 				<div class="col-md-10">
 				<div class="input-group">
@@ -83,7 +83,7 @@
 					<span class="form-control"><fmt:message key="jsp.submit.access.private_setting.help"/></span>
 				</div>
 				</div>
-		</div>
+		</div> -->
 
      <h3 class="access-setting"><fmt:message key="jsp.submit.access.embargo_setting.heading"/></h3>
 
