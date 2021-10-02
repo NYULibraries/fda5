@@ -765,7 +765,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
                  <label>Abstract</label>
                  <input-type>textarea</input-type>
                  <hint> Enter the abstract of the item below.</hint>
-                 <required>You must enter a description for this item.</required>
+                 <required></required>
              </field>
 
 
