@@ -154,7 +154,7 @@
         <dependency>
             <groupId>org.dspace</groupId>
             <artifactId>dspace-api</artifactId>
-            <version>5.4</version>
+            <version>5.11</version>
         </dependency>
     </dependencies>
 
