@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <project name="maven-antrun-" default="Encode any UTF-8 chars in properties"  >
 <target name="Encode any UTF-8 chars in properties">
-  <native2ascii src="/Users/katepechekhonova/fda5" includes="*.properties" encoding="UTF8" dest="/Users/katepechekhonova/fda5/target"/>
+  <native2ascii dest="/content/prod/store/fda/dev/fda5/target" encoding="UTF8" src="/content/prod/store/fda/dev/fda5" includes="*.properties"/>
 </target>
 </project>

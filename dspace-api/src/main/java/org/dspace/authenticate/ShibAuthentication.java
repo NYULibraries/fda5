@@ -677,10 +677,11 @@ public class ShibAuthentication implements AuthenticationMethod
 		}
 
 		// 2) Second, look for an email header.
-		if (eperson == null && emailHeader != null) {
+		// Modified by Kate to accomodate empty email string
+		if (eperson == null && emailHeader != null ) {
 			String email = findSingleAttribute(request,emailHeader);
 
-			if (email != null) {
+			if (email != null && !email.isEmpty()) {
 				foundEmail = true;
 				email = email.toLowerCase();
 				eperson = EPerson.findByEmail(context, email);
