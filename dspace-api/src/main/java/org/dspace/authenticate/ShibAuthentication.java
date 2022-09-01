@@ -759,6 +759,10 @@ public class ShibAuthentication implements AuthenticationMethod
 		// Header values
 		String netid = findSingleAttribute(request,netidHeader).split("@")[0];
 		String email = findSingleAttribute(request,emailHeader);
+                //Added by Kate to accomodate empty email
+                if (email==null || email.isEmpty()) {
+                    email = findSingleAttribute(request,netidHeader);
+                }
 		String fname = findSingleAttribute(request,fnameHeader);
 		String lname = findSingleAttribute(request,lnameHeader);
 
@@ -848,6 +852,10 @@ public class ShibAuthentication implements AuthenticationMethod
 
 		String netid = findSingleAttribute(request,netidHeader).split("@")[0];
 		String email = findSingleAttribute(request,emailHeader);
+                //Added by Kate to accomodate empty email
+                if (email==null || email.isEmpty()) {
+                    email = findSingleAttribute(request,netidHeader);
+                }
 		String fname = findSingleAttribute(request,fnameHeader);
 		String lname = findSingleAttribute(request,lnameHeader);
 
