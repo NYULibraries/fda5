@@ -1319,7 +1319,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
                  <label>Rights</label>
                  <input-type>textarea</input-type>
                  <hint> Enter information on item's rights in this box. </hint>
-                 <required></required>
+                 <required>You must enter a rights statement for the content you are submitting.</required>
              </field>
 		 
   <field>
