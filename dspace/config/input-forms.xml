@@ -1318,7 +1318,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
                  <repeatable>false</repeatable>
                  <label>Rights</label>
                  <input-type>textarea</input-type>
-                 <hint> Enter information on item's rights in this box. </hint>
+                 <hint>&lt;em class="submitFormHelpRequired"&gt;Enter information on item's rights in this box. *Required*&lt;/em&gt;</hint>
                  <required>You must enter a rights statement for the content you are submitting.</required>
              </field>
 		 
@@ -1330,7 +1330,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <repeatable>false</repeatable>
          <label>Course</label>
          <input-type>onebox</input-type>
-         <hint>&lt;em class="submitFormHelpRequired"&gt;Enter the number of this course.*Required*&lt;/em&gt;</hint>
+         <hint>Enter the number of this course.</hint>
          <required></required>
        </field>
 		 
