@@ -17,6 +17,9 @@
    <name-map collection-handle="default" form-name="traditional" />
  </form-map>
  <form-map>
+   <name-map collection-handle="2451/63933" form-name="SPS-capstone" />
+ </form-map>
+ <form-map>
     <name-map collection-handle="2451/62242" form-name="Calabash" />
  </form-map>
  <form-map>
@@ -1228,7 +1231,168 @@ it, please enter the types and the actual numbers or codes below.</hint>
 
          </page>
      </form>
-   <form name="therapy">
+   <form name="SPS-capstone">
+         <page number="1">
+             <field>
+                 <dc-schema>dc</dc-schema>
+                 <dc-element>title</dc-element>
+                 <dc-qualifier></dc-qualifier>
+                 <repeatable>false</repeatable>
+                 <label>Title</label>
+                 <input-type>onebox</input-type>
+                 <hint>&lt;em class="submitFormHelpRequired"&gt;Enter the main title of the item. *Required*&lt;/em&gt;</hint>
+                 <required>You must enter a main title for this item.</required>
+             </field>
+
+             <field>
+                 <dc-schema>dc</dc-schema>
+                 <dc-element>description</dc-element>
+                 <dc-qualifier>abstract</dc-qualifier>
+                 <repeatable>false</repeatable>
+                 <label>Abstract</label>
+                 <input-type>textarea</input-type>
+                 <hint> Enter the abstract of the item below.</hint>
+                 <required></required>
+             </field>
+
+             <field>
+                 <dc-schema>dc</dc-schema>
+                 <dc-element>contributor</dc-element>
+                 <dc-qualifier>author</dc-qualifier>
+                 <repeatable>true</repeatable>
+                 <label>Author</label>
+                 <input-type>name</input-type>
+                 <hint>&lt;em class="submitFormHelpRequired"&gt;Authors: first name; last name. *Required*&lt;/em&gt;</hint>
+                 <required>You must add at least one author.</required>
+             </field>
+
+             <field>
+                 <dc-schema>dc</dc-schema>
+                 <dc-element>contributor</dc-element>
+                 <dc-qualifier>advisor</dc-qualifier>
+                 <repeatable>true</repeatable>
+                 <label>Capstone Professor</label>
+                 <input-type>name</input-type>
+                 <hint>&lt;em class="submitFormHelpRequired"&gt;Authors: first name; last name. *Required*&lt;/em&gt;</hint>
+                 <required>You must add the name of the capstone advisor.</required>
+             </field>
+		 
+             <field>
+                 <dc-schema>dc</dc-schema>
+                 <dc-element>date</dc-element>
+                 <dc-qualifier>issued</dc-qualifier>
+                 <repeatable>false</repeatable>
+                 <label>Degree Year</label>
+                 <input-type>date</input-type>
+                 <hint>&lt;em class="submitFormHelpRequired"&gt;You must add a date of publication.  *Required*&lt;/em&gt;</hint>
+                 <required>You must enter the year when the capstone project was completed.</required>
+             </field>
+		 
+             <field>
+
+                 <dc-schema>dc</dc-schema>
+                 <dc-element>language</dc-element>
+                 <dc-qualifier>iso</dc-qualifier>
+                 <repeatable>false</repeatable>
+                 <label>Language</label>
+                 <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
+                 <hint>Select the language of the main content of the item. If the language does not appear in the list below, please select 'Other'.  If the content does not really have a language (for example, if it is a dataset or an image) please select 'N/A'.</hint>
+                 <required></required>
+             </field>
+		 
+             <field>
+                 <dc-schema>dc</dc-schema>
+                 <dc-element>type</dc-element>
+                 <dc-qualifier></dc-qualifier>
+                 <repeatable>true</repeatable>
+                 <label>Type</label>
+                 <input-type value-pairs-name="capstone_types">dropdown</input-type>
+                 <hint> Select the type(s) of content you are submitting. To select more than one value in the list, you may have to hold down the "CTRL" or "Shift" key.</hint>
+                 <required></required>
+             </field>
+             
+		<field>
+                 <dc-schema>dc</dc-schema>
+                 <dc-element>rights</dc-element>
+                 <dc-qualifier></dc-qualifier>
+                 <repeatable>false</repeatable>
+                 <label>Rights</label>
+                 <input-type>textarea</input-type>
+                 <hint>&lt;em class="submitFormHelpRequired"&gt;Enter information on item's rights in this box. *Required*&lt;/em&gt;</hint>
+                 <required>You must enter a rights statement for the content you are submitting.</required>
+             </field>
+		 
+  <field>
+         <dc-schema>dc</dc-schema>
+
+         <dc-element>identifier</dc-element>
+         <dc-qualifier>coursenumber</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Course</label>
+         <input-type>onebox</input-type>
+         <hint>Enter the number of this course.</hint>
+         <required></required>
+       </field>
+		 
+ <field>
+         <dc-schema>thesis</dc-schema>
+         <dc-element>degree</dc-element>
+         <dc-qualifier>name</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Degree</label>
+         <input-type>onebox</input-type>
+         <hint> Enter the name of the thesis degree related to the item submitted.</hint>
+         <required></required>
+     </field>
+		 
+ <field>
+         <dc-schema>thesis</dc-schema>
+         <dc-element>degree</dc-element>
+         <dc-qualifier>level</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Degree level</label>
+         <input-type>onebox</input-type>
+         <hint> Enter the level of the thesis degree related to the item submitted, for example: Doctoral.</hint>
+         <required></required>
+     </field>
+		 
+     <field>
+         <dc-schema>thesis</dc-schema>
+         <dc-element>degree</dc-element>
+         <dc-qualifier>discipline</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Department </label>
+         <input-type>onebox</input-type>
+         <hint> Enter the department related to the item submitted.</hint>
+         <required>You must enter a thesis degree discipline.</required>
+     </field>
+		 
+     <field>
+         <dc-schema>thesis</dc-schema>
+         <dc-element>degree</dc-element>
+         <dc-qualifier>grantor</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Degree granting institution</label>
+         <input-type>onebox</input-type>
+         <hint> Enter the degree granting institution related to the item submitted, for example: New York University School of Professional Studies.</hint>
+         <required></required>
+     </field>
+		 
+     <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>subject</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>true</repeatable>
+         <label>Subject</label>
+         <input-type>onebox</input-type>
+         <hint> Enter keyword subject terms. </hint>
+         <required></required>
+     </field>
+		 
+       </page>
+     </form>
+	  
+	 <form name="therapy">
      <page number="1">
        <field>
 
