@@ -456,6 +456,18 @@
             </list>
         </property>
     </bean>
+
+    <!--TagCloud configuration bean for homepage discovery configuration-->
+    <bean id="spcTagCloudFacetConfiguration" class="org.dspace.discovery.configuration.TagCloudFacetConfiguration">
+        <!-- Actual configuration of the tagcloud (colors, sorting, etc.) -->
+        <property name="tagCloudConfiguration" ref="tagCloudConfiguration"/>
+        <!-- List of tagclouds to appear, one for every search filter, one after the other -->
+        <property name="tagCloudFacets">
+            <list>
+                <ref bean="searchFilterSubject" />
+            </list>
+        </property>
+    </bean>
     
     <bean id="tagCloudConfiguration" class="org.dspace.discovery.configuration.TagCloudConfiguration">
 		<!-- Should display the score of each tag next to it? Default: false -->
@@ -613,7 +625,7 @@
         <property name="sortOrder" value="VALUE"/>
     </bean>
     <bean id="searchFilterDepartment" class="org.dspace.discovery.configuration.DiscoverySearchFilterFacet">
-        <property name="indexFieldName" value="area"/>
+        <property name="indexFieldName" value="department"/>
         <property name="metadataFields">
             <list>
                 <value>thesis.degree.discipline</value>
