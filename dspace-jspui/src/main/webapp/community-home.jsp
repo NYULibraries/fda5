@@ -135,6 +135,8 @@
   <% } %>
  <h1  id="page-title"><%= name %></h1></header>
 
+ <div class="community-intro"><%= intro %></div>
+
 <section class="search-area"  role="search">
 	<h2 class="sr-only">Search in this community </h2>
   	<form method="get" action="/handle/<%= community.getHandle() %>/simple-search " class="simplest-search">
