@@ -269,10 +269,14 @@
   <form-map>
     <name-map collection-handle="2451/44193" form-name="Jones" />
   </form-map>
-
   <form-map>
     <name-map collection-handle="2451/44466" form-name="Jones" />
   </form-map>
+<form-map>
+    <name-map collection-handle="default" form-name="TCIS Settlements" />
+  </form-map>
+  <form-map>
+	  
 
   <!-- The form-definitions map lays out the detailed definition of all the -->
   <!-- submission forms.Each separate form set has a unique name as an      -->
@@ -2898,6 +2902,197 @@
 	  <hint>Enter the handle or persistent url for for an article related to this item.</hint>
 
 	</field>
+      </page>
+    </form>
+	  
+<form name="TCIS Settlements">
+      <page number="1">
+	<field>
+
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>contributor</dc-element>
+	  <dc-qualifier>author</dc-qualifier>
+	  <repeatable>true</repeatable>
+	  <label>ministry origin</label>
+	  <input-type>name</input-type>
+	  <hint>&lt;em class="submitFormHelpRequired"&gt; *Required*&lt;/em&gt;</hint>
+	  <required>You must  add at least one author</required>
+	</field>
+	<field>
+
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>contributor</dc-element>
+	  <dc-qualifier>author</dc-qualifier>
+	  <repeatable>true</repeatable>
+	  <label>unit in ministry</label>
+	  <input-type>name</input-type>
+	  <hint>&lt;em class="submitFormHelpRequired"&gt; *Required*&lt;/em&gt;</hint>
+	  <required>You must  add at least one author</required>
+	</field>
+	      
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>title</dc-element>
+	  <dc-qualifier></dc-qualifier>
+	  <repeatable>false</repeatable>
+	  <label>title of the file</label>
+	  <input-type>onebox</input-type>
+	  <hint>&lt;em class="submitFormHelpRequired"&gt;Enter the main title of the item. *Required*&lt;/em&gt;</hint>
+	  <required>You must enter a main title for this item.</required>
+
+	</field>
+
+	<field>
+	  <dc-schema>dc</dc-schema>
+
+	  <dc-element>date</dc-element>
+	  <dc-qualifier>issued</dc-qualifier>
+	  <repeatable>false</repeatable>
+	  <label>earliest date in file</label>
+	  <input-type>date</input-type>
+	  <hint>&lt;em class="submitFormHelpRequired"&gt; *Required*&lt;/em&gt;</hint>
+	  <required>You must enter at least the year.</required>
+	</field>
+
+	
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>relation</dc-element>
+	  <dc-qualifier>ispartofseries</dc-qualifier>
+	  <repeatable>true</repeatable>
+
+	  <label>link to file of origin</label>
+		<input-type>onebox</input-type>
+	  <hint></hint>
+	  <required></required>
+	</field>
+
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>identifier</dc-element>
+	  <dc-qualifier>other</dc-qualifier>
+	  <repeatable>true</repeatable>
+	  <label>identifier</label>
+ 	  <input-type>onebox</input-type>
+	  <required></required>
+	</field>
+	      
+	      <field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>identifier</dc-element>
+	  <dc-qualifier>other</dc-qualifier>
+	  <repeatable>true</repeatable>
+	  <label>archival source of file</label>
+ 	  <input-type>onebox</input-type>
+	  <required></required>
+	</field>
+	      
+	      <field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>identifier</dc-element>
+	  <dc-qualifier>other</dc-qualifier>
+	  <repeatable>true</repeatable>
+	  <label>old file number in ISA</label>
+ 	  <input-type>onebox</input-type>
+	  <required></required>
+	</field>
+	      
+	      <field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>identifier</dc-element>
+	  <dc-qualifier>other</dc-qualifier>
+	  <repeatable>true</repeatable>
+	  <label>Full unique file number</label>
+ 	  <input-type>onebox</input-type>
+	  <required></required>
+	</field>
+	      
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>type</dc-element>
+	  <dc-qualifier></dc-qualifier>
+	  <repeatable>true</repeatable>
+
+	  <label>Type</label>
+	  <input-type value-pairs-name="common_types">dropdown</input-type>
+	  <hint> Select the type(s) of content you are submitting. To select more than one value in the list, you may have to hold down the "CTRL" or "Shift" key.</hint>
+	  <required></required>
+	</field>
+
+	<field>
+
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>language</dc-element>
+	  <dc-qualifier>iso</dc-qualifier>
+	  <repeatable>false</repeatable>
+	  <label>Language</label>
+	  <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
+
+	  <hint>Select the language of the main content of the item.  If the language does not appear in the list below, please select 'Other'.  If the content does not really have a language (for example, if it is a dataset or an image) please select 'N/A'.</hint>
+	  <required></required>
+	</field>
+
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>subject</dc-element>
+
+	  <dc-qualifier>keywords</dc-qualifier>
+	  <!-- An input-type of twobox MUST be marked as repeatable -->
+	  <repeatable>true</repeatable>
+	  <label>Subject Keywords</label>
+	  <input-type>onebox</input-type>
+	  <hint> Enter appropriate subject keywords or phrases below. </hint>
+	  <required></required>
+	  <vocabulary>srsc</vocabulary>
+	</field>
+	      
+	      	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>subject</dc-element>
+
+	  <dc-qualifier>other</dc-qualifier>
+	  <!-- An input-type of twobox MUST be marked as repeatable -->
+	  <repeatable>true</repeatable>
+	  <label>people of historical consequence</label>
+	  <input-type>onebox</input-type>
+	  <hint> Enter appropriate subject keywords or phrases below. </hint>
+	  <required></required>
+	  <vocabulary>srsc</vocabulary>
+	</field>
+
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>description</dc-element>
+	  <dc-qualifier></dc-qualifier>
+	  <repeatable>false</repeatable>
+	  <label>concise description of file</label>
+	  <input-type>textarea</input-type>
+	  <hint> Enter any other description or comments in this box. </hint>
+
+	  <required></required>
+	</field>
+	      
+	      <field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>description</dc-element>
+	  <dc-qualifier>additional</dc-qualifier>
+
+	  <repeatable>false</repeatable>
+	  <label>date are accurate or estimates</label>
+	  <input-type>textarea</input-type>
+	  <required></required>
+	</field>
+	      <field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>coverage</dc-element>
+	  <dc-qualifier>spatial</dc-qualifier>
+	  <repeatable>false</repeatable>
+	  <label>settlements that don't appear in the table of settlements</label>
+	  <input-type>textarea</input-type>
+	  <required></required>
+	</field>
+	
+	
       </page>
     </form>
   </form-definitions>
