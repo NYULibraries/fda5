@@ -2911,7 +2911,7 @@
 	  <dc-element>identifier</dc-element>
 	  <dc-qualifier>other</dc-qualifier>
 	  <repeatable>true</repeatable>
-	  <label>CatalogFileId + IdentifierDescriptionHe + IdentifierDescriptionEn</label>
+	  <label>File Numbers</label>
  	  <input-type>onebox</input-type>
 	  <required></required>
 	</field>
@@ -2922,7 +2922,7 @@
 	  <dc-element>contributor</dc-element>
 	  <dc-qualifier></dc-qualifier>
 	  <repeatable>true</repeatable>
-	  <label>office_name + unit_he + unit_en</label>
+	  <label>Ministry, Ministry Units, and Archives</label>
 	  <input-type>name</input-type>
 	  <hint>*Required*</hint>
 	  <required></required>
@@ -2944,7 +2944,7 @@
 	  <dc-element>date</dc-element>
 	  <dc-qualifier></dc-qualifier>
 	  <repeatable>false</repeatable>
-	  <label>dates</label>
+	  <label>Date</label>
 	  <input-type>date</input-type>
 	  <hint>*Required*</hint>
 	  <required></required>
@@ -2956,7 +2956,7 @@
 	  <dc-qualifier>other</dc-qualifier>
 	  <!-- An input-type of twobox MUST be marked as repeatable -->
 	  <repeatable>true</repeatable>
-	  <label>Figure + org_list</label>
+	  <label>People and Organizations</label>
 	  <input-type>onebox</input-type>
 	  <hint></hint>
 	  <required></required>
@@ -2978,7 +2978,7 @@
 	  <dc-element>coverage</dc-element>
 	  <dc-qualifier>spatial</dc-qualifier>
 	  <repeatable>false</repeatable>
-	  <label>loc_list + CustomLocality</label>
+	  <label>Settlements</label>
 	  <input-type>textarea</input-type>
 	  <required></required>
 	</field>
@@ -2989,7 +2989,7 @@
 	  <dc-qualifier>keywords</dc-qualifier>
 	  <!-- An input-type of twobox MUST be marked as repeatable -->
 	  <repeatable>true</repeatable>
-	  <label>keyword_list</label>
+	  <label>Keywords</label>
 	  <input-type>onebox</input-type>
 	  <hint></hint>
 	  <required></required>
@@ -3000,7 +3000,7 @@
 	  <dc-element>language</dc-element>
 	  <dc-qualifier></dc-qualifier>
 	  <repeatable>false</repeatable>
-	  <label>lang_list</label>
+	  <label>Languages</label>
 	  <input-type>onebox</input-type>
 	  <hint></hint>
 	  <required></required>
@@ -3011,7 +3011,7 @@
 	  <dc-element>type</dc-element>
 	  <dc-qualifier></dc-qualifier>
 	  <repeatable>true</repeatable>
-	  <label></label>
+	  <label>Visuals</label>
 	  <input-type>onebox</input-type>
 	  <hint></hint>
 	  <required></required>
@@ -3022,7 +3022,7 @@
 	  <dc-element>relation</dc-element>
 	  <dc-qualifier></dc-qualifier>
 	  <repeatable></repeatable>
-	  <label>sourceLink</label>
+	  <label>Link to File of Origin</label>
 	  <input-type>onebox</input-type>
 	  <hint></hint>
 	  <required></required>
