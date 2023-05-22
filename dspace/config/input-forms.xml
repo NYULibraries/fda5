@@ -2998,10 +2998,10 @@
 	<field>
 	  <dc-schema>dc</dc-schema>
 	  <dc-element>language</dc-element>
-	  <dc-qualifier>iso</dc-qualifier>
+	  <dc-qualifier></dc-qualifier>
 	  <repeatable>false</repeatable>
 	  <label>lang_list</label>
-	  <input-type value-pairs-name="common_iso_languages">dropdown</input-type>
+	  <input-type>onebox</input-type>
 	  <hint></hint>
 	  <required></required>
 	</field>	
@@ -3011,12 +3011,22 @@
 	  <dc-element>type</dc-element>
 	  <dc-qualifier></dc-qualifier>
 	  <repeatable>true</repeatable>
-	  <label>visual_list</label>
+	  <label></label>
 	  <input-type>onebox</input-type>
 	  <hint></hint>
 	  <required></required>
 	</field>
 	      
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>relation</dc-element>
+	  <dc-qualifier></dc-qualifier>
+	  <repeatable></repeatable>
+	  <label>sourceLink</label>
+	  <input-type>onebox</input-type>
+	  <hint></hint>
+	  <required></required>
+	</field>
       </page>
     </form>
 
