@@ -196,8 +196,11 @@
 <form-map>
    <name-map collection-handle="2451/44466" form-name="Jones" />
  </form-map>
+<form-map>
+    <name-map collection-handle="2451/64459" form-name="Settlements" />
+ </form-map>
 
-  <!-- The form-definitions map lays out the detailed definition of all the -->
+ <!-- The form-definitions map lays out the detailed definition of all the -->
  <!-- submission forms.Each separate form set has a unique name as an      -->
 
  <!-- attribute. This name matches one of the names in the form-map. One   -->
@@ -3163,7 +3166,132 @@ it, please enter the types and the actual numbers or codes below.</hint>
        </field>
  </page>
    </form>
+<form name="Settlements">
+      <page number="1">
+	
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>identifier</dc-element>
+	  <dc-qualifier>other</dc-qualifier>
+	  <repeatable>true</repeatable>
+	  <label>File Numbers</label>
+ 	  <input-type>onebox</input-type>
+	  <required></required>
+	</field>
 
+
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>contributor</dc-element>
+	  <dc-qualifier></dc-qualifier>
+	  <repeatable>true</repeatable>
+	  <label>Ministry, Ministry Units, and Archives</label>
+	  <input-type>name</input-type>
+	  <hint>*Required*</hint>
+	  <required></required>
+	</field>
+	      
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>title</dc-element>
+	  <dc-qualifier></dc-qualifier>
+	  <repeatable>false</repeatable>
+	  <label>Title</label>
+	  <input-type>onebox</input-type>
+	  <hint>*Required*</hint>
+	  <required></required>
+	</field>
+
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>date</dc-element>
+	  <dc-qualifier></dc-qualifier>
+	  <repeatable>false</repeatable>
+	  <label>Date</label>
+	  <input-type>date</input-type>
+	  <hint>*Required*</hint>
+	  <required></required>
+	</field>  
+	           
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>subject</dc-element>
+	  <dc-qualifier>other</dc-qualifier>
+	  <!-- An input-type of twobox MUST be marked as repeatable -->
+	  <repeatable>true</repeatable>
+	  <label>People and Organizations</label>
+	  <input-type>onebox</input-type>
+	  <hint></hint>
+	  <required></required>
+	</field>
+
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>description</dc-element>
+	  <dc-qualifier></dc-qualifier>
+	  <repeatable>false</repeatable>
+	  <label>Description</label>
+	  <input-type>textarea</input-type>
+	  <hint></hint>
+	  <required></required>
+	</field>
+
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>coverage</dc-element>
+	  <dc-qualifier>spatial</dc-qualifier>
+	  <repeatable>false</repeatable>
+	  <label>Settlements</label>
+	  <input-type>textarea</input-type>
+	  <required></required>
+	</field>
+
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>subject</dc-element>
+	  <dc-qualifier>keywords</dc-qualifier>
+	  <!-- An input-type of twobox MUST be marked as repeatable -->
+	  <repeatable>true</repeatable>
+	  <label>Keywords</label>
+	  <input-type>onebox</input-type>
+	  <hint></hint>
+	  <required></required>
+	</field>
+
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>language</dc-element>
+	  <dc-qualifier></dc-qualifier>
+	  <repeatable>false</repeatable>
+	  <label>Languages</label>
+	  <input-type>onebox</input-type>
+	  <hint></hint>
+	  <required></required>
+	</field>	
+
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>type</dc-element>
+	  <dc-qualifier></dc-qualifier>
+	  <repeatable>true</repeatable>
+	  <label>Visuals</label>
+	  <input-type>onebox</input-type>
+	  <hint></hint>
+	  <required></required>
+	</field>
+	      
+	<field>
+	  <dc-schema>dc</dc-schema>
+	  <dc-element>relation</dc-element>
+	  <dc-qualifier></dc-qualifier>
+	  <repeatable></repeatable>
+	  <label>Link to File of Origin</label>
+	  <input-type>onebox</input-type>
+	  <hint></hint>
+	  <required></required>
+	</field>
+      </page>
+    </form>
 </form-definitions>
 
  <!-- form-value-pairs populate dropdown and qualdrop-value lists.          -->
