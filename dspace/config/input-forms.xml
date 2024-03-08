@@ -640,7 +640,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
    <form name="DNP">
      <page number="1">
 
-
      <field>
          <dc-schema>dc</dc-schema>
          <dc-element>title</dc-element>
@@ -651,7 +650,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <hint>&lt;em class="submitFormHelpRequired"&gt;Enter the main title of the item. *Required*&lt;/em&gt;</hint>
          <required>You must enter a main title for this item.</required>
      </field>
-
 
      <field>
          <dc-schema>dc</dc-schema>
@@ -664,7 +662,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <required></required>
      </field>
 
-
      <field>
          <dc-schema>dc</dc-schema>
          <dc-element>description</dc-element>
@@ -673,9 +670,20 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <label>Abstract</label>
          <input-type>textarea</input-type>
          <hint> Enter the abstract of the item below.</hint>
-         <required>You must enter a main title for this item.</required>
+         <required>You must enter an abstract for this item.</required>
      </field>
-
+	     
+     <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>description</dc-element>
+         <dc-qualifier></dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Description</label>
+         <input-type>textarea</input-type>
+         <hint>A prose note where advisor roles and credentials can be further specified.</hint>
+         <required></required>
+     </field>
+     
      <field>
          <dc-schema>dc</dc-schema>
          <dc-element>contributor</dc-element>
@@ -686,7 +694,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <hint>&lt;em class="submitFormHelpRequired"&gt;Authors: first name; last name. *Required*&lt;/em&gt;</hint>
          <required>You must add at least one author.</required>
      </field>
-
 
      <field>
          <dc-schema>dc</dc-schema>
@@ -699,7 +706,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <required>You must add at least one member.</required>
      </field>
 
-
      <field>
          <dc-schema>thesis</dc-schema>
          <dc-element>degree</dc-element>
@@ -710,7 +716,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <hint> Enter the name of the thesis degree related to the item submitted, for example: Doctor of Nursing Practice.</hint>
          <required>You must enter a thesis degree name.</required>
      </field>
-
 
      <field>
          <dc-schema>thesis</dc-schema>
@@ -734,7 +739,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <required>You must enter a thesis degree discipline.</required>
      </field>
 
-
      <field>
          <dc-schema>thesis</dc-schema>
          <dc-element>degree</dc-element>
@@ -745,7 +749,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <hint> Enter the degree granting institution related to the item submitted, for example: Rory Meyers College of Nursing, New York University.</hint>
          <required>You must enter an institution.</required>
      </field>
-
 
      <field>
          <dc-schema>dc</dc-schema>
@@ -759,7 +762,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
      </field>
 
      <field>
-
          <dc-schema>dc</dc-schema>
          <dc-element>language</dc-element>
          <dc-qualifier>iso</dc-qualifier>
@@ -769,8 +771,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <hint>Select the language of the main content of the item. If the language does not appear in the list below, please select 'Other'.  If the content does not really have a language (for example, if it is a dataset or an image) please select 'N/A'.</hint>
          <required>You must enter a language.</required>
      </field>
-
-
 
      <field>
          <dc-schema>dc</dc-schema>
@@ -783,8 +783,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <required></required>
      </field>
 
-
-
      <field>
          <dc-schema>dc</dc-schema>
          <dc-element>subject</dc-element>
@@ -795,7 +793,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <hint> Enter CINAHL subject terms. </hint>
          <required></required>
      </field>
-
 
      <field>
          <dc-schema>dc</dc-schema>
@@ -819,8 +816,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <required></required>
      </field>
 
-
-
      <field>
          <dc-schema>dc</dc-schema>
          <dc-element>type</dc-element>
@@ -831,7 +826,6 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <hint> Select the type(s) of content you are submitting. To select more than one value in the list, you may have to hold down the "CTRL" or "Shift" key.</hint>
          <required>You must select at least one</required>
      </field>
-
 
      <field>
          <dc-schema>dc</dc-schema>
@@ -879,6 +873,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
      </field>
      </page>
    </form>
+	 
    <form name="Tandon">
             <page number="1">
               <field>
