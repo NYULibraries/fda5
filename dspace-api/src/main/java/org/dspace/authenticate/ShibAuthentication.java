@@ -215,8 +215,8 @@ public class ShibAuthentication implements AuthenticationMethod
 
 			//create list of special groups from user headers
 			String[] group_membership_strs = null;
-			if(request.getHeader("ismemberof")!=null&&!request.getHeader("ismemberof").equals("")) {
-				group_membership_strs = request.getHeader("ismemberof").split(";");
+			if(request.getHeader("isMemberOf")!=null&&!request.getHeader("isMemberOf").equals("")) {
+				group_membership_strs = request.getHeader("isMemberOf").split(";");
 			}
 
 			ArrayList<String> group_membership = new ArrayList();
