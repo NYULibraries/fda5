@@ -871,6 +871,17 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <hint> Enter information on item's rights in this box. </hint>
          <required></required>
      </field>
+
+        <field>
+         <dc-schema>dc</dc-schema>
+         <dc-element>relation</dc-element>
+         <dc-qualifier>uri</dc-qualifier>
+         <repeatable>false</repeatable>
+         <label>Related Publication</label>
+         <input-type>textarea</input-type>
+         <hint> Enter the DOI or other URL for a published version of the DNP project. </hint>
+         <required></required>
+     </field>		     
      </page>
    </form>
 	 
