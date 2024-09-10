@@ -879,7 +879,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <repeatable>false</repeatable>
          <label>Related Publication</label>
          <input-type>textarea</input-type>
-         <hint> Enter the DOI or other URL for a published version of the DNP project. </hint>
+         <hint>Enter the DOI or URL for a published version of the DNP project.</hint>
          <required></required>
      </field>		     
      </page>
