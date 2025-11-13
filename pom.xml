@@ -34,7 +34,7 @@
         <lucene.version>4.10.2</lucene.version>
         <solr.version>4.10.2</solr.version>
         <jena.version>2.12.0</jena.version>
-        <slf4j.version>1.6.1</slf4j.version>
+        <slf4j.version>1.7.36</slf4j.version>
         <!-- 'root.basedir' is the path to the root [dspace-src] dir. It must be redefined by each child POM,
              as it is used to reference the LICENSE_HEADER and *.properties file(s) in that directory. -->
         <root.basedir>${basedir}</root.basedir>
@@ -45,6 +45,35 @@
            (NOTE: individual POMs can override specific settings). -->
       <pluginManagement>
           <plugins>
+              <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-enforcer-plugin</artifactId>
+                  <version>3.0.0</version>
+                  <executions>
+                      <execution>
+                          <id>ban-bad-log4j</id>
+                          <goals>
+                              <goal>enforce</goal>
+                          </goals>
+                          <configuration>
+                              <rules>
+                                  <bannedDependencies>
+                                          <excludes>
+                                              <!-- Ban only in compile/runtime, allow provided/test -->
+                                              <exclude>log4j:log4j:*:*:compile</exclude>
+                                              <exclude>log4j:log4j:*:*:runtime</exclude>
+                                              <exclude>org.slf4j:slf4j-log4j12:*:*:compile</exclude>
+                                              <exclude>org.slf4j:slf4j-log4j12:*:*:runtime</exclude>
+                                          </excludes>
+                                      <searchTransitive>true</searchTransitive>
+                                  </bannedDependencies>
+                              </rules>
+
+                              <fail>true</fail>
+                          </configuration>
+                      </execution>
+                  </executions>
+              </plugin>
               <plugin>
                   <artifactId>maven-compiler-plugin</artifactId>
                   <version>3.1</version>
@@ -1047,11 +1076,6 @@
             <version>1.0</version>
          </dependency>
          <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-         </dependency>
-         <dependency>
             <groupId>oro</groupId>
             <artifactId>oro</artifactId>
             <version>2.0.8</version>
@@ -1209,11 +1233,33 @@
              <artifactId>slf4j-jdk14</artifactId>
              <version>${slf4j.version}</version>
          </dependency>
-         <dependency>
-             <groupId>org.slf4j</groupId>
-             <artifactId>slf4j-log4j12</artifactId>
-             <version>${slf4j.version}</version>
-         </dependency>
+          <dependency>
+              <groupId>log4j</groupId>
+              <artifactId>log4j</artifactId>
+              <version>1.2.17</version>
+              <scope>provided</scope>  <!-- Don't include -->
+          </dependency>
+          <dependency>
+              <groupId>org.slf4j</groupId>
+              <artifactId>slf4j-log4j12</artifactId>
+              <version>1.6.1</version>
+              <scope>provided</scope>
+          </dependency>
+          <dependency>
+              <groupId>org.apache.logging.log4j</groupId>
+              <artifactId>log4j-1.2-api</artifactId>
+              <version>2.23.1</version>
+          </dependency>
+          <dependency>
+              <groupId>org.apache.logging.log4j</groupId>
+              <artifactId>log4j-core</artifactId>
+              <version>2.23.1</version>
+          </dependency>
+          <dependency>
+              <groupId>org.apache.logging.log4j</groupId>
+              <artifactId>log4j-1.2-api</artifactId>
+              <version>2.23.1</version>
+          </dependency>
          <!-- JMockit, JUnit and Hamcrest are used for Unit/Integration tests -->
          <dependency> <!-- Keep jmockit before junit -->
             <groupId>org.jmockit</groupId>
