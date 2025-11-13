@@ -30,7 +30,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.7</java.version>
+        <java.version>1.8</java.version>
         <lucene.version>4.10.2</lucene.version>
         <solr.version>4.10.2</solr.version>
         <jena.version>2.12.0</jena.version>
@@ -173,7 +173,7 @@
                <version>${java.version}</version>
                <scope>system</scope>
                <!-- Path to tools.jar (containing native2ascii tool) is determined by a profile (see below) -->
-               <systemPath>${toolsjar}</systemPath>
+               <systemPath>${java.home}/../lib/tools.jar</systemPath>
              </dependency>
            </dependencies>
          </plugin>
@@ -1607,7 +1607,7 @@
         <repository>
             <id>restlet</id>
             <name>restlet</name>
-            <url>http://maven.restlet.org</url>
+            <url>https://maven.restlet.org</url>
         </repository>
     </repositories>
 
