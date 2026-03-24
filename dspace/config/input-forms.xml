@@ -3357,7 +3357,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <dc-element>contributor</dc-element>
          <dc-qualifier>advisor</dc-qualifier>
          <repeatable>true</repeatable>
-         <label>Committee member / DNP Project Team Member</label>
+         <label>Advisor</label>
          <input-type>name</input-type>
          <hint>&lt;em class="submitFormHelpRequired"&gt;Authors: first name; last name. *Required*&lt;/em&gt;</hint>
          <required>You must add at least one member.</required>
@@ -3394,7 +3394,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <repeatable>false</repeatable>
          <label>Discipline </label>
          <input-type>onebox</input-type>
-         <hint> Enter the discipline related to the item submitted, for example: Nursing.</hint>
+         <hint> Enter the discipline related to the item submitted, for example: Engineering.</hint>
          <required>You must enter a thesis degree discipline.</required>
      </field>
 
@@ -3442,7 +3442,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <repeatable>true</repeatable>
          <label>Keyword</label>
          <input-type>onebox</input-type>
-         <hint> Enter keyword subject terms. </hint>
+         <hint> Enter keyword subject terms.</hint>
          <required></required>
      </field>
 
