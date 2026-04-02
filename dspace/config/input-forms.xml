@@ -3360,7 +3360,7 @@ it, please enter the types and the actual numbers or codes below.</hint>
          <label>Advisor</label>
          <input-type>name</input-type>
          <hint>&lt;em class="submitFormHelpRequired"&gt;Authors: first name; last name. *Required*&lt;/em&gt;</hint>
-         <required>You must add at least one member.</required>
+         <required>You must add at least one advisor.</required>
      </field>
 
 
